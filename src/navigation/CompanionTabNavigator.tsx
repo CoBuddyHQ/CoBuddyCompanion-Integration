@@ -1,3 +1,4 @@
+import i18next from "i18next";
 /**
  * CoBuddy Companion App — Companion Tab Navigator
  * 5 tabs: Home | Requests | Sessions | Earnings | Profile
