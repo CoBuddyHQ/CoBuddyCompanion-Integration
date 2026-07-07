@@ -1,5 +1,4 @@
-import i18next from "i18next";
-import { useTranslation } from "react-i18next"; /**
+/**
  * CoBuddy Companion App — Companion Tab Navigator
  * 5 tabs: Home | Requests | Sessions | Earnings | Profile
  * Uses custom BottomTabBar with CoBuddy gold active state.
@@ -8,7 +7,7 @@ import { useTranslation } from "react-i18next"; /**
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CompanionTabParamList } from '../types/navigation.types';
-import { colors } from '../theme/colors';
+
 
 import DashboardStack from './stacks/DashboardStack';
 import RequestsStack from './stacks/RequestsStack';
@@ -19,11 +18,11 @@ import BottomTabBar from '../components/layout/BottomTabBar';
 
 const Tab = createBottomTabNavigator<CompanionTabParamList>();
 
+const renderTabBar = (props: any) => <BottomTabBar {...props} />;
+
 const CompanionTabNavigator: React.FC = () =>
-// Nested component extraction: BottomTabBar is now passed directly as a reference rather than an inline arrow function that recreates it on every render.
-// Props (state/descriptors/navigation) are automatically passed by Tab.Navigator.
 <Tab.Navigator
-  tabBar={(props) => <BottomTabBar {...props} />}
+  tabBar={renderTabBar}
   screenOptions={{
     headerShown: false
   }}

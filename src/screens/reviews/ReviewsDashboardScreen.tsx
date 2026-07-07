@@ -203,6 +203,10 @@ const ListHeader: React.FC<{
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
+// Nested component extraction: ItemSeparator was defined inside ReviewsDashboardScreen render.
+// It uses no parent state/props (only global spacing theme). Extracted to module level.
+const ItemSeparator = () => <View style={{ height: spacing.sm }} />;
+
 export function ReviewsDashboardScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
@@ -253,7 +257,7 @@ export function ReviewsDashboardScreen(): React.JSX.Element {
         ListFooterComponent={<ListFooter shown={reviews.length} total={totalReviews} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />} />
+        ItemSeparatorComponent={ItemSeparator} />
       
     </SafeAreaView>);
 
