@@ -424,7 +424,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.ctaWrap}>
         {!canContinue &&
         <Text style={styles.disabledTip}>
-            {!city ? t('application.city_service_disabled_tip_city') : t('application.city_service_disabled_tip_area')}
+            {!city ? t('application.city_service_disabled_tip_city', { defaultValue: 'Select a city to continue.' }) : t('application.city_service_disabled_tip_area')}
           </Text>
         }
         <ActionButton

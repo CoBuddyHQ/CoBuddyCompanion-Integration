@@ -71,7 +71,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
         <View style={s.bar}>
           <TouchableOpacity accessibilityRole="button" style={[s.btnGold, (!canSubmit || submitting) && s.btnDisabled]}
             onPress={handleSubmit} disabled={!canSubmit || submitting} activeOpacity={0.85}>
-            <Text style={s.btnGoldText}>{submitting ? t('common.loading') : t('support.submit_dispute')}</Text>
+            <Text style={s.btnGoldText}>{submitting ? t('common.loading') : t('support.submit_dispute', { defaultValue: 'Submit Dispute' })}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

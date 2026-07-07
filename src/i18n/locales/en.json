@@ -1106,7 +1106,8 @@
     "under_review": "Under Review",
     "updated": "Updated",
     "was_this_helpful": "Was this helpful?",
-    "you_can_only_appeal_once_per_dispute_make_sure_to_provide_strong_reasoning": "You can only appeal once per dispute. Make sure to provide strong reasoning."
+    "you_can_only_appeal_once_per_dispute_make_sure_to_provide_strong_reasoning": "You can only appeal once per dispute. Make sure to provide strong reasoning.",
+    "submit_dispute": "Submit Dispute"
   },
   "system": {
     "01_jul_2026_02_00_04_00_am_ist": "01 Jul 2026 · 02:00 – 04:00 AM IST",
@@ -1483,7 +1484,8 @@
     "accessibility_accept_request": "Accept request",
     "accessibility_decline_request": "Decline request",
     "accessibility_suggest_time": "Suggest a different time",
-    "accessibility_view_customer_profile": "View customer profile"
+    "accessibility_view_customer_profile": "View customer profile",
+    "city_service_disabled_tip_city": "Select a city to continue."
   },
   "auth": {
     "cobuddy_does_not_store_your_fingerprint_or_face_data_your_device_handles_biometric_verification_securely": "CoBuddy does not store your fingerprint or face data. Your device handles biometric verification securely.",
