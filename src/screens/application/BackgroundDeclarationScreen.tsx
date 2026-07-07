@@ -102,7 +102,7 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
                   style={[styles.declRow, checked && styles.declRowChecked]}
                   onPress={() => handleToggle(item.id)}
                   activeOpacity={0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked }}
                   accessibilityLabel={t(item.label)}>
                   <View style={[styles.declIcon, checked && styles.declIconChecked]}>

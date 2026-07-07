@@ -78,7 +78,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
           style={[styles.chip, selected && styles.chipSelected]}
           onPress={() => toggleList(field, o.id)}
           activeOpacity={0.75}
-          accessibilityRole="checkbox"
+          
           accessibilityState={{ checked: selected }}>
             {selected && <Icon name="check" size={13} color={colors.gold} />}
             <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(o.label)}</Text>
@@ -132,7 +132,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
                   style={[styles.dayChip, selected && styles.dayChipSelected]}
                   onPress={() => toggleList('days', day)}
                   activeOpacity={0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked: selected }}>
                   <Text style={[styles.dayChipText, selected && styles.dayChipTextSelected]}>
                     {day.slice(0, 3)}
@@ -161,7 +161,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
                   style={[styles.chip, selected && styles.chipSelected]}
                   onPress={() => updateWorkPreference({ frequency: selected ? '' : f.id })}
                   activeOpacity={0.75}
-                  accessibilityRole="radio"
+                  
                   accessibilityState={{ selected }}>
                   {selected && <Icon name="check" size={13} color={colors.gold} />}
                   <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(f.label)}</Text>

@@ -606,7 +606,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
 
             {/* DOB trigger button */}
             <Text style={styles.dobLabel}>{t("content.application_kyc.BasicDetailsContent.DOB_LABEL")} *</Text>
-            <TouchableOpacity accessibilityRole="button" style={[styles.dobButton, dobDisplay ? styles.dobButtonFilled : null, dobError ? styles.dobButtonError : null]} onPress={() => setDobModalVisible(true)} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={dobDisplay ? `Date of birth: ${dobDisplay}. Tap to change.` : t("content.application.BasicDetailsScreen.select_date_of_birth")}>
+            <TouchableOpacity  style={[styles.dobButton, dobDisplay ? styles.dobButtonFilled : null, dobError ? styles.dobButtonError : null]} onPress={() => setDobModalVisible(true)} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={dobDisplay ? `Date of birth: ${dobDisplay}. Tap to change.` : t("content.application.BasicDetailsScreen.select_date_of_birth")}>
               <Icon name="cake" size={20} color={dobDisplay ? colors.gold : colors.textMuted} />
               <Text style={[styles.dobButtonText, !!dobDisplay && styles.dobButtonTextFilled]}>
                 {dobDisplay || t("content.application_kyc.BasicDetailsContent.DOB_PLACEHOLDER")}
@@ -634,7 +634,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
               updateBasicDetails({
                 gender: next
               });
-            }} accessibilityRole="radio" accessibilityState={{
+            }}  accessibilityState={{
               selected: selectedGender === g
             }}>
                   <Text style={[styles.genderChipText, selectedGender === g && styles.genderChipTextSelected]}>

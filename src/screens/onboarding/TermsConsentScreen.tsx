@@ -122,7 +122,7 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
             style={styles.checkRow}
             onPress={() => toggleCheck(idx)}
             activeOpacity={0.8}
-            accessibilityRole="checkbox"
+            
             accessibilityState={{ checked: checked[idx] }}
             accessibilityLabel={label}>
               <View style={[styles.checkbox, checked[idx] && styles.checkboxChecked]}>

@@ -161,7 +161,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
             style={[styles.uploadZone, photoUri && styles.uploadZoneActive]}
             onPress={() => showPicker('camera')}
             accessibilityLabel={t("accessibility.upload_profile_photo")}
-            accessibilityRole="button">
+            >
             <Icon
               name={photoUri ? 'check-circle' : 'add-a-photo'}
               size={40}

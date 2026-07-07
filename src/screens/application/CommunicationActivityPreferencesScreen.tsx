@@ -73,7 +73,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
           style={[styles.optionRow, selected && styles.optionRowSelected]}
           onPress={() => updateCommActivityPrefs({ [field]: selected ? '' : o.id })}
           activeOpacity={0.75}
-          accessibilityRole="radio"
+          
           accessibilityState={{ selected }}>
             <View style={[styles.optionIcon, selected && styles.optionIconSelected]}>
               <Icon name={o.icon} size={20} color={selected ? colors.rootBg : colors.gold} />
@@ -139,7 +139,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
                     style={[styles.groupChip, selected && styles.groupChipSelected]}
                     onPress={() => updateCommActivityPrefs({ groupPreference: selected ? '' : g.id })}
                     activeOpacity={0.75}
-                    accessibilityRole="radio"
+                    
                     accessibilityState={{ selected }}>
                     {selected && <Icon name="check" size={14} color={colors.gold} />}
                     <Text style={[styles.groupChipText, selected && styles.groupChipTextSelected]}>{t(g.label)}</Text>

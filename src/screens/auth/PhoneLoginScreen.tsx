@@ -181,7 +181,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
                 style={styles.countryPart}
                 onPress={() => {Keyboard.dismiss();setPickerOpen(true);}}
                 accessibilityLabel={t("accessibility.country_code", { name: country.name, code: country.code })}
-                accessibilityRole="button">
+                >
                 <Text style={styles.countryFlag}>{country.flag}</Text>
                 <Text style={styles.countryCode}>{country.code}</Text>
                 <Icon name="arrow-drop-down" size={18} color={colors.textMuted} />

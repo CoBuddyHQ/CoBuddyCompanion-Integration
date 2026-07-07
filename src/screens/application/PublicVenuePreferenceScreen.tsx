@@ -114,7 +114,7 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
                   style={[styles.tile, selected && styles.tileSelected]}
                   onPress={() => toggleVenuePreference(v.id)}
                   activeOpacity={0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked: selected }}
                   accessibilityLabel={t(v.label)}>
                   {selected &&

@@ -287,7 +287,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
             style={[styles.cityButton, city ? styles.cityButtonSelected : null]}
             onPress={() => setShowCityPicker(!showCityPicker)}
             activeOpacity={0.8}
-            accessibilityRole="button"
+            
             accessibilityLabel={city || t('application.city_service_city_placeholder')}>
             <Icon name="location-on" size={20} color={city ? colors.gold : colors.textMuted} />
             <Text style={[styles.cityButtonText, city ? styles.cityButtonTextSelected : null]}>
@@ -308,7 +308,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
                 key={c}
                 style={[styles.cityOption, city === c ? styles.cityOptionSelected : null]}
                 onPress={() => handleCitySelect(c)}
-                accessibilityRole="menuitem"
+                
                 accessibilityState={{ selected: city === c }}>
                     <Text style={[styles.cityOptionText, city === c ? styles.cityOptionTextSelected : null]}>{c}</Text>
                     {city === c && <Icon name="check" size={16} color={colors.gold} />}
@@ -351,7 +351,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
                   }
                   onPress={() => handleToggleArea(area)}
                   activeOpacity={disabled ? 1 : 0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked: selected, disabled }}
                   accessibilityLabel={area}>
                     {selected && <Icon name="check" size={13} color={colors.gold} />}
@@ -400,7 +400,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
                   style={[styles.travelChip, selected ? styles.travelChipSelected : null]}
                   onPress={() => setWillingToTravel(isYes)}
                   activeOpacity={0.75}
-                  accessibilityRole="radio"
+                  
                   accessibilityState={{ selected }}>
                   {selected && <Icon name="check" size={14} color={colors.gold} />}
                   <Text style={[styles.travelChipText, selected ? styles.travelChipTextSelected : null]}>{opt}</Text>

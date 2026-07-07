@@ -21,6 +21,7 @@ import { useProfileStore } from '../../store/slices/profileStore';
 import { useSessionStore } from '../../store/slices/sessionStore';
 import { useRequestStore } from '../../store/slices/requestStore';
 import { useEarningsStore } from '../../store/slices/earningsStore';
+import { useAvailabilityStore } from '../../store/slices/availabilityStore';
 import { useNotificationStore } from '../../store/slices/notificationStore';
 import { useSafetyStore } from '../../store/slices/safetyStore';
 import { colors } from '../../theme/colors';

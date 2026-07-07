@@ -100,7 +100,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {cons
                   style={[styles.confirmRow, checked && styles.confirmRowChecked]}
                   onPress={() => handleToggle(item.id)}
                   activeOpacity={0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked }}
                   accessibilityLabel={t(item.label)}>
                   {/* Icon */}

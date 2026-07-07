@@ -110,7 +110,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
                   style={[styles.tile, selected && styles.tileSelected]}
                   onPress={() => toggleExperienceCategory(cat.id)}
                   activeOpacity={0.75}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked: selected }}
                   accessibilityLabel={t(cat.label)}>
                   {selected &&

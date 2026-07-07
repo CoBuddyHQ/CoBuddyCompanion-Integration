@@ -211,7 +211,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
                   key={`lang-chip-${index}-${lang}`}
                   style={[styles.langChip, isSelected && styles.langChipSelected]}
                   onPress={() => toggleLang(lang)}
-                  accessibilityRole="checkbox"
+                  
                   accessibilityState={{ checked: isSelected }}>
                   {isSelected &&
                   <View style={styles.langCheckBadge}>
@@ -248,7 +248,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
                     key={`primary-lang-${index}-${lang}`}
                     style={[styles.radioRow, isSelected && styles.radioRowSelected]}
                     onPress={() => setPrimary(lang)}
-                    accessibilityRole="radio"
+                    
                     accessibilityState={{ selected: isSelected }}>
                     <Text style={[styles.radioLabel, isSelected && styles.radioLabelSelected]}>
                       {lang}

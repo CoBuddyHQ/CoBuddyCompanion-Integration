@@ -143,7 +143,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
               style={[styles.item, isChecked && styles.itemChecked]}
               onPress={() => toggle(item.id)}
               activeOpacity={0.75}
-              accessibilityRole="checkbox"
+              
               accessibilityState={{ checked: isChecked }}>
               {/* Category dot */}
               <View style={[styles.catDot, { backgroundColor: catColor }]} />

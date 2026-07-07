@@ -189,7 +189,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
                         });
                         navigateToRequirementFixScreen(navigation, item.route);
                       }}
-                      accessibilityRole="button"
+                      
                       accessibilityLabel={t("accessibility.fix_missing", { item: t(item.label) })}>
                       <Icon name="radio-button-unchecked" size={16} color={colors.warningAmber} />
                       <Text style={[styles.stepLabel, styles.stepLabelMissing]}>

@@ -131,7 +131,7 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
           style={[styles.acceptRow, boundariesAccepted && styles.acceptRowChecked]}
           onPress={() => setBoundariesAccepted(!boundariesAccepted)}
           activeOpacity={0.75}
-          accessibilityRole="checkbox"
+          
           accessibilityState={{ checked: boundariesAccepted }}
           accessibilityLabel={t("accessibility.accept_boundaries_and_safety_rules")}>
           <View style={[styles.acceptCheck, boundariesAccepted && styles.acceptCheckChecked]}>

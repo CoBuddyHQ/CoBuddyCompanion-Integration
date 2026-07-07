@@ -192,7 +192,7 @@ export function CompanionPricingScreen({
           <View style={styles.durationList}>
             {DURATIONS.map((d, idx) => {
             const sel = duration === d;
-            return <TouchableOpacity accessibilityRole="button" key={d} style={[styles.durationRow, idx < DURATIONS.length - 1 && styles.durationRowBorder, sel && styles.durationRowSelected]} onPress={() => setDuration(d)} accessibilityRole="radio" accessibilityState={{
+            return <TouchableOpacity  key={d} style={[styles.durationRow, idx < DURATIONS.length - 1 && styles.durationRowBorder, sel && styles.durationRowSelected]} onPress={() => setDuration(d)} accessibilityRole="radio" accessibilityState={{
               selected: sel
             }}>
                   {sel && <View style={styles.durationAccent} />}

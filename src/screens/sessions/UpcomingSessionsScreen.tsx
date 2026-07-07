@@ -257,7 +257,7 @@ export function UpcomingSessionsScreen(): React.JSX.Element {
           key={tab.key}
           style={styles.tabItem}
           onPress={() => setActiveTab(tab.key)}
-          accessibilityRole="tab"
+          
           accessibilityState={{ selected: activeTab === tab.key }}>
             <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>
               {t(tab.label)}

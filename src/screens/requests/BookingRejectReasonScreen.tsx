@@ -95,7 +95,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
                 style={[styles.optionRow, isSelected && styles.optionRowSelected]}
                 onPress={() => setSelected(reason)}
                 activeOpacity={0.75}
-                accessibilityRole="radio"
+                
                 accessibilityState={{ selected: isSelected }}>
                 <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
                   {reason}

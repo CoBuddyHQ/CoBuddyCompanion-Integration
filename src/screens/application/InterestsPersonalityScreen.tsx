@@ -139,7 +139,7 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
           }
           onPress={() => {if (!disabled) {toggleInterestTag(tag.id);}}}
           activeOpacity={disabled ? 1 : 0.75}
-          accessibilityRole="checkbox"
+          
           accessibilityState={{ checked: selected, disabled }}
           accessibilityLabel={label}>
             {selected &&

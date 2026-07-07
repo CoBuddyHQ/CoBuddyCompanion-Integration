@@ -90,7 +90,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
                 }
                 onPress={() => setSelectedCode(lang.code)}
                 activeOpacity={0.75}
-                accessibilityRole="radio"
+                
                 accessibilityState={{ selected: isSelected }}
                 accessibilityLabel={t('accessibility.language_selection', { native: lang.nativeLabel, en: lang.label })}>
 
