@@ -5908,8 +5908,21 @@
     "otp_digit": "OTP digit {{digit}}",
     "trusted_contact": "{{name}}, {{relationship}}",
     "pin_digit": "PIN digit {{digit}}",
-    "rate_stars": "Rate {{count}} star(s)",
+    "rate_stars_one": "Rate {{count}} star",
+    "rate_stars_other": "Rate {{count}} stars",
     "enter_pan_number": "Enter your 10-character PAN number",
     "enter_upi_id": "Enter the UPI ID where CoBuddy will send your earnings"
+  },
+  "datetime": {
+    "just_now": "Just now",
+    "min_ago_one": "{{count}} min ago",
+    "min_ago_other": "{{count}} mins ago",
+    "hours_ago_one": "{{count}}h ago",
+    "hours_ago_other": "{{count}}h ago",
+    "yesterday": "Yesterday",
+    "days_ago_one": "{{count}} day ago",
+    "days_ago_other": "{{count}} days ago",
+    "expired": "Expired",
+    "remaining": "{{duration}} remaining"
   }
 }

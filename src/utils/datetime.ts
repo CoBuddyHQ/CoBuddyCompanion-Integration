@@ -42,13 +42,13 @@ export function formatRelative(date: Date | string): string {
   const now = new Date();
   const diffMs = now.getTime() - d.getTime();
   const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 1) return 'Just now';
-  if (diffMin < 60) return `${diffMin} min ago`;
+  if (diffMin < 1) return i18next.t('datetime.just_now');
+  if (diffMin < 60) return i18next.t('datetime.min_ago', { count: diffMin });
   const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}h ago`;
+  if (diffHr < 24) return i18next.t('datetime.hours_ago', { count: diffHr });
   const diffDay = Math.floor(diffHr / 24);
-  if (diffDay === 1) return 'Yesterday';
-  if (diffDay < 7) return `${diffDay} days ago`;
+  if (diffDay === 1) return i18next.t('datetime.yesterday');
+  if (diffDay < 7) return i18next.t('datetime.days_ago', { count: diffDay });
   return formatShortDate(d);
 }
 
@@ -64,7 +64,7 @@ export function formatCountdown(targetDate: Date | string): string {
   const target = typeof targetDate === 'string' ? new Date(targetDate) : targetDate;
   const now = new Date();
   const diffMs = target.getTime() - now.getTime();
-  if (diffMs <= 0) return 'Expired';
+  if (diffMs <= 0) return i18next.t('datetime.expired');
   const diffMin = Math.floor(diffMs / 60000);
-  return `${formatDuration(diffMin)} remaining`;
+  return i18next.t('datetime.remaining', { duration: formatDuration(diffMin) });
 }
