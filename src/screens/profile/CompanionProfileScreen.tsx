@@ -268,12 +268,12 @@ export function CompanionProfileScreen(): React.JSX.Element {
                 key={review.id}
                 style={styles.reviewCard}
                 activeOpacity={0.8}
-                onPress={() => (navigation as any).navigate('MainApp', { screen: 'ProfileTab', params: { screen: Routes.REVIEW_DETAIL, params: {
+                onPress={() => navigation.navigate(Routes.REVIEW_DETAIL, {
                   reviewText: review.comment, // Review shape: comment
                   reviewerName: review.customerName, // Review shape: customerName
                   reviewDate: review.date,
                   reviewRating: review.rating
-                } } })}>
+                })}>
                     <View style={styles.reviewTop}>
                       <View style={styles.reviewAvatar}>
                         <Text style={styles.reviewAvatarText}>

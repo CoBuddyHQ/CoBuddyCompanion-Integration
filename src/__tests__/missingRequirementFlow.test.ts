@@ -30,7 +30,7 @@ const COMPLETE_STATE: ReadinessSelectorInput = {
   experienceCategories: ['social'],
   spokenLanguages: ['English'],
   profilePhotoComplete: true,
-  backgroundDeclaration: {criminalRecord: false, drugAbuse: false, sexualMisconduct: false},
+  backgroundDeclaration: {accurate_info: true, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
   workPreference: {durations: ['1hr'], days: ['Mon'], timeRanges: ['morning']},
   city: 'Mumbai',
   broadAreas: ['Bandra'],
@@ -85,7 +85,7 @@ const MISSING_CASES: Array<{key: MandatoryRequirementKey; override: Partial<Read
   {key: 'experience',              override: {experienceCategories: []}},
   {key: 'languages',               override: {spokenLanguages: []}},
   {key: 'profile_photo',           override: {profilePhotoComplete: false}},
-  {key: 'background_declaration',  override: {backgroundDeclaration: {criminalRecord: true, drugAbuse: false, sexualMisconduct: false}}},
+  {key: 'background_declaration',  override: {backgroundDeclaration: {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true}}},
   {key: 'work_preference',         override: {workPreference: {durations: [], days: [], timeRanges: []}}},
   {key: 'city',                    override: {city: ''}},
   {key: 'comm_activity',           override: {commActivityPrefs: {commStyle: '', activityPace: '', groupPreference: ''}}},
@@ -128,24 +128,24 @@ describe('selfie_liveness requires both flags', () => {
   });
 });
 
-// ─── 4. background_declaration requires ALL values false ─────────────────────
+// ─── 4. background_declaration requires ALL values true ─────────────────────
 
 describe('background_declaration completeness', () => {
-  it('missing when any field is true', () => {
+  it('missing when any field is false', () => {
     const cases = [
-      {criminalRecord: true,  drugAbuse: false, sexualMisconduct: false},
-      {criminalRecord: false, drugAbuse: true,  sexualMisconduct: false},
-      {criminalRecord: false, drugAbuse: false, sexualMisconduct: true},
+      {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
+      {accurate_info: true, public_venue_only: false, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
+      {accurate_info: true, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: false},
     ];
     for (const backgroundDeclaration of cases) {
-      const result = getApplicationReadiness(withOverride({backgroundDeclaration}));
+      const result = getApplicationReadiness(withOverride({backgroundDeclaration} as any));
       expect(result.missing.map(m => m.key)).toContain('background_declaration');
     }
   });
 
-  it('not missing when all fields are false', () => {
+  it('not missing when all fields are true', () => {
     const result = getApplicationReadiness(withOverride({
-      backgroundDeclaration: {criminalRecord: false, drugAbuse: false, sexualMisconduct: false},
+      backgroundDeclaration: {accurate_info: true, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
     }));
     expect(result.missing.map(m => m.key)).not.toContain('background_declaration');
   });
@@ -187,7 +187,7 @@ describe('MandatoryItemResult.route matches expected route constant', () => {
       experienceCategories: [],
       spokenLanguages: [],
       profilePhotoComplete: false,
-      backgroundDeclaration: {criminalRecord: true, drugAbuse: false, sexualMisconduct: false},
+      backgroundDeclaration: {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
       workPreference: {durations: [], days: [], timeRanges: []},
       city: '',
       broadAreas: [],
@@ -303,7 +303,7 @@ describe('percentage calculation', () => {
       experienceCategories: [],
       spokenLanguages: [],
       profilePhotoComplete: false,
-      backgroundDeclaration: {criminalRecord: true, drugAbuse: false, sexualMisconduct: false},
+      backgroundDeclaration: {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true},
       workPreference: {durations: [], days: [], timeRanges: []},
       city: '',
       broadAreas: [],

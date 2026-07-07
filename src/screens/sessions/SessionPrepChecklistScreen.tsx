@@ -31,7 +31,15 @@ interface CheckItem {
   category: 'safety' | 'personal' | 'professional';
 }
 
-const CHECKLIST: CheckItem[] = [{ id: "id_proof", icon: "badge", title: "content.sessions.SessionPrepChecklistScreen.checklist.0.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.0.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.0.category" }, { id: "dress_code", icon: "checkroom", title: "content.sessions.SessionPrepChecklistScreen.checklist.1.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.1.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.1.category" }, { id: "phone_battery", icon: "battery-charging-full", title: "content.sessions.SessionPrepChecklistScreen.checklist.2.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.2.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.2.category" }, { id: "arrive_early", icon: "schedule", title: "content.sessions.SessionPrepChecklistScreen.checklist.3.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.3.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.3.category" }, { id: "read_notes", icon: "description", title: "content.sessions.SessionPrepChecklistScreen.checklist.4.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.4.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.4.category" }, { id: "venue_check", icon: "storefront", title: "content.sessions.SessionPrepChecklistScreen.checklist.5.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.5.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.5.category" }, { id: "digital_pass", icon: "qr-code", title: "content.sessions.SessionPrepChecklistScreen.checklist.6.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.6.detail", category: "content.sessions.SessionPrepChecklistScreen.checklist.6.category" }] as any[];
+const CHECKLIST: CheckItem[] = [
+  { id: "id_proof", icon: "badge", title: "content.sessions.SessionPrepChecklistScreen.checklist.0.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.0.detail", category: "safety" },
+  { id: "dress_code", icon: "checkroom", title: "content.sessions.SessionPrepChecklistScreen.checklist.1.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.1.detail", category: "personal" },
+  { id: "phone_battery", icon: "battery-charging-full", title: "content.sessions.SessionPrepChecklistScreen.checklist.2.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.2.detail", category: "safety" },
+  { id: "arrive_early", icon: "schedule", title: "content.sessions.SessionPrepChecklistScreen.checklist.3.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.3.detail", category: "professional" },
+  { id: "read_notes", icon: "description", title: "content.sessions.SessionPrepChecklistScreen.checklist.4.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.4.detail", category: "professional" },
+  { id: "venue_check", icon: "storefront", title: "content.sessions.SessionPrepChecklistScreen.checklist.5.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.5.detail", category: "professional" },
+  { id: "digital_pass", icon: "qr-code", title: "content.sessions.SessionPrepChecklistScreen.checklist.6.title", detail: "content.sessions.SessionPrepChecklistScreen.checklist.6.detail", category: "safety" }
+];
 
 
 
@@ -159,7 +167,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
                 <Text style={[styles.itemTitle, isChecked && styles.itemTitleDone]}>
                   {t(item.title)}
                 </Text>
-                <Text style={styles.itemDetail}>{item.detail}</Text>
+                <Text style={styles.itemDetail}>{t(item.detail)}</Text>
               </View>
 
               {/* Checkbox */}

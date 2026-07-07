@@ -47,7 +47,7 @@ export function SOSConfirmationScreen(): React.JSX.Element {
     { text: t("alerts.yes_i_m_safe"), style: 'default',
       onPress: () => {
         resolveSOS();
-        (navigation as any).navigate(Routes.HOME_DASHBOARD  );
+        (navigation as any).reset({ index: 0, routes: [{ name: 'MainApp' }] });
       } }]
 
     );
