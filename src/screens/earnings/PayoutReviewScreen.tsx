@@ -13,6 +13,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useEarningsStore } from '../../store/slices/earningsStore';
+import { useApplicationStore } from '../../store/slices/applicationStore';
 import { useTranslation } from "react-i18next";
 
 function fmtINR(n: number): string {
@@ -29,6 +30,9 @@ export function PayoutReviewScreen(): React.JSX.Element {
   const availableBalance = useEarningsStore((s) => s.availableBalance);
   const setAvailableBalance = useEarningsStore((s) => s.setAvailableBalance);
   const addTransaction = useEarningsStore((s) => s.addTransaction);
+
+  const bankName = useApplicationStore((s) => s.bankName);
+  const last4 = useApplicationStore((s) => s.bankAccountLast4);
 
   const handleConfirm = () => {
     if (loading) {return;}
@@ -55,7 +59,7 @@ export function PayoutReviewScreen(): React.JSX.Element {
     }, 2000);
   };
 
-  const details = [{ icon: "account-balance", label: t("content.earnings.PayoutReviewScreen.details.0.label"), value: t("content.earnings.PayoutReviewScreen.details.0.value") }, { icon: "credit-card", label: t("content.earnings.PayoutReviewScreen.details.1.label"), value: t("content.earnings.PayoutReviewScreen.details.1.value") }, { icon: "schedule", label: t("content.earnings.PayoutReviewScreen.details.2.label"), value: t("content.earnings.PayoutReviewScreen.details.2.value") }] as any[];
+  const details = [{ icon: "account-balance", label: t("content.earnings.PayoutReviewScreen.details.0.label"), value: bankName }, { icon: "credit-card", label: t("content.earnings.PayoutReviewScreen.details.1.label"), value: `**** **** **** ${last4}` }, { icon: "schedule", label: t("content.earnings.PayoutReviewScreen.details.2.label"), value: t("content.earnings.PayoutReviewScreen.details.2.value") }] as any[];
 
 
 
@@ -80,7 +84,7 @@ export function PayoutReviewScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('earnings.transfer_details')} </Text>
         <View style={s.detailsCard}>
           {details.map((row, i) =>
-          <View key={t(row.label)}>
+          <View key={row.icon}>
               <View style={s.detailRow}>
                 <View style={s.detailIcon}>
                   <Icon name={row.icon as any} size={18} color={colors.gold} />

@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useEarningsStore } from '../../store/slices/earningsStore';
+import { useApplicationStore } from '../../store/slices/applicationStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -88,6 +89,8 @@ export function BankDetailsScreen(): React.JSX.Element {
 
   const profile = useProfileStore((s) => s.profile);
   const lifetimeEarnings = useEarningsStore((s) => s.lifetimeEarnings);
+  const currentBankName = useApplicationStore((s) => s.bankName);
+  const currentLast4 = useApplicationStore((s) => s.bankAccountLast4);
   const accountHolder = profile?.displayName ?? 'Account Holder';
   const formattedLifetime = `₹${lifetimeEarnings.toLocaleString('en-IN')}`;
 
@@ -146,8 +149,8 @@ export function BankDetailsScreen(): React.JSX.Element {
                 <Icon name="account-balance" size={22} color={colors.safetyGreen} />
               </View>
               <View style={styles.bankMid}>
-                <Text style={styles.bankName}> {t('settings.hdfc_bank')} </Text>
-                <Text style={styles.bankAcct}>{t("content.settings.BankDetailsScreen.1234")}</Text>
+                <Text style={styles.bankName}>{currentBankName || 'Bank Account'}</Text>
+                <Text style={styles.bankAcct}>{currentLast4 ? `Savings **** ${currentLast4}` : 'No account linked'}</Text>
                 <Text style={styles.bankHolder}>{accountHolder}</Text>
               </View>
               <View style={styles.verifiedBadge}>

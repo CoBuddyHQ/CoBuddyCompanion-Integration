@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useEarningsStore } from '../../store/slices/earningsStore';
+import { useApplicationStore } from '../../store/slices/applicationStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -39,6 +40,8 @@ export function PayoutRequestScreen(): React.JSX.Element {
 
   const availableBalance = useEarningsStore((s) => s.availableBalance);
   const pendingClearance = useEarningsStore((s) => s.pendingClearance);
+  const bankName = useApplicationStore((s) => s.bankName);
+  const last4 = useApplicationStore((s) => s.bankAccountLast4);
 
   const [amountText, setAmountText] = useState('');
   const [focused, setFocused] = useState(false);
@@ -177,8 +180,8 @@ export function PayoutRequestScreen(): React.JSX.Element {
                 <Icon name="account-balance" size={20} color={colors.gold} />
               </View>
               <View style={styles.bankMid}>
-                <Text style={styles.bankName}> {t('earnings.hdfc_bank')} </Text>
-                <Text style={styles.bankAcct}> {t('earnings.savings_1234')} </Text>
+                <Text style={styles.bankName}>{bankName || 'Bank Account'}</Text>
+                <Text style={styles.bankAcct}>{last4 ? `Savings **** ${last4}` : 'No account linked'}</Text>
               </View>
               <View style={styles.bankRightCol}>
                 <View style={styles.verifiedBadge}>

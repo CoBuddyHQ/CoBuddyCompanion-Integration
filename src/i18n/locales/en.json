@@ -257,7 +257,6 @@
     "from_your_cobuddy_wallet": "From your CoBuddy Wallet",
     "gstin_29aabcu9603r1zx": "GSTIN: 29AABCU9603R1ZX",
     "has_been_sent_to_your_bank_account": "has been sent to your bank account.",
-    "hdfc_bank": "HDFC Bank",
     "in_your_bank_account": "in your bank account.",
     "invoice_inv_2026_001": "INVOICE #INV-2026-001",
     "is_being_processed": "is being processed.",
@@ -294,7 +293,6 @@
     "reference_id": "Reference ID",
     "return_to_dashboard": "Return to Dashboard",
     "review_payout": "Review Payout",
-    "savings_1234": "Savings •••• •••• •••• 1234",
     "session": "session",
     "summary": "Summary",
     "tax_invoice": "Tax Invoice",
@@ -994,7 +992,6 @@
     "faqs_and_guides": "FAQs and guides",
     "for_your_security_adding_a_new_bank_account_requires": "For your security, adding a new bank account requires",
     "full_name_as_on_bank_records": "Full name as on bank records",
-    "hdfc_bank": "HDFC Bank",
     "help_center": "Help Center",
     "high_contrast_mode": "High Contrast Mode",
     "ifsc_code": "IFSC Code",
@@ -3710,13 +3707,11 @@
         "details": [
           {
             "icon": "account-balance",
-            "label": "Bank",
-            "value": "HDFC Bank"
+            "label": "Bank"
           },
           {
             "icon": "credit-card",
-            "label": "Account",
-            "value": "**** **** **** 1234"
+            "label": "Account"
           },
           {
             "icon": "schedule",
@@ -4739,7 +4734,6 @@
         ]
       },
       "BankDetailsScreen": {
-        "1234": "•••• •••• •••• 1234",
         "account_type": "Account Type",
         "ifsc_code": "IFSC Code",
         "added_on": "Added On",
@@ -5788,7 +5782,8 @@
     "view_session_details": "View session details",
     "verify_and_save_bank_account": "Verify and save bank account",
     "save_notification_preferences": "Save notification preferences",
-    "save_privacy_settings": "Save privacy settings"
+    "save_privacy_settings": "Save privacy settings",
+    "fix_missing": "Fix missing: {{item}}"
   },
   "alerts": {
     "linkedInLinked": {
