@@ -20,6 +20,8 @@ import BottomTabBar from '../components/layout/BottomTabBar';
 const Tab = createBottomTabNavigator<CompanionTabParamList>();
 
 const CompanionTabNavigator: React.FC = () =>
+// Nested component extraction: BottomTabBar is now passed directly as a reference rather than an inline arrow function that recreates it on every render.
+// Props (state/descriptors/navigation) are automatically passed by Tab.Navigator.
 <Tab.Navigator
   tabBar={(props) => <BottomTabBar {...props} />}
   screenOptions={{

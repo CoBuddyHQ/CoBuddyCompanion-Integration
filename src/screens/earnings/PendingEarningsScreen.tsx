@@ -15,6 +15,10 @@ import { Routes } from '../../navigation/routes';
 import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
 import { useTranslation } from "react-i18next";
 
+// Nested component extraction: ItemSeparator was defined inside PendingEarningsScreen render.
+// It uses no parent state/props (only global spacing theme). Extracted to module level.
+const ItemSeparator = () => <View style={{ height: spacing.sm }} />;
+
 export function PendingEarningsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
@@ -61,7 +65,7 @@ export function PendingEarningsScreen(): React.JSX.Element {
         keyExtractor={(i) => i.id}
         renderItem={renderItem}
         contentContainerStyle={s.list}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
+        ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
         <View style={s.emptyWrap}>

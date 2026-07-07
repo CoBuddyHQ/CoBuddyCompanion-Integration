@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { useTranslation } from "react-i18next"; /**
+/**
  * applicationReadinessSelector.ts
  *
  * SINGLE SOURCE OF TRUTH for application readiness.
@@ -149,7 +149,7 @@ export function getApplicationReadiness(s: ReadinessSelectorInput): ApplicationR
   // bgDone = true when all declarations have been confirmed (all fields are true).
   // The BackgroundDeclarationScreen requires the companion to check every item
   // before the CTA is enabled and setCurrentStage('background_declaration') is called.
-  const bgDone = Object.values(s.backgroundDeclaration).every(Boolean);
+  const bgDone = Object.values(s.backgroundDeclaration).every((v) => v === false);
   const wp = s.workPreference;
   const cap = s.commActivityPrefs;
   const safetyItems: MandatoryItemResult[] = [

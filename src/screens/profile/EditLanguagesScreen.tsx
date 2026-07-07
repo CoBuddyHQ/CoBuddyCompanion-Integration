@@ -19,6 +19,10 @@ const ALL_LANGUAGES = ["English", "Hindi", "Marathi", "Gujarati", "Tamil", "Telu
 
 
 
+// Nested component extraction: ItemSeparator was defined inside EditLanguagesScreen render.
+// It uses no parent state/props (only global `s.sep` style). Extracted to module level.
+const ItemSeparator = () => <View style={s.sep} />;
+
 export function EditLanguagesScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
@@ -98,7 +102,7 @@ export function EditLanguagesScreen(): React.JSX.Element {
       }
 
       <FlatList data={filtered} keyExtractor={(i) => i} renderItem={renderItem}
-      contentContainerStyle={s.list} ItemSeparatorComponent={() => <View style={s.sep} />}
+      contentContainerStyle={s.list} ItemSeparatorComponent={ItemSeparator}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
       <View style={s.empty}>

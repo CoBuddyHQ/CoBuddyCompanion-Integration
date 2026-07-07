@@ -63,6 +63,10 @@ const NotifCard: React.FC<{item: AppNotification;onPress: () => void;}> = ({ ite
 
 };
 
+// Nested component extraction: ItemSeparator was defined inside NotificationCenterScreen render.
+// It uses no parent state/props (only global spacing theme). Extracted to module level.
+const ItemSeparator = () => <View style={{ height: spacing.sm }} />;
+
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export function NotificationCenterScreen(): React.JSX.Element {
@@ -107,7 +111,7 @@ export function NotificationCenterScreen(): React.JSX.Element {
             <Icon name="notifications-none" size={40} color={colors.textMuted} />
             <Text style={s.emptyText}> {t('dashboard.no_notifications_yet')} </Text>
           </View>}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
+        ItemSeparatorComponent={ItemSeparator}
         ListFooterComponent={<View style={{ height: 40 }} />} />
       
     </SafeAreaView>);

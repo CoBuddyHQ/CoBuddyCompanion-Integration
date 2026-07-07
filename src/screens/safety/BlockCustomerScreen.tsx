@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+/**
 * BlockCustomerScreen (CPN-132)
 * Block a customer from future bookings.
 */

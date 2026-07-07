@@ -15,6 +15,10 @@ import { radius } from '../../theme/radius';
 import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
 import { useTranslation } from "react-i18next";
 
+// Nested component extraction: ItemSeparator was defined inside CompletedPayoutsScreen render.
+// It uses no parent state/props (only global spacing theme). Extracted to module level.
+const ItemSeparator = () => <View style={{ height: spacing.sm }} />;
+
 export function CompletedPayoutsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
@@ -55,7 +59,7 @@ export function CompletedPayoutsScreen(): React.JSX.Element {
         keyExtractor={(i) => i.id}
         renderItem={renderItem}
         contentContainerStyle={s.list}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
+        ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
         <View style={s.emptyWrap}>

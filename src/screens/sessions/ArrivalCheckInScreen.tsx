@@ -34,7 +34,7 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
 
   const [pin, setPin] = useState<string[]>(Array(PIN_LENGTH).fill(''));
   const [pinError, setPinError] = useState('');
-  const refs = Array.from({ length: PIN_LENGTH }, () => useRef<TextInput>(null));
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const pinValue = pin.join('');
   const canStart = pinValue.length === PIN_LENGTH;
@@ -46,13 +46,13 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
     setPin(next);
     setPinError('');
     if (digit && index < PIN_LENGTH - 1) {
-      refs[index + 1].current?.focus();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleKeyPress = (index: number, e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (e.nativeEvent.key === 'Backspace' && !pin[index] && index > 0) {
-      refs[index - 1].current?.focus();
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -97,7 +97,7 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
             {Array.from({ length: PIN_LENGTH }).map((_, i) =>
             <TextInput
               key={i}
-              ref={refs[i]}
+              ref={(el) => { inputRefs.current[i] = el; }}
               style={[styles.pinBox, pin[i] ? styles.pinBoxFilled : null,
               pinError ? styles.pinBoxError : null]}
               value={pin[i]}
