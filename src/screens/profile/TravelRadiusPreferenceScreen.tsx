@@ -36,12 +36,12 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.hBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.hTitle}> {t('profile.travel_radius')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.hBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.hBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -80,7 +80,7 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
         {/* Quick-select pills */}
         <View style={s.pills}>
           {QUICK.map((o) =>
-          <TouchableOpacity key={o.v} style={[s.pill, km === o.v && s.pillOn]}
+          <TouchableOpacity accessibilityRole="button" key={o.v} style={[s.pill, km === o.v && s.pillOn]}
           onPress={() => setKm(o.v)} activeOpacity={0.75}>
               <Text style={[s.pillTxt, km === o.v && s.pillTxtOn]}>{t(o.label)}</Text>
             </TouchableOpacity>

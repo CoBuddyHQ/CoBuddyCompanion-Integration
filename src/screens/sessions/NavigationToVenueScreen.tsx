@@ -70,7 +70,7 @@ export function NavigationToVenueScreen(): React.JSX.Element {
       {/* Mode pills */}
       <View style={s.pills}>
         {MODES.map((m) =>
-        <TouchableOpacity key={m.key} style={[s.pill, m.key === mode && s.pillActive]}
+        <TouchableOpacity accessibilityRole="button" key={m.key} style={[s.pill, m.key === mode && s.pillActive]}
         onPress={() => setMode(m.key)} activeOpacity={0.75}>
             <Text style={{ fontSize: 16 }}>{m.emoji}</Text>
             <Text style={[s.pillLbl, m.key === mode && s.pillLblActive]}>{t(m.label)}</Text>
@@ -88,7 +88,7 @@ export function NavigationToVenueScreen(): React.JSX.Element {
 
       {/* Sticky bar */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId })} activeOpacity={0.85}>
           <Icon name="check-circle" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('sessions.i_ve_arrived')} </Text>

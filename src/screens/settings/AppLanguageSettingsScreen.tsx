@@ -39,12 +39,12 @@ export function AppLanguageSettingsScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.hBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.hTitle}> {t('settings.app_language')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.hBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.hBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -58,7 +58,7 @@ export function AppLanguageSettingsScreen(): React.JSX.Element {
             return (
               <View key={lang.id}>
                 {i > 0 && <View style={s.sep} />}
-                <TouchableOpacity style={s.row} onPress={() => setLanguage(lang.id)} activeOpacity={0.75}>
+                <TouchableOpacity accessibilityRole="button" style={s.row} onPress={() => setLanguage(lang.id)} activeOpacity={0.75}>
                   <View style={s.rowText}>
                     <Text style={[s.rowLabel, active && s.rowLabelActive]}>{t(lang.label)}</Text>
                     <Text style={s.rowSub}>{t(lang.sub)}</Text>

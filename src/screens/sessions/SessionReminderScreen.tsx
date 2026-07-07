@@ -99,7 +99,7 @@ export function SessionReminderScreen(): React.JSX.Element {
           { icon: 'navigation', label: t("content.sessions.SessionReminderScreen.get_directions"), route: Routes.NAVIGATION_TO_VENUE, color: '#8EABFF' },
           { icon: 'checklist', label: t("content.sessions.SessionReminderScreen.view_prep_checklist"), route: Routes.SESSION_PREP_CHECKLIST, color: colors.safetyGreen }].
           map((action, i, arr) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t(action.label)}
             style={[styles.actionRow, i === arr.length - 1 && styles.actionRowLast]}
             onPress={() => navigation.navigate(action.route, { sessionId: sessionData.sessionId })}
@@ -114,7 +114,7 @@ export function SessionReminderScreen(): React.JSX.Element {
         </View>
 
         {/* Dismiss */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.dismissBtn}
           onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
           activeOpacity={0.7}>

@@ -47,12 +47,12 @@ export function AccessibilitySettingsScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.hBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.hTitle}> {t('settings.accessibility')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.hBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.hBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -63,7 +63,7 @@ export function AccessibilitySettingsScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('settings.text_size')} </Text>
         <View style={s.pillsRow}>
           {(['Small', 'Default', 'Large'] as TextSize[]).map((size) =>
-          <TouchableOpacity key={size} style={[s.pill, textSize === size && s.pillActive]}
+          <TouchableOpacity accessibilityRole="button" key={size} style={[s.pill, textSize === size && s.pillActive]}
           onPress={() => setTextSize(size)} activeOpacity={0.75}>
               <Text style={[s.pillText, textSize === size && s.pillTextActive]}>{size}</Text>
             </TouchableOpacity>

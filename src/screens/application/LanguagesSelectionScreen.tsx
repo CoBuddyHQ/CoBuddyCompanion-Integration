@@ -207,7 +207,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
               if (lang === 'Punjabi') resolvedScript = 'ਪੰ';
               
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`lang-chip-${index}-${lang}`}
                   style={[styles.langChip, isSelected && styles.langChipSelected]}
                   onPress={() => toggleLang(lang)}
@@ -244,7 +244,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
                 const isSelected = primaryLang === lang;
                 
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={`primary-lang-${index}-${lang}`}
                     style={[styles.radioRow, isSelected && styles.radioRowSelected]}
                     onPress={() => setPrimary(lang)}

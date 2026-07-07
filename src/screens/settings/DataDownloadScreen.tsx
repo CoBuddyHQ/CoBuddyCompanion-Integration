@@ -60,7 +60,7 @@ export function DataDownloadScreen(): React.JSX.Element {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={s.btn} onPress={handleRequest} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={s.btn} onPress={handleRequest} activeOpacity={0.85}>
           <Icon name="cloud-download" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('settings.request_data_archive')} </Text>
         </TouchableOpacity>

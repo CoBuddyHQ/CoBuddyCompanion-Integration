@@ -37,12 +37,12 @@ export function EditBioScreen(): React.JSX.Element {
 
       {/* Custom header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.headerBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.headerTitle}> {t('profile.edit_bio')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.headerBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.headerBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>

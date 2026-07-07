@@ -85,7 +85,7 @@ export function BookingDeclinedSuccessScreen({ route }: Props): React.JSX.Elemen
 
         {/* ── Actions ── */}
         <View style={styles.actions}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnPrimary}
             onPress={() => navigation.navigate(Routes.AVAILABILITY_CALENDAR)}
             activeOpacity={0.85}
@@ -94,7 +94,7 @@ export function BookingDeclinedSuccessScreen({ route }: Props): React.JSX.Elemen
             <Text style={styles.btnPrimaryText}>{t("application.update_availability")}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
             onPress={() => navigation.navigate(Routes.BOOKING_REQUESTS_INBOX)}
             activeOpacity={0.75}

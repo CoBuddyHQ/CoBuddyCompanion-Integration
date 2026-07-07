@@ -110,14 +110,14 @@ export function AvailabilityConflictScreen(): React.JSX.Element {
         <Text style={s.resolutionLabel}> {t('availability.how_would_you_like_to_resolve_this')} </Text>
 
         {/* Primary action — discard new slot and go back */}
-        <TouchableOpacity style={s.discardBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.discardBtn} activeOpacity={0.85}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}>
           <Icon name="close" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.discardBtnText}> {t('availability.discard_new_slot')} </Text>
         </TouchableOpacity>
 
         {/* Secondary action — cancel existing session via sessionStore */}
-        <TouchableOpacity style={s.cancelBookingBtn} activeOpacity={0.8}
+        <TouchableOpacity accessibilityRole="button" style={s.cancelBookingBtn} activeOpacity={0.8}
         onPress={handleCancelExisting}>
           <Icon name="cancel" size={18} color={colors.softWarning} style={{ marginRight: 8 }} />
           <Text style={s.cancelBookingText}> {t('availability.cancel_existing_booking')} </Text>

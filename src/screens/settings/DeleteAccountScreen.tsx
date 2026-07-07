@@ -88,7 +88,7 @@ export function DeleteAccountScreen(): React.JSX.Element {
           </View>
 
           {/* Delete button */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.deleteBtn, !canDelete && s.deleteBtnDisabled]}
             onPress={handleDelete} disabled={!canDelete} activeOpacity={0.85}>
             <Icon name="delete-forever" size={20} color={canDelete ? '#fff' : colors.textMuted}

@@ -102,7 +102,7 @@ const CreatePINScreen: React.FC<Props> = ({
         {/* PIN inputs */}
         <Text style={styles.pinLabel}>{t("content.auth_onboarding.CreatePINContent.PIN_LABEL").toUpperCase()}</Text>
         
-        <TouchableOpacity style={styles.pinRow} activeOpacity={1} onPress={() => {
+        <TouchableOpacity accessibilityRole="button" style={styles.pinRow} activeOpacity={1} onPress={() => {
         hiddenInputRef.current?.blur();
         setTimeout(() => hiddenInputRef.current?.focus(), 10);
       }}>
@@ -144,7 +144,7 @@ const CreatePINScreen: React.FC<Props> = ({
         <View style={styles.ctaArea}>
           <ActionButton label={t("content.auth_onboarding.CreatePINContent.CTA_PRIMARY")} onPress={handleSetPin} disabled={pin.length < PIN_LENGTH} style={styles.primaryBtn} accessibilityLabel={t("accessibility.set_pin")} />
           
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <TouchableOpacity accessibilityRole="button" style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.backBtnText}>{t("content.auth_onboarding.CreatePINContent.BACK_TO_OTP")}</Text>
           </TouchableOpacity>
           <Text style={styles.disclaimer}>

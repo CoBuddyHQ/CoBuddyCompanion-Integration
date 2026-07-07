@@ -137,7 +137,7 @@ export function ReviewDetailScreen(): React.JSX.Element {
             </View>
           }
           {!posted &&
-          <TouchableOpacity style={[s.postBtn, !reply.trim() && s.postBtnDisabled]}
+          <TouchableOpacity accessibilityRole="button" style={[s.postBtn, !reply.trim() && s.postBtnDisabled]}
           onPress={handlePost} disabled={!reply.trim()} activeOpacity={0.85}>
               <Icon name="send" size={16} color={reply.trim() ? colors.rootBg : colors.textMuted}
             style={{ marginRight: 8 }} />
@@ -146,7 +146,7 @@ export function ReviewDetailScreen(): React.JSX.Element {
           }
 
           {/* Report link */}
-          <TouchableOpacity style={s.reportLink}
+          <TouchableOpacity accessibilityRole="button" style={s.reportLink}
           onPress={handleReport}
           disabled={existingReview?.isReported}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>

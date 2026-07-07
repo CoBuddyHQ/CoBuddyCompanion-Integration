@@ -72,7 +72,7 @@ export function ExpiredBookingRequestScreen(): React.JSX.Element {const { t } = 
           <Icon name="timer-off" size={48} color={colors.textMuted} />
           <Text style={s.notFoundTitle}>{t("application.request_not_found")}</Text>
           <Text style={s.notFoundSub}>{t("application.this_request_may_have_been_cleared_from")}</Text>
-          <TouchableOpacity style={s.backLinkBtn} onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}>
+          <TouchableOpacity accessibilityRole="button" style={s.backLinkBtn} onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}>
             <Text style={s.backLinkText}>{t("application.back_to_inbox")}</Text>
           </TouchableOpacity>
         </View>
@@ -135,7 +135,7 @@ export function ExpiredBookingRequestScreen(): React.JSX.Element {const { t } = 
         </View>
 
         {/* "Message Customer" — disabled for expired requests */}
-        <TouchableOpacity style={[s.msgBtn, s.msgBtnDisabled]} activeOpacity={0.7}
+        <TouchableOpacity accessibilityRole="button" style={[s.msgBtn, s.msgBtnDisabled]} activeOpacity={0.7}
         onPress={() => Alert.alert(t("alerts.chat_unavailable"), t("alerts.in_app_chat_is_not_available_for_expired"),
 
 
@@ -145,7 +145,7 @@ export function ExpiredBookingRequestScreen(): React.JSX.Element {const { t } = 
           <Text style={s.msgBtnTextDisabled}>{t("application.message_unavailable")}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.doneBtn} activeOpacity={0.8}
+        <TouchableOpacity accessibilityRole="button" style={s.doneBtn} activeOpacity={0.8}
         onPress={() => navigation.navigate(Routes.BOOKING_REQUESTS_INBOX)}>
           <Text style={s.doneBtnText}>{t("application.back_to_inbox")}</Text>
         </TouchableOpacity>

@@ -66,7 +66,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
         <Text style={s.sectionTitle}> {t('sessions.select_extension_duration')} </Text>
         <View style={s.optionsRow}>
           {OPTIONS.map((opt2, idx) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={opt2.minutes}
             style={[s.optPill, idx === selected && s.optPillActive]}
             onPress={() => setSelected(idx)}
@@ -112,7 +112,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
 
       {/* Sticky CTA */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: opt.minutes })}
         activeOpacity={0.85}
         accessibilityLabel={t("accessibility.request_extension")}>

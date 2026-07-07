@@ -95,7 +95,7 @@ export function TaxInvoiceDetailsScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => Alert.alert(t("alerts.download"), t("alerts.downloading_invoice"))} activeOpacity={0.85}>
           <Icon name="file-download" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('earnings.download_pdf')} </Text>

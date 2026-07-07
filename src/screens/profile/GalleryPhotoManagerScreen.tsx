@@ -64,7 +64,7 @@ const PhotoTile: React.FC<PhotoTileProps> = ({ index, photoRef, onDelete }) => {
       }
 
       {/* Delete button */}
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         style={styles.deleteBtn}
         onPress={onDelete}
         hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
@@ -80,7 +80,7 @@ const PhotoTile: React.FC<PhotoTileProps> = ({ index, photoRef, onDelete }) => {
 const UploadTile: React.FC<{onPress: () => void;}> = ({ onPress }) => {
   const { t } = useTranslation();
   return (
-    <TouchableOpacity style={styles.uploadTile} onPress={onPress} activeOpacity={0.75}
+    <TouchableOpacity accessibilityRole="button" style={styles.uploadTile} onPress={onPress} activeOpacity={0.75}
     accessibilityLabel={t("accessibility.upload_new_photo")}>
     <Icon name="add-photo-alternate" size={28} color={colors.gold} />
     <Text style={styles.uploadTileText}> {t('profile.add_photo')} </Text>
@@ -253,7 +253,7 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
         {hasChanges &&
         <Text style={styles.unsavedHint}> {t('profile.you_have_unsaved_changes')} </Text>
         }
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.saveBtn, !hasChanges && styles.saveBtnDisabled]}
           onPress={handleSave}
           disabled={!hasChanges}

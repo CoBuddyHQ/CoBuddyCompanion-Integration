@@ -53,7 +53,7 @@ function tomorrowStr(): string {
 const DateField: React.FC<{label: string;value: string;onPress: () => void;}> = ({
   label, value, onPress
 }) =>
-<TouchableOpacity style={dateStyles.wrap} onPress={onPress} activeOpacity={0.75}>
+<TouchableOpacity accessibilityRole="button" style={dateStyles.wrap} onPress={onPress} activeOpacity={0.75}>
     <View style={dateStyles.iconWrap}>
       <Icon name="calendar-today" size={16} color={colors.gold} />
     </View>
@@ -86,7 +86,7 @@ const dateStyles = StyleSheet.create({
 const TimeButton: React.FC<{label: string;time: string;onPress: () => void;}> = ({
   label, time, onPress
 }) =>
-<TouchableOpacity style={timeStyles.btn} onPress={onPress} activeOpacity={0.75}>
+<TouchableOpacity accessibilityRole="button" style={timeStyles.btn} onPress={onPress} activeOpacity={0.75}>
     <Text style={timeStyles.label}>{label}</Text>
     <Text style={timeStyles.value}>{time}</Text>
     <Icon name="expand-more" size={16} color={colors.textMuted} />
@@ -212,7 +212,7 @@ export function BlockTimeDayOffScreen(): React.JSX.Element {
             {REASON_OPTIONS.map((opt) => {
               const active = reason === opt.label;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={t(opt.label)}
                   style={[styles.reasonPill, active && styles.reasonPillActive]}
                   onPress={() => setReason(opt.label)}
@@ -306,7 +306,7 @@ export function BlockTimeDayOffScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={styles.stickyBar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.confirmBtn, (!isValid || loading) && styles.confirmBtnDisabled]}
           onPress={handleConfirm}
           disabled={!isValid || loading}

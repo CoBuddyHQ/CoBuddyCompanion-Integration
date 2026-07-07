@@ -53,7 +53,7 @@ export function PerformanceInsightsScreen(): React.JSX.Element {
         {/* Toggle */}
         <View style={s.toggleRow}>
           {(['week', 'month'] as Period[]).map((p) =>
-          <TouchableOpacity key={p} style={[s.togglePill, period === p && s.togglePillActive]}
+          <TouchableOpacity accessibilityRole="button" key={p} style={[s.togglePill, period === p && s.togglePillActive]}
           onPress={() => setPeriod(p)} activeOpacity={0.75}>
               <Text style={[s.toggleText, period === p && s.toggleTextActive]}>
                 {p === 'week' ? t("content.dashboard.PerformanceInsightsScreen.this_week") : t("content.dashboard.PerformanceInsightsScreen.this_month")}

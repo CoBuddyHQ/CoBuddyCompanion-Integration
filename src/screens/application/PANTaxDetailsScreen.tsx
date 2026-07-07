@@ -203,7 +203,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
           {/* ── GST card ── */}
           <GlassCard style={styles.card}>
             <Text style={styles.cardTitle}>{t("application.gst_optional")}</Text>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.gstToggleRow}
               onPress={() => setHasGST(!hasGST)}
               accessibilityLabel={t("content.application_kyc.PANTaxDetailsContent.GST_TOGGLE_LABEL")}
@@ -233,7 +233,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
           </GlassCard>
 
           {/* ── Confirmation row ── */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.confirmRow}
             onPress={() => setConfirmed(!confirmed)}
             accessibilityLabel={t("content.application_kyc.PANTaxDetailsContent.CONFIRMATION_LABEL")}

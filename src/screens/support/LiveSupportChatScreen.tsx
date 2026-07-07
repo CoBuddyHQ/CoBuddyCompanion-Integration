@@ -66,7 +66,7 @@ export function LiveSupportChatScreen(): React.JSX.Element {
         ListHeaderComponent={
         <View style={s.chipsRow}>
               {QUICK_REPLIES.map((qr) =>
-          <TouchableOpacity key={qr} style={s.chip} onPress={() => sendMessage(qr)} activeOpacity={0.75}>
+          <TouchableOpacity accessibilityRole="button" key={qr} style={s.chip} onPress={() => sendMessage(qr)} activeOpacity={0.75}>
                   <Text style={s.chipText}>{qr}</Text>
                 </TouchableOpacity>
           )}
@@ -81,7 +81,7 @@ export function LiveSupportChatScreen(): React.JSX.Element {
           <TextInput style={s.textInput} value={input} onChangeText={setInput}
           placeholder={t('support.type_a_message')} placeholderTextColor={colors.textMuted}
           selectionColor={colors.gold} multiline />
-          <TouchableOpacity style={[s.sendBtn, !input.trim() && s.sendBtnDisabled]}
+          <TouchableOpacity accessibilityRole="button" style={[s.sendBtn, !input.trim() && s.sendBtnDisabled]}
           onPress={() => sendMessage(input)} disabled={!input.trim()} activeOpacity={0.8}>
             <Icon name="send" size={20} color={input.trim() ? colors.rootBg : colors.textMuted} />
           </TouchableOpacity>

@@ -73,7 +73,7 @@ export function TransactionDetailScreen(): React.JSX.Element {
 
         {/* Penalty link — only shown when this transaction has an associated penalty */}
         {isPenalty &&
-        <TouchableOpacity style={s.penaltyLink}
+        <TouchableOpacity accessibilityRole="button" style={s.penaltyLink}
         onPress={() => navigation.navigate(Routes.REFUND_PENALTY_EXPLANATION)}
         activeOpacity={0.75}>
             <Icon name="gavel" size={16} color={'#E74C3C'} />
@@ -86,7 +86,7 @@ export function TransactionDetailScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnGold}
+        <TouchableOpacity accessibilityRole="button" style={s.btnGold}
         onPress={() => navigation.navigate(Routes.TAX_INVOICE_DETAILS, { invoiceId: transactionId })}
         activeOpacity={0.85}>
           <Icon name="download" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />

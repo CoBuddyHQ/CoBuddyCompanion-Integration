@@ -51,14 +51,14 @@ export function BookingRequestEmptyStateScreen(): React.JSX.Element {const { t }
         </View>
 
         {/* Primary CTA */}
-        <TouchableOpacity style={s.liveBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.liveBtn} activeOpacity={0.85}
         onPress={() => navigation.navigate(Routes.LIVE_AVAILABILITY_TOGGLE)}>
           <Icon name="wifi-tethering" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.liveBtnText}>{t("application.go_live_for_instant_bookings")}</Text>
         </TouchableOpacity>
 
         {/* Secondary */}
-        <TouchableOpacity style={s.calBtn} activeOpacity={0.8}
+        <TouchableOpacity accessibilityRole="button" style={s.calBtn} activeOpacity={0.8}
         onPress={() => navigation.navigate(Routes.AVAILABILITY_CALENDAR)}>
           <Icon name="event" size={16} color={colors.gold} style={{ marginRight: 8 }} />
           <Text style={s.calBtnText}>{t("application.manage_availability")}</Text>

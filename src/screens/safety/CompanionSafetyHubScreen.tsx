@@ -97,7 +97,7 @@ const ContactRow: React.FC<{contact: TrustedContact;onEdit: () => void;last?: bo
       </View>
       <Text style={contactStyles.relation}>{contact.relationship}{t("content.safety.CompanionSafetyHubScreen.text")}{contact.maskedPhone}</Text>
     </View>
-    <TouchableOpacity onPress={onEdit} style={contactStyles.editBtn}>
+    <TouchableOpacity accessibilityRole="button" onPress={onEdit} style={contactStyles.editBtn}>
       <Icon name="edit" size={16} color={colors.textMuted} />
     </TouchableOpacity>
   </View>);
@@ -241,7 +241,7 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
           { icon: 'quiz', label: t("content.safety.CompanionSafetyHubScreen.safety_quiz"), route: Routes.SAFETY_QUIZ, color: colors.gold },
           { icon: 'person-add', label: t("content.safety.CompanionSafetyHubScreen.emergency_contact_setup"), route: Routes.EMERGENCY_CONTACT_SETUP, color: colors.safetyGreen }].
           map((item, i, arr) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t(item.label)}
             style={[styles.toolRow, i === arr.length - 1 && styles.toolRowLast]}
             onPress={() => navigation.navigate(item.route)}
@@ -261,7 +261,7 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
         <View style={styles.card}>
           <View style={styles.cardTitleRow}>
             <Text style={styles.sectionLabel}> {t('safety.emergency_contacts')} </Text>
-            <TouchableOpacity onPress={() => navigation.navigate(Routes.TRUSTED_CONTACTS)}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate(Routes.TRUSTED_CONTACTS)}>
               <Text style={styles.cardTitleLink}> {t('safety.view_all')} </Text>
             </TouchableOpacity>
           </View>
@@ -286,7 +286,7 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
           }
 
           {/* Add contact button */}
-          <TouchableOpacity style={styles.addContactBtn} onPress={handleAddContact} activeOpacity={0.75}>
+          <TouchableOpacity accessibilityRole="button" style={styles.addContactBtn} onPress={handleAddContact} activeOpacity={0.75}>
             <Icon name="person-add" size={17} color={colors.gold} />
             <Text style={styles.addContactText}> {t('safety.add_emergency_contact')} </Text>
           </TouchableOpacity>
@@ -295,7 +295,7 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
         {/* ══════════════════════════════════════════
                 INCIDENT REPORT LINK
              ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.incidentStrip}
           onPress={() => navigation.navigate(Routes.INCIDENT_REPORT)}
           activeOpacity={0.75}>
@@ -308,7 +308,7 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
                 SOS DEMO BUTTON
              ══════════════════════════════════════════ */}
         <View style={styles.sosSection}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.sosBtn}
             onPress={handleSOS}
             activeOpacity={0.8}

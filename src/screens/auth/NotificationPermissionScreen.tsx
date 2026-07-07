@@ -115,7 +115,7 @@ const NotificationPermissionScreen: React.FC<Props> = ({ navigation }) => {
             onPress={handleAllow}
             accessibilityLabel={t("accessibility.allow_notifications")} />
           
-          <TouchableOpacity style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.NotificationPermContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>

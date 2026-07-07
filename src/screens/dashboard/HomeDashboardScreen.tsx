@@ -123,7 +123,7 @@ const StatCard: React.FC<{
   onPress: () => void;
   mr?: boolean;
 }> = ({ icon, iconText, value, label, onPress, mr }) =>
-<TouchableOpacity
+<TouchableOpacity accessibilityRole="button"
   style={[styles.statCard, mr && { marginRight: 10 }]}
   onPress={onPress}
   activeOpacity={0.75}>
@@ -164,7 +164,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
   const isPublished = profile?.verificationStatus === 'approved';
   const isSafetyActive = sosStatus === 'idle' && venueApproved;
   const pendingCount = pendingRequests?.length ?? 0;
-  const availableSlots = 3; // TODO: wire to availabilityStore once backend ready
+  const availableSlots = useAvailabilityStore((s) => s.slots.length);
   const todaySessionCount = upcomingSessions?.length ?? 0;
   const todayEarnings = availableBalance;
   // Week earnings: sum credits from recentTransactions
@@ -190,7 +190,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
         </View>
         <View style={styles.topBarRight}>
           {/* Bell */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.bellWrap}
             onPress={() => navigation.navigate(Routes.NOTIFICATION_CENTER)}
             accessibilityLabel={i18next.t("accessibility.notifications")}>
@@ -198,7 +198,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
             {unreadCount > 0 && <View style={styles.bellBadge} />}
           </TouchableOpacity>
           {/* Avatar */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.avatar}
             onPress={() => navigation.navigate('GlobalProfileStack', { screen: Routes.COMPANION_PROFILE })}
             accessibilityLabel={i18next.t("accessibility.profile")}>
@@ -241,7 +241,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
               <Text style={styles.heroCity}>{city}</Text>
             </View>
           </View>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.heroCTA}
             onPress={() => navigation.navigate(Routes.TODAY_OVERVIEW)}
             activeOpacity={0.8}>
@@ -291,7 +291,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
               <Icon name="mail" size={20} color={colors.gold} />
               <Text style={styles.cardTitle}> {i18next.t('dashboard.booking_requests')} </Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('RequestsTab', { screen: Routes.BOOKING_REQUESTS_INBOX })}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('RequestsTab', { screen: Routes.BOOKING_REQUESTS_INBOX })}>
               <Text style={styles.viewAll}> {i18next.t('dashboard.view_all')} </Text>
             </TouchableOpacity>
           </View>
@@ -318,13 +318,13 @@ export function HomeDashboardScreen(): React.JSX.Element {
               </View>
               <Divider />
               <View style={styles.requestBtnRow}>
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                 style={[styles.requestBtnFilled, { flex: 1 }]}
                 onPress={() => navigation.navigate('RequestsTab', { screen: Routes.BOOKING_REQUESTS_INBOX })}
                 activeOpacity={0.8}>
                   <Text style={styles.requestBtnFilledText}> {i18next.t('dashboard.review')} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                 style={[styles.requestBtnOutline, { flex: 1, marginLeft: 10 }]}
                 onPress={() => setShowRequest(false)}
                 activeOpacity={0.8}>
@@ -351,7 +351,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
               <Text style={styles.cardTitle}> {i18next.t('dashboard.upcoming_session')} </Text>
             </View>
             {firstSession &&
-            <TouchableOpacity onPress={() => navigation.navigate('SessionsTab', { screen: Routes.SESSION_DETAIL, params: { sessionId: firstSession.sessionId } })}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('SessionsTab', { screen: Routes.SESSION_DETAIL, params: { sessionId: firstSession.sessionId } })}>
                 <Text style={styles.viewAll}> {i18next.t('dashboard.details')} </Text>
               </TouchableOpacity>
             }
@@ -409,7 +409,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
             <Text style={styles.earningsValueMuted}>{fmtINR(pendingEarnings)}</Text>
           </View>
           <Text style={styles.earningsNote}> {i18next.t('dashboard.next_payout_after_completed_sessions')} </Text>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             onPress={() => navigation.navigate('EarningsTab', { screen: Routes.EARNINGS_DASHBOARD })}
             style={{ marginTop: 12, alignItems: 'flex-end' }}>
             <Text style={styles.earningsCTA}> {i18next.t('dashboard.view_earnings')} </Text>
@@ -419,7 +419,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
         {/* ══════════════════════════════════════════
                 SECTION 6 — AVAILABILITY QUICK ACCESS
              ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.card, styles.availabilityTile]}
           onPress={() => navigation.navigate(Routes.AVAILABILITY_CALENDAR)}
           activeOpacity={0.82}
@@ -439,7 +439,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
         {/* ══════════════════════════════════════════
                 SECTION 7 — SAFETY STATUS
              ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.card, { marginBottom: 16 }]}
           onPress={() => navigation.navigate('GlobalProfileStack', { screen: Routes.COMPANION_SAFETY_HUB })}
           activeOpacity={0.85}>
@@ -477,7 +477,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
           { icon: 'campaign', label: i18next.t("content.dashboard.HomeDashboardScreen.news"), route: Routes.IMPORTANT_ANNOUNCEMENTS },
           { icon: 'flash-on', label: i18next.t("content.dashboard.HomeDashboardScreen.quick_actions"), route: Routes.QUICK_ACTIONS }].
           map((q) =>
-          <TouchableOpacity key={t(q.label)} style={styles.quickLinkBtn}
+          <TouchableOpacity accessibilityRole="button" key={t(q.label)} style={styles.quickLinkBtn}
           onPress={() => navigation.navigate(q.route)} activeOpacity={0.75}>
               <Icon name={q.icon as any} size={18} color={colors.gold} />
               <Text style={styles.quickLinkText}>{t(q.label)}</Text>
@@ -486,7 +486,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
         </View>
 
         {/* ═══ SUPPORT LINK ═══ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           onPress={() => navigation.navigate(Routes.SUPPORT_CENTER)}
           style={styles.supportLink}
           activeOpacity={0.7}

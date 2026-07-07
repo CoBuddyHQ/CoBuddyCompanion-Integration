@@ -48,7 +48,7 @@ const TransactionRow: React.FC<{tx: Transaction;onPress: () => void;}> = ({ tx, 
   const amountStr = `${isDebit ? '-' : '+'}₹${Math.abs(tx.amount).toLocaleString('en-IN')}`;
 
   return (
-    <TouchableOpacity style={styles.txRow} onPress={onPress} activeOpacity={0.75}>
+    <TouchableOpacity accessibilityRole="button" style={styles.txRow} onPress={onPress} activeOpacity={0.75}>
       <View style={[styles.txIconWrap, { backgroundColor: bgColor }]}>
         <Icon name={TX_ICONS[tx.type] as any} size={18} color={iconColor} />
       </View>
@@ -140,7 +140,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
             </Text>
           </View>
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.withdrawBtn}
             onPress={() => navigation.navigate(Routes.PAYOUT_REQUEST)}
             activeOpacity={0.85}
@@ -150,7 +150,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
           </TouchableOpacity>
 
           {/* Daily breakdown link */}
-          <TouchableOpacity style={styles.breakdownLink}
+          <TouchableOpacity accessibilityRole="button" style={styles.breakdownLink}
           onPress={() => navigation.navigate(Routes.DAILY_EARNINGS_BREAKDOWN)}
           activeOpacity={0.7}>
             <Icon name="today" size={14} color={colors.gold} />
@@ -177,7 +177,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
         </View>
 
         {/* Completed payouts link */}
-        <TouchableOpacity style={styles.payoutsLink}
+        <TouchableOpacity accessibilityRole="button" style={styles.payoutsLink}
         onPress={() => navigation.navigate(Routes.COMPLETED_PAYOUTS)}
         activeOpacity={0.75}>
           <Icon name="account-balance" size={16} color={colors.textMuted} />
@@ -195,7 +195,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
           { icon: 'description', label: t("content.earnings.EarningsDashboardScreen.tax_invoice"), route: Routes.TAX_INVOICE_DETAILS },
           { icon: 'bar-chart', label: t("content.earnings.EarningsDashboardScreen.weekly"), route: Routes.WEEKLY_MONTHLY_EARNINGS }].
           map((link) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t(link.label)}
             style={styles.quickLinkTile}
             onPress={() => navigation.navigate(link.route)}
@@ -214,7 +214,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
         <View style={styles.txSection}>
           <View style={styles.txSectionHeader}>
             <Text style={styles.txSectionTitle}> {t('earnings.recent_transactions')} </Text>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               onPress={() => navigation.navigate(Routes.TRANSACTION_HISTORY)}
               accessibilityLabel={t("accessibility.view_all_transactions")}>
               <Text style={styles.viewAllText}> {t('earnings.view_all')} </Text>
@@ -239,7 +239,7 @@ export function EarningsDashboardScreen(): React.JSX.Element {
         {/* ══════════════════════════════════════════
                HELP STRIP
             ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.helpStrip}
           onPress={() => navigation.navigate(Routes.REFUND_PENALTY_EXPLANATION)}
           activeOpacity={0.75}>

@@ -247,7 +247,7 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
             <Text style={styles.fieldLabel}>{t("content.application_kyc.AddBankAccountContent.TYPE_LABEL")}</Text>
             <View style={styles.typeRow}>
               {((Array.isArray(t("content.application_kyc.AddBankAccountContent.TYPE_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.AddBankAccountContent.TYPE_OPTIONS", { returnObjects: true }) as any[]) : [])).map((opt, index) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={`ui-opt-${index}-${opt.value}`}
                 style={[styles.typeChip, accountType === opt.value && styles.typeChipSelected]}
                 onPress={() => setAccountType(opt.value as BankAccountType)}
@@ -296,7 +296,7 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
           </GlassCard>
 
           {/* ── Confirmation row ── */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.confirmRow}
             onPress={() => setConfirmed(!confirmed)}
             accessibilityLabel={t("content.application_kyc.AddBankAccountContent.CONFIRMATION_LABEL")}

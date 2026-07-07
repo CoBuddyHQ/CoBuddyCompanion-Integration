@@ -95,7 +95,7 @@ export function TrainingLessonScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnComplete} onPress={handleComplete} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={s.btnComplete} onPress={handleComplete} activeOpacity={0.85}>
           <Icon name="check-circle" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnCompleteText}>
             {isAlreadyCompleted ? t("content.training.TrainingLessonScreen.completed_view_certificate") : t("content.training.TrainingLessonScreen.mark_as_completed")}

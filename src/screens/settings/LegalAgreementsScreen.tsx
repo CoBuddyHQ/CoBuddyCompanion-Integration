@@ -40,7 +40,7 @@ export function LegalAgreementsScreen(): React.JSX.Element {
           {DOCS.map((doc, i) =>
           <View key={t(doc.label)}>
               {i > 0 && <View style={s.sep} />}
-              <TouchableOpacity style={s.row} onPress={() => openDoc(doc.label, doc.url)} activeOpacity={0.75}>
+              <TouchableOpacity accessibilityRole="button" style={s.row} onPress={() => openDoc(doc.label, doc.url)} activeOpacity={0.75}>
                 <View style={s.iconWrap}>
                   <Icon name={doc.icon as any} size={20} color={colors.gold} />
                 </View>

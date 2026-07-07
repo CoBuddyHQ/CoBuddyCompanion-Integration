@@ -53,7 +53,7 @@ export function PayoutPendingScreen(): React.JSX.Element {
         </View>
       </Animated.View>
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => navigation.popToTop()} activeOpacity={0.85}>
           <Icon name="account-balance-wallet" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('earnings.return_to_dashboard')} </Text>

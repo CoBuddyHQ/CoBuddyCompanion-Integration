@@ -112,7 +112,7 @@ const RoleConfirmationScreen: React.FC<Props> = ({ navigation }) => {
             onPress={() => navigation.navigate(Routes.TERMS_CONSENT)}
             accessibilityLabel={t("accessibility.confirm_role_and_continue_to_terms")} />
           
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.ghostBtn}
             onPress={() => navigation.goBack()}>
             <Text style={styles.ghostBtnText}> {t('onboarding.not_a_companion_go_back')} </Text>
@@ -122,7 +122,7 @@ const RoleConfirmationScreen: React.FC<Props> = ({ navigation }) => {
         {/* Footer */}
         <View style={styles.guidelinesRow}>
           <Icon name="menu-book" size={14} color={colors.gold} />
-          <TouchableOpacity>
+          <TouchableOpacity accessibilityRole="button">
             <Text style={styles.guidelinesLink}>{t("content.auth_onboarding.RoleConfirmContent.CTA_SECONDARY")}</Text>
           </TouchableOpacity>
         </View>

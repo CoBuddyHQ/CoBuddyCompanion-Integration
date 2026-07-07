@@ -69,7 +69,7 @@ export function ExtendSessionConfirmationScreen(): React.JSX.Element {
 
       {/* Sticky button */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => {
           // Pop back to ActiveSession
           navigation.navigate(Routes.ACTIVE_SESSION, { sessionId });

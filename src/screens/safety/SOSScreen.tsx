@@ -85,7 +85,7 @@ export function SOSScreen(): React.JSX.Element {
         <Animated.View style={[s.ring, s.ring2, { transform: [{ scale: r2 }] }]} />
         <Animated.View style={[s.ring, s.ring1, { transform: [{ scale: r1 }] }]} />
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={s.sosBtn}
           onLongPress={startHold}
           onPressOut={cancelHold}
@@ -115,7 +115,7 @@ export function SOSScreen(): React.JSX.Element {
       </View>
 
       {/* Safe link */}
-      <TouchableOpacity style={s.safeLink}
+      <TouchableOpacity accessibilityRole="button" style={s.safeLink}
       onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
       activeOpacity={0.7} accessibilityLabel={t("accessibility.i_am_safe_go_back")}>
         <Icon name="check-circle-outline" size={16} color={colors.gold} />

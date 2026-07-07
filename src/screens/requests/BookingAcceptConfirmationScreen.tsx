@@ -111,7 +111,7 @@ export function BookingAcceptConfirmationScreen({ route, navigation }: Props): R
         <View style={styles.centeredMsg}>
           <Icon name="search-off" size={44} color={colors.textMuted} />
           <Text style={styles.centeredTitle}>{i18next.t("application.request_not_found")}</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <TouchableOpacity accessibilityRole="button" onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Text style={styles.backBtnText}>{i18next.t("application.go_back")}</Text>
           </TouchableOpacity>
         </View>
@@ -204,7 +204,7 @@ export function BookingAcceptConfirmationScreen({ route, navigation }: Props): R
 
       {/* ── Sticky footer ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.btnConfirm, !canConfirm && styles.btnDisabled]}
           onPress={handleConfirm}
           disabled={!canConfirm}

@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 /**
  * CoBuddy Companion App — Validators
  * Field-level validators for all companion input flows.
@@ -13,9 +14,9 @@
  */
 export function validatePhone(value: string): string | null {
   const cleaned = value.replace(/\D/g, '');
-  if (cleaned.length === 0) { return 'Mobile number is required.'; }
-  if (cleaned.length !== 10) { return 'Enter a valid 10-digit mobile number.'; }
-  if (!/^[6-9]/.test(cleaned)) { return 'Mobile numbers must start with 6, 7, 8, or 9.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.mobile_number_is_required'); }
+  if (cleaned.length !== 10) { return i18next.t('validation.enter_a_valid_10_digit_mobile_number'); }
+  if (!/^[6-9]/.test(cleaned)) { return i18next.t('validation.mobile_numbers_must_start_with_6_7_8_or_'); }
   return null;
 }
 
@@ -26,8 +27,8 @@ export function validatePhone(value: string): string | null {
  */
 export function validateOTP(value: string): string | null {
   const cleaned = value.replace(/\D/g, '');
-  if (cleaned.length === 0) { return 'OTP is required.'; }
-  if (cleaned.length !== 6) { return 'Enter the complete 6-digit OTP.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.otp_is_required'); }
+  if (cleaned.length !== 6) { return i18next.t('validation.enter_the_complete_6_digit_otp'); }
   return null;
 }
 
@@ -39,19 +40,19 @@ export function validateOTP(value: string): string | null {
  */
 export function validatePIN(value: string): string | null {
   const cleaned = value.replace(/\D/g, '');
-  if (cleaned.length === 0) { return 'PIN is required.'; }
-  if (cleaned.length !== 4) { return 'PIN must be exactly 4 digits.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.pin_is_required'); }
+  if (cleaned.length !== 4) { return i18next.t('validation.pin_must_be_exactly_4_digits'); }
 
   // Reject all-same digits: 0000, 1111, etc.
   if (/^(\d)\1{3}$/.test(cleaned)) {
-    return 'Choose a PIN that is not a repeated digit (e.g. avoid 0000, 1111).';
+    return i18next.t('validation.choose_a_pin_that_is_not_a_repeated_digi');
   }
   // Reject sequential: 1234, 2345, 9876, etc.
   const seq = cleaned.split('').map(Number);
   const isAscSeq  = seq.every((d, i) => i === 0 || d === seq[i - 1]! + 1);
   const isDescSeq = seq.every((d, i) => i === 0 || d === seq[i - 1]! - 1);
   if (isAscSeq || isDescSeq) {
-    return 'Choose a PIN that is not a sequential number (e.g. avoid 1234, 9876).';
+    return i18next.t('validation.choose_a_pin_that_is_not_a_sequential_nu');
   }
 
   return null;
@@ -61,8 +62,8 @@ export function validatePIN(value: string): string | null {
  * Validates PIN confirmation match.
  */
 export function validatePINMatch(pin: string, confirm: string): string | null {
-  if (confirm.length === 0) { return 'Please re-enter your PIN to confirm.'; }
-  if (pin !== confirm) { return 'PINs do not match. Please try again.'; }
+  if (confirm.length === 0) { return i18next.t('validation.please_re_enter_your_pin_to_confirm'); }
+  if (pin !== confirm) { return i18next.t('validation.pins_do_not_match_please_try_again'); }
   return null;
 }
 
@@ -74,13 +75,13 @@ export function validatePINMatch(pin: string, confirm: string): string | null {
  */
 export function validateLegalName(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return 'Full legal name is required.'; }
-  if (trimmed.length < 2) { return 'Name is too short.'; }
-  if (trimmed.length > 100) { return 'Name is too long.'; }
-  if (/\d/.test(trimmed)) { return 'Name must not contain numbers.'; }
-  if (/[^a-zA-Z\s'.\-]/u.test(trimmed)) { return 'Name contains invalid characters.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.full_legal_name_is_required'); }
+  if (trimmed.length < 2) { return i18next.t('validation.name_is_too_short'); }
+  if (trimmed.length > 100) { return i18next.t('validation.name_is_too_long'); }
+  if (/\d/.test(trimmed)) { return i18next.t('validation.name_must_not_contain_numbers'); }
+  if (/[^a-zA-Z\s'.\-]/u.test(trimmed)) { return i18next.t('validation.name_contains_invalid_characters'); }
   const words = trimmed.split(/\s+/).filter(Boolean);
-  if (words.length < 2) { return 'Please enter your full name (first and last name).'; }
+  if (words.length < 2) { return i18next.t('validation.please_enter_your_full_name_first_and_la'); }
   return null;
 }
 
@@ -90,10 +91,10 @@ export function validateLegalName(value: string): string | null {
  */
 export function validateDisplayName(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return 'Display name is required.'; }
-  if (trimmed.length < 2) { return 'Display name is too short.'; }
-  if (trimmed.length > 30) { return 'Display name must be 30 characters or fewer.'; }
-  if (/[^a-zA-Z\s-]/u.test(trimmed)) { return 'Display name can only contain letters, spaces, or hyphens.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.display_name_is_required'); }
+  if (trimmed.length < 2) { return i18next.t('validation.display_name_is_too_short'); }
+  if (trimmed.length > 30) { return i18next.t('validation.display_name_must_be_30_characters_or_fe'); }
+  if (/[^a-zA-Z\s-]/u.test(trimmed)) { return i18next.t('validation.display_name_can_only_contain_letters_sp'); }
   return null;
 }
 
@@ -104,12 +105,12 @@ export function validateDisplayName(value: string): string | null {
  */
 export function validateEmail(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return 'Email address is required.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.email_address_is_required'); }
   // Simple but robust email regex
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)) {
-    return 'Enter a valid email address.';
+    return i18next.t('validation.enter_a_valid_email_address');
   }
-  if (trimmed.length > 254) { return 'Email address is too long.'; }
+  if (trimmed.length > 254) { return i18next.t('validation.email_address_is_too_long'); }
   return null;
 }
 
@@ -122,9 +123,9 @@ export function validateEmail(value: string): string | null {
  */
 export function validateBio(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return 'Bio is required.'; }
-  if (trimmed.length < 50) { return `Bio must be at least 50 characters. Currently ${trimmed.length}.`; }
-  if (trimmed.length > 500) { return 'Bio must be 500 characters or fewer.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.bio_is_required'); }
+  if (trimmed.length < 50) { return i18next.t('validation.bio_must_be_at_least_50_characters_curre', { trimmedlength: trimmed.length }); }
+  if (trimmed.length > 500) { return i18next.t('validation.bio_must_be_500_characters_or_fewer'); }
 
   // Safety filter — flag content that violates CoBuddy's professional and non-dating standards.
   // NOTE: Do NOT add overly broad terms like "date" (blocks "session date", "up to date").
@@ -149,7 +150,7 @@ export function validateBio(value: string): string | null {
   ];
   for (const pattern of blockedPatterns) {
     if (pattern.test(trimmed)) {
-      return 'Your bio contains content that does not meet CoBuddy professional standards. Please keep your bio professional and focused on public social activities. Review the writing guidelines for help.';
+      return i18next.t('validation.your_bio_contains_content_that_does_not_');
     }
   }
 
@@ -163,9 +164,9 @@ export function validateBio(value: string): string | null {
  */
 export function validatePAN(value: string): string | null {
   const cleaned = value.trim().toUpperCase();
-  if (cleaned.length === 0) { return 'PAN number is required.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.pan_number_is_required'); }
   if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(cleaned)) {
-    return 'Enter a valid PAN number (e.g. ABCDE1234F).';
+    return i18next.t('validation.enter_a_valid_pan_number_e_g_abcde1234f');
   }
   return null;
 }
@@ -177,9 +178,9 @@ export function validatePAN(value: string): string | null {
  */
 export function validateBankAccount(value: string): string | null {
   const cleaned = value.replace(/\s/g, '');
-  if (cleaned.length === 0) { return 'Bank account number is required.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.bank_account_number_is_required'); }
   if (!/^\d{8,18}$/.test(cleaned)) {
-    return 'Enter a valid bank account number (8–18 digits).';
+    return i18next.t('validation.enter_a_valid_bank_account_number_8_18_d');
   }
   return null;
 }
@@ -189,9 +190,9 @@ export function validateBankAccount(value: string): string | null {
  */
 export function validateIFSC(value: string): string | null {
   const cleaned = value.trim().toUpperCase();
-  if (cleaned.length === 0) { return 'IFSC code is required.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.ifsc_code_is_required'); }
   if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(cleaned)) {
-    return 'Enter a valid IFSC code (e.g. HDFC0001234).';
+    return i18next.t('validation.enter_a_valid_ifsc_code_e_g_hdfc0001234');
   }
   return null;
 }
@@ -204,9 +205,9 @@ export function validateIFSC(value: string): string | null {
  */
 export function validateUPI(value: string): string | null {
   const trimmed = value.trim().toLowerCase();
-  if (trimmed.length === 0) { return 'UPI ID is required.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.upi_id_is_required'); }
   if (!/^[a-z0-9.-_]{3,}@[a-z]{2,}$/.test(trimmed)) {
-    return 'Enter a valid UPI ID (e.g. yourname@upi).';
+    return i18next.t('validation.enter_a_valid_upi_id_e_g_yourname_upi');
   }
   return null;
 }
@@ -221,12 +222,12 @@ const PAYOUT_MINIMUM_INR = 500;
  * @param available — the companion's available balance in INR
  */
 export function validatePayoutAmount(amount: number, available: number): string | null {
-  if (isNaN(amount) || amount <= 0) { return 'Enter a valid payout amount.'; }
+  if (isNaN(amount) || amount <= 0) { return i18next.t('validation.enter_a_valid_payout_amount'); }
   if (amount < PAYOUT_MINIMUM_INR) {
-    return `Minimum payout amount is \u20B9${PAYOUT_MINIMUM_INR}.`;
+    return i18next.t('validation.minimum_payout_amount_is_u20b9var', { PAYOUTMINIMUMINR: PAYOUT_MINIMUM_INR });
   }
   if (amount > available) {
-    return `Amount exceeds your available balance of \u20B9${available.toLocaleString('en-IN')}.`;
+    return i18next.t('validation.amount_exceeds_your_available_balance_of', { availabletoLocaleStringenIN: available.toLocaleString('en-IN') });
   }
   return null;
 }
@@ -246,10 +247,10 @@ export function validateDateOfBirth(dob: Date): string | null {
     age - (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? 1 : 0);
 
   if (exactAge < 18) {
-    return 'You must be 18 years or older to become a CoBuddy Companion.';
+    return i18next.t('validation.you_must_be_18_years_or_older_to_become_');
   }
   if (exactAge > 80) {
-    return 'Please enter a valid date of birth.';
+    return i18next.t('validation.please_enter_a_valid_date_of_birth');
   }
   return null;
 }
@@ -261,9 +262,9 @@ export function validateDateOfBirth(dob: Date): string | null {
  */
 export function validateTicketDescription(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return 'Please describe your issue.'; }
-  if (trimmed.length < 20) { return 'Please provide more detail (at least 20 characters).'; }
-  if (trimmed.length > 2000) { return 'Description must be 2000 characters or fewer.'; }
+  if (trimmed.length === 0) { return i18next.t('validation.please_describe_your_issue'); }
+  if (trimmed.length < 20) { return i18next.t('validation.please_provide_more_detail_at_least_20_c'); }
+  if (trimmed.length > 2000) { return i18next.t('validation.description_must_be_2000_characters_or_f'); }
   return null;
 }
 
@@ -274,7 +275,7 @@ export function validateTicketDescription(value: string): string | null {
  */
 export function validateSessionNote(value: string): string | null {
   const trimmed = value.trim();
-  if (trimmed.length > 500) { return 'Note must be 500 characters or fewer.'; }
+  if (trimmed.length > 500) { return i18next.t('validation.note_must_be_500_characters_or_fewer'); }
   return null; // Notes are optional
 }
 
@@ -285,10 +286,10 @@ export function validateSessionNote(value: string): string | null {
  * Minimum: \u20B9800. Maximum: \u20B910,000. Must be a positive integer.
  */
 export function validateSessionRate(value: number): string | null {
-  if (isNaN(value) || value <= 0) { return 'Please enter a valid hourly rate.'; }
-  if (!Number.isInteger(value)) { return 'Rate must be a whole number (no decimals).'; }
-  if (value < 800) { return 'Minimum session rate is \u20B9800 per hour.'; }
-  if (value > 10000) { return 'Maximum session rate is \u20B910,000 per hour.'; }
+  if (isNaN(value) || value <= 0) { return i18next.t('validation.please_enter_a_valid_hourly_rate'); }
+  if (!Number.isInteger(value)) { return i18next.t('validation.rate_must_be_a_whole_number_no_decimals'); }
+  if (value < 800) { return i18next.t('validation.minimum_session_rate_is_u20b9800_per_hou'); }
+  if (value > 10000) { return i18next.t('validation.maximum_session_rate_is_u20b910_000_per_'); }
   return null;
 }
 
@@ -298,9 +299,9 @@ export function validateSessionRate(value: number): string | null {
  */
 export function validatePINCode(value: string): string | null {
   const cleaned = value.trim();
-  if (cleaned.length === 0) { return 'PIN code is required.'; }
+  if (cleaned.length === 0) { return i18next.t('validation.pin_code_is_required'); }
   if (!/^[1-9][0-9]{5}$/.test(cleaned)) {
-    return 'Enter a valid 6-digit PIN code.';
+    return i18next.t('validation.enter_a_valid_6_digit_pin_code');
   }
   return null;
 }
@@ -311,11 +312,11 @@ export function validatePINCode(value: string): string | null {
  */
 export function validateAddressLine(value: string, fieldName = 'Address'): string | null {
   const trimmed = value.trim();
-  if (trimmed.length === 0) { return `${fieldName} is required.`; }
-  if (trimmed.length < 3) { return `${fieldName} is too short.`; }
-  if (trimmed.length > 100) { return `${fieldName} must be 100 characters or fewer.`; }
+  if (trimmed.length === 0) { return i18next.t('validation.var_is_required', { fieldName: fieldName }); }
+  if (trimmed.length < 3) { return i18next.t('validation.var_is_too_short', { fieldName: fieldName }); }
+  if (trimmed.length > 100) { return i18next.t('validation.var_must_be_100_characters_or_fewer', { fieldName: fieldName }); }
   if (!/^[a-zA-Z0-9\s,.#\-/]+$/.test(trimmed)) {
-    return `${fieldName} contains invalid characters.`;
+    return i18next.t('validation.var_contains_invalid_characters', { fieldName: fieldName });
   }
   return null;
 }

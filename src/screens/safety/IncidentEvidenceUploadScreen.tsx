@@ -69,14 +69,14 @@ export function IncidentEvidenceUploadScreen(): React.JSX.Element {
                 /* Filled slot */
                 <View style={s.filledCell}>
                   <Icon name="image" size={32} color="rgba(255,255,255,0.25)" />
-                  <TouchableOpacity style={s.removeBtn}
+                  <TouchableOpacity accessibilityRole="button" style={s.removeBtn}
                     onPress={() => handleRemove(slot.id)} hitSlop={{top: 4, bottom: 4, left: 4, right: 4}}>
                     <Icon name="cancel" size={20} color="#E74C3C" />
                   </TouchableOpacity>
                 </View>
               ) : (
                 /* Empty slot */
-                <TouchableOpacity style={s.emptyCell} onPress={() => handleAdd(slot.id)} activeOpacity={0.7}>
+                <TouchableOpacity accessibilityRole="button" style={s.emptyCell} onPress={() => handleAdd(slot.id)} activeOpacity={0.7}>
                   <Icon name="add-circle-outline" size={30} color={colors.gold} />
                 </TouchableOpacity>
               )}
@@ -93,7 +93,7 @@ export function IncidentEvidenceUploadScreen(): React.JSX.Element {
 
       {/* Done button */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnDone}
+        <TouchableOpacity accessibilityRole="button" style={s.btnDone}
           onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
           activeOpacity={0.85}>
           <Icon name="check" size={18} color={colors.rootBg} style={{marginRight: 8}} />

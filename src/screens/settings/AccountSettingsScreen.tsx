@@ -45,7 +45,7 @@ interface RowProps {
 }
 
 const SettingRow: React.FC<RowProps> = ({ icon, label, subtitle, onPress, danger, last }) =>
-<TouchableOpacity
+<TouchableOpacity accessibilityRole="button"
   style={[styles.row, last && styles.rowLast]}
   onPress={onPress}
   activeOpacity={0.7}
@@ -145,7 +145,7 @@ export function AccountSettingsScreen(): React.JSX.Element {
         {/* ══════════════════════════════════════════
              PROFILE SUMMARY
           ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.profileRow}
           onPress={() => navigation.navigate(Routes.EDIT_BASIC_PROFILE)}
           activeOpacity={0.8}>

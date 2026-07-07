@@ -160,7 +160,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
                 <Text style={styles.selectedDocRequired}>{t("content.application_kyc.CommonKycContent.REQUIRED")}</Text>
               </View>
             </View>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               onPress={() => navigation.goBack()}
               accessibilityLabel={t("accessibility.change_id_type")}>
               <Text style={styles.changeLink}>{t("application.change")}</Text>
@@ -173,7 +173,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
           <Text style={styles.cardTitle}>{t("application.upload_id_images")}</Text>
 
           {/* Front side */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.uploadSlot, frontUri && styles.uploadSlotFilled]}
             onPress={() => pickImage('front')}
             accessibilityLabel={t("accessibility.upload_front_side_of_id")}>
@@ -200,7 +200,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
           <View style={styles.slotDivider} />
 
           {/* Back side */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.uploadSlot, backUri && styles.uploadSlotFilled]}
             onPress={() => pickImage('back')}
             accessibilityLabel={t("accessibility.upload_back_side_of_id")}>

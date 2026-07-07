@@ -133,7 +133,7 @@ export function PayoutRequestScreen(): React.JSX.Element {
                 accessibilityLabel={t("accessibility.withdrawal_amount")} />
               
               {amountText.length > 0 &&
-              <TouchableOpacity onPress={() => setAmountText('')} style={{ padding: 4 }}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setAmountText('')} style={{ padding: 4 }}>
                   <Icon name="cancel" size={18} color={colors.textMuted} />
                 </TouchableOpacity>
               }
@@ -156,7 +156,7 @@ export function PayoutRequestScreen(): React.JSX.Element {
             {/* Quick fill buttons */}
             <View style={styles.quickFillRow}>
               {[{ label: '25%', pct: 0.25 }, { label: '50%', pct: 0.5 }, { label: '75%', pct: 0.75 }, { label: t("content.earnings.PayoutRequestScreen.max"), pct: 1 }].map(({ label, pct }) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={label}
                 style={styles.quickFillBtn}
                 onPress={() => fillPct(pct)}
@@ -185,7 +185,7 @@ export function PayoutRequestScreen(): React.JSX.Element {
                   <Icon name="verified" size={11} color={colors.safetyGreen} />
                   <Text style={styles.verifiedText}> {t('earnings.verified')} </Text>
                 </View>
-                <TouchableOpacity style={{ marginTop: 4 }}
+                <TouchableOpacity accessibilityRole="button" style={{ marginTop: 4 }}
                 onPress={() => navigation.navigate(Routes.BANK_DETAILS)}>
                   <Text style={styles.editLink}> {t('earnings.change')} </Text>
                 </TouchableOpacity>
@@ -241,7 +241,7 @@ export function PayoutRequestScreen(): React.JSX.Element {
             </Text>{' '}
              {t('earnings.in_your_bank_account')} </Text>
         }
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.requestBtn, (!isValid || loading) && styles.requestBtnDisabled]}
           onPress={handleRequest}
           disabled={!isValid || loading}

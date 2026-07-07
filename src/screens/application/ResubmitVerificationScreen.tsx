@@ -101,7 +101,7 @@ export function ResubmitVerificationScreen({ navigation }: Props): React.JSX.Ele
         <GlassCard style={styles.card}>
           <Text style={styles.cardTitle}>{t("application.update_id_images")}</Text>
           {/* Front */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.uploadArea, frontUploaded && styles.uploadAreaDone]}
             onPress={() => setFrontUploaded(true)}
             accessibilityLabel={t("accessibility.upload_updated_id_front")}>
@@ -114,7 +114,7 @@ export function ResubmitVerificationScreen({ navigation }: Props): React.JSX.Ele
             </View>
           </TouchableOpacity>
           {/* Back */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.uploadArea, backUploaded && styles.uploadAreaDone]}
             onPress={() => setBackUploaded(true)}
             accessibilityLabel={t("accessibility.upload_updated_id_back")}>
@@ -150,7 +150,7 @@ export function ResubmitVerificationScreen({ navigation }: Props): React.JSX.Ele
         </GlassCard>
 
         {/* ── Confirmation checkbox ── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.confirmRow}
           onPress={() => setConfirmed(!confirmed)}
           accessibilityLabel={t("accessibility.confirm_updated_details")}

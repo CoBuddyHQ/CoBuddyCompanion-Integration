@@ -43,7 +43,7 @@ export function ProfilePreviewScreen(): React.JSX.Element {
 
       {/* ── Top bar ── */}
       <View style={s.topBar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
           style={s.backBtn}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
@@ -157,7 +157,7 @@ export function ProfilePreviewScreen(): React.JSX.Element {
           <Icon name="visibility" size={13} color={colors.textMuted} />
           <Text style={s.previewNoteText}> {t('profile.this_is_how_customers_see_your_profile')} </Text>
         </View>
-        <TouchableOpacity style={s.bookBtnDisabled} disabled activeOpacity={1}>
+        <TouchableOpacity accessibilityRole="button" style={s.bookBtnDisabled} disabled activeOpacity={1}>
           <Icon name="calendar-today" size={16} color="rgba(10,18,32,0.45)" style={{ marginRight: 8 }} />
           <Text style={s.bookBtnText}>
             {profile?.hourlyRate ? `Book for ₹${profile.hourlyRate}/hr` : t("content.profile.ProfilePreviewScreen.book_a_session")}

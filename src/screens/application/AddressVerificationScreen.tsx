@@ -209,7 +209,7 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             {/* State selector */}
             <View style={styles.fieldBlock}>
               <Text style={styles.fieldLabel}>{t("content.application_kyc.AddressVerificationContent.STATE_LABEL")}</Text>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[styles.stateSelector, errors.state ? styles.stateSelectorError : null]}
                 onPress={() => setShowStateList(!showStateList)}
                 accessibilityLabel={t("accessibility.select_state")}>
@@ -235,7 +235,7 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
                       'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu',
                       'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'
                     ].map((s) =>
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={s}
                     style={[styles.stateItem, state === s && styles.stateItemSelected]}
                     onPress={() => {setStateVal(s);setShowStateList(false);}}>
@@ -264,7 +264,7 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             <Text style={styles.fieldLabel}>{t("content.application_kyc.AddressVerificationContent.TYPE_LABEL")}</Text>
             <View style={styles.typeRow}>
               {(Array.isArray(t("content.application_kyc.AddressVerificationContent.TYPE_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.AddressVerificationContent.TYPE_OPTIONS", { returnObjects: true }) as any[]) : []).map((opt, index) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={`ui-opt-${index}-${opt.value}`}
                 style={[
                 styles.typeChip,
@@ -284,7 +284,7 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             </View>
 
             {/* ID match toggle */}
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.checkRow}
               onPress={() => setIdMatch(!idMatch)}
               accessibilityLabel={t("content.application_kyc.AddressVerificationContent.ID_MATCH_LABEL")}
@@ -309,7 +309,7 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             <Text style={styles.proofOptionalNote}>{t("application.adding_address_proof_may_help_speed_up_v")}
 
             </Text>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[styles.proofUpload, proofAdded && styles.proofUploadDone]}
               onPress={handleProofUpload}
               accessibilityLabel={t("content.application_kyc.AddressVerificationContent.PROOF_CTA")}>

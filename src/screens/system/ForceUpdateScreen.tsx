@@ -64,7 +64,7 @@ export function ForceUpdateScreen(): React.JSX.Element {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={s.updateBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.updateBtn} activeOpacity={0.85}
         onPress={() => Alert.alert(t("alerts.redirecting"), t("alerts.opening_app_store_google_play_store_to_u"))}>
           <Icon name="system-update" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.updateBtnText}> {t('system.update_now')} </Text>

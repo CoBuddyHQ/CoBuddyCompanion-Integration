@@ -105,7 +105,7 @@ export function PayoutReviewScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btn, loading && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btn, loading && s.btnDisabled]}
         onPress={handleConfirm} disabled={loading} activeOpacity={0.85}>
           <Icon name="send" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}>{loading ? t("content.earnings.PayoutReviewScreen.processing") : `Confirm ${fmtINR(amount)}`}</Text>

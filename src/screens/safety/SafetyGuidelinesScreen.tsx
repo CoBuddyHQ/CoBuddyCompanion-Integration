@@ -75,7 +75,7 @@ export function SafetyGuidelinesScreen(): React.JSX.Element {
              {t('safety.use_the')} <Text style={s.emergencyBold}> {t('safety.sos_button')} </Text>  {t('safety.for_immediate_help_cobuddy_support_and_your_emergency_contacts_will_be_alerted_instantly')} </Text>
         </View>
 
-        <TouchableOpacity style={s.sosBtn}
+        <TouchableOpacity accessibilityRole="button" style={s.sosBtn}
         onPress={() => navigation.navigate(Routes.SOS)}
         activeOpacity={0.85} accessibilityLabel={t("accessibility.view_sos_button")}>
           <Icon name="sos" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />

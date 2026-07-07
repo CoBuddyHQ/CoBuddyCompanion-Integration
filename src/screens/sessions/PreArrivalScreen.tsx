@@ -98,7 +98,7 @@ export function PreArrivalScreen(): React.JSX.Element {
 
       {/* Sticky button */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId })} activeOpacity={0.85}>
           <Icon name="where-to-vote" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('sessions.i_m_at_the_venue')} </Text>

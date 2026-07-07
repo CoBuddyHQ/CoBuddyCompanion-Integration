@@ -156,10 +156,10 @@ const RequestCard: React.FC<RequestCardProps> = ({
 
       {/* ── Action buttons ── */}
       <View style={styles.actionRow}>
-        <TouchableOpacity style={styles.btnDecline} onPress={onDecline} activeOpacity={0.75} accessibilityLabel={i18next.t("accessibility.decline_request")}>
+        <TouchableOpacity accessibilityRole="button" style={styles.btnDecline} onPress={onDecline} activeOpacity={0.75} accessibilityLabel={i18next.t("accessibility.decline_request")}>
           <Text style={styles.btnDeclineText}>{i18next.t("application.decline")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnReview} onPress={onReview} activeOpacity={0.8} accessibilityLabel={i18next.t("accessibility.review_request")}>
+        <TouchableOpacity accessibilityRole="button" style={styles.btnReview} onPress={onReview} activeOpacity={0.8} accessibilityLabel={i18next.t("accessibility.review_request")}>
           <Text style={styles.btnReviewText}>{i18next.t("application.review_request")}</Text>
         </TouchableOpacity>
       </View>
@@ -184,7 +184,7 @@ const EmptyState: React.FC<{
     <Text style={styles.emptySubtitle}>{i18next.t("application.when_customers_book_you_their_requests_w")}
 
       </Text>
-    <TouchableOpacity style={styles.emptyBtnPrimary} onPress={onGoLive} activeOpacity={0.85}>
+    <TouchableOpacity accessibilityRole="button" style={styles.emptyBtnPrimary} onPress={onGoLive} activeOpacity={0.85}>
       <Icon name="wifi-tethering" size={16} color={colors.rootBg} />
       <Text style={styles.emptyBtnPrimaryText}>{i18next.t("application.go_live_for_instant_bookings")}</Text>
     </TouchableOpacity>
@@ -266,7 +266,7 @@ export function BookingRequestsInboxScreen(): React.JSX.Element {
       
 
       {/* ── DEV: Test empty state route ── */}
-      <TouchableOpacity style={styles.devTestStrip} onPress={() => navigation.navigate(Routes.BOOKING_REQUEST_EMPTY_STATE)} activeOpacity={0.75}>
+      <TouchableOpacity accessibilityRole="button" style={styles.devTestStrip} onPress={() => navigation.navigate(Routes.BOOKING_REQUEST_EMPTY_STATE)} activeOpacity={0.75}>
         <Icon name="science" size={14} color={colors.textMuted} />
         <Text style={styles.devTestText}>{i18next.t("application.test_empty_inbox_screen")}</Text>
         <Icon name="chevron-right" size={14} color={colors.textMuted} />
@@ -277,7 +277,7 @@ export function BookingRequestsInboxScreen(): React.JSX.Element {
             </Text> : null} ListFooterComponent={expiredRequests.length > 0 ? <>
               <Text style={styles.expiredSectionLabel}>{i18next.t("application.expired_requests")}</Text>
               {expiredRequests.map((req: BR) => {
-        return <TouchableOpacity key={req.requestId} style={styles.expiredCard} activeOpacity={0.8} onPress={() => navigation.navigate(Routes.EXPIRED_BOOKING_REQUEST, {
+        return <TouchableOpacity accessibilityRole="button" key={req.requestId} style={styles.expiredCard} activeOpacity={0.8} onPress={() => navigation.navigate(Routes.EXPIRED_BOOKING_REQUEST, {
           requestId: req.requestId
         })}>
                   <View style={styles.expiredTopRow}>

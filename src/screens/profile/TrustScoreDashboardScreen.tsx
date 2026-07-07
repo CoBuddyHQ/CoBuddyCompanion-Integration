@@ -69,7 +69,7 @@ export function TrustScoreDashboardScreen(): React.JSX.Element {
 
         {/* Navigation cards */}
         <Text style={s.sectionLabel}> {t('profile.explore')} </Text>
-        <TouchableOpacity style={s.navCard}
+        <TouchableOpacity accessibilityRole="button" style={s.navCard}
         onPress={() => navigation.navigate(Routes.TRUST_SCORE_SUMMARY)} activeOpacity={0.8}>
           <View style={s.navCardIcon}>
             <Icon name="bar-chart" size={24} color={colors.gold} />
@@ -81,7 +81,7 @@ export function TrustScoreDashboardScreen(): React.JSX.Element {
           <Icon name="chevron-right" size={22} color={colors.textMuted} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.navCard}
+        <TouchableOpacity accessibilityRole="button" style={s.navCard}
         onPress={() => navigation.navigate(Routes.TRUST_SCORE_IMPROVEMENT_TASKS)} activeOpacity={0.8}>
           <View style={[s.navCardIcon, { backgroundColor: 'rgba(109,214,165,0.10)', borderColor: 'rgba(109,214,165,0.25)' }]}>
             <Icon name="trending-up" size={24} color={colors.safetyGreen} />

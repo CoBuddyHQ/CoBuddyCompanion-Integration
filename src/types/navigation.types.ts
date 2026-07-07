@@ -369,7 +369,12 @@ export type RootStackParamList = {
   [Routes.SUPPORT_CENTER]: undefined;
   // Global screens reachable from Quick Actions (cross-stack)
   [Routes.PAYOUT_REQUEST]: undefined;
+  [Routes.PAYOUT_REVIEW]: undefined;
+  [Routes.PAYOUT_SUCCESS]: {payoutId?: string};
+  [Routes.PAYOUT_FAILED]: {payoutId?: string};
+  [Routes.BANK_DETAILS]: undefined;
   [Routes.CREATE_SUPPORT_TICKET]: {category?: string};
+  [Routes.SUPPORT_TICKET_DETAIL]: {ticketId: string; isNew?: boolean};
   // Global cross-tab screens — navigated from HomeDashboard and other hubs
   [Routes.BOOKING_REQUESTS_INBOX]: undefined;
   [Routes.UPCOMING_SESSIONS]: undefined;

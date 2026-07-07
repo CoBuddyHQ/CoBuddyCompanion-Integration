@@ -50,7 +50,7 @@ const Field: React.FC<FieldProps> = ({ label, value, onChange, numeric, maxLengt
           selectionColor={colors.gold}
           autoCapitalize="none" />
         
-        <TouchableOpacity onPress={() => setVisible((v) => !v)}
+        <TouchableOpacity accessibilityRole="button" onPress={() => setVisible((v) => !v)}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
           <Icon name={visible ? 'visibility-off' : 'visibility'}
           size={20} color={focused ? colors.gold : colors.textMuted} />
@@ -125,7 +125,7 @@ export function ChangePinScreen(): React.JSX.Element {
           {/* Mode toggle */}
           <View style={s.toggleRow}>
             {(['pin', 'password'] as Mode[]).map((m) =>
-            <TouchableOpacity key={m} style={[s.togglePill, mode === m && s.togglePillActive]}
+            <TouchableOpacity accessibilityRole="button" key={m} style={[s.togglePill, mode === m && s.togglePillActive]}
             onPress={() => switchMode(m)} activeOpacity={0.75}>
                 <Icon name={m === 'pin' ? 'pin' : 'lock'}
               size={16} color={mode === m ? colors.gold : colors.textMuted} />
@@ -180,7 +180,7 @@ export function ChangePinScreen(): React.JSX.Element {
           }
 
           {/* CTA */}
-          <TouchableOpacity style={[s.btn, !canSubmit && s.btnDisabled]}
+          <TouchableOpacity accessibilityRole="button" style={[s.btn, !canSubmit && s.btnDisabled]}
           onPress={handleUpdate} disabled={!canSubmit} activeOpacity={0.85}>
             <Icon name="check" size={18} color={canSubmit ? colors.rootBg : colors.textMuted}
             style={{ marginRight: 8 }} />

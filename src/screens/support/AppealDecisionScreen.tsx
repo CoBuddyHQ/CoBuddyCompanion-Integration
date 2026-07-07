@@ -73,7 +73,7 @@ export function AppealDecisionScreen(): React.JSX.Element {
           </View>
 
           {/* New evidence */}
-          <TouchableOpacity style={s.evidenceRow}
+          <TouchableOpacity accessibilityRole="button" style={s.evidenceRow}
             onPress={() => navigation.navigate(Routes.INCIDENT_EVIDENCE_UPLOAD)} activeOpacity={0.75}>
             <Icon name="attach-file" size={18} color={colors.gold} />
             <Text style={s.evidenceText}> {t('support.attach_new_evidence')} </Text>
@@ -85,7 +85,7 @@ export function AppealDecisionScreen(): React.JSX.Element {
       </KeyboardAvoidingView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btnGold, (!canSubmit || submitting) && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btnGold, (!canSubmit || submitting) && s.btnDisabled]}
           onPress={handleSubmit} disabled={!canSubmit || submitting} activeOpacity={0.85}>
           <Text style={s.btnGoldText}>{submitting ? t('common.submitting', {defaultValue: 'Submitting…'}) : t('support.submit_appeal', {defaultValue: 'Submit Appeal'})}</Text>
         </TouchableOpacity>

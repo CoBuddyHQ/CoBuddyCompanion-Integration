@@ -97,7 +97,7 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
             {((Array.isArray(t("content.application_kyc.BackgroundDeclarationContent.DECLARATIONS", { returnObjects: true })) ? (t("content.application_kyc.BackgroundDeclarationContent.DECLARATIONS", { returnObjects: true }) as any[]) : [])).map((item, index) => {
               const checked = backgroundDeclaration[item.id as DeclKey];
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${item.id}`}
                   style={[styles.declRow, checked && styles.declRowChecked]}
                   onPress={() => handleToggle(item.id)}

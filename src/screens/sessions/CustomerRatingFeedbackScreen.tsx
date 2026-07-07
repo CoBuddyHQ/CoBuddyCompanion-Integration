@@ -97,7 +97,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
         <View style={s.starsSection}>
           <View style={s.starsRow}>
             {[1, 2, 3, 4, 5].map((star) =>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={star}
               onPress={() => {setRating(star);setTags([]);}}
               activeOpacity={0.7}
@@ -124,7 +124,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
             <Text style={s.sectionTitle}> {t('sessions.what_went_well')} </Text>
             <View style={s.tagsRow}>
               {PRAISE_TAGS.map((t) =>
-            <TouchableOpacity key={t}
+            <TouchableOpacity accessibilityRole="button" key={t}
             style={[s.tag, tags.includes(t) && s.tagActiveGold]}
             onPress={() => toggleTag(t)} activeOpacity={0.75}>
                   <Text style={[s.tagText, tags.includes(t) && s.tagTextGold]}>{t}</Text>
@@ -140,7 +140,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
             <Text style={s.sectionTitle}> {t('sessions.any_concerns')} </Text>
             <View style={s.tagsRow}>
               {CONCERN_TAGS.map((t) =>
-            <TouchableOpacity key={t}
+            <TouchableOpacity accessibilityRole="button" key={t}
             style={[s.tag, tags.includes(t) && s.tagActiveRed]}
             onPress={() => toggleTag(t)} activeOpacity={0.75}>
                   <Text style={[s.tagText, tags.includes(t) && s.tagTextRed]}>{t}</Text>
@@ -165,7 +165,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
         <Text style={s.charCount}>{comment.length}/200</Text>
 
         {/* Skip link */}
-        <TouchableOpacity style={s.skipLink}
+        <TouchableOpacity accessibilityRole="button" style={s.skipLink}
         onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}
         activeOpacity={0.6}>
           <Text style={s.skipText}> {t('sessions.skip_for_now')} </Text>
@@ -176,7 +176,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
 
       {/* Sticky submit */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btnSubmit, (!rating || submitting) && s.btnDisabled]}
           onPress={handleSubmit}
           disabled={!rating || submitting}

@@ -164,7 +164,7 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
               <Text style={styles.phoneSubLabel}>{t("content.auth_onboarding.OTPContent.SUBHEADLINE")}</Text>
               <Text style={styles.phoneNumber}>{maskedDisplay}</Text>
             </View>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               onPress={() => navigation.goBack()}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
               <Text style={styles.editLink}>{t("content.auth_onboarding.OTPContent.CHANGE_NUMBER")}</Text>
@@ -219,7 +219,7 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text style={[styles.resendTimer, canResend && styles.resendTimerActive]}>
             {resendTimerLabel}
           </Text>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             onPress={handleResend}
             disabled={!canResend}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
@@ -248,7 +248,7 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
             disabled={otpValue.length < OTP_LENGTH}
             accessibilityLabel={t("accessibility.verify_otp_and_continue")} />
           
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.ghostBtn}
             onPress={() => navigation.goBack()}>
             <Text style={styles.ghostBtnText}>{t("content.auth_onboarding.OTPContent.USE_ANOTHER_NUMBER")}</Text>

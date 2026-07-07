@@ -115,7 +115,7 @@ export function SafetyTimerScreen(): React.JSX.Element {
         <Text style={s.sectionTitle}> {t('safety.select_duration')} </Text>
         <View style={s.presetsRow}>
           {PRESETS.map((p, i) =>
-          <TouchableOpacity key={t(p.label)}
+          <TouchableOpacity accessibilityRole="button" key={t(p.label)}
           style={[s.presetPill, i === selected && s.presetPillActive, running && s.presetPillDisabled]}
           onPress={() => handlePreset(i)} activeOpacity={running ? 1 : 0.75}>
               <Text style={[s.presetLabel, i === selected && s.presetLabelActive]}>{t(p.label)}</Text>
@@ -136,7 +136,7 @@ export function SafetyTimerScreen(): React.JSX.Element {
 
         {/* Cancel link when running */}
         {running &&
-        <TouchableOpacity style={s.cancelLink} onPress={handleCancel} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" style={s.cancelLink} onPress={handleCancel} activeOpacity={0.7}>
             <Icon name="timer-off" size={14} color={colors.softWarning} />
             <Text style={s.cancelLinkText}> {t('safety.cancel_timer')} </Text>
           </TouchableOpacity>
@@ -147,7 +147,7 @@ export function SafetyTimerScreen(): React.JSX.Element {
 
       {/* Sticky CTA */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btn, running && s.btnDisabled]}
           onPress={handleStart} disabled={running}
           activeOpacity={0.85} accessibilityLabel={t("accessibility.start_safety_timer")}>

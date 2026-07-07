@@ -46,11 +46,11 @@ const CycleRow: React.FC<{
       <View style={s.fieldBody}>
         <Text style={s.fieldLabel}>{label}</Text>
         <View style={s.cycleWrap}>
-          <TouchableOpacity onPress={prev} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+          <TouchableOpacity accessibilityRole="button" onPress={prev} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Icon name="chevron-left" size={22} color={colors.textMuted} />
           </TouchableOpacity>
           <Text style={s.cycleValue}>{value}</Text>
-          <TouchableOpacity onPress={next} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+          <TouchableOpacity accessibilityRole="button" onPress={next} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Icon name="chevron-right" size={22} color={colors.textMuted} />
           </TouchableOpacity>
         </View>
@@ -133,7 +133,7 @@ export function AddAvailabilitySlotScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.footer}>
-        <TouchableOpacity style={s.saveBtn} onPress={handleSave} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={s.saveBtn} onPress={handleSave} activeOpacity={0.85}>
           <Icon name="check" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.saveBtnText}> {t('availability.save_availability_slot')} </Text>
         </TouchableOpacity>

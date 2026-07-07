@@ -252,7 +252,7 @@ export function BankDetailsScreen(): React.JSX.Element {
                STICKY SAVE BAR
             ══════════════════════════════════════════ */}
       <View style={styles.stickyBar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.saveBtn, (!isFormFilled || loading) && styles.saveBtnDisabled]}
           onPress={handleSave}
           disabled={!isFormFilled || loading}

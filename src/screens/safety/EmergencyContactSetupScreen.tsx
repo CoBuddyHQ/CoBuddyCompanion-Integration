@@ -56,7 +56,7 @@ export function EmergencyContactSetupScreen(): React.JSX.Element {
           <Text style={s.label}> {t('safety.relationship')} </Text>
           <View style={s.pillsRow}>
             {RELATIONS.map((r) =>
-            <TouchableOpacity key={r} style={[s.pill, relation === r && s.pillActive]} onPress={() => setRelation(r)} activeOpacity={0.75}>
+            <TouchableOpacity accessibilityRole="button" key={r} style={[s.pill, relation === r && s.pillActive]} onPress={() => setRelation(r)} activeOpacity={0.75}>
                 <Text style={[s.pillText, relation === r && s.pillTextActive]}>{r}</Text>
               </TouchableOpacity>
             )}
@@ -77,10 +77,10 @@ export function EmergencyContactSetupScreen(): React.JSX.Element {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btn, (!canContinue || saving) && s.btnDisabled]} onPress={handleContinue} disabled={!canContinue || saving} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={[s.btn, (!canContinue || saving) && s.btnDisabled]} onPress={handleContinue} disabled={!canContinue || saving} activeOpacity={0.85}>
           <Text style={s.btnText}>{saving ? t('common.saving', { defaultValue: 'Saving…' }) : t('common.continue', { defaultValue: 'Continue' })}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} activeOpacity={0.6} style={s.skipBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} activeOpacity={0.6} style={s.skipBtn}>
           <Text style={s.skipText}> {t('safety.skip_for_now')} </Text>
         </TouchableOpacity>
       </View>

@@ -95,7 +95,7 @@ export function IncomingCallScreen(): React.JSX.Element {
         <View style={s.actionRow}>
           {/* Decline */}
           <View style={s.actionWrap}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={s.declineBtn}
               onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
               activeOpacity={0.8}
@@ -107,7 +107,7 @@ export function IncomingCallScreen(): React.JSX.Element {
 
           {/* Accept */}
           <View style={s.actionWrap}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={s.acceptBtn}
               onPress={() => navigation.replace(Routes.IN_SESSION_CALL, {})}
               activeOpacity={0.8}

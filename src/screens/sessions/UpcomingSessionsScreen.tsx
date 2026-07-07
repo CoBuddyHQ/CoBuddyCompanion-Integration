@@ -102,7 +102,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session, onViewPass, onDetail
             <Text style={styles.chipGoldText}>{i18next.t("content.sessions.UpcomingSessionsScreen.confirmed")}</Text>
           </View>
         }
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.reminderBtn}
           onPress={onReminder}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -157,7 +157,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session, onViewPass, onDetail
 
       {/* ── Action buttons ── */}
       <View style={styles.actionRow}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.btnPass}
           onPress={onViewPass}
           activeOpacity={0.75}
@@ -165,7 +165,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session, onViewPass, onDetail
           <Icon name="confirmation-number" size={15} color={colors.gold} style={{ marginRight: 5 }} />
           <Text style={styles.btnPassText}>{i18next.t("content.sessions.UpcomingSessionsScreen.digital_pass")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.btnDetails}
           onPress={onDetails}
           activeOpacity={0.8}
@@ -197,7 +197,7 @@ const EmptyState: React.FC<{tab: TabKey;onViewRequests: () => void;}> = ({ tab, 
       <Text style={styles.emptyTitle}>{title}</Text>
       <Text style={styles.emptySubtitle}>{sub}</Text>
       {tab === 'upcoming' &&
-      <TouchableOpacity style={styles.emptyBtn} onPress={onViewRequests} activeOpacity={0.75}>
+      <TouchableOpacity accessibilityRole="button" style={styles.emptyBtn} onPress={onViewRequests} activeOpacity={0.75}>
           <Icon name="inbox" size={16} color={colors.gold} />
           <Text style={styles.emptyBtnText}>{i18next.t("content.sessions.UpcomingSessionsScreen.view_booking_requests")}</Text>
         </TouchableOpacity>
@@ -253,7 +253,7 @@ export function UpcomingSessionsScreen(): React.JSX.Element {
       {/* ── Tab bar ── */}
       <View style={styles.tabBar}>
         {TABS.map((tab) =>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={tab.key}
           style={styles.tabItem}
           onPress={() => setActiveTab(tab.key)}

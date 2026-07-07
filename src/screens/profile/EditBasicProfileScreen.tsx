@@ -165,7 +165,7 @@ export function EditBasicProfileScreen(): React.JSX.Element {
               {/* Online dot */}
               <View style={styles.onlineDot} />
             </View>
-            <TouchableOpacity style={styles.editPhotoBtn} activeOpacity={0.7}>
+            <TouchableOpacity accessibilityRole="button" style={styles.editPhotoBtn} activeOpacity={0.7}>
               <Icon name="camera-alt" size={14} color={colors.gold} />
               <Text style={styles.editPhotoText}> {t('profile.edit_photo')} </Text>
             </TouchableOpacity>
@@ -216,7 +216,7 @@ export function EditBasicProfileScreen(): React.JSX.Element {
             <View style={styles.staticField}>
               <View style={styles.staticFieldHeader}>
                 <Text style={inputStyles.label}> {t('profile.spoken_languages')} </Text>
-                <TouchableOpacity activeOpacity={0.7}
+                <TouchableOpacity accessibilityRole="button" activeOpacity={0.7}
                 onPress={() => navigation.navigate(Routes.EDIT_LANGUAGES)}>
                   <Text style={styles.staticFieldLink}> {t('profile.edit')} </Text>
                 </TouchableOpacity>
@@ -232,7 +232,7 @@ export function EditBasicProfileScreen(): React.JSX.Element {
             </View>
 
             {/* ── Change phone (read-only hint) ── */}
-            <TouchableOpacity style={[styles.staticField, { borderTopWidth: 0 }]}
+            <TouchableOpacity accessibilityRole="button" style={[styles.staticField, { borderTopWidth: 0 }]}
             onPress={() => Alert.alert(t("alerts.security_restriction"), t("alerts.to_change_your_registered_mobile_number"),
 
 
@@ -261,7 +261,7 @@ export function EditBasicProfileScreen(): React.JSX.Element {
         {isDirty && !loading &&
         <Text style={styles.unsavedHint}> {t('profile.you_have_unsaved_changes')} </Text>
         }
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.saveBtn, !isDirty && styles.saveBtnDisabled]}
           onPress={handleSave}
           disabled={loading}

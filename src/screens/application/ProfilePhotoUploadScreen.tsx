@@ -157,7 +157,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
           <Text style={styles.cardTitle}>{t("application.profile_photo")}</Text>
 
           {/* Circular upload zone */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.uploadZone, photoUri && styles.uploadZoneActive]}
             onPress={() => showPicker('camera')}
             accessibilityLabel={t("accessibility.upload_profile_photo")}
@@ -174,14 +174,14 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
 
           {/* Camera / Gallery row */}
           <View style={styles.pickerRow}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.pickerBtn}
               onPress={() => showPicker('camera')}
               accessibilityLabel={t("content.application_kyc.ProfilePhotoUploadContent.CTA_CAMERA")}>
               <Icon name="photo-camera" size={spacing.iconMd} color={colors.textPrimary} />
               <Text style={styles.pickerBtnText}>{t("content.application_kyc.ProfilePhotoUploadContent.CTA_CAMERA")}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.pickerBtn}
               onPress={() => showPicker('gallery')}
               accessibilityLabel={t("accessibility.choose_from_gallery")}>

@@ -105,7 +105,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
             }
 
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={sortType}
                 style={styles.radioRow}
                 onPress={() => setLocalFilter((p) => ({ ...p, sortBy: sortType }))}
@@ -148,7 +148,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
             }
 
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={status}
                 style={styles.radioRow}
                 onPress={() => setLocalFilter((p) => ({ ...p, status }))}
@@ -174,7 +174,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
           {EXPERIENCE_CATEGORIES.map((cat) => {
             const isSelected = localFilter.categories.includes(cat.id);
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={cat.id}
                 style={[styles.card, isSelected && styles.cardSelected]}
                 onPress={() => toggleCategory(cat.id)}
@@ -223,7 +223,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
             const label = val === 0 ? t("content.requests.BookingRequestsFilterScreen.any") : `₹${val.toLocaleString('en-IN')}`;
 
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={val}
                 style={[styles.earningPill, isSelected && styles.earningPillSelected]}
                 onPress={() => setLocalFilter((p) => ({ ...p, minEarning: val }))}
@@ -241,7 +241,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
 
       {/* ── FIXED BOTTOM BUTTON ── */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85}>
           <Text style={styles.applyBtnText}>
             {activeCount > 0 ? `Apply Filters (${activeCount} active)` : t("content.requests.BookingRequestsFilterScreen.apply_filters")}
           </Text>

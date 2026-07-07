@@ -151,7 +151,7 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
             style={styles.primaryBtn}
             accessibilityLabel={t("accessibility.enable_biometric_access")} />
           
-          <TouchableOpacity style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.BiometricContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>

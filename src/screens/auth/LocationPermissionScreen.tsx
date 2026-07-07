@@ -121,7 +121,7 @@ const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t
             style={styles.primaryBtn}
             accessibilityLabel={t("accessibility.allow_location_access")} />
           
-          <TouchableOpacity style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.LocationPermContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>

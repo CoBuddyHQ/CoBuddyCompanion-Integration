@@ -53,7 +53,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
             <Text style={s.sectionLabel}> {t('support.category')} </Text>
             <View style={s.pillsWrap}>
               {DISPUTE_CATS.map(c => (
-                <TouchableOpacity key={c} style={[s.pill, category === c && s.pillActive]}
+                <TouchableOpacity accessibilityRole="button" key={c} style={[s.pill, category === c && s.pillActive]}
                   onPress={() => setCategory(c)} activeOpacity={0.75}>
                   <Text style={[s.pillText, category === c && s.pillTextActive]}>{c}</Text>
                 </TouchableOpacity>
@@ -69,7 +69,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
           </ScrollView>
         </KeyboardAvoidingView>
         <View style={s.bar}>
-          <TouchableOpacity style={[s.btnGold, (!canSubmit || submitting) && s.btnDisabled]}
+          <TouchableOpacity accessibilityRole="button" style={[s.btnGold, (!canSubmit || submitting) && s.btnDisabled]}
             onPress={handleSubmit} disabled={!canSubmit || submitting} activeOpacity={0.85}>
             <Text style={s.btnGoldText}>{submitting ? t('common.loading') : t('support.submit_dispute')}</Text>
           </TouchableOpacity>
@@ -126,7 +126,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
         </View>
 
         {/* Evidence link */}
-        <TouchableOpacity style={s.evidenceRow}
+        <TouchableOpacity accessibilityRole="button" style={s.evidenceRow}
           onPress={() => navigation.navigate(Routes.INCIDENT_EVIDENCE_UPLOAD)} activeOpacity={0.75}>
           <Icon name="attach-file" size={18} color={colors.gold} />
           <Text style={s.evidenceText}> {t('support.add_more_evidence')} </Text>
@@ -134,7 +134,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
         </TouchableOpacity>
 
         {/* Appeal link */}
-        <TouchableOpacity style={s.appealLink}
+        <TouchableOpacity accessibilityRole="button" style={s.appealLink}
           onPress={() => navigation.navigate(Routes.APPEAL_DECISION, {disputeId})} activeOpacity={0.7}>
           <Text style={s.appealLinkText}> {t('support.appeal_decision')} </Text>
         </TouchableOpacity>

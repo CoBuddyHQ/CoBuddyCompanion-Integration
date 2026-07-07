@@ -98,7 +98,7 @@ export function CustomerTrustSnapshotScreen(): React.JSX.Element {const { t } = 
           <Icon name="person-off" size={48} color={colors.textMuted} />
           <Text style={s.notFoundTitle}>{t("application.customer_not_found")}</Text>
           <Text style={s.notFoundSub}>{t("application.this_request_may_have_expired_or_been_re")}</Text>
-          <TouchableOpacity style={s.backBtn} onPress={() => navigation.goBack()}>
+          <TouchableOpacity accessibilityRole="button" style={s.backBtn} onPress={() => navigation.goBack()}>
             <Text style={s.backBtnText}>{t("application.go_back")}</Text>
           </TouchableOpacity>
         </View>
@@ -190,7 +190,7 @@ export function CustomerTrustSnapshotScreen(): React.JSX.Element {const { t } = 
 
       {/* ── Sticky footer ── */}
       <View style={s.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.acceptBtn, loading && { opacity: 0.65 }]}
           onPress={handleAccept}
           disabled={loading}

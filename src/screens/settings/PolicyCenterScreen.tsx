@@ -112,7 +112,7 @@ function PolicyCard({ section }: {section: PolicySection;}) {
 
   return (
     <View style={[s.card, { borderLeftColor: section.iconColor, borderLeftWidth: 3 }]}>
-      <TouchableOpacity style={s.cardHeader} onPress={toggle} activeOpacity={0.8}>
+      <TouchableOpacity accessibilityRole="button" style={s.cardHeader} onPress={toggle} activeOpacity={0.8}>
         <View style={[s.iconWrap, { backgroundColor: section.accentColor }]}>
           <Icon name={section.icon as any} size={20} color={section.iconColor} />
         </View>

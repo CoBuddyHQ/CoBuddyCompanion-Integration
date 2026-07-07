@@ -69,7 +69,7 @@ export function IncidentSubmittedScreen(): React.JSX.Element {
         </View>
 
         {/* Support link */}
-        <TouchableOpacity style={s.supportRow}
+        <TouchableOpacity accessibilityRole="button" style={s.supportRow}
         onPress={() => navigation.navigate(Routes.SUPPORT_CENTER)}
         activeOpacity={0.7}>
           <Icon name="headset-mic" size={16} color={colors.gold} />
@@ -80,7 +80,7 @@ export function IncidentSubmittedScreen(): React.JSX.Element {
 
       {/* Return home */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnHome} onPress={handleGoHome} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={s.btnHome} onPress={handleGoHome} activeOpacity={0.85}>
           <Icon name="home" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnHomeText}> {t('safety.return_to_home')} </Text>
         </TouchableOpacity>

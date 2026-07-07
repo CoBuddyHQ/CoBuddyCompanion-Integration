@@ -88,14 +88,14 @@ export function CustomerNoShowScreen(): React.JSX.Element {
         {/* Options */}
         <Text style={s.sectionTitle}> {t('sessions.your_options')} </Text>
 
-        <TouchableOpacity style={s.btnWait}
+        <TouchableOpacity accessibilityRole="button" style={s.btnWait}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         activeOpacity={0.75}>
           <Icon name="schedule" size={18} color={colors.gold} />
           <Text style={s.btnWaitText}> {t('sessions.wait_a_little_longer')} </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.btnChat}
+        <TouchableOpacity accessibilityRole="button" style={s.btnChat}
         onPress={() => navigation.navigate(Routes.IN_SESSION_CHAT, { sessionId })}
         activeOpacity={0.85}>
           <Icon name="chat" size={18} color={colors.rootBg} />
@@ -107,7 +107,7 @@ export function CustomerNoShowScreen(): React.JSX.Element {
 
       {/* Sticky red CTA */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnNoShow} onPress={handleReportNoShow}
+        <TouchableOpacity accessibilityRole="button" style={s.btnNoShow} onPress={handleReportNoShow}
         activeOpacity={0.85} accessibilityLabel={t("accessibility.report_no_show")}>
           <Icon name="person-off" size={18} color="#fff" style={{ marginRight: 8 }} />
           <Text style={s.btnNoShowText}> {t('sessions.report_no_show')} </Text>

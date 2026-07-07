@@ -66,7 +66,7 @@ const PulsingDot: React.FC = () => {
 // ─── Nav row ─────────────────────────────────────────────────────────────────
 
 const NavRow: React.FC<{icon: string;label: string;onPress: () => void;}> = ({ icon, label, onPress }) =>
-<TouchableOpacity style={styles.navRow} onPress={onPress} activeOpacity={0.75}>
+<TouchableOpacity accessibilityRole="button" style={styles.navRow} onPress={onPress} activeOpacity={0.75}>
     <View style={styles.navRowLeft}>
       <Icon name={icon as any} size={18} color={colors.gold} />
       <Text style={styles.navRowLabel}>{label}</Text>
@@ -95,7 +95,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
         <View style={styles.centeredMsg}>
           <Icon name="search-off" size={44} color={colors.textMuted} />
           <Text style={styles.centeredTitle}> {i18next.t('sessions.session_not_found_1')} </Text>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <TouchableOpacity accessibilityRole="button" style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.backBtnText}> {i18next.t('sessions.go_back_1')} </Text>
           </TouchableOpacity>
         </View>
@@ -162,14 +162,14 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
             </View>
             {/* Contact actions */}
             <View style={styles.contactBtns}>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[styles.iconBtn, !canContact && styles.iconBtnMuted]}
                 disabled={!canContact}
                 onPress={() => (navigation as any).navigate(Routes.IN_SESSION_CHAT, { sessionId })}
                 accessibilityLabel={i18next.t("accessibility.chat")}>
                 <Icon name="chat" size={18} color={canContact ? colors.gold : colors.textMuted} />
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[styles.iconBtn, !canContact && styles.iconBtnMuted]}
                 disabled={!canContact}
                 onPress={() => (navigation as any).navigate(Routes.IN_SESSION_CALL, { sessionId })}
@@ -218,7 +218,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
             <Text style={styles.detailLabel}> {i18next.t('sessions.meet_at')} </Text>
             <View style={styles.meetRow}>
               <Text style={[styles.detailValue, { flex: 1 }]}>{venue.meetingPoint}</Text>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={styles.navigateLink}
                 onPress={() => (navigation as any).navigate(Routes.NAVIGATION_TO_VENUE, { sessionId })}
                 accessibilityLabel={i18next.t("accessibility.navigate_to_venue")}>
@@ -320,7 +320,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
         {/* ══════════════════════════════════════════
                 SECTION 4 — DIGITAL PASS
              ══════════════════════════════════════════ */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.passCard}
           onPress={() => (navigation as any).navigate(Routes.DIGITAL_SESSION_PASS, { sessionId })}
           activeOpacity={0.8}>
@@ -342,7 +342,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
            ══════════════════════════════════════════ */}
       <View style={styles.footer}>
         {isActive ?
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.btnRed}
           onPress={() => (navigation as any).navigate(Routes.SESSION_COMPLETE, { sessionId })}
           activeOpacity={0.85}
@@ -353,7 +353,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
 
         <>
             {/* Secondary: Get Directions */}
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
             style={styles.btnOutline}
             onPress={() => (navigation as any).navigate(Routes.NAVIGATION_TO_VENUE, { sessionId })}
             activeOpacity={0.8}
@@ -363,7 +363,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
             </TouchableOpacity>
 
             {/* Primary: I've Arrived */}
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
             style={[styles.btnGold, { marginTop: spacing.sm }]}
             onPress={() => (navigation as any).navigate(Routes.PRE_ARRIVAL, { sessionId })}
             activeOpacity={0.85}
@@ -373,7 +373,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
             </TouchableOpacity>
 
             {/* Tertiary: Cancel link */}
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
             style={styles.cancelLink}
             onPress={() => (navigation as any).navigate(Routes.CANCEL_SESSION_REQUEST, { sessionId })}
             accessibilityLabel={i18next.t("accessibility.cancel_session")}>

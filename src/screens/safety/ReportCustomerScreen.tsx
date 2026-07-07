@@ -68,7 +68,7 @@ export function ReportCustomerScreen(): React.JSX.Element {
         {/* Report categories */}
         <Text style={s.sectionLabel}> {t('safety.report_category')} </Text>
         {CATEGORIES.map(cat => (
-          <TouchableOpacity key={cat.label}
+          <TouchableOpacity accessibilityRole="button" key={cat.label}
             style={[s.categoryCard, category === cat.label && s.categoryCardActive]}
             onPress={() => setCategory(cat.label)} activeOpacity={0.75}>
             <Icon name={cat.icon as any} size={22}
@@ -99,7 +99,7 @@ export function ReportCustomerScreen(): React.JSX.Element {
         </View>
 
         {/* Attach evidence */}
-        <TouchableOpacity style={s.attachRow}
+        <TouchableOpacity accessibilityRole="button" style={s.attachRow}
           onPress={() => navigation.navigate(Routes.INCIDENT_EVIDENCE_UPLOAD)}
           activeOpacity={0.75}>
           <Icon name="attach-file" size={18} color={colors.textMuted} />
@@ -108,7 +108,7 @@ export function ReportCustomerScreen(): React.JSX.Element {
         </TouchableOpacity>
 
         {/* Also block */}
-        <TouchableOpacity style={s.checkRow}
+        <TouchableOpacity accessibilityRole="button" style={s.checkRow}
           onPress={() => setAlsoBlock(b => !b)} activeOpacity={0.75}>
           <Icon name={alsoBlock ? 'check-circle' : 'radio-button-unchecked'} size={22}
             color={alsoBlock ? colors.gold : colors.textMuted} />
@@ -124,7 +124,7 @@ export function ReportCustomerScreen(): React.JSX.Element {
           <Icon name="lock" size={13} color={colors.textMuted} />
           <Text style={s.confidentialText}> {t('safety.report_is_confidential')} </Text>
         </View>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btnSubmit, (!canSubmit || submitting) && s.btnDisabled]}
           onPress={handleSubmit} disabled={!canSubmit || submitting} activeOpacity={0.85}>
           <Icon name="flag" size={18} color="#fff" style={{marginRight: 8}} />

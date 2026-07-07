@@ -190,7 +190,7 @@ export function ProfileReviewPendingScreen({ navigation }: Props): React.JSX.Ele
           accessibilityLabel={t("accessibility.contact_support")} />
         
         {/* ─── DEV BYPASS — remove before production release ─── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.devBypass}
           onPress={() => setAuthStatus('active')}
           accessibilityLabel={t("accessibility.dev_bypass_force_approve")}>

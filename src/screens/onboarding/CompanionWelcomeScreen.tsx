@@ -122,7 +122,7 @@ const CompanionWelcomeScreen: React.FC<Props> = ({ navigation }) => {
             style={styles.primaryBtn}
             accessibilityLabel={t("accessibility.continue_to_companion_onboarding")} />
           
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.signInLink}
             onPress={() => navigation.navigate(Routes.PHONE_LOGIN as any)}>
             <Text style={styles.signInText}> {t('onboarding.already_onboarded')} {' '}</Text>

@@ -231,7 +231,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
             
 
             {/* Primary toggle */}
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.primaryToggleRow}
               onPress={() => setIsPrimary(!isPrimary)}
               accessibilityLabel={t("content.application_kyc.UPIDetailsContent.PRIMARY_TOGGLE")}
@@ -263,7 +263,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
           </GlassCard>
 
           {/* ── Confirmation row ── */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.confirmRow}
             onPress={() => setConfirmed(!confirmed)}
             accessibilityLabel={t("accessibility.confirm_upi_details_accuracy")}

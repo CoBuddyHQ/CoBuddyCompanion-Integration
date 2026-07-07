@@ -120,7 +120,7 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
         </View>
 
         {/* ── Selfie alternative ── */}
-        <TouchableOpacity style={styles.selfieBtn} activeOpacity={0.75}
+        <TouchableOpacity accessibilityRole="button" style={styles.selfieBtn} activeOpacity={0.75}
         accessibilityLabel={t("accessibility.take_venue_selfie")}>
           <Icon name="camera-alt" size={18} color={colors.gold} style={{ marginRight: spacing.sm }} />
           <Text style={styles.selfieBtnText}> {t('sessions.take_a_venue_selfie_instead')} </Text>
@@ -136,7 +136,7 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
 
       {/* ── Footer ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.btnStart, !canStart && styles.btnDisabled]}
           onPress={handleStart}
           disabled={!canStart}

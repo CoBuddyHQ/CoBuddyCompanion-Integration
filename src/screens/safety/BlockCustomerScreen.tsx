@@ -95,7 +95,7 @@ export function BlockCustomerScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('safety.reason_for_blocking')} </Text>
         <View style={s.pillsWrap}>
           {BLOCK_REASONS.map((r) =>
-          <TouchableOpacity key={r}
+          <TouchableOpacity accessibilityRole="button" key={r}
           style={[s.pill, reason === r && s.pillActive]}
           onPress={() => setReason(r)} activeOpacity={0.75}>
               <Text style={[s.pillText, reason === r && s.pillTextActive]}>{r}</Text>
@@ -136,13 +136,13 @@ export function BlockCustomerScreen(): React.JSX.Element {
 
       {/* Actions */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btnBlock, (!canBlock || blocking) && s.btnDisabled]}
           onPress={handleBlock} disabled={!canBlock || blocking} activeOpacity={0.85}>
           <Icon name="block" size={18} color="#fff" style={{ marginRight: 8 }} />
           <Text style={s.btnBlockText}>{blocking ? t("content.safety.BlockCustomerScreen.blocking") : t("content.safety.BlockCustomerScreen.block_customer")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btnCancel}
+        <TouchableOpacity accessibilityRole="button" style={s.btnCancel}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         activeOpacity={0.75}>
           <Text style={s.btnCancelText}>{t('common.cancel')}</Text>

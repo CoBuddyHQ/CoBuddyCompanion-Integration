@@ -92,7 +92,7 @@ export function SupportTicketDetailScreen(): React.JSX.Element {
           <TextInput style={s.replyInput} value={reply} onChangeText={setReply}
           placeholder={t('support.add_a_reply')} placeholderTextColor={colors.textMuted}
           selectionColor={colors.gold} multiline />
-          <TouchableOpacity style={[s.sendBtn, !reply.trim() && s.sendBtnDisabled]}
+          <TouchableOpacity accessibilityRole="button" style={[s.sendBtn, !reply.trim() && s.sendBtnDisabled]}
           onPress={handleSend} disabled={!reply.trim()} activeOpacity={0.8}>
             <Icon name="send" size={20} color={reply.trim() ? colors.rootBg : colors.textMuted} />
           </TouchableOpacity>

@@ -88,7 +88,7 @@ export function SOSConfirmationScreen(): React.JSX.Element {
 
       {/* Cancel SOS */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.cancelBtn} onPress={handleCancelSOS} activeOpacity={0.8}>
+        <TouchableOpacity accessibilityRole="button" style={s.cancelBtn} onPress={handleCancelSOS} activeOpacity={0.8}>
           <Text style={s.cancelBtnText}> {t('safety.cancel_sos_i_m_safe')} </Text>
         </TouchableOpacity>
       </View>

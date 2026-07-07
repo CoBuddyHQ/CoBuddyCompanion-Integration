@@ -214,14 +214,14 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
         <View style={styles.card}>
           {/* Month navigation */}
           <View style={styles.monthHeader}>
-            <TouchableOpacity onPress={prevMonth} style={styles.monthNavBtn}
+            <TouchableOpacity accessibilityRole="button" onPress={prevMonth} style={styles.monthNavBtn}
             accessibilityLabel={i18next.t("accessibility.previous_month")}>
               <Icon name="chevron-left" size={22} color={colors.textSecondary} />
             </TouchableOpacity>
             <Text style={styles.monthTitle}>
               {MONTH_NAMES[calMonth]} {calYear}
             </Text>
-            <TouchableOpacity onPress={nextMonth} style={styles.monthNavBtn}
+            <TouchableOpacity accessibilityRole="button" onPress={nextMonth} style={styles.monthNavBtn}
             accessibilityLabel={i18next.t("accessibility.next_month")}>
               <Icon name="chevron-right" size={22} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -242,7 +242,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
           </View>
 
           {defaultHours.map((item) =>
-          <TouchableOpacity key={item.day} style={styles.dayRow} activeOpacity={0.7}
+          <TouchableOpacity accessibilityRole="button" key={item.day} style={styles.dayRow} activeOpacity={0.7}
           onPress={() => navigation.navigate(Routes.EDIT_AVAILABILITY_SLOT, { slotId: item.day })}>
               {/* Toggle + Day */}
               <Switch
@@ -273,7 +273,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.editScheduleBtn}
             onPress={() => navigation.navigate(Routes.WEEKLY_RECURRING_AVAILABILITY)}
             activeOpacity={0.75}>
@@ -310,14 +310,14 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
                   <Text style={styles.overrideDate}>{o.startDate}{o.startDate !== o.endDate ? ` → ${o.endDate}` : ''}</Text>
                   <Text style={styles.overrideLabel}>{t(o.reason)}{o.note ? ` · ${o.note}` : ''}</Text>
                 </View>
-                <TouchableOpacity onPress={() => useAvailabilityStore.getState().removeOverride(o.id)}>
+                <TouchableOpacity accessibilityRole="button" onPress={() => useAvailabilityStore.getState().removeOverride(o.id)}>
                   <Icon name="close" size={18} color={colors.textMuted} />
                 </TouchableOpacity>
               </View>
           )
           }
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.addOverrideBtn}
             onPress={() => navigation.navigate(Routes.BLOCK_TIME_DAY_OFF)}
             activeOpacity={0.8}
@@ -328,7 +328,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
         </View>
 
         {/* ── Go Live link ── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.vacationRow}
           onPress={() => navigation.navigate(Routes.LIVE_AVAILABILITY_TOGGLE)}
           activeOpacity={0.75}>
@@ -338,7 +338,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
         </TouchableOpacity>
 
         {/* ── Vacation mode link ── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.vacationRow}
           onPress={() => navigation.navigate(Routes.VACATION_MODE)}
           activeOpacity={0.75}>

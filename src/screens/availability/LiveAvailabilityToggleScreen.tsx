@@ -77,7 +77,7 @@ export function LiveAvailabilityToggleScreen(): React.JSX.Element {
           <Text style={s.settingSub}> {t('availability.how_far_away_customers_can_see_you')} </Text>
           <View style={s.radiusPills}>
             {RADIUS_OPTIONS.map((r) =>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={r}
               disabled={!isLive}
               style={[s.radiusPill, liveRadius === r && s.radiusPillActive, !isLive && s.radiusPillDisabled]}

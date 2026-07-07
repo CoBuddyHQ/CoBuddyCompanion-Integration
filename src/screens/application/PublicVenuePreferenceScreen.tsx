@@ -109,7 +109,7 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
             {((Array.isArray(t("content.application_kyc.PublicVenuePreferenceContent.VENUES", { returnObjects: true })) ? (t("content.application_kyc.PublicVenuePreferenceContent.VENUES", { returnObjects: true }) as any[]) : [])).map((v, index) => {
               const selected = venuePreferences.includes(v.id);
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${v.id}`}
                   style={[styles.tile, selected && styles.tileSelected]}
                   onPress={() => toggleVenuePreference(v.id)}

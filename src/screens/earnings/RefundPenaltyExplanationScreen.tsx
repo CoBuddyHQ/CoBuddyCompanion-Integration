@@ -57,7 +57,7 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
             </View>
           )}
         </View>
-        <TouchableOpacity style={s.policyLink}
+        <TouchableOpacity accessibilityRole="button" style={s.policyLink}
         onPress={() => navigation.navigate(Routes.POLICY_CENTER)} activeOpacity={0.7}>
           <Icon name="menu-book" size={16} color={colors.gold} />
           <Text style={s.policyLinkText}> {t('earnings.view_cancellation_policy')} </Text>
@@ -66,7 +66,7 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
         <View style={{ height: 100 }} />
       </ScrollView>
       <View style={s.bar}>
-        <TouchableOpacity style={s.btn}
+        <TouchableOpacity accessibilityRole="button" style={s.btn}
         onPress={() => navigation.navigate(Routes.CREATE_SUPPORT_TICKET)} activeOpacity={0.85}>
           <Icon name="gavel" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnText}> {t('earnings.appeal_this_penalty')} </Text>

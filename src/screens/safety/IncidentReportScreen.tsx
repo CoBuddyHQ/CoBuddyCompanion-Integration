@@ -72,7 +72,7 @@ export function IncidentReportScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('safety.incident_type')} </Text>
         <View style={s.typeGrid}>
           {INCIDENT_TYPES.map(item => (
-            <TouchableOpacity key={item.label}
+            <TouchableOpacity accessibilityRole="button" key={item.label}
               style={[s.typeCard, incidentType === item.label && s.typeCardActive]}
               onPress={() => setIncidentType(item.label)} activeOpacity={0.75}>
               <Icon name={item.icon as any} size={22}
@@ -105,7 +105,7 @@ export function IncidentReportScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('safety.when_did_it_happen')} </Text>
         <View style={s.whenRow}>
           {WHEN_OPTS.map(w => (
-            <TouchableOpacity key={w}
+            <TouchableOpacity accessibilityRole="button" key={w}
               style={[s.whenPill, when === w && s.whenPillActive]}
               onPress={() => setWhen(w)} activeOpacity={0.75}>
               <Text style={[s.whenText, when === w && s.whenTextActive]}>{w}</Text>
@@ -114,7 +114,7 @@ export function IncidentReportScreen(): React.JSX.Element {
         </View>
 
         {/* Attach evidence */}
-        <TouchableOpacity style={s.attachRow}
+        <TouchableOpacity accessibilityRole="button" style={s.attachRow}
           onPress={() => navigation.navigate(Routes.INCIDENT_EVIDENCE_UPLOAD, {incidentId: `draft-${Math.random().toString(36).substring(2, 9)}`})}
           activeOpacity={0.75}>
           <Icon name="attach-file" size={18} color={colors.gold} />
@@ -126,7 +126,7 @@ export function IncidentReportScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btnSubmit, !canSubmit && s.btnDisabled]}
           onPress={handleSubmit} disabled={!canSubmit} activeOpacity={0.85}>
           <Icon name="flag" size={18} color="#fff" style={{marginRight: 8}} />

@@ -80,7 +80,7 @@ export function AddTrustedContactScreen(): React.JSX.Element {
           <Text style={s.label}> {t('safety.relationship')} </Text>
           <View style={s.pillsRow}>
             {RELATIONS.map((r) =>
-            <TouchableOpacity key={r}
+            <TouchableOpacity accessibilityRole="button" key={r}
             style={[s.pill, relation === r && s.pillActive]}
             onPress={() => setRelation(r)} activeOpacity={0.75}>
                 <Text style={[s.pillText, relation === r && s.pillTextActive]}>{r}</Text>
@@ -126,7 +126,7 @@ export function AddTrustedContactScreen(): React.JSX.Element {
 
       {/* Sticky CTA */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btn, (!canSave || saving) && s.btnDisabled]}
           onPress={handleSave} disabled={!canSave || saving}
           activeOpacity={0.85}>

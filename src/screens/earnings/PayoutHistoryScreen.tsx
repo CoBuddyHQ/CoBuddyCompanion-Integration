@@ -116,7 +116,7 @@ const ListHeader: React.FC<{
       {FILTERS.map((f) => {
           const active = f.key === activeFilter;
           return (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={f.key}
               style={[styles.filterPill, active && styles.filterPillActive]}
               onPress={() => onFilter(f.key)}
@@ -237,7 +237,7 @@ export function PayoutHistoryScreen(): React.JSX.Element {
 
       {/* Floating download button */}
       <View style={styles.fab}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.fabBtn}
           onPress={handleDownload}
           activeOpacity={0.85}

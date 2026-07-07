@@ -84,7 +84,7 @@ export function EditTrustedContactScreen(): React.JSX.Element {
           <Text style={s.label}> {t('safety.relationship')} </Text>
           <View style={s.pillsRow}>
             {RELATIONS.map((r) =>
-            <TouchableOpacity key={r}
+            <TouchableOpacity accessibilityRole="button" key={r}
             style={[s.pill, relation === r && s.pillActive]}
             onPress={() => setRelation(r)} activeOpacity={0.75}>
                 <Text style={[s.pillText, relation === r && s.pillTextActive]}>{r}</Text>
@@ -123,7 +123,7 @@ export function EditTrustedContactScreen(): React.JSX.Element {
           </View>
 
           {/* Remove link */}
-          <TouchableOpacity style={s.removeLink} onPress={handleRemove} activeOpacity={0.7}>
+          <TouchableOpacity accessibilityRole="button" style={s.removeLink} onPress={handleRemove} activeOpacity={0.7}>
             <Icon name="delete-outline" size={16} color={colors.softWarning} />
             <Text style={s.removeLinkText}> {t('safety.remove_contact')} </Text>
           </TouchableOpacity>
@@ -133,7 +133,7 @@ export function EditTrustedContactScreen(): React.JSX.Element {
       </KeyboardAvoidingView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btn, saving && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btn, saving && s.btnDisabled]}
         onPress={handleSave} disabled={saving} activeOpacity={0.85}>
           <Text style={s.btnText}>{saving ? t('common.saving', { defaultValue: 'Saving…' }) : t('safety.save_changes', { defaultValue: 'Save Changes' })}</Text>
         </TouchableOpacity>

@@ -66,7 +66,7 @@ export function NetworkErrorScreen(): React.JSX.Element {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={[s.retryBtn, retrying && s.retryBtnLoading]}
+        <TouchableOpacity accessibilityRole="button" style={[s.retryBtn, retrying && s.retryBtnLoading]}
         onPress={handleRetry} disabled={retrying} activeOpacity={0.85}>
           {retrying ?
           <Animated.View style={{ transform: [{ rotate }], marginRight: 8 }}>

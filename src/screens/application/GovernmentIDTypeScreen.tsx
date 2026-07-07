@@ -119,7 +119,7 @@ export function GovernmentIDTypeScreen({
           <View style={styles.radioGroup} accessibilityRole="radiogroup">
             {ID_OPTIONS.map((option) => {
             const isSelected = selectedId === option.id;
-            return <TouchableOpacity key={option.id} style={[styles.radioRow, isSelected && styles.radioRowSelected]} onPress={() => setSelectedId(option.id)} accessibilityRole="radio" accessibilityState={{
+            return <TouchableOpacity accessibilityRole="button" key={option.id} style={[styles.radioRow, isSelected && styles.radioRowSelected]} onPress={() => setSelectedId(option.id)} accessibilityRole="radio" accessibilityState={{
               selected: isSelected
             }}>
                   {/* Radio indicator */}

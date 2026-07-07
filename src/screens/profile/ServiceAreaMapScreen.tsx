@@ -23,7 +23,7 @@ export function ServiceAreaMapScreen(): React.JSX.Element {
 
       {/* Header overlays the map */}
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.backBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
@@ -81,7 +81,7 @@ export function ServiceAreaMapScreen(): React.JSX.Element {
           </View>
         </View>
 
-        <TouchableOpacity style={s.adjustBtn}
+        <TouchableOpacity accessibilityRole="button" style={s.adjustBtn}
         onPress={() => navigation.navigate(Routes.TRAVEL_RADIUS_PREFERENCE)}
         activeOpacity={0.85}>
           <Icon name="tune" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />

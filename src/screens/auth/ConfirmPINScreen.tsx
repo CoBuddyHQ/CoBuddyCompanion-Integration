@@ -115,7 +115,7 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
 
         {/* PIN dot display */}
         <Text style={styles.pinLabel}>{t("content.auth_onboarding.ConfirmPINContent.RE_ENTER")}</Text>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.dotContainer}
           activeOpacity={1}
           onPress={() => {
@@ -185,7 +185,7 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
             style={styles.primaryBtn}
             accessibilityLabel={t("accessibility.confirm_pin")} />
           
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.changeBtn}
             onPress={() => navigation.goBack()}>
             <Text style={styles.changeBtnText}>{t("content.auth_onboarding.ConfirmPINContent.CHANGE_PIN")}</Text>

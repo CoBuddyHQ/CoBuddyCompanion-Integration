@@ -65,12 +65,12 @@ export function HelpArticleScreen(): React.JSX.Element {
         <View style={s.feedbackCard}>
           <Text style={s.feedbackLabel}> {t('support.was_this_helpful')} </Text>
           <View style={s.feedbackBtns}>
-            <TouchableOpacity style={[s.feedbackBtn, feedback === 'up' && s.feedbackBtnUp]}
+            <TouchableOpacity accessibilityRole="button" style={[s.feedbackBtn, feedback === 'up' && s.feedbackBtnUp]}
             onPress={() => handleFeedback('up')} activeOpacity={0.75}>
               <Icon name="thumb-up" size={20} color={feedback === 'up' ? colors.safetyGreen : colors.textMuted} />
               <Text style={[s.feedbackBtnText, feedback === 'up' && { color: colors.safetyGreen }]}>{t('common.yes')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[s.feedbackBtn, feedback === 'down' && s.feedbackBtnDown]}
+            <TouchableOpacity accessibilityRole="button" style={[s.feedbackBtn, feedback === 'down' && s.feedbackBtnDown]}
             onPress={() => handleFeedback('down')} activeOpacity={0.75}>
               <Icon name="thumb-down" size={20} color={feedback === 'down' ? '#E74C3C' : colors.textMuted} />
               <Text style={[s.feedbackBtnText, feedback === 'down' && { color: '#E74C3C' }]}>{t('common.no')}</Text>
@@ -82,7 +82,7 @@ export function HelpArticleScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnContact}
+        <TouchableOpacity accessibilityRole="button" style={s.btnContact}
         onPress={() => navigation.navigate(Routes.CREATE_SUPPORT_TICKET)} activeOpacity={0.85}>
           <Text style={s.btnContactText}> {t('support.contact_support')} </Text>
         </TouchableOpacity>

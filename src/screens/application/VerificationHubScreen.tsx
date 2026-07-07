@@ -123,7 +123,7 @@ export function VerificationHubScreen({ navigation }: Props): React.JSX.Element 
                 navigateToRequirementFixScreen(navigation, route);
               };
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={label}
                   style={styles.stepRow}
                   onPress={handleItemPress}
@@ -190,7 +190,7 @@ export function VerificationHubScreen({ navigation }: Props): React.JSX.Element 
           accessibilityLabel={t("accessibility.save_and_continue_later")} />
         
         {/* ─── DEV BYPASS — remove before production release ─── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.devBypass}
           onPress={() => setAuthStatus('active')}
           accessibilityLabel={t("accessibility.dev_bypass_force_approve")}>

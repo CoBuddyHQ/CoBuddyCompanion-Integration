@@ -94,7 +94,7 @@ function CorrectionRow({ icon, label, description, status, onEdit }: CorrectionR
         <Text style={corrRowStyles.desc}>{description}</Text>
       </View>
       {status !== 'corrected' &&
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         style={corrRowStyles.editBtn}
         onPress={onEdit}
         accessibilityLabel={t("accessibility.edit_item", { label: label })}>

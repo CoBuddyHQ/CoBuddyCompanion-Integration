@@ -81,7 +81,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
           {((Array.isArray(t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true })) ? (t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true }) as any[]) : [])).map((lang, idx) => {
             const isSelected = selectedCode === lang.code;
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={`ui-opt-${idx}-${lang.code}`}
                 style={[
                 styles.langRow,
@@ -131,7 +131,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
             disabled={!selectedCode}
             accessibilityLabel={t("accessibility.continue_with_selected_language")} />
           
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.ghostBtn}
             onPress={handleEnglishFallback}>
             <Text style={styles.ghostBtnText}>{t("content.auth_onboarding.LanguageContent.USE_ENGLISH")}</Text>

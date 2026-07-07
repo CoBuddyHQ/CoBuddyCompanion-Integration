@@ -52,13 +52,13 @@ const CycleField: React.FC<{
       <Icon name={icon as any} size={14} color={colors.gold} />
       <Text style={cf.label}>{label}</Text>
       <View style={cf.row}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           onPress={() => onChange(options[(idx - 1 + options.length) % options.length])}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
           <Icon name="chevron-left" size={20} color={colors.textMuted} />
         </TouchableOpacity>
         <Text style={cf.value}>{value}</Text>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           onPress={() => onChange(options[(idx + 1) % options.length])}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
           <Icon name="chevron-right" size={20} color={colors.textMuted} />
@@ -196,7 +196,7 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
       </KeyboardAvoidingView>
 
       <View style={s.footer}>
-        <TouchableOpacity style={s.sendBtn} onPress={handleSend} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.sendBtn} onPress={handleSend} activeOpacity={0.85}
         accessibilityLabel={i18next.t("accessibility.send_time_suggestion_to_customer")}>
           <Icon name="send" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.sendText}>{i18next.t("application.send_suggestion")}</Text>

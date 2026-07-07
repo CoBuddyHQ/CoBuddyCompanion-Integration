@@ -118,13 +118,13 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
           <View style={s.divLine} />
         </View>
 
-        <TouchableOpacity style={s.qrBtn} onPress={handleQR} activeOpacity={0.75} disabled={scanning}>
+        <TouchableOpacity accessibilityRole="button" style={s.qrBtn} onPress={handleQR} activeOpacity={0.75} disabled={scanning}>
           <Icon name="qr-code" size={20} color={colors.gold} />
           <Text style={s.qrBtnText}>{scanning ? t("content.sessions.CustomerArrivalVerificationScreen.simulating_scanner") : t("content.sessions.CustomerArrivalVerificationScreen.scan_customer_s_qr_code")}</Text>
         </TouchableOpacity>
 
         {/* No-show link */}
-        <TouchableOpacity style={s.noShowLink}
+        <TouchableOpacity accessibilityRole="button" style={s.noShowLink}
         onPress={() => navigation.navigate(Routes.CUSTOMER_NO_SHOW)} activeOpacity={0.7}>
           <Icon name="person-off" size={14} color={colors.softWarning} />
           <Text style={s.noShowText}> {t('sessions.customer_hasn_t_arrived')} </Text>
@@ -135,7 +135,7 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
 
       {/* Sticky confirm */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btn, !isValid && s.btnDisabled]}
           onPress={handleConfirm}
           disabled={!isValid}

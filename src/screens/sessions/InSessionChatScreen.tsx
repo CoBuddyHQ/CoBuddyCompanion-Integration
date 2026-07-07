@@ -109,7 +109,7 @@ export function InSessionChatScreen(): React.JSX.Element {
 
       {/* ── Custom Header ── */}
       <View style={s.header}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
           style={s.backBtn}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
@@ -129,7 +129,7 @@ export function InSessionChatScreen(): React.JSX.Element {
         </View>
 
         {/* Call shortcut */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={s.callBtn}
           onPress={() => navigation.navigate(Routes.IN_SESSION_CALL, { sessionId, customerName })}
           accessibilityLabel={i18next.t("accessibility.call_customer")}>
@@ -161,7 +161,7 @@ export function InSessionChatScreen(): React.JSX.Element {
 
         {/* ── Input bar ── */}
         <View style={s.inputBar}>
-          <TouchableOpacity style={s.attachBtn} accessibilityLabel={i18next.t("accessibility.attach")}>
+          <TouchableOpacity accessibilityRole="button" style={s.attachBtn} accessibilityLabel={i18next.t("accessibility.attach")}>
             <Icon name="add-circle-outline" size={22} color={colors.textMuted} />
           </TouchableOpacity>
 
@@ -176,7 +176,7 @@ export function InSessionChatScreen(): React.JSX.Element {
             selectionColor={colors.gold} />
           
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.sendBtn, !input.trim() && s.sendBtnDisabled]}
             onPress={handleSend}
             disabled={!input.trim()}

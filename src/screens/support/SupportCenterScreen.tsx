@@ -57,7 +57,7 @@ export function SupportCenterScreen(): React.JSX.Element {
             placeholder={t('support.search_help_articles')} placeholderTextColor={colors.textMuted}
             selectionColor={colors.gold} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
           {query.length > 0 && (
-            <TouchableOpacity onPress={() => setQuery('')} hitSlop={{top:8,bottom:8,left:8,right:8}}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => setQuery('')} hitSlop={{top:8,bottom:8,left:8,right:8}}>
               <Icon name="close" size={18} color={colors.textMuted} />
             </TouchableOpacity>
           )}
@@ -67,7 +67,7 @@ export function SupportCenterScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('support.quick_help')} </Text>
         <View style={s.grid}>
           {QUICK_HELP.map(item => (
-            <TouchableOpacity key={item.label} style={s.gridCard}
+            <TouchableOpacity accessibilityRole="button" key={item.label} style={s.gridCard}
               onPress={() => handleQuickHelp(item.route)} activeOpacity={0.75}>
               <View style={s.gridIconWrap}>
                 <Icon name={item.icon as any} size={26} color={colors.gold} />
@@ -82,7 +82,7 @@ export function SupportCenterScreen(): React.JSX.Element {
         <View style={s.articlesCard}>
           {articles.map((art, i) => (
             <View key={art.id}>
-              <TouchableOpacity style={s.articleRow}
+              <TouchableOpacity accessibilityRole="button" style={s.articleRow}
                 onPress={() => navigation.navigate(Routes.HELP_ARTICLE, {articleId: art.id, title: art.title})}
                 activeOpacity={0.75}>
                 <Icon name="article" size={18} color={colors.textMuted} />
@@ -99,12 +99,12 @@ export function SupportCenterScreen(): React.JSX.Element {
 
       {/* Footer buttons */}
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnGold}
+        <TouchableOpacity accessibilityRole="button" style={s.btnGold}
           onPress={() => navigation.navigate(Routes.CREATE_SUPPORT_TICKET)} activeOpacity={0.85}>
           <Icon name="add" size={18} color={colors.rootBg} style={{marginRight: 8}} />
           <Text style={s.btnGoldText}> {t('support.create_new_ticket')} </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btnOutline}
+        <TouchableOpacity accessibilityRole="button" style={s.btnOutline}
           onPress={() => navigation.navigate(Routes.LIVE_SUPPORT_CHAT)} activeOpacity={0.75}>
           <Icon name="headset-mic" size={18} color={colors.gold} style={{marginRight: 8}} />
           <Text style={s.btnOutlineText}> {t('support.live_chat')} </Text>

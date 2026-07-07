@@ -164,7 +164,7 @@ export function LiveLocationSharingScreen(): React.JSX.Element {
         </View>
 
         {/* Stop sharing */}
-        <TouchableOpacity style={s.stopBtn} onPress={handleStopSharing} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" style={s.stopBtn} onPress={handleStopSharing} activeOpacity={0.7}>
           <Icon name="location-off" size={15} color={colors.softWarning} />
           <Text style={s.stopBtnText}> {t('sessions.stop_sharing_early')} </Text>
         </TouchableOpacity>

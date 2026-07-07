@@ -130,7 +130,7 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
       const disabled = atMax && !selected;
       const label = t(`application.${TAG_KEY_MAP[tag.id]}`) || tag.label;
       return (
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={`ui-opt-${index}-${tag.id}`}
           style={[
           styles.tag,

@@ -104,7 +104,7 @@ const DayCard: React.FC<DayCardProps> = ({
     {/* Time pickers or Closed state */}
     {day.active ? <View style={styles.timeRow}>
         {/* Start time */}
-        <TouchableOpacity style={styles.timeBtn} onPress={onStartTime} activeOpacity={0.75}>
+        <TouchableOpacity accessibilityRole="button" style={styles.timeBtn} onPress={onStartTime} activeOpacity={0.75}>
           <Icon name="play-circle-outline" size={14} color={colors.safetyGreen} />
           <View style={styles.timeBtnMid}>
             <Text style={styles.timeBtnLabel}> {i18next.t('availability.start')} </Text>
@@ -119,7 +119,7 @@ const DayCard: React.FC<DayCardProps> = ({
         </View>
 
         {/* End time */}
-        <TouchableOpacity style={styles.timeBtn} onPress={onEndTime} activeOpacity={0.75}>
+        <TouchableOpacity accessibilityRole="button" style={styles.timeBtn} onPress={onEndTime} activeOpacity={0.75}>
           <Icon name="stop-circle" size={14} color={colors.softWarning} />
           <View style={styles.timeBtnMid}>
             <Text style={styles.timeBtnLabel}> {i18next.t('availability.end')} </Text>
@@ -280,7 +280,7 @@ export function WeeklyRecurringAvailabilityScreen(): React.JSX.Element {
              STICKY SAVE BAR
           ══════════════════════════════════════════ */}
       <View style={styles.stickyBar}>
-        <TouchableOpacity style={[styles.saveBtn, loading && styles.saveBtnLoading]} onPress={handleSave} disabled={loading} activeOpacity={0.85} accessibilityLabel={i18next.t("accessibility.save_schedule")}>
+        <TouchableOpacity accessibilityRole="button" style={[styles.saveBtn, loading && styles.saveBtnLoading]} onPress={handleSave} disabled={loading} activeOpacity={0.85} accessibilityLabel={i18next.t("accessibility.save_schedule")}>
           {loading ? <ActivityIndicator size="small" color={colors.rootBg} /> : <>
               <Icon name="check-circle" size={18} color={colors.rootBg} style={{
             marginRight: 8

@@ -58,12 +58,12 @@ export function EditCategoriesScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.headerBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.headerTitle}> {t('profile.edit_categories')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.headerBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.headerBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -88,7 +88,7 @@ export function EditCategoriesScreen(): React.JSX.Element {
             const isActive = selected.includes(cat.id);
             const isDisabled = !isActive && selected.length >= MAX_SELECT;
             return (
-              <TouchableOpacity key={cat.id}
+              <TouchableOpacity accessibilityRole="button" key={cat.id}
               style={[s.pill, isActive && s.pillActive, isDisabled && s.pillDisabled]}
               onPress={() => toggle(cat.id)}
               disabled={isDisabled} activeOpacity={0.75}>

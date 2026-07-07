@@ -69,12 +69,12 @@ export function AccountUnderManualReviewScreen(): React.JSX.Element {
         </View>
 
         {/* CTAs */}
-        <TouchableOpacity style={s.dashBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.dashBtn} activeOpacity={0.85}
         onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}>
           <Icon name="dashboard" size={17} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.dashBtnText}> {t('account.go_to_dashboard')} </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.supportBtn} activeOpacity={0.75}
+        <TouchableOpacity accessibilityRole="button" style={s.supportBtn} activeOpacity={0.75}
         onPress={() => navigation.navigate(Routes.CREATE_SUPPORT_TICKET)}>
           <Icon name="headset-mic" size={16} color={colors.gold} style={{ marginRight: 8 }} />
           <Text style={s.supportBtnText}> {t('account.contact_support')} </Text>

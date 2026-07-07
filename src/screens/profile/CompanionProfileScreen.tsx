@@ -160,17 +160,17 @@ export function CompanionProfileScreen(): React.JSX.Element {
 
           {/* ── Quick action pills ── */}
           <View style={styles.quickPills}>
-            <TouchableOpacity style={styles.pill}
+            <TouchableOpacity accessibilityRole="button" style={styles.pill}
             onPress={() => (navigation as any).navigate(Routes.TRUST_SCORE_DASHBOARD  )}>
               <Icon name="shield" size={14} color={colors.gold} />
               <Text style={styles.pillText}> {t('profile.trust_score')} </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.pill}
+            <TouchableOpacity accessibilityRole="button" style={styles.pill}
             onPress={() => (navigation as any).navigate(Routes.BADGES_ACHIEVEMENTS  )}>
               <Icon name="emoji-events" size={14} color={colors.gold} />
               <Text style={styles.pillText}> {t('profile.badges')} </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.pill}
+            <TouchableOpacity accessibilityRole="button" style={styles.pill}
             onPress={() => (navigation as any).navigate(Routes.PROFILE_PREVIEW  )}>
               <Icon name="visibility" size={14} color={colors.gold} />
               <Text style={styles.pillText}> {t('profile.preview')} </Text>
@@ -183,7 +183,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}> {t('profile.about_me')} </Text>
-              <TouchableOpacity onPress={() => (navigation as any).navigate(Routes.EDIT_BIO  )}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate(Routes.EDIT_BIO  )}>
                 <Text style={styles.sectionLink}> {t('profile.edit')} </Text>
               </TouchableOpacity>
             </View>
@@ -197,7 +197,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
                   <Text style={styles.tagChipText}>{l}</Text>
                 </View>
               )}
-              <TouchableOpacity onPress={() => (navigation as any).navigate(Routes.EDIT_LANGUAGES  )}
+              <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate(Routes.EDIT_LANGUAGES  )}
               style={{ marginLeft: 4 }} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                 <Icon name="edit" size={13} color={colors.gold} />
               </TouchableOpacity>
@@ -211,7 +211,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
                   <Text style={styles.tagChipGoldText}>{catLabel(c)}</Text>
                 </View>
               )}
-              <TouchableOpacity onPress={() => (navigation as any).navigate(Routes.EDIT_CATEGORIES  )}
+              <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate(Routes.EDIT_CATEGORIES  )}
               style={{ marginLeft: 4 }} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                 <Icon name="edit" size={13} color={colors.gold} />
               </TouchableOpacity>
@@ -224,7 +224,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}> {t('profile.my_gallery')} </Text>
-              <TouchableOpacity onPress={() => (navigation as any).navigate(Routes.GALLERY_PHOTO_MANAGER  )}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate(Routes.GALLERY_PHOTO_MANAGER  )}>
                 <Text style={styles.sectionLink}> {t('profile.edit_photos')} </Text>
               </TouchableOpacity>
             </View>
@@ -236,7 +236,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
                   <Text style={styles.galleryThumbLabel}> {t('profile.photo')} {i + 1}</Text>
                 </View>
               )}
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[styles.galleryThumb, styles.galleryAddThumb]}
                 onPress={() => (navigation as any).navigate(Routes.GALLERY_PHOTO_MANAGER  )}>
                 <Icon name="add-photo-alternate" size={26} color={colors.textMuted} />
@@ -251,7 +251,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}> {t('profile.recent_reviews')} </Text>
-              <TouchableOpacity onPress={() => (navigation as any).navigate(Routes.REVIEWS_DASHBOARD  )}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate(Routes.REVIEWS_DASHBOARD  )}>
                 <Text style={styles.sectionLink}> {t('profile.view_all')} </Text>
               </TouchableOpacity>
             </View>
@@ -264,7 +264,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
 
             <>
                 {topReviews.map((review) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={review.id}
                 style={styles.reviewCard}
                 activeOpacity={0.8}
@@ -294,7 +294,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
               )}
 
                 {allReviews.length > 2 &&
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={styles.reviewsLink}
                 onPress={() => (navigation as any).navigate(Routes.REVIEWS_DASHBOARD  )}>
                     <Icon name="star" size={14} color={colors.gold} />
@@ -317,7 +317,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'my-location', label: t("content.profile.CompanionProfileScreen.travel_radius"), route: Routes.TRAVEL_RADIUS_PREFERENCE },
             { icon: 'photo-library', label: t("content.profile.CompanionProfileScreen.manage_photos"), route: Routes.GALLERY_PHOTO_MANAGER }].
             map((item) =>
-            <TouchableOpacity key={t(item.label)} style={styles.menuRow}
+            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.menuRow}
             onPress={() => (navigation as any).navigate(item.route  )} activeOpacity={0.7}>
                 <View style={styles.menuIconWrap}>
                   <Icon name={item.icon as any} size={18} color={colors.gold} />
@@ -340,7 +340,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'help-center', label: t("content.profile.CompanionProfileScreen.help_support"), route: Routes.SUPPORT_CENTER },
             { icon: 'policy', label: t("content.profile.CompanionProfileScreen.policy_center"), route: Routes.POLICY_CENTER }].
             map((item) =>
-            <TouchableOpacity key={t(item.label)} style={styles.menuRow}
+            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.menuRow}
             onPress={() => (navigation as any).navigate(item.route  )} activeOpacity={0.7}>
                 <View style={styles.menuIconWrap}>
                   <Icon name={item.icon as any} size={18} color={colors.gold} />
@@ -352,7 +352,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
           </View>
 
           {/* ── Edit Profile button ── */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnEditProfile}
             onPress={() => (navigation as any).navigate(Routes.EDIT_BASIC_PROFILE  )}
             activeOpacity={0.8}
@@ -362,7 +362,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
           </TouchableOpacity>
 
           {/* ── Hourly Rate / Pricing ── */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.pricingCard}
             onPress={() => (navigation as any).navigate(Routes.EDIT_PRICING  )}
             activeOpacity={0.8}
@@ -396,7 +396,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'system-update', label: t("content.profile.CompanionProfileScreen.force_update"), route: Routes.FORCE_UPDATE },
             { icon: 'call', label: t("content.profile.CompanionProfileScreen.incoming_call_test"), route: Routes.INCOMING_CALL }].
             map((item) =>
-            <TouchableOpacity key={t(item.label)} style={styles.devMenuRow}
+            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.devMenuRow}
             onPress={() => (navigation as any).navigate(item.route)} activeOpacity={0.7}>
                   <View style={styles.devMenuIcon}>
                     <Icon name={item.icon as any} size={16} color={colors.textMuted} />

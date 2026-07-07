@@ -92,12 +92,12 @@ export function SafetyQuizScreen(): React.JSX.Element {
 
             }
           </Text>
-          <TouchableOpacity style={[s.btn, { marginTop: spacing.xl }]}
+          <TouchableOpacity accessibilityRole="button" style={[s.btn, { marginTop: spacing.xl }]}
           onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} activeOpacity={0.85}>
             <Text style={s.btnText}>{t('common.done')}</Text>
           </TouchableOpacity>
           {!certified &&
-          <TouchableOpacity style={s.retryBtn}
+          <TouchableOpacity accessibilityRole="button" style={s.retryBtn}
           onPress={() => {setIndex(0);setSelected(null);setScore(0);setFinished(false);}}
           activeOpacity={0.7}>
               <Text style={s.retryBtnText}> {t('safety.retry_quiz')} </Text>
@@ -144,7 +144,7 @@ export function SafetyQuizScreen(): React.JSX.Element {
           if (showResult && isCorrect) {borderColor = colors.safetyGreen;bgColor = 'rgba(109,214,165,0.10)';textColor = colors.safetyGreen;} else
           if (showResult && isSelected && !isCorrect) {borderColor = colors.softWarning;bgColor = 'rgba(200,40,40,0.08)';textColor = colors.softWarning;}
           return (
-            <TouchableOpacity key={i}
+            <TouchableOpacity accessibilityRole="button" key={i}
             style={[s.option, { borderColor, backgroundColor: bgColor }]}
             onPress={() => handleSelect(i)} activeOpacity={selected !== null ? 1 : 0.75}>
               <View style={[s.optionLetter, { borderColor }]}>
@@ -162,7 +162,7 @@ export function SafetyQuizScreen(): React.JSX.Element {
 
       {selected !== null &&
       <View style={s.bar}>
-          <TouchableOpacity style={s.btn} onPress={handleNext} activeOpacity={0.85}>
+          <TouchableOpacity accessibilityRole="button" style={s.btn} onPress={handleNext} activeOpacity={0.85}>
             <Text style={s.btnText}>{index < QUESTIONS.length - 1 ? t("content.safety.SafetyQuizScreen.next_question") : t("content.safety.SafetyQuizScreen.see_results")}</Text>
           </TouchableOpacity>
         </View>

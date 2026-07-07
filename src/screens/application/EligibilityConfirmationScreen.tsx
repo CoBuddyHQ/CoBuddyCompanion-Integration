@@ -95,7 +95,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {cons
             {((Array.isArray(t("content.application_kyc.EligibilityContent.CONFIRMATIONS", { returnObjects: true })) ? (t("content.application_kyc.EligibilityContent.CONFIRMATIONS", { returnObjects: true }) as any[]) : [])).map((item, index) => {
               const checked = eligibilityConfirmed[item.id as EligibilityKey];
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${item.id}`}
                   style={[styles.confirmRow, checked && styles.confirmRowChecked]}
                   onPress={() => handleToggle(item.id)}

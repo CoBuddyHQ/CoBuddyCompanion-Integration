@@ -63,7 +63,7 @@ export function TrainingHubScreen(): React.JSX.Element {
     const status = getLessonStatus(lesson);
     const cfg = STATUS_CONFIG[status];
     return (
-      <TouchableOpacity key={lesson.id} style={s.lessonCard}
+      <TouchableOpacity accessibilityRole="button" key={lesson.id} style={s.lessonCard}
       onPress={() => handleLesson(lesson)} activeOpacity={0.78}>
         <View style={s.lessonLeft}>
           <Icon name={cfg.icon as any} size={24} color={cfg.color} />

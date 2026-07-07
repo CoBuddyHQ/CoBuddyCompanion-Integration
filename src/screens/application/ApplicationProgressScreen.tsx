@@ -178,7 +178,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
                   }
                   // Incomplete � tappable: start fix context and navigate to fix screen
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={item.key}
                       style={styles.stepRowTappable}
                       onPress={() => {

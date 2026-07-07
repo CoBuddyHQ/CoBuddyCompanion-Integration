@@ -156,7 +156,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
           </Text>
             <View style={styles.itemList}>
               {incompleteMandatory.map((item, index) =>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={`ui-opt-${index}-${item.key}`}
               style={styles.incompleteRow}
               onPress={() => {

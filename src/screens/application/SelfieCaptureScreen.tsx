@@ -152,7 +152,7 @@ export function SelfieCaptureScreen({ navigation }: Props): React.JSX.Element {c
           {/* Camera controls */}
           <View style={styles.cameraControls}>
             {captured ?
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.retakeBtn}
               onPress={handleRetake}
               accessibilityLabel={t("content.application_kyc.SelfieCaptureContent.CTA_RETAKE")}>
@@ -160,7 +160,7 @@ export function SelfieCaptureScreen({ navigation }: Props): React.JSX.Element {c
                 <Text style={styles.retakeBtnText}>{t("content.application_kyc.SelfieCaptureContent.CTA_RETAKE")}</Text>
               </TouchableOpacity> :
 
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={styles.captureBtn}
               onPress={handleCapture}
               accessibilityLabel={t("content.application_kyc.SelfieCaptureContent.CTA_CAPTURE")}>

@@ -61,13 +61,13 @@ export function AccountSuspendedScreen(): React.JSX.Element {
         </View>
 
         {/* CTAs */}
-        <TouchableOpacity style={s.appealBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.appealBtn} activeOpacity={0.85}
         onPress={() => navigation.navigate(Routes.ACCOUNT_REACTIVATION_REQUEST)}>
           <Icon name="send" size={17} color="#D96C6C" style={{ marginRight: 8 }} />
           <Text style={s.appealBtnText}> {t('account.submit_appeal')} </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.logoutBtn} activeOpacity={0.7}
+        <TouchableOpacity accessibilityRole="button" style={s.logoutBtn} activeOpacity={0.7}
         onPress={() => Alert.alert(t('account.logging_out'), t('account.you_will_be_returned_to_the_login_screen'))}>
           <Text style={s.logoutBtnText}> {t('account.log_out')} </Text>
         </TouchableOpacity>

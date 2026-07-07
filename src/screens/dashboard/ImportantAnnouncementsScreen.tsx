@@ -147,7 +147,7 @@ export function ImportantAnnouncementsScreen(): React.JSX.Element {
             <Text style={s.cardBody}>{t(item.body)}</Text>
 
             {/* Read more — real URL */}
-            <TouchableOpacity style={s.readMore}
+            <TouchableOpacity accessibilityRole="button" style={s.readMore}
               onPress={() => openArticle(item.title, item.url)}
               activeOpacity={0.75}>
               <Text style={s.readMoreText}> {t('dashboard.read_more')} </Text>

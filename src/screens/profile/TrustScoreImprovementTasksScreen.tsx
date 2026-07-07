@@ -87,7 +87,7 @@ export function TrustScoreImprovementTasksScreen(): React.JSX.Element {
     const isDone = item.completed;
 
     return (
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         style={[s.taskCard, hasProgress && s.taskCardProgress, isDone && s.taskCardDone]}
         onPress={item.onPress} activeOpacity={hasProgress ? 1 : 0.8}
         disabled={isDone}>

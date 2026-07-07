@@ -54,7 +54,7 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
         </View>
         <Text style={s.sectionTitle}> {t('sessions.select_reason_required')} </Text>
         {REASONS.map((r) =>
-        <TouchableOpacity key={r}
+        <TouchableOpacity accessibilityRole="button" key={r}
         style={[s.pill, selected === r && s.pillActive]}
         onPress={() => setSelected(r)} activeOpacity={0.75}>
             <View style={[s.radio, selected === r && s.radioActive]}>
@@ -71,13 +71,13 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
         <View style={{ height: 120 }} />
       </ScrollView>
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btnRed, !isValid && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btnRed, !isValid && s.btnDisabled]}
         onPress={() => navigation.navigate(Routes.CANCELLATION_REASON, { sessionId, reason: effectiveReason })}
         disabled={!isValid} activeOpacity={0.85}>
           <Icon name="cancel" size={18} color="#fff" style={{ marginRight: 8 }} />
           <Text style={s.btnRedText}> {t('sessions.confirm_cancellation')} </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btnOutline}
+        <TouchableOpacity accessibilityRole="button" style={s.btnOutline}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} activeOpacity={0.75}>
           <Text style={s.btnOutlineText}> {t('sessions.keep_session')} </Text>
         </TouchableOpacity>

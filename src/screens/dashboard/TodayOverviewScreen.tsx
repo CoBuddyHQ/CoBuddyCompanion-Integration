@@ -124,7 +124,7 @@ export function TodayOverviewScreen(): React.JSX.Element {
               </View>
 
               {/* Card */}
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
               style={[s.timelineCard, item.status === 'empty' && s.timelineCardEmpty]}
               activeOpacity={item.sessionId ? 0.8 : 1}
               onPress={() =>
@@ -153,7 +153,7 @@ export function TodayOverviewScreen(): React.JSX.Element {
 
       {/* Bottom CTA */}
       <View style={s.footer}>
-        <TouchableOpacity style={s.footerBtn}
+        <TouchableOpacity accessibilityRole="button" style={s.footerBtn}
         onPress={() => navigation.navigate(Routes.AVAILABILITY_CALENDAR)} activeOpacity={0.85}>
           <Icon name="calendar-month" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.footerBtnText}> {t('dashboard.manage_availability')} </Text>

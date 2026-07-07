@@ -70,7 +70,7 @@ export function PolicyViolationNoticeScreen(): React.JSX.Element {
         </View>
 
         {/* Acknowledgement checkbox row */}
-        <TouchableOpacity style={s.checkRow} onPress={() => setAcknowledged((a) => !a)} activeOpacity={0.75}>
+        <TouchableOpacity accessibilityRole="button" style={s.checkRow} onPress={() => setAcknowledged((a) => !a)} activeOpacity={0.75}>
           <View style={[s.checkbox, acknowledged && s.checkboxChecked]}>
             {acknowledged && <Icon name="check" size={14} color={colors.rootBg} />}
           </View>
@@ -82,7 +82,7 @@ export function PolicyViolationNoticeScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.ackBtn, !acknowledged && s.ackBtnDisabled]}
           onPress={handleAcknowledge}
           disabled={!acknowledged}

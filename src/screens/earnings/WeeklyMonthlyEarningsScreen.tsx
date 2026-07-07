@@ -32,10 +32,6 @@ const MONTHLY_BARS = [
   {day: 'W4', pct: 65},
 ];
 
-// Static tips & hours are illustrative until API provides per-period data
-const WEEKLY_STATIC  = {sessions: String(Math.round(24 / 4)), hours: '12h', tips: '₹300'};
-const MONTHLY_STATIC = {sessions: '24', hours: '48h', tips: '₹1,100'};
-
 const BAR_MAX_HEIGHT = 120;
 
 export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
@@ -46,15 +42,20 @@ export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
   const availableBalance = useEarningsStore(s => s.availableBalance);
   const lifetimeEarnings = useEarningsStore(s => s.lifetimeEarnings);
   const totalSessions    = useEarningsStore(s => s.totalSessions);
+  const activeHours      = useEarningsStore(s => s.activeHours);
+  const tipsEarned       = useEarningsStore(s => s.tipsEarned);
 
   // Weekly = available balance this cycle; Monthly = lifetime earnings for context
   const weeklyTotal  = `₹${availableBalance.toLocaleString('en-IN')}`;
   const monthlyTotal = `₹${lifetimeEarnings.toLocaleString('en-IN')}`;
 
-  const staticData = tab === 'weekly' ? WEEKLY_STATIC : MONTHLY_STATIC;
   const displayTotal = tab === 'weekly' ? weeklyTotal : monthlyTotal;
   const bars = tab === 'weekly' ? WEEKLY_BARS : MONTHLY_BARS;
+  
+  // Weekly derived data
   const sessionsVal = tab === 'weekly' ? String(Math.ceil(totalSessions / 4)) : String(totalSessions);
+  const hoursVal    = tab === 'weekly' ? `${Math.ceil(activeHours / 4)}h` : `${activeHours}h`;
+  const tipsVal     = tab === 'weekly' ? `₹${Math.ceil(tipsEarned / 4)}` : `₹${tipsEarned}`;
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -67,7 +68,7 @@ export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
         {/* Toggle tabs */}
         <View style={s.tabRow}>
           {(['weekly', 'monthly'] as const).map((tabItem) =>
-          <TouchableOpacity key={tabItem} style={[s.tab, tab === tabItem && s.tabActive]}
+          <TouchableOpacity accessibilityRole="button" key={tabItem} style={[s.tab, tab === tabItem && s.tabActive]}
           onPress={() => setTab(tabItem)} activeOpacity={0.75}>
               <Text style={[s.tabText, tab === tabItem && s.tabTextActive]}>
                 {tabItem === 'weekly' ? i18next.t("content.earnings.WeeklyMonthlyEarningsScreen.weekly") : i18next.t("content.earnings.WeeklyMonthlyEarningsScreen.monthly")}
@@ -103,8 +104,8 @@ export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
         <View style={s.summaryCard}>
           {[
             {icon: 'event',              label: 'Total Sessions', value: sessionsVal},
-            {icon: 'access-time',        label: 'Active Hours',   value: staticData.hours},
-            {icon: 'volunteer-activism', label: 'Tips Earned',    value: staticData.tips},
+            {icon: 'access-time',        label: 'Active Hours',   value: hoursVal},
+            {icon: 'volunteer-activism', label: 'Tips Earned',    value: tipsVal},
           ].map((row, i, arr) => (
             <View key={row.label}>
               <View style={s.summaryRow}>

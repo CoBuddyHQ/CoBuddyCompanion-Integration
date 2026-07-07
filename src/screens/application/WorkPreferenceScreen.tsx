@@ -73,7 +73,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
       {options.map((o, index) => {
       const selected = workPreference[field].includes(o.id);
       return (
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={`ui-opt-${index}-${o.id}`}
           style={[styles.chip, selected && styles.chipSelected]}
           onPress={() => toggleList(field, o.id)}
@@ -127,7 +127,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
             {((Array.isArray(t("content.application_kyc.WorkPreferenceContent.DAY_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.WorkPreferenceContent.DAY_OPTIONS", { returnObjects: true }) as any[]) : [])).map((day, index) => {
               const selected = workPreference.days.includes(day);
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${day}`}
                   style={[styles.dayChip, selected && styles.dayChipSelected]}
                   onPress={() => toggleList('days', day)}
@@ -156,7 +156,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
             {((Array.isArray(t("content.application_kyc.WorkPreferenceContent.FREQ_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.WorkPreferenceContent.FREQ_OPTIONS", { returnObjects: true }) as any[]) : [])).map((f, index) => {
               const selected = workPreference.frequency === f.id;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${f.id}`}
                   style={[styles.chip, selected && styles.chipSelected]}
                   onPress={() => updateWorkPreference({ frequency: selected ? '' : f.id })}

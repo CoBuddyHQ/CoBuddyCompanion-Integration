@@ -147,7 +147,7 @@ export function CompanionPricingScreen({
               <Text style={styles.rangeText}>{RUPEE}{MAX_RATE.toLocaleString('en-IN')}</Text>
             </View>
             <View style={styles.stepperRow}>
-              <TouchableOpacity style={styles.stepBtn} onPress={() => handleSliderStep('dec')} accessibilityLabel={t("accessibility.decrease_rate")}>
+              <TouchableOpacity accessibilityRole="button" style={styles.stepBtn} onPress={() => handleSliderStep('dec')} accessibilityLabel={t("accessibility.decrease_rate")}>
                 <Icon name="remove" size={20} color={colors.gold} />
               </TouchableOpacity>
               <View style={styles.trackWrap}>
@@ -157,7 +157,7 @@ export function CompanionPricingScreen({
               }]} />
                 
               </View>
-              <TouchableOpacity style={styles.stepBtn} onPress={() => handleSliderStep('inc')} accessibilityLabel={t("accessibility.increase_rate")}>
+              <TouchableOpacity accessibilityRole="button" style={styles.stepBtn} onPress={() => handleSliderStep('inc')} accessibilityLabel={t("accessibility.increase_rate")}>
                 <Icon name="add" size={20} color={colors.gold} />
               </TouchableOpacity>
             </View>
@@ -192,7 +192,7 @@ export function CompanionPricingScreen({
           <View style={styles.durationList}>
             {DURATIONS.map((d, idx) => {
             const sel = duration === d;
-            return <TouchableOpacity key={d} style={[styles.durationRow, idx < DURATIONS.length - 1 && styles.durationRowBorder, sel && styles.durationRowSelected]} onPress={() => setDuration(d)} accessibilityRole="radio" accessibilityState={{
+            return <TouchableOpacity accessibilityRole="button" key={d} style={[styles.durationRow, idx < DURATIONS.length - 1 && styles.durationRowBorder, sel && styles.durationRowSelected]} onPress={() => setDuration(d)} accessibilityRole="radio" accessibilityState={{
               selected: sel
             }}>
                   {sel && <View style={styles.durationAccent} />}

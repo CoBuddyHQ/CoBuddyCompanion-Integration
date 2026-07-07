@@ -146,7 +146,7 @@ export function CustomerProfileSafetySummaryScreen({ route, navigation }: Props)
 
       {/* ── Footer ── */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.btnBack} onPress={() => navigation.goBack()}
+        <TouchableOpacity accessibilityRole="button" style={styles.btnBack} onPress={() => navigation.goBack()}
         activeOpacity={0.8} accessibilityLabel={t("accessibility.go_back")}>
           <Icon name="arrow-back" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={styles.btnBackText}> {t('sessions.go_back')} </Text>

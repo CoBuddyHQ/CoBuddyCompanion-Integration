@@ -50,7 +50,7 @@ export function EditLanguagesScreen(): React.JSX.Element {
   const renderItem = ({ item }: {item: string;}) => {
     const isActive = selected.includes(item);
     return (
-      <TouchableOpacity style={s.row} onPress={() => toggle(item)} activeOpacity={0.75}>
+      <TouchableOpacity accessibilityRole="button" style={s.row} onPress={() => toggle(item)} activeOpacity={0.75}>
         <Text style={[s.rowLabel, isActive && s.rowLabelActive]}>{item}</Text>
         <Icon name={isActive ? 'check-circle' : 'radio-button-unchecked'}
         size={22} color={isActive ? colors.gold : colors.textMuted} />
@@ -63,12 +63,12 @@ export function EditLanguagesScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.headerBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.headerTitle}> {t('profile.edit_languages')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.headerBtn} disabled={!canSave}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.headerBtn} disabled={!canSave}>
           <Text style={[s.saveText, !canSave && s.saveTextDisabled]}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -81,7 +81,7 @@ export function EditLanguagesScreen(): React.JSX.Element {
         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
         selectionColor={colors.gold} />
         {query.length > 0 &&
-        <TouchableOpacity onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        <TouchableOpacity accessibilityRole="button" onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Icon name="cancel" size={18} color={colors.textMuted} />
           </TouchableOpacity>
         }

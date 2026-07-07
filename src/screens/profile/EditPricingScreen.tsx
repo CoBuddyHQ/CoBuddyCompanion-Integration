@@ -40,12 +40,12 @@ export function EditPricingScreen(): React.JSX.Element {
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.hBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.hTitle}> {t('profile.hourly_rate')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.hBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.hBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -66,7 +66,7 @@ export function EditPricingScreen(): React.JSX.Element {
           </View>
           <View style={s.quickRow}>
             {[300, 400, 500, 600, 800].map((v) =>
-            <TouchableOpacity key={v} style={[s.qPill, rateText === String(v) && s.qPillActive]}
+            <TouchableOpacity accessibilityRole="button" key={v} style={[s.qPill, rateText === String(v) && s.qPillActive]}
             onPress={() => setRateText(String(v))} activeOpacity={0.75}>
                 <Text style={[s.qText, rateText === String(v) && s.qTextActive]}>{t("content.profile.EditPricingScreen.text")}{v}</Text>
               </TouchableOpacity>

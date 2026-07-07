@@ -139,7 +139,7 @@ export function QuickActionsScreen(): React.JSX.Element {
 
         <View style={s.grid}>
           {ACTIONS.map((a) =>
-          <TouchableOpacity key={t(a.label)} style={s.card} onPress={a.onPress} activeOpacity={0.8}>
+          <TouchableOpacity accessibilityRole="button" key={t(a.label)} style={s.card} onPress={a.onPress} activeOpacity={0.8}>
               <View style={[s.iconCircle, { backgroundColor: a.bg }]}>
                 <Icon name={a.icon as any} size={28} color={a.color} />
               </View>

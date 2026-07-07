@@ -48,7 +48,7 @@ function relativeTime(iso: string): string {
 const NotifCard: React.FC<{item: AppNotification;onPress: () => void;}> = ({ item, onPress }) => {
   const { name, color, bg } = iconForCategory(item.category);
   return (
-    <TouchableOpacity style={[s.card, !item.isRead && s.cardUnread]}
+    <TouchableOpacity accessibilityRole="button" style={[s.card, !item.isRead && s.cardUnread]}
     onPress={onPress} activeOpacity={0.8}>
       {!item.isRead && <View style={s.unreadDot} />}
       <View style={[s.iconWrap, { backgroundColor: bg }]}>

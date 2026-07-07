@@ -67,7 +67,7 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
         {/* Reason selection */}
         <Text style={s.sectionTitle}> {t('sessions.select_reason')} </Text>
         {REASONS.map((r) =>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={r}
           style={[s.reasonPill, selected === r && s.reasonPillActive]}
           onPress={() => setSelected(r)}
@@ -103,14 +103,14 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
 
       {/* Sticky buttons */}
       <View style={s.bar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.btnRed, !selected && s.btnDisabled]}
           onPress={handleConfirm} disabled={!selected}
           activeOpacity={0.85} accessibilityLabel={t("accessibility.confirm_early_end")}>
           <Icon name="stop-circle" size={18} color="#fff" style={{ marginRight: 8 }} />
           <Text style={s.btnRedText}> {t('sessions.confirm_early_end')} </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btnOutline}
+        <TouchableOpacity accessibilityRole="button" style={s.btnOutline}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         activeOpacity={0.75} accessibilityLabel={t("accessibility.continue_session")}>
           <Text style={s.btnOutlineText}> {t('sessions.continue_session')} </Text>

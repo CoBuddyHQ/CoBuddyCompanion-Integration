@@ -46,7 +46,7 @@ export function DisputeCenterScreen(): React.JSX.Element {
           <Text style={{color: colors.textMuted, fontFamily: fontFamily.interRegular, fontSize: 13, marginBottom: spacing.md}}> {t('support.no_active_disputes')} </Text>
         ) : (
           activeDisputes.map(d => (
-            <TouchableOpacity key={d.id} style={s.disputeCard}
+            <TouchableOpacity accessibilityRole="button" key={d.id} style={s.disputeCard}
               onPress={() => navigation.navigate(Routes.DISPUTE_DETAIL, {disputeId: d.id})}
               activeOpacity={0.80}>
               <View style={s.disputeHeader}>
@@ -87,7 +87,7 @@ export function DisputeCenterScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnGold}
+        <TouchableOpacity accessibilityRole="button" style={s.btnGold}
           onPress={() => navigation.navigate(Routes.DISPUTE_DETAIL, {disputeId: 'new'})}
           activeOpacity={0.85}>
           <Icon name="add" size={18} color={colors.rootBg} style={{marginRight: 8}} />

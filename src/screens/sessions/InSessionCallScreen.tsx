@@ -108,7 +108,7 @@ export function InSessionCallScreen(): React.JSX.Element {
       <View style={s.controls}>
         {/* Mute */}
         <View style={s.ctrlCol}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.ctrlBtn, muted && s.ctrlBtnRed]}
             onPress={() => setMuted((v) => !v)}
             accessibilityLabel={t("accessibility.toggle_mute")}>
@@ -119,7 +119,7 @@ export function InSessionCallScreen(): React.JSX.Element {
 
         {/* End call */}
         <View style={s.ctrlCol}>
-          <TouchableOpacity style={s.endBtn} onPress={handleEndCall}
+          <TouchableOpacity accessibilityRole="button" style={s.endBtn} onPress={handleEndCall}
           activeOpacity={0.85} accessibilityLabel={t("accessibility.end_call")}>
             <Icon name="call-end" size={30} color="#fff" />
           </TouchableOpacity>
@@ -128,7 +128,7 @@ export function InSessionCallScreen(): React.JSX.Element {
 
         {/* Speaker */}
         <View style={s.ctrlCol}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.ctrlBtn, speaker && s.ctrlBtnGold]}
             onPress={() => setSpeaker((v) => !v)}
             accessibilityLabel={t("accessibility.toggle_speaker")}>
@@ -140,7 +140,7 @@ export function InSessionCallScreen(): React.JSX.Element {
       </View>
 
       {/* Chat link */}
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         style={s.chatLink}
         onPress={() => navigation.navigate(Routes.IN_SESSION_CHAT, { sessionId, customerName })}
         accessibilityLabel={t("accessibility.switch_to_chat")}>

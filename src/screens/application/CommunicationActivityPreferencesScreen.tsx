@@ -68,7 +68,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
       {options.map((o, index) => {
       const selected = commActivityPrefs[field] === o.id;
       return (
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={`ui-opt-${index}-${o.id}`}
           style={[styles.optionRow, selected && styles.optionRowSelected]}
           onPress={() => updateCommActivityPrefs({ [field]: selected ? '' : o.id })}
@@ -134,7 +134,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
               {((Array.isArray(t("content.application_kyc.CommActivityPreferencesContent.GROUP_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.CommActivityPreferencesContent.GROUP_OPTIONS", { returnObjects: true }) as any[]) : [])).map((g, index) => {
                 const selected = commActivityPrefs.groupPreference === g.id;
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={`ui-opt-${index}-${g.id}`}
                     style={[styles.groupChip, selected && styles.groupChipSelected]}
                     onPress={() => updateCommActivityPrefs({ groupPreference: selected ? '' : g.id })}

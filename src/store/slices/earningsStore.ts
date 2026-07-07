@@ -19,6 +19,8 @@ interface EarningsState {
   pendingClearance: number;
   lifetimeEarnings: number;
   totalSessions: number;
+  activeHours: number; // TODO: backend not wired yet
+  tipsEarned: number; // TODO: backend not wired yet
   recentTransactions: Transaction[];
   // Actions
   setAvailableBalance: (v: number) => void;
@@ -32,6 +34,8 @@ export const useEarningsStore = create<EarningsState>((set) => ({
   pendingClearance: 1250,
   lifetimeEarnings: 15750,
   totalSessions: 14,
+  activeHours: 0, // TODO: backend not wired yet
+  tipsEarned: 0, // TODO: backend not wired yet
   recentTransactions: [
   {
     id: 'TX-001',

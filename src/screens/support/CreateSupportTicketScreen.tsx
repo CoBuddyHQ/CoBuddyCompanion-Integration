@@ -55,7 +55,7 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
 
           <Text style={s.sectionLabel}> {t('support.category')} </Text>
           {CATEGORIES.map((cat) =>
-          <TouchableOpacity key={t(cat.label)}
+          <TouchableOpacity accessibilityRole="button" key={t(cat.label)}
           style={[s.catCard, category === cat.label && s.catCardActive]}
           onPress={() => setCategory(cat.label)} activeOpacity={0.75}>
               <Icon name={cat.icon as any} size={22} color={category === cat.label ? colors.gold : colors.textMuted} />
@@ -83,14 +83,14 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
           <Text style={s.sectionLabel}> {t('support.priority')} </Text>
           <View style={s.pillsRow}>
             {PRIORITIES.map((p) =>
-            <TouchableOpacity key={p} style={[s.pill, priority === p && s.pillActive]}
+            <TouchableOpacity accessibilityRole="button" key={p} style={[s.pill, priority === p && s.pillActive]}
             onPress={() => setPriority(p)} activeOpacity={0.75}>
                 <Text style={[s.pillText, priority === p && { color: PRIORITY_COLORS[p] }]}>{p}</Text>
               </TouchableOpacity>
             )}
           </View>
 
-          <TouchableOpacity style={s.attachRow}
+          <TouchableOpacity accessibilityRole="button" style={s.attachRow}
           onPress={() => {}}
           activeOpacity={0.75}>
             <Icon name="attach-file" size={18} color={colors.textMuted} />
@@ -103,7 +103,7 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
       </KeyboardAvoidingView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btnSubmit, (!canSubmit || submitting) && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btnSubmit, (!canSubmit || submitting) && s.btnDisabled]}
         onPress={handleSubmit} disabled={!canSubmit || submitting} activeOpacity={0.85}>
           <Text style={s.btnSubmitText}>{submitting ? t('common.submitting', { defaultValue: 'Submitting…' }) : t('support.submit_ticket', { defaultValue: 'Submit Ticket' })}</Text>
         </TouchableOpacity>

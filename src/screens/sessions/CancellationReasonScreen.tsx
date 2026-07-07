@@ -17,9 +17,9 @@ import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 
 const NEXT_STEPS = [
-{ icon: 'notifications', text: 'Customer will be notified immediately' },
-{ icon: 'account-balance-wallet', text: '₹200 penalty deducted from next payout' },
-{ icon: 'bar-chart', text: 'Your cancellation rate will be updated' }];
+{ icon: 'notifications', key: 'cancellation_customer_notified' },
+{ icon: 'account-balance-wallet', key: 'cancellation_penalty' },
+{ icon: 'bar-chart', key: 'cancellation_rate_updated' }];
 
 
 export function CancellationReasonScreen(): React.JSX.Element {
@@ -75,11 +75,11 @@ export function CancellationReasonScreen(): React.JSX.Element {
         <Text style={[s.sectionTitle, { marginTop: spacing.lg }]}> {t('sessions.what_happens_next')} </Text>
         <View style={s.nextCard}>
           {NEXT_STEPS.map((step, i) =>
-          <View key={t(step.text)} style={[s.nextRow, i === NEXT_STEPS.length - 1 && s.nextRowLast]}>
+          <View key={step.key} style={[s.nextRow, i === NEXT_STEPS.length - 1 && s.nextRowLast]}>
               <View style={s.nextIcon}>
                 <Icon name={step.icon as any} size={15} color={colors.softWarning} />
               </View>
-              <Text style={s.nextText}>{t(step.text)}</Text>
+              <Text style={s.nextText}>{t(`sessions.${step.key}`)}</Text>
             </View>
           )}
         </View>
@@ -88,7 +88,7 @@ export function CancellationReasonScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btnRed, submitting && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btnRed, submitting && s.btnDisabled]}
         onPress={handleSubmit} disabled={submitting} activeOpacity={0.85}
         accessibilityLabel={t("accessibility.submit_cancellation")}>
           <Icon name="check-circle" size={18} color="#fff" style={{ marginRight: 8 }} />

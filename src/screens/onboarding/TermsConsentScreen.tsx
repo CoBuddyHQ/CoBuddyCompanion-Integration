@@ -117,7 +117,7 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
         {/* Checkboxes */}
         <View style={styles.checkboxSection}>
           {CHECKBOX_LABELS.map((label, idx) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={`ui-opt-${idx}-${idx}`}
             style={styles.checkRow}
             onPress={() => toggleCheck(idx)}
@@ -137,15 +137,15 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Links row */}
         <View style={styles.linksRow}>
-          <TouchableOpacity>
+          <TouchableOpacity accessibilityRole="button">
             <Text style={styles.linkText}>{t("content.auth_onboarding.TermsConsentContent.TERMS_LINK")}</Text>
           </TouchableOpacity>
           <Text style={styles.linkDot}>{t("content.onboarding.TermsConsentScreen.text")}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity accessibilityRole="button">
             <Text style={styles.linkText}>{t("content.auth_onboarding.TermsConsentContent.SAFETY_LINK")}</Text>
           </TouchableOpacity>
           <Text style={styles.linkDot}>{t("content.onboarding.TermsConsentScreen.text")}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity accessibilityRole="button">
             <Text style={styles.linkText}>{t("content.auth_onboarding.TermsConsentContent.PRIVACY_LINK")}</Text>
           </TouchableOpacity>
         </View>
@@ -172,7 +172,7 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
           {!allChecked &&
           <Text style={styles.disabledNote}>{t("content.auth_onboarding.TermsConsentContent.CTA_DISABLED_NOTE")}</Text>
           }
-          <TouchableOpacity style={styles.reviewLaterBtn} onPress={handleReviewLater}>
+          <TouchableOpacity accessibilityRole="button" style={styles.reviewLaterBtn} onPress={handleReviewLater}>
             <Text style={styles.reviewLaterText}> {t('onboarding.review_later')} </Text>
           </TouchableOpacity>
           <Text style={styles.consentNote}>

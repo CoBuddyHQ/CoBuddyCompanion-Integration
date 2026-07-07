@@ -55,11 +55,11 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
 
         {/* Date selector */}
         <View style={s.dateRow}>
-          <TouchableOpacity onPress={() => setDateIdx(Math.max(0, dateIdx - 1))} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+          <TouchableOpacity accessibilityRole="button" onPress={() => setDateIdx(Math.max(0, dateIdx - 1))} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
             <Icon name="chevron-left" size={26} color={dateIdx > 0 ? colors.gold : colors.textMuted} />
           </TouchableOpacity>
           <Text style={s.dateText}>{DATE_LABELS[dateIdx]}</Text>
-          <TouchableOpacity onPress={() => setDateIdx(Math.min(DATE_LABELS.length - 1, dateIdx + 1))} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+          <TouchableOpacity accessibilityRole="button" onPress={() => setDateIdx(Math.min(DATE_LABELS.length - 1, dateIdx + 1))} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
             <Icon name="chevron-right" size={26} color={dateIdx < DATE_LABELS.length - 1 ? colors.gold : colors.textMuted} />
           </TouchableOpacity>
         </View>
@@ -88,7 +88,7 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
             const sign = isDebit ? '−' : '+';
             return (
               <View key={tx.id}>
-                  <TouchableOpacity style={s.breakdownRow}
+                  <TouchableOpacity accessibilityRole="button" style={s.breakdownRow}
                 onPress={() => navigation.navigate(Routes.TRANSACTION_DETAIL, { transactionId: tx.id })}
                 activeOpacity={0.75}>
                     <View style={s.breakdownLeft}>
@@ -109,7 +109,7 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
         }
 
         {/* View full transaction history link */}
-        <TouchableOpacity style={s.linkRow}
+        <TouchableOpacity accessibilityRole="button" style={s.linkRow}
         onPress={() => navigation.navigate(Routes.TRANSACTION_HISTORY)}
         activeOpacity={0.7}>
           <Icon name="receipt-long" size={16} color={colors.gold} />

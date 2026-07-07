@@ -219,7 +219,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
             </Text>
             </View>
             {readiness.missing.map((item, index) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={`ui-opt-${index}-${item.key}`}
             style={styles.missingRow}
             onPress={() => {
@@ -240,7 +240,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
         }
 
         {/* ── Confirmation checkbox ── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.confirmRow}
           onPress={() => setConfirmed(!confirmed)}
           accessibilityLabel={t("accessibility.confirm_profile_accuracy")}

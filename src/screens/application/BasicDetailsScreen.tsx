@@ -322,7 +322,7 @@ const DOBModal: React.FC<DOBModalProps> = ({
     onClose();
   };
   return <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} statusBarTranslucent>
-      <Pressable style={modalSt.backdrop} onPress={onClose} />
+      <Pressable accessibilityRole="button" style={modalSt.backdrop} onPress={onClose} />
       <View style={[modalSt.sheet, {
       paddingBottom: insets.bottom + spacing.lg
     }]}>
@@ -359,10 +359,10 @@ const DOBModal: React.FC<DOBModalProps> = ({
 
         {/* Actions */}
         <View style={modalSt.btnRow}>
-          <TouchableOpacity style={modalSt.cancelBtn} onPress={onClose} activeOpacity={0.75}>
+          <TouchableOpacity accessibilityRole="button" style={modalSt.cancelBtn} onPress={onClose} activeOpacity={0.75}>
             <Text style={modalSt.cancelText}>{t("content.application_kyc.BasicDetailsContent.DOB_MODAL_CANCEL")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={modalSt.confirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
+          <TouchableOpacity accessibilityRole="button" style={modalSt.confirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
             <Text style={modalSt.confirmText}>{t("content.application_kyc.BasicDetailsContent.DOB_MODAL_CONFIRM")}</Text>
           </TouchableOpacity>
         </View>
@@ -606,7 +606,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
 
             {/* DOB trigger button */}
             <Text style={styles.dobLabel}>{t("content.application_kyc.BasicDetailsContent.DOB_LABEL")} *</Text>
-            <TouchableOpacity style={[styles.dobButton, dobDisplay ? styles.dobButtonFilled : null, dobError ? styles.dobButtonError : null]} onPress={() => setDobModalVisible(true)} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={dobDisplay ? `Date of birth: ${dobDisplay}. Tap to change.` : t("content.application.BasicDetailsScreen.select_date_of_birth")}>
+            <TouchableOpacity accessibilityRole="button" style={[styles.dobButton, dobDisplay ? styles.dobButtonFilled : null, dobError ? styles.dobButtonError : null]} onPress={() => setDobModalVisible(true)} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={dobDisplay ? `Date of birth: ${dobDisplay}. Tap to change.` : t("content.application.BasicDetailsScreen.select_date_of_birth")}>
               <Icon name="cake" size={20} color={dobDisplay ? colors.gold : colors.textMuted} />
               <Text style={[styles.dobButtonText, !!dobDisplay && styles.dobButtonTextFilled]}>
                 {dobDisplay || t("content.application_kyc.BasicDetailsContent.DOB_PLACEHOLDER")}
@@ -628,7 +628,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
             <Text style={styles.fieldSection}>{t("content.application_kyc.BasicDetailsContent.GENDER_LABEL")}</Text>
             <Text style={styles.fieldSectionSub}>{t("content.application_kyc.BasicDetailsContent.GENDER_HINT")}</Text>
             <View style={styles.genderGrid}>
-              {((Array.isArray(t("content.application_kyc.BasicDetailsContent.GENDER_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.BasicDetailsContent.GENDER_OPTIONS", { returnObjects: true }) as any[]) : [])).map((g, index) => <TouchableOpacity key={`ui-opt-${index}-${g}`} style={[styles.genderChip, selectedGender === g && styles.genderChipSelected]} onPress={() => {
+              {((Array.isArray(t("content.application_kyc.BasicDetailsContent.GENDER_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.BasicDetailsContent.GENDER_OPTIONS", { returnObjects: true }) as any[]) : [])).map((g, index) => <TouchableOpacity accessibilityRole="button" key={`ui-opt-${index}-${g}`} style={[styles.genderChip, selectedGender === g && styles.genderChipSelected]} onPress={() => {
               const next = selectedGender === g ? '' : g;
               setSelectedGender(next);
               updateBasicDetails({

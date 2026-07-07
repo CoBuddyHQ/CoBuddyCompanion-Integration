@@ -73,7 +73,7 @@ const TagPill: React.FC<{label: string;}> = ({ label }) =>
 const ReviewCard: React.FC<{item: Review;onPress: () => void;}> = ({ item, onPress }) => {
   const initials = item.customerName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
   return (
-    <TouchableOpacity style={styles.reviewCard} onPress={onPress} activeOpacity={0.8}>
+    <TouchableOpacity accessibilityRole="button" style={styles.reviewCard} onPress={onPress} activeOpacity={0.8}>
       {/* Top row */}
       <View style={styles.reviewTop}>
         <View style={styles.reviewAvatar}>

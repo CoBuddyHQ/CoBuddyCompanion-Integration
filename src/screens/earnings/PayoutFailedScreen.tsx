@@ -48,12 +48,12 @@ export function PayoutFailedScreen(): React.JSX.Element {
         </View>
       </Animated.View>
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnPrimary}
+        <TouchableOpacity accessibilityRole="button" style={s.btnPrimary}
         onPress={() => navigation.navigate(Routes.BANK_DETAILS)} activeOpacity={0.85}>
           <Icon name="account-balance" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnPrimaryText}> {t('earnings.update_bank_details')} </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btnCancel}
+        <TouchableOpacity accessibilityRole="button" style={s.btnCancel}
         onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} activeOpacity={0.7}>
           <Text style={s.btnCancelText}>{t('common.cancel')}</Text>
         </TouchableOpacity>

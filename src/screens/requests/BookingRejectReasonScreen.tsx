@@ -63,7 +63,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
         <View style={styles.centeredMsg}>
           <Icon name="search-off" size={44} color={colors.textMuted} />
           <Text style={styles.centeredTitle}>{t("application.request_not_found")}</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <TouchableOpacity accessibilityRole="button" onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Text style={styles.backBtnText}>{t("application.go_back")}</Text>
           </TouchableOpacity>
         </View>
@@ -90,7 +90,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
           {REASONS.map((reason) => {
             const isSelected = selected === reason;
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={reason}
                 style={[styles.optionRow, isSelected && styles.optionRowSelected]}
                 onPress={() => setSelected(reason)}
@@ -140,7 +140,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
 
       {/* ── Sticky footer ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.btnDecline, !canDecline && styles.btnDisabled]}
           onPress={handleDecline}
           disabled={!canDecline}

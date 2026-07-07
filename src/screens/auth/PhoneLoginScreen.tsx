@@ -177,7 +177,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
             <View style={[styles.inputRow, { borderBottomColor: inputBorderColor }]}>
               <Icon name="call" size={20} color={focused ? colors.gold : colors.textMuted} />
               {/* Country selector — tappable */}
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={styles.countryPart}
                 onPress={() => {Keyboard.dismiss();setPickerOpen(true);}}
                 accessibilityLabel={t("accessibility.country_code", { name: country.name, code: country.code })}
@@ -239,7 +239,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
             disabled={phone.length < 10}
             accessibilityLabel={t("accessibility.send_otp_to_verify_mobile_number")} />
           
-          <TouchableOpacity style={styles.helpBtn} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+          <TouchableOpacity accessibilityRole="button" style={styles.helpBtn} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Text style={styles.helpText}>{t("content.auth_onboarding.PhoneLoginContent.HELP_LINK")}</Text>
           </TouchableOpacity>
         </View>
@@ -259,7 +259,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
         transparent
         animationType="slide"
         onRequestClose={() => setPickerOpen(false)}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={() => setPickerOpen(false)}>
@@ -270,7 +270,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
               data={COUNTRIES}
               keyExtractor={(item) => `${item.code}-${item.name}`}
               renderItem={({ item }) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[styles.countryRow, country.name === item.name && styles.countryRowSelected]}
                 onPress={() => {setCountry(item);setPickerOpen(false);}}
                 accessibilityLabel={t("accessibility.country_code", { name: item.name, code: item.code })}>

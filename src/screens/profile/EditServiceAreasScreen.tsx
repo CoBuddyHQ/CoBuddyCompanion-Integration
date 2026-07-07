@@ -48,7 +48,7 @@ export function EditServiceAreasScreen(): React.JSX.Element {
   const renderItem = ({ item }: {item: string;}) => {
     const active = selected.includes(item);
     return (
-      <TouchableOpacity style={s.row} onPress={() => toggle(item)} activeOpacity={0.75}>
+      <TouchableOpacity accessibilityRole="button" style={s.row} onPress={() => toggle(item)} activeOpacity={0.75}>
         <View style={s.rowLeft}>
           <View style={[s.rowDot, active && s.rowDotActive]} />
           <Text style={[s.rowLabel, active && s.rowLabelActive]}>{item}</Text>
@@ -64,12 +64,12 @@ export function EditServiceAreasScreen(): React.JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
 
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         style={s.hBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <Icon name="arrow-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={s.hTitle}> {t('profile.service_areas')} </Text>
-        <TouchableOpacity onPress={handleSave} style={s.hBtn}>
+        <TouchableOpacity accessibilityRole="button" onPress={handleSave} style={s.hBtn}>
           <Text style={s.saveText}>{t('common.save')}</Text>
         </TouchableOpacity>
       </View>
@@ -84,7 +84,7 @@ export function EditServiceAreasScreen(): React.JSX.Element {
         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
         selectionColor={colors.gold} />
         {query.length > 0 &&
-        <TouchableOpacity onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        <TouchableOpacity accessibilityRole="button" onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Icon name="cancel" size={18} color={colors.textMuted} />
           </TouchableOpacity>
         }
@@ -104,7 +104,7 @@ export function EditServiceAreasScreen(): React.JSX.Element {
 
       {/* View on Map CTA */}
       <View style={s.footer}>
-        <TouchableOpacity style={s.mapBtn}
+        <TouchableOpacity accessibilityRole="button" style={s.mapBtn}
         onPress={() => navigation.navigate(Routes.SERVICE_AREA_MAP)} activeOpacity={0.85}>
           <Icon name="map" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.mapBtnText}> {t('profile.view_on_map')} </Text>

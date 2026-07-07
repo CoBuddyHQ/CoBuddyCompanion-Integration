@@ -56,7 +56,7 @@ export function TrainingCompletedScreen(): React.JSX.Element {
       </Animated.View>
 
       <View style={s.bar}>
-        <TouchableOpacity style={s.btnHub}
+        <TouchableOpacity accessibilityRole="button" style={s.btnHub}
         onPress={() => navigation.goBack()} activeOpacity={0.85}>
           <Icon name="school" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnHubText}> {t('training.return_to_hub')} </Text>

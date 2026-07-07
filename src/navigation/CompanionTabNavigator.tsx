@@ -34,12 +34,12 @@ const CompanionTabNavigator: React.FC = () =>
     <Tab.Screen
     name="RequestsTab"
     component={RequestsStack}
-    options={{ tabBarLabel: i18next.t("content.navigation.CompanionTabNavigator.requests"), unmountOnBlur: true }} />
+    options={{ tabBarLabel: i18next.t("content.navigation.CompanionTabNavigator.requests") }} />
   
     <Tab.Screen
     name="SessionsTab"
     component={SessionsStack}
-    options={{ tabBarLabel: i18next.t("content.navigation.CompanionTabNavigator.sessions"), unmountOnBlur: true }} />
+    options={{ tabBarLabel: i18next.t("content.navigation.CompanionTabNavigator.sessions") }} />
   
     <Tab.Screen
     name="EarningsTab"

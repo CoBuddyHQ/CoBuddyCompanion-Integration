@@ -103,7 +103,7 @@ export function VenueMeetingPointDetailScreen(): React.JSX.Element {
           <View style={styles.cardHeader}>
             <Icon name="place" size={16} color={colors.gold} />
             <Text style={styles.cardTitle}> {t('sessions.full_address')} </Text>
-            <TouchableOpacity onPress={handleCopyAddress} style={styles.copyBtn} disabled={copied}>
+            <TouchableOpacity accessibilityRole="button" onPress={handleCopyAddress} style={styles.copyBtn} disabled={copied}>
               <Icon name={copied ? "check" : "content-copy"} size={15} color={colors.gold} />
               <Text style={styles.copyText}>{copied ? t("content.sessions.VenueMeetingPointDetailScreen.copied") : t("content.sessions.VenueMeetingPointDetailScreen.copy")}</Text>
             </TouchableOpacity>
@@ -116,7 +116,7 @@ export function VenueMeetingPointDetailScreen(): React.JSX.Element {
 
       {/* Sticky get directions */}
       <View style={styles.stickyBar}>
-        <TouchableOpacity style={styles.directionsBtn} onPress={handleDirections} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={styles.directionsBtn} onPress={handleDirections} activeOpacity={0.85}>
           <Icon name="navigation" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={styles.directionsBtnText}> {t('sessions.get_directions')} </Text>
         </TouchableOpacity>

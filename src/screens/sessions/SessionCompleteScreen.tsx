@@ -146,7 +146,7 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
 
         {/* ── Actions ── */}
         <View style={styles.actions}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnPrimary}
             onPress={() => navigation.navigate(Routes.CUSTOMER_RATING_FEEDBACK, { sessionId })}
             activeOpacity={0.85}
@@ -155,7 +155,7 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
             <Text style={styles.btnPrimaryText}> {t('sessions.rate_customer')} </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
             onPress={() => navigation.navigate(Routes.POST_SESSION_NOTES, { sessionId })}
             activeOpacity={0.75}
@@ -163,7 +163,7 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
             <Text style={styles.btnSecondaryText}> {t('sessions.add_session_notes')} </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
             onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}
             activeOpacity={0.75}

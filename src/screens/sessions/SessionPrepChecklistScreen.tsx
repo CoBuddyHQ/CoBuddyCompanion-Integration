@@ -138,7 +138,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
           const isChecked = !!checked[item.id];
           const catColor = CATEGORY_COLORS[item.category];
           return (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={item.id}
               style={[styles.item, isChecked && styles.itemChecked]}
               onPress={() => toggle(item.id)}
@@ -181,7 +181,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
         </View>
 
         {/* ── Safety Guidelines link ── */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.guidelinesLink}
           onPress={() => navigation.navigate(Routes.SAFETY_GUIDELINES)}
           activeOpacity={0.7}
@@ -195,7 +195,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
 
       {/* ── Sticky footer ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.btnGotIt, allDone && styles.btnGotItDone]}
           onPress={() => navigation.goBack()}
           activeOpacity={0.85}

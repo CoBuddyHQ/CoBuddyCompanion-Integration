@@ -55,7 +55,7 @@ export function TrustedContactsScreen(): React.JSX.Element {
   };
 
   const renderContact = ({ item }: {item: TrustedContact;}) =>
-  <TouchableOpacity
+  <TouchableOpacity accessibilityRole="button"
     style={s.card}
     onLongPress={() => handleRemove(item.contactId, item.name)}
     activeOpacity={0.85}
@@ -81,7 +81,7 @@ export function TrustedContactsScreen(): React.JSX.Element {
       </View>
 
       {/* Edit */}
-      <TouchableOpacity style={s.editBtn} onPress={() => handleEdit(item)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+      <TouchableOpacity accessibilityRole="button" style={s.editBtn} onPress={() => handleEdit(item)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
         <Icon name="edit" size={18} color={colors.textMuted} />
       </TouchableOpacity>
     </TouchableOpacity>;
@@ -115,7 +115,7 @@ export function TrustedContactsScreen(): React.JSX.Element {
         }
         ListFooterComponent={
         <View style={s.footer}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
             style={s.addBtn}
             onPress={() => navigation.navigate(Routes.ADD_TRUSTED_CONTACT)}
             activeOpacity={0.75}

@@ -53,7 +53,7 @@ interface TileProps {icon: string;label: string;onPress: () => void;accent?: str
 const ActionTile: React.FC<TileProps> = ({ icon, label, onPress, accent }) => {
   const iconColor = accent ?? colors.gold;
   return (
-    <TouchableOpacity style={styles.actionTile} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity accessibilityRole="button" style={styles.actionTile} onPress={onPress} activeOpacity={0.7}>
       <View style={[styles.actionIconWrap, { borderColor: `${iconColor}33` }]}>
         <Icon name={icon as any} size={24} color={iconColor} />
       </View>
@@ -143,14 +143,14 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
         </View>
         <View style={styles.headerRight}>
           {/* Location quick-access */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.headerIconBtn}
             onPress={() => navigation.navigate(Routes.LIVE_LOCATION_SHARING, { sessionId })}
             accessibilityLabel={t("accessibility.live_location_sharing")}>
             <Icon name="my-location" size={18} color={colors.safetyGreen} />
           </TouchableOpacity>
           {/* SOS pill */}
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.headerSosBtn}
             onPress={() => navigation.navigate(Routes.SOS)}
             accessibilityLabel={t("accessibility.emergency_sos")}>
@@ -246,7 +246,7 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
 
         {/* ── SOS Breathing Button ── */}
         <Animated.View style={[styles.sosWrap, { transform: [{ scale: sosPulse }] }]}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.sosBtn}
             onPress={() => navigation.navigate(Routes.SOS)}
             activeOpacity={0.8}
@@ -265,7 +265,7 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
 
       {/* ── Sticky Footer — End Session ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.btnEnd}
           onPress={handleEndSession}
           activeOpacity={0.85}

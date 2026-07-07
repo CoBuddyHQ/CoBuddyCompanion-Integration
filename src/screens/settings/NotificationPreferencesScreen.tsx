@@ -327,7 +327,7 @@ export function NotificationPreferencesScreen(): React.JSX.Element {
                STICKY SAVE BAR
             ══════════════════════════════════════════ */}
       <View style={styles.stickyBar}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.saveBtn, loading && styles.saveBtnLoading]}
           onPress={handleSave}
           disabled={loading}

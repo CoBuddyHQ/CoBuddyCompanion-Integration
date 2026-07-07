@@ -90,7 +90,7 @@ const FormInput = forwardRef<TextInput, FormInputProps>(
 
           {/* Right icon or secure toggle */}
           {secure ? (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               onPress={() => setShowSecure(v => !v)}
               style={styles.rightIconBtn}
               hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
@@ -101,7 +101,7 @@ const FormInput = forwardRef<TextInput, FormInputProps>(
               />
             </TouchableOpacity>
           ) : rightIcon ? (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               onPress={onRightIconPress}
               style={styles.rightIconBtn}
               disabled={!onRightIconPress}

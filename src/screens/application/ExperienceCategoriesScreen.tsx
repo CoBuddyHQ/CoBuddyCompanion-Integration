@@ -105,7 +105,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
             {((Array.isArray(t("content.application_kyc.ExperienceCategoriesContent.CATEGORIES", { returnObjects: true })) ? (t("content.application_kyc.ExperienceCategoriesContent.CATEGORIES", { returnObjects: true }) as any[]) : [])).map((cat, index) => {
               const selected = experienceCategories.includes(cat.id);
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${cat.id}`}
                   style={[styles.tile, selected && styles.tileSelected]}
                   onPress={() => toggleExperienceCategory(cat.id)}

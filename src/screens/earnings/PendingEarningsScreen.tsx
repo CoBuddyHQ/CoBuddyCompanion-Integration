@@ -70,7 +70,7 @@ export function PendingEarningsScreen(): React.JSX.Element {
           </View>
         }
         ListFooterComponent={
-        <TouchableOpacity style={s.support}
+        <TouchableOpacity accessibilityRole="button" style={s.support}
         onPress={() => navigation.navigate(Routes.SUPPORT_CENTER)} activeOpacity={0.7}>
             <Icon name="headset-mic" size={16} color={colors.textMuted} />
             <Text style={s.supportText}> {t('earnings.issue_with_pending_amount_contact_support')} </Text>

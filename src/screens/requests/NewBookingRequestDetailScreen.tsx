@@ -123,7 +123,7 @@ export function NewBookingRequestDetailScreen({ route, navigation }: Props): Rea
           <Text style={styles.notFoundSub}>{t("application.this_request_may_have_expired_or_been_re")}
 
           </Text>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.notFoundBtn}
             onPress={() => navigation.goBack()}
             activeOpacity={0.8}>
@@ -169,7 +169,7 @@ export function NewBookingRequestDetailScreen({ route, navigation }: Props): Rea
               SECTION 1 — CUSTOMER SNAPSHOT
            ══════════════════════════════════════════ */}
         <GlassCard style={styles.card}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.customerTopRow}
             activeOpacity={0.75}
             onPress={() => navigation.navigate(Routes.CUSTOMER_TRUST_SNAPSHOT, { customerId: requestId })}
@@ -296,7 +296,7 @@ export function NewBookingRequestDetailScreen({ route, navigation }: Props): Rea
             BOTTOM STICKY ACTION BAR
          ══════════════════════════════════════════ */}
       <View style={styles.footer}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={styles.btnAccept}
           onPress={() => navigation.navigate(Routes.BOOKING_ACCEPT_CONFIRMATION, { requestId })}
           activeOpacity={0.8}
@@ -306,14 +306,14 @@ export function NewBookingRequestDetailScreen({ route, navigation }: Props): Rea
         </TouchableOpacity>
 
         <View style={styles.footerSecondaryRow}>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnDecline}
             onPress={() => navigation.navigate(Routes.BOOKING_REJECT_REASON, { requestId })}
             activeOpacity={0.75}
             accessibilityLabel={t("application.accessibility_decline_request")}>
             <Text style={styles.btnDeclineText}>{t("application.decline")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnSuggest}
             onPress={() => navigation.navigate(Routes.SUGGEST_DIFFERENT_TIME, { requestId })}
             activeOpacity={0.75}

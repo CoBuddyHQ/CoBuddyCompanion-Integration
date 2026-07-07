@@ -105,7 +105,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
         <Text style={s.sectionTitle}> {t('sessions.overall_mood')} </Text>
         <View style={s.moodRow}>
           {MOODS.map((emoji, i) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={i}
             style={[s.moodBtn, mood === i && s.moodBtnActive]}
             onPress={() => setMood(i === mood ? null : i)}
@@ -119,7 +119,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
         <Text style={s.sectionTitle}> {t('sessions.quick_tags')} </Text>
         <View style={s.tagsRow}>
           {TAGS.map((t) =>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t}
             style={[s.tag, tags.includes(t) && s.tagActive]}
             onPress={() => toggleTag(t)}
@@ -133,11 +133,11 @@ export function PostSessionNotesScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={s.bar}>
-        <TouchableOpacity style={[s.btnSave, saving && s.btnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.btnSave, saving && s.btnDisabled]}
         onPress={handleSave} disabled={saving} activeOpacity={0.85}>
           <Text style={s.btnSaveText}>{saving ? t("content.sessions.PostSessionNotesScreen.saving") : t("content.sessions.PostSessionNotesScreen.save_notes")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
         activeOpacity={0.6} style={s.skipBtn}>
           <Text style={s.skipText}> {t('sessions.skip')} </Text>
         </TouchableOpacity>

@@ -61,7 +61,7 @@ export function AccountReactivationRequestScreen(): React.JSX.Element {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={s.footer}>
-        <TouchableOpacity style={[s.submitBtn, (!message.trim() || loading) && s.submitBtnDisabled]}
+        <TouchableOpacity accessibilityRole="button" style={[s.submitBtn, (!message.trim() || loading) && s.submitBtnDisabled]}
         onPress={handleSubmit} disabled={!message.trim() || loading} activeOpacity={0.85}>
           <Icon name="send" size={17} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.submitBtnText}>{loading ? t('account.submitting') : t('account.submit_appeal_btn')}</Text>

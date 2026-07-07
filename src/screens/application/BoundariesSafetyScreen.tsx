@@ -127,7 +127,7 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
         </GlassCard>
 
         {/* Acceptance checkbox */}
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[styles.acceptRow, boundariesAccepted && styles.acceptRowChecked]}
           onPress={() => setBoundariesAccepted(!boundariesAccepted)}
           activeOpacity={0.75}

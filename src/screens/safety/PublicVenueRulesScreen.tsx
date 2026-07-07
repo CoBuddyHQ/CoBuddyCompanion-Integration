@@ -53,7 +53,7 @@ const FAQItem: React.FC<{item: {q: string; a: string}}> = ({item}) => {
   };
 
   return (
-    <TouchableOpacity style={s.faqItem} onPress={toggle} activeOpacity={0.75}>
+    <TouchableOpacity accessibilityRole="button" style={s.faqItem} onPress={toggle} activeOpacity={0.75}>
       <View style={s.faqHeader}>
         <Text style={s.faqQ}>{item.q}</Text>
         <Icon name={open ? 'expand-less' : 'expand-more'} size={20} color={colors.textMuted} />

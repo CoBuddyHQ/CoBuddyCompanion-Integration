@@ -53,7 +53,7 @@ export function AccountDeactivatedScreen(): React.JSX.Element {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={s.exitBtn} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={s.exitBtn} activeOpacity={0.85}
         onPress={() => Alert.alert(t('account.redirecting_to_login'), t('account.you_will_be_taken_to_the_login_screen'))}>
           <Icon name="login" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.exitBtnText}> {t('account.exit_to_login')} </Text>

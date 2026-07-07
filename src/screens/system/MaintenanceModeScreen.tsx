@@ -63,7 +63,7 @@ export function MaintenanceModeScreen(): React.JSX.Element {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={s.statusBtn} activeOpacity={0.8}
+        <TouchableOpacity accessibilityRole="button" style={s.statusBtn} activeOpacity={0.8}
         onPress={() => Alert.alert(t("alerts.opening_browser"), t("alerts.redirecting_to_status_cobuddy_in"))}>
           <Icon name="open-in-browser" size={16} color={colors.textMuted} style={{ marginRight: 8 }} />
           <Text style={s.statusBtnText}> {t('system.check_status_page')} </Text>

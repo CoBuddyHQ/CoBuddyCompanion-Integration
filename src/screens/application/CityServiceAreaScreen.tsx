@@ -283,7 +283,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
         <GlassCard style={styles.card}>
           <Text style={styles.cardTitle}>{t('application.city_service_city_label')} *</Text>
 
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[styles.cityButton, city ? styles.cityButtonSelected : null]}
             onPress={() => setShowCityPicker(!showCityPicker)}
             activeOpacity={0.8}
@@ -304,7 +304,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
           <View style={styles.cityDropdown}>
               <ScrollView style={styles.cityDropdownScroll} nestedScrollEnabled showsVerticalScrollIndicator={false}>
                 {CITY_OPTIONS.map((c) =>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={c}
                 style={[styles.cityOption, city === c ? styles.cityOptionSelected : null]}
                 onPress={() => handleCitySelect(c)}
@@ -342,7 +342,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
               const selected = broadAreas.includes(area);
               const disabled = atMax && !selected;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={area}
                   style={[
                   styles.areaChip,
@@ -395,7 +395,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
               const isYes = i === 0;
               const selected = isYes ? willingToTravel : !willingToTravel;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={opt}
                   style={[styles.travelChip, selected ? styles.travelChipSelected : null]}
                   onPress={() => setWillingToTravel(isYes)}
