@@ -26,6 +26,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { RequestsStackParamList } from '../../types/navigation.types';
+import i18next from 'i18next';
 
 type Props = StackScreenProps<RequestsStackParamList, typeof Routes.NEW_BOOKING_REQUEST_DETAIL>;
 
@@ -60,9 +61,9 @@ function formatDateRange(isoStart: string, isoEnd: string, durationMinutes: numb
   t('application.date_today') :
   isTomorrow ?
   t('application.date_tomorrow') :
-  start.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-  const startTime = start.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const endTime = end.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  start.toLocaleDateString(i18next.language || 'en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  const startTime = start.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const endTime = end.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   const hrs = Math.floor(durationMinutes / 60);
   const mins = durationMinutes % 60;
   const dur = hrs > 0 && mins > 0 ? t('application.time_duration_h_m').replace('{hrs}', String(hrs)).replace('{mins}', String(mins)) : hrs > 0 ? t('application.time_duration_hr').replace('{hrs}', String(hrs)) : t('application.time_duration_mins').replace('{mins}', String(mins));

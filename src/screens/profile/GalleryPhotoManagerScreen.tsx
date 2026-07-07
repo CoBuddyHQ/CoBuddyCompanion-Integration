@@ -68,7 +68,7 @@ const PhotoTile: React.FC<PhotoTileProps> = ({ index, photoRef, onDelete }) => {
         style={styles.deleteBtn}
         onPress={onDelete}
         hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-        accessibilityLabel={`Delete photo ${index + 1}`}>
+        accessibilityLabel={t("accessibility.delete_photo_num", { num: index + 1 })}>
         <Icon name="close" size={13} color="#fff" />
       </TouchableOpacity>
     </View>);

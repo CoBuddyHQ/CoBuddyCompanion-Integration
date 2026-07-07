@@ -60,7 +60,7 @@ export function TrustedContactsScreen(): React.JSX.Element {
     onLongPress={() => handleRemove(item.contactId, item.name)}
     activeOpacity={0.85}
     delayLongPress={500}
-    accessibilityLabel={`${item.name}, ${item.relationship}`}>
+    accessibilityLabel={t("accessibility.trusted_contact", { name: item.name, relationship: item.relationship })}>
       {/* Avatar */}
       <View style={s.avatar}>
         <Text style={s.avatarText}>{item.name.charAt(0).toUpperCase()}</Text>

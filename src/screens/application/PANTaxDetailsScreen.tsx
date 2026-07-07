@@ -168,7 +168,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
               maxLength={10}
               error={panError ?? undefined}
               accessibilityLabel={t("accessibility.pan_number")}
-              accessibilityHint="Enter your 10-character PAN number" />
+              accessibilityHint={t('accessibility.enter_pan_number')} />
             
 
             <FormInput

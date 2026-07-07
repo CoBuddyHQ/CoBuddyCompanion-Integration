@@ -16,11 +16,12 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import i18next from 'i18next';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function fmtTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  return new Date(iso).toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit' });
 }
 
 function catLabel(cat: string): string {
@@ -104,7 +105,7 @@ export function TodayOverviewScreen(): React.JSX.Element {
 
         {/* Date strip */}
         <Text style={s.dateLabel}>
-          {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
+          {new Date().toLocaleDateString(i18next.language || 'en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
         </Text>
 
         {/* Timeline */}

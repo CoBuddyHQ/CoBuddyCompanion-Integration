@@ -19,6 +19,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import i18next from 'i18next';
 
 export function SessionReminderScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export function SessionReminderScreen(): React.JSX.Element {
 
   const fmtTime = (iso?: string) => {
     if (!iso) {return '—';}
-    return new Date(iso).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return new Date(iso).toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   const sessionData = {

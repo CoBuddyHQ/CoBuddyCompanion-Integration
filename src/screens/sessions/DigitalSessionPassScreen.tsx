@@ -41,8 +41,8 @@ function formatShort(iso: string): string {
   const isToday = d.toDateString() === now.toDateString();
   const isTomorrow = d.toDateString() === tom.toDateString();
   const day = isToday ? i18next.t("content.sessions.DigitalSessionPassScreen.today") : isTomorrow ? i18next.t("content.sessions.DigitalSessionPassScreen.tomorrow") :
-  d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-  const t = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  d.toLocaleDateString(i18next.language || 'en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  const t = d.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   return `${day}, ${t}`;
 }
 

@@ -17,6 +17,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { RequestsStackParamList } from '../../types/navigation.types';
+import i18next from 'i18next';
 
 type Props = StackScreenProps<RequestsStackParamList, typeof Routes.BOOKING_ACCEPTED_SUCCESS>;
 
@@ -28,8 +29,8 @@ function formatShortDateTime(isoStart: string): string {
   const isToday = d.toDateString() === now.toDateString();
   const isTomorrow = d.toDateString() === tomorrow.toDateString();
   const day = isToday ? 'today' : isTomorrow ? 'tomorrow' :
-  d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
-  const time = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  d.toLocaleDateString(i18next.language || 'en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
+  const time = d.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   return `${day} at ${time}`;
 }
 

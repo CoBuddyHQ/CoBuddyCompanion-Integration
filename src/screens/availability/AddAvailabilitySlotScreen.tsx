@@ -21,7 +21,7 @@ function genNextDays(count: number): string[] {
   return Array.from({ length: count }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
-    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+    return d.toLocaleDateString(i18next.language || 'en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   });
 }
 

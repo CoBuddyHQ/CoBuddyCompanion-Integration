@@ -168,7 +168,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
                 navigateToRequirementFixScreen(navigation, item.route);
               }}
               accessibilityRole="button"
-              accessibilityLabel={`Complete missing: ${item.label}`}>
+              accessibilityLabel={t("accessibility.complete_missing", { item: t(item.label) })}>
                   <View style={styles.incompleteIconWrap}>
                     <Icon name="radio-button-unchecked" size={18} color={colors.warningAmber} />
                   </View>

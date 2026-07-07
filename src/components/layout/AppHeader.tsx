@@ -90,7 +90,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           onPress={onRightPress}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           accessibilityRole="button"
-          accessibilityLabel={`${rightIcon} action`}>
+          accessibilityLabel={t("accessibility.icon_action", { icon: rightIcon })}>
             <Icon name={rightIcon} size={24} color={colors.gold} />
             {rightBadge != null && rightBadge > 0 ?
           <View style={tabStyles.badgeDot} /> :
@@ -143,7 +143,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           onPress={onRightTextPress}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           accessibilityRole="button"
-          accessibilityLabel={`${rightText} action`}>
+          accessibilityLabel={t('accessibility.icon_action', { icon: rightText })}>
             <Text style={styles.rightText}>{rightText}</Text>
           </TouchableOpacity> :
         rightIcon ?
@@ -152,7 +152,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           onPress={onRightPress}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           accessibilityRole="button"
-          accessibilityLabel={`${rightIcon} action`}>
+          accessibilityLabel={t("accessibility.icon_action", { icon: rightIcon })}>
             <Icon name={rightIcon} size={spacing.iconLg} color={colors.textPrimary} />
             {rightBadge != null && rightBadge > 0 ?
           <View style={styles.badge}>

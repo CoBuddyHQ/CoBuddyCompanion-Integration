@@ -15,6 +15,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
+import i18next from 'i18next';
 
 // ─── Dynamic date generation ──────────────────────────────────────────────────
 
@@ -22,7 +23,7 @@ function genFutureDates(startOffsetDays: number, count: number): string[] {
   return Array.from({ length: count }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + startOffsetDays + i);
-    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    return d.toLocaleDateString(i18next.language || 'en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   });
 }
 

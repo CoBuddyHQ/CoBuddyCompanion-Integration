@@ -92,14 +92,12 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
                 activeOpacity={0.75}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: isSelected }}
-                accessibilityLabel={`${lang.nativeLabel} — ${lang.label}`}>
+                accessibilityLabel={t('accessibility.language_selection', { native: lang.nativeLabel, en: lang.label })}>
 
                 {/* Radio circle */}
                 <View style={[styles.radioOuter, isSelected && styles.radioOuterSelected]}>
                   {isSelected && <View style={styles.radioInner} />}
                 </View>
-
-                {/* Language label */}
                 <View style={styles.langTextGroup}>
                   <Text style={[styles.langNative, isSelected && styles.langNativeSelected]}>
                     {t(lang.label)}

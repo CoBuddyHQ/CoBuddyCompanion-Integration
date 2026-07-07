@@ -97,7 +97,7 @@ function CorrectionRow({ icon, label, description, status, onEdit }: CorrectionR
       <TouchableOpacity
         style={corrRowStyles.editBtn}
         onPress={onEdit}
-        accessibilityLabel={`Edit ${label}`}>
+        accessibilityLabel={t("accessibility.edit_item", { label: label })}>
           <Icon name="edit" size={16} color={colors.gold} />
           <Text style={corrRowStyles.editText}>{t("application.edit")}</Text>
         </TouchableOpacity>

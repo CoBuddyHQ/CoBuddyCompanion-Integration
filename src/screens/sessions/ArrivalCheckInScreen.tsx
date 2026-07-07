@@ -106,7 +106,7 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
               keyboardType="number-pad"
               maxLength={1}
               selectTextOnFocus
-              accessibilityLabel={`PIN digit ${i + 1}`} />
+              accessibilityLabel={t("accessibility.pin_digit", { digit: i + 1 })} />
 
             )}
           </View>

@@ -230,7 +230,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
               });
               navigateToRequirementFixScreen(navigation, item.route);
             }}
-            accessibilityLabel={`Fix: ${item.label}`}>
+            accessibilityLabel={t("accessibility.fix_item", { item: t(item.label) })}>
                 <Icon name="cancel" size={14} color={colors.softWarning} />
                 <Text style={styles.missingText}>{t(item.label)}</Text>
                 <Icon name="chevron-right" size={14} color={colors.textMuted} />

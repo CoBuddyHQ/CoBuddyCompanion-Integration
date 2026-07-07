@@ -191,7 +191,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
               keyboardType="email-address"
               error={upiError ?? undefined}
               accessibilityLabel={t("accessibility.upi_id_for_payouts")}
-              accessibilityHint="Enter the UPI ID where CoBuddy will send your earnings" />
+              accessibilityHint={t('accessibility.enter_upi_id')} />
             
 
             <FormInput

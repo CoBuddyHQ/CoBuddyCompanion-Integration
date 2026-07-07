@@ -60,9 +60,9 @@ function formatSessionTime(isoStart: string, isoEnd: string): string {
   const isToday = start.toDateString() === now.toDateString();
   const isTomorrow = start.toDateString() === tom.toDateString();
   const day = isToday ? i18next.t("content.sessions.UpcomingSessionsScreen.today") : isTomorrow ? i18next.t("content.sessions.UpcomingSessionsScreen.tomorrow") :
-  start.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-  const s = start.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const e = end.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  start.toLocaleDateString(i18next.language || 'en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  const s = start.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const e = end.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   return `${day} • ${s} – ${e}`;
 }
 

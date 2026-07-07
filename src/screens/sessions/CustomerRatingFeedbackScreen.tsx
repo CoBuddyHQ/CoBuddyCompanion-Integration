@@ -102,7 +102,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
               onPress={() => {setRating(star);setTags([]);}}
               activeOpacity={0.7}
               hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
-              accessibilityLabel={`Rate ${star} star${star > 1 ? 's' : ''}`}>
+              accessibilityLabel={t("accessibility.rate_stars", { count: star })}>
                 <Icon
                 name={star <= rating ? 'star' : 'star-border'}
                 size={48}

@@ -18,14 +18,15 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
+import i18next from 'i18next';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function formatExpiredAt(isoStr: string): string {
   const d = new Date(isoStr);
-  return d.toLocaleDateString('en-IN', {
+  return d.toLocaleDateString(i18next.language || 'en-IN', {
     day: '2-digit', month: 'short', year: 'numeric'
-  }) + ' · ' + d.toLocaleTimeString('en-IN', {
+  }) + ' · ' + d.toLocaleTimeString(i18next.language || 'en-IN', {
     hour: '2-digit', minute: '2-digit', hour12: true
   });
 }

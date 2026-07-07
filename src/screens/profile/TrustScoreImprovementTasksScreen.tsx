@@ -50,7 +50,7 @@ export function TrustScoreImprovementTasksScreen(): React.JSX.Element {
       onPress: () => {
         if (isLinkedInDone) {return;}
         completeTask('task_linkedin', 5);
-        Alert.alert('LinkedIn Linked', 'Your LinkedIn profile has been connected and +5 pts added!');
+        Alert.alert(t('alerts.linkedInLinked.title'), t('alerts.linkedInLinked.message'));
       },
     },
     {

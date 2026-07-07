@@ -44,9 +44,9 @@ function formatDateRange(isoStart: string, isoEnd: string): string {
   const isToday = s.toDateString() === now.toDateString();
   const isTomorrow = s.toDateString() === tom.toDateString();
   const day = isToday ? i18next.t("content.sessions.SessionDetailScreen.today") : isTomorrow ? i18next.t("content.sessions.SessionDetailScreen.tomorrow") :
-  s.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-  const st = s.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const et = e.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  s.toLocaleDateString(i18next.language || 'en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  const st = s.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const et = e.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   return `${day}, ${st} – ${et}`;
 }
 

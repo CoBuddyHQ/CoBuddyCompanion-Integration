@@ -77,7 +77,7 @@ export function PrivacyControlsScreen(): React.JSX.Element {
       {/* Sticky Save Footer */}
       <View style={s.stickyBar}>
         <TouchableOpacity style={s.saveBtn} onPress={handleSave} activeOpacity={0.85}
-          accessibilityLabel="Save privacy settings">
+          accessibilityLabel={t("accessibility.save_privacy")}>
           <Icon name="check-circle" size={18} color={colors.rootBg} style={{marginRight: 8}} />
           <Text style={s.saveBtnText}> {t('settings.save_changes')} </Text>
         </TouchableOpacity>

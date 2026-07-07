@@ -58,7 +58,7 @@ interface SupportState {
   sendLiveChatMessage: (text: string) => void;
 }
 
-const nowTime = () => new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+const nowTime = () => new Date().toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 const genId = (prefix: string) => `${prefix}-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
 
 const SEED_ARTICLES: HelpArticle[] = [
@@ -202,12 +202,12 @@ export const useSupportStore = create<SupportState>((set) => ({
       id,
       category,
       description,
-      sessionId: new Date().toLocaleDateString('en-GB'),
+      sessionId: new Date().toLocaleDateString(i18next.language || 'en-GB'),
       customerName: 'N/A', // Real app would pull from sessionStore
       amount: '₹0',
       status: 'Under Review',
       createdAgo: 'Just now',
-      timeline: [{ date: new Date().toLocaleDateString('en-GB'), desc: 'Dispute filed by companion' }]
+      timeline: [{ date: new Date().toLocaleDateString(i18next.language || 'en-GB'), desc: 'Dispute filed by companion' }]
     };
     set((state) => ({
       disputes: [newDispute, ...state.disputes]
@@ -222,7 +222,7 @@ export const useSupportStore = create<SupportState>((set) => ({
         ...d,
         status: 'Under Review',
         outcome: undefined,
-        timeline: [...d.timeline, { date: new Date().toLocaleDateString('en-GB'), desc: `Appeal filed: ${reason}` }]
+        timeline: [...d.timeline, { date: new Date().toLocaleDateString(i18next.language || 'en-GB'), desc: `Appeal filed: ${reason}` }]
       } :
       d
       )

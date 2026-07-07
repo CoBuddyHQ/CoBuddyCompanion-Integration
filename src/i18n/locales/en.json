@@ -5888,5 +5888,28 @@
     "could_not_reach_cobuddy_servers_please_c": "Could not reach CoBuddy servers. Please check your Wi-Fi or mobile data.",
     "locked": "Locked",
     "complete_required_modules_first": "Complete required modules first."
+  },
+  "alerts": {
+    "linkedInLinked": {
+      "title": "LinkedIn Linked",
+      "message": "Your LinkedIn profile has been connected and +5 pts added!"
+    }
+  },
+  "accessibility": {
+    "field_masked": "This field is masked for your security",
+    "save_privacy": "Save privacy settings",
+    "icon_action": "{{icon}} action",
+    "country_code": "Country code: {{name}} {{code}}",
+    "delete_photo_num": "Delete photo {{num}}",
+    "complete_missing": "Complete missing: {{item}}",
+    "edit_item": "Edit {{label}}",
+    "fix_item": "Fix: {{item}}",
+    "language_selection": "{{native}} - {{en}}",
+    "otp_digit": "OTP digit {{digit}}",
+    "trusted_contact": "{{name}}, {{relationship}}",
+    "pin_digit": "PIN digit {{digit}}",
+    "rate_stars": "Rate {{count}} star(s)",
+    "enter_pan_number": "Enter your 10-character PAN number",
+    "enter_upi_id": "Enter the UPI ID where CoBuddy will send your earnings"
   }
 }

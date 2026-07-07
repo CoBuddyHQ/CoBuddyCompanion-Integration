@@ -37,7 +37,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
     if (!iso) {return '—';}
     const d = new Date(iso);
     d.setMinutes(d.getMinutes() + offsetMins);
-    return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return d.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
   const currentEnd = fmtTime(session?.scheduledEnd);
 

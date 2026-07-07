@@ -180,7 +180,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.countryPart}
                 onPress={() => {Keyboard.dismiss();setPickerOpen(true);}}
-                accessibilityLabel={`Country code: ${country.name} ${country.code}`}
+                accessibilityLabel={t("accessibility.country_code", { name: country.name, code: country.code })}
                 accessibilityRole="button">
                 <Text style={styles.countryFlag}>{country.flag}</Text>
                 <Text style={styles.countryCode}>{country.code}</Text>
@@ -273,7 +273,7 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
               <TouchableOpacity
                 style={[styles.countryRow, country.name === item.name && styles.countryRowSelected]}
                 onPress={() => {setCountry(item);setPickerOpen(false);}}
-                accessibilityLabel={`${item.name} ${item.code}`}>
+                accessibilityLabel={t("accessibility.country_code", { name: item.name, code: item.code })}>
                   <Text style={styles.countryRowFlag}>{item.flag}</Text>
                   <Text style={styles.countryRowName}>{item.name}</Text>
                   <Text style={styles.countryRowCode}>{item.code}</Text>

@@ -195,7 +195,7 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
             maxLength={1}
             textAlign="center"
             selectionColor={colors.gold}
-            accessibilityLabel={`OTP digit ${idx + 1}`}
+            accessibilityLabel={t("accessibility.otp_digit", { digit: idx + 1 })}
             autoFocus={idx === 0} />
 
           )}

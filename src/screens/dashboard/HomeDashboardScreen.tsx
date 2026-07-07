@@ -64,10 +64,10 @@ function fmtDate(iso: string): string {
   const d = new Date(iso);
   const now = new Date();
   const diffDays = Math.floor((d.getTime() - now.getTime()) / 86_400_000);
-  const timeStr = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  const timeStr = d.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit' });
   if (diffDays === 0) {return `Today • ${timeStr}`;}
   if (diffDays === 1) {return `Tomorrow • ${timeStr}`;}
-  return `${d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} • ${timeStr}`;
+  return `${d.toLocaleDateString(i18next.language || 'en-IN', { day: 'numeric', month: 'short' })} • ${timeStr}`;
 }
 
 // ─── Sub-components ──────────────────────────────────────────────────────────

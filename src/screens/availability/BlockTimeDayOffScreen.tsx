@@ -38,7 +38,7 @@ const REASON_OPTIONS: ReasonOption[] = [{ label: "content.availability.BlockTime
 // ─── Dynamic date helpers ─────────────────────────────────────────────────────
 
 function formatDate(d: Date): string {
-  return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+  return d.toLocaleDateString(i18next.language || 'en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
 function todayStr(): string {return formatDate(new Date());}

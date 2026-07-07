@@ -30,7 +30,7 @@ function genNextDays(count: number): string[] {
   for (let i = 1; i <= count; i++) {
     const d = new Date(now);
     d.setDate(now.getDate() + i);
-    result.push(d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }));
+    result.push(d.toLocaleDateString(i18next.language || 'en-IN', { day: '2-digit', month: 'short', year: 'numeric' }));
   }
   return result;
 }
@@ -90,9 +90,9 @@ function formatOriginalTime(isoStart: string, isoEnd: string): string {
   const isTomorrow = start.toDateString() === tom.toDateString();
   const day = isToday ? i18next.t("content.requests.SuggestDifferentTimeScreen.today") :
   isTomorrow ? i18next.t("content.requests.SuggestDifferentTimeScreen.tomorrow") :
-  start.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
-  const s = start.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const e = end.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  start.toLocaleDateString(i18next.language || 'en-IN', { day: 'numeric', month: 'short' });
+  const s = start.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const e = end.toLocaleTimeString(i18next.language || 'en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   return `${day} · ${s} – ${e}`;
 }
 

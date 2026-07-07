@@ -188,7 +188,7 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
               maxLength={18}
               error={errors.accountNum}
               accessibilityLabel={t("accessibility.bank_account_number")}
-              accessibilityHint="This field is masked for your security" />
+              accessibilityHint={t("accessibility.field_masked")} />
             
 
             <FormInput

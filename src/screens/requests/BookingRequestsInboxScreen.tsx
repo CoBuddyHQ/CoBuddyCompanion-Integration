@@ -36,12 +36,12 @@ function formatSchedule(isoStart: string, durationMinutes: number): string {
   const tomorrow = new Date(now);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const isTomorrow = d.getDate() === tomorrow.getDate() && d.getMonth() === tomorrow.getMonth();
-  const dayLabel = isToday ? i18next.t("content.requests.BookingRequestsInboxScreen.today") : isTomorrow ? i18next.t("content.requests.BookingRequestsInboxScreen.tomorrow") : d.toLocaleDateString('en-IN', {
+  const dayLabel = isToday ? i18next.t("content.requests.BookingRequestsInboxScreen.today") : isTomorrow ? i18next.t("content.requests.BookingRequestsInboxScreen.tomorrow") : d.toLocaleDateString(i18next.language || 'en-IN', {
     weekday: 'short',
     day: 'numeric',
     month: 'short'
   });
-  const timeLabel = d.toLocaleTimeString('en-IN', {
+  const timeLabel = d.toLocaleTimeString(i18next.language || 'en-IN', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true

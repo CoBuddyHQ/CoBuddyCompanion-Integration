@@ -3,22 +3,24 @@
  * Consistent date/time formatting across all screens.
  */
 
+import i18next from 'i18next';
+
 /** Format a date as "Mon, 20 Jun" */
 export function formatShortDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleDateString('en-IN', {weekday: 'short', day: 'numeric', month: 'short'});
+  return d.toLocaleDateString(i18next.language || 'en-IN', {weekday: 'short', day: 'numeric', month: 'short'});
 }
 
 /** Format a date as "Monday, 20 June 2026" */
 export function formatFullDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleDateString('en-IN', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+  return d.toLocaleDateString(i18next.language || 'en-IN', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
 }
 
 /** Format time as "3:30 PM" */
 export function formatTime(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleTimeString('en-IN', {hour: 'numeric', minute: '2-digit', hour12: true});
+  return d.toLocaleTimeString(i18next.language || 'en-IN', {hour: 'numeric', minute: '2-digit', hour12: true});
 }
 
 /** Format a date-time range as "3:00 PM – 5:00 PM" */
