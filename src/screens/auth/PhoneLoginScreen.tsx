@@ -295,12 +295,11 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
                 }
                 </TouchableOpacity>
               } />
-            
           </View>
         </TouchableOpacity>
       </Modal>
 
-      {/* OTP Service Coming Soon Modal */}
+      {/* Coming Soon Modal */}
       <Modal
         visible={comingSoonOpen}
         transparent

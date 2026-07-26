@@ -56,7 +56,7 @@ const App: React.FC = () => {
             createdAt: new Date().toISOString(),
           } as any);
         }
-      });
+      }).catch(() => {});
     } else if (authStatus === 'unauthenticated') {
       // Clean up on logout
       socketService.disconnectAll();

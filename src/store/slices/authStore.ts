@@ -164,26 +164,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       await AsyncStorage.setItem(K.COMPANION_ID, res.companionId);
       await AsyncStorage.setItem(K.AUTH_STATUS,  res.profileStatus);
 
-      // Map backend status → app AuthStatus
-      const authStatus: AuthStatus =
-        res.isNewCompanion || res.profileStatus === 'draft' ? 'onboarding'
-        : res.profileStatus === 'submitted' || res.profileStatus === 'under_review'
-          ? 'pending_verification'
-        : res.profileStatus === 'approved' || res.verificationStatus === 'verified'
-          ? 'active'
-        : 'applying';
-
-      // Wire API client with live token providers
-      _wireApiClient(get);
-
-      const calculatedStatus = await syncProgressWithBackend();
-
+      // Set tokens in memory first so API client can use them for syncProgressWithBackend
       set({
         token: res.accessToken,
         refreshToken: res.refreshToken,
         companionId: res.companionId,
         maskedPhone: res.phone,
         pinSet: res.hasPIN,
+      });
+
+      // Wire API client with live token providers
+      _wireApiClient(get);
+
+      const calculatedStatus = await syncProgressWithBackend();
+
+      // Finally update the auth status to trigger navigation
+      set({
         authStatus: calculatedStatus,
       });
 

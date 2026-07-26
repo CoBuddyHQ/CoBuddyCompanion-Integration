@@ -28,6 +28,12 @@ let _auth: any = null;
 async function getMessaging() {
   if (_messaging) return _messaging;
   try {
+    const appMod = require('@react-native-firebase/app');
+    const apps = appMod.default?.apps ?? appMod?.apps;
+    if (!apps || apps.length === 0) {
+      console.warn('[Firebase] No default Firebase App initialized — FCM disabled in dev');
+      return null;
+    }
     const mod = require('@react-native-firebase/messaging');
     _messaging = mod.default ?? mod;
     return _messaging;
@@ -40,6 +46,12 @@ async function getMessaging() {
 async function getAuth() {
   if (_auth) return _auth;
   try {
+    const appMod = require('@react-native-firebase/app');
+    const apps = appMod.default?.apps ?? appMod?.apps;
+    if (!apps || apps.length === 0) {
+      console.warn('[Firebase] No default Firebase App initialized — Firebase Auth disabled in dev');
+      return null;
+    }
     const mod = require('@react-native-firebase/auth');
     _auth = mod.default ?? mod;
     return _auth;
@@ -61,11 +73,18 @@ class FirebaseService {
    * Call once on app startup after authentication succeeds.
    */
   async initialize(onNotification?: (notif: FcmNotification) => void): Promise<void> {
-    this.onNotificationCallback = onNotification ?? null;
-    await this.requestPermission();
-    await this.registerFcmToken();
-    this.setupForegroundHandler();
-    this.setupBackgroundHandler();
+    try {
+      this.onNotificationCallback = onNotification ?? null;
+      const messaging = await getMessaging();
+      if (!messaging) return;
+
+      await this.requestPermission();
+      await this.registerFcmToken();
+      this.setupForegroundHandler();
+      this.setupBackgroundHandler();
+    } catch (err) {
+      console.warn('[Firebase] Service initialization skipped in dev:', err);
+    }
   }
 
   /**
