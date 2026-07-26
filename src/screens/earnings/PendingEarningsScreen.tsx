@@ -1,8 +1,8 @@
 /**
  * PendingEarningsScreen (CPN-103)
  */
-import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +12,8 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
-import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
+import { useEarningsStore } from '../../store/slices/earningsStore';
+import type { Transaction } from '../../store/types/store.types';
 import { useTranslation } from "react-i18next";
 
 // Nested component extraction: ItemSeparator was defined inside PendingEarningsScreen render.
@@ -26,9 +27,15 @@ export function PendingEarningsScreen(): React.JSX.Element {
   // ── Store data ──────────────────────────────────────────────────────────────
   const pendingClearance = useEarningsStore((s) => s.pendingClearance);
   const recentTransactions = useEarningsStore((s) => s.recentTransactions);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+  const isLoading = useEarningsStore((s) => s.isLoading);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
 
   // Only show transactions still in pending state
-  const pendingItems = recentTransactions.filter((tx) => tx.type === 'pending');
+  const pendingItems = recentTransactions.filter((tx) => tx.status === 'pending_review');
   const totalPendingStr = `₹${pendingClearance.toLocaleString('en-IN')}`;
 
   // ── Row renderer ─────────────────────────────────────────────────────────────
@@ -36,8 +43,8 @@ export function PendingEarningsScreen(): React.JSX.Element {
   <View style={s.row}>
       <Icon name="schedule" size={20} color={colors.softWarning} style={{ flexShrink: 0 }} />
       <View style={{ flex: 1, marginLeft: spacing.sm }}>
-        <Text style={s.rowSession}>{t(item.title)}</Text>
-        <Text style={s.rowDate}>{item.date}</Text>
+        <Text style={s.rowSession}>{t(item.description)}</Text>
+        <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
       <View style={{ alignItems: 'flex-end', gap: 4 }}>
         <Text style={s.rowAmount}>{t("content.earnings.PendingEarningsScreen.text")}{Math.abs(item.amount).toLocaleString('en-IN')}</Text>
@@ -62,16 +69,22 @@ export function PendingEarningsScreen(): React.JSX.Element {
       </View>
       <FlatList
         data={pendingItems}
-        keyExtractor={(i) => i.id}
+        keyExtractor={(i) => i.transactionId}
         renderItem={renderItem}
         contentContainerStyle={s.list}
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-        <View style={s.emptyWrap}>
-            <Icon name="check-circle" size={40} color={colors.safetyGreen} />
-            <Text style={s.emptyText}> {t('earnings.no_pending_earnings_right_now')} </Text>
-          </View>
+          isLoading ? (
+            <View style={[s.emptyWrap, { paddingVertical: spacing.xl }]}>
+              <ActivityIndicator size="small" color={colors.gold} />
+            </View>
+          ) : (
+            <View style={s.emptyWrap}>
+              <Icon name="check-circle" size={40} color={colors.safetyGreen} />
+              <Text style={s.emptyText}> {t('earnings.no_pending_earnings_right_now')} </Text>
+            </View>
+          )
         }
         ListFooterComponent={
         <TouchableOpacity accessibilityRole="button" style={s.support}

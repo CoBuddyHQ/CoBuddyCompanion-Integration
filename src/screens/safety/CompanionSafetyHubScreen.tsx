@@ -2,7 +2,7 @@
  * CompanionSafetyHubScreen
  * Central safety control panel. Accessed from Profile Tab → "Safety Hub".
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
   Switch, StyleSheet, StatusBar } from
@@ -144,6 +144,11 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
   const autoCheckIn = useSafetyStore((s) => s.autoCheckIn);
   const disguisedCall = useSafetyStore((s) => s.disguisedCall);
   const toggleSetting = useSafetyStore((s) => s.toggleSetting);
+  const fetchTrustedContacts = useSafetyStore((s) => s.fetchTrustedContacts);
+
+  useEffect(() => {
+    fetchTrustedContacts();
+  }, [fetchTrustedContacts]);
 
   const handleSOS = () => {
 

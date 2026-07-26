@@ -2,8 +2,8 @@ import i18next from "i18next"; /**
 * DailyEarningsBreakdownScreen (CPN-101)
 * Shows per-day session credits & deductions, driven from earningsStore.recentTransactions.
 */
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -34,11 +34,17 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
 
   // ── Store ────────────────────────────────────────────────────────────────────
   const recentTransactions = useEarningsStore((s) => s.recentTransactions);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+  const isLoading = useEarningsStore((s) => s.isLoading);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
 
   // For "today" show all credits/debits from the store (future: filter by date via API)
   // For other days we show an empty state since we only have "recent" mock data
   const isToday = dateIdx === 6;
-  const dayTxns = isToday ? recentTransactions.filter((tx) => tx.type !== 'pending') : [];
+  const dayTxns = isToday ? recentTransactions.filter((tx) => tx.status !== 'pending_review') : [];
 
   // Compute net for the displayed day: sum of amounts (negatives are deductions)
   const netAmount = dayTxns.reduce((sum, tx) => sum + tx.amount, 0);
@@ -75,26 +81,29 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
 
         {/* Breakdown list */}
         <Text style={s.sectionLabel}> {t('earnings.breakdown')} </Text>
-        {dayTxns.length === 0 ?
-        <View style={s.emptyCard}>
+        
+        {isLoading ? (
+          <ActivityIndicator size="small" color={colors.gold} style={{ marginTop: spacing.md }} />
+        ) : dayTxns.length === 0 ? (
+          <View style={s.emptyCard}>
             <Icon name="event-busy" size={32} color={colors.textMuted} />
             <Text style={s.emptyText}> {t('earnings.no_transactions_for_this_day')} </Text>
-          </View> :
-
-        <View style={s.breakdownCard}>
+          </View>
+        ) : (
+          <View style={s.breakdownCard}>
             {dayTxns.map((tx, i) => {
-            const isDebit = tx.type === 'debit';
+            const isDebit = tx.amount < 0;
             const rowColor = isDebit ? colors.softWarning : colors.safetyGreen;
             const sign = isDebit ? '−' : '+';
             return (
-              <View key={tx.id}>
+              <View key={tx.transactionId}>
                   <TouchableOpacity accessibilityRole="button" style={s.breakdownRow}
-                onPress={() => navigation.navigate(Routes.TRANSACTION_DETAIL, { transactionId: tx.id })}
+                onPress={() => navigation.navigate(Routes.TRANSACTION_DETAIL, { transactionId: tx.transactionId })}
                 activeOpacity={0.75}>
                     <View style={s.breakdownLeft}>
                       <Icon name={isDebit ? 'arrow-downward' : 'arrow-upward'}
                     size={16} color={rowColor} style={{ marginRight: 6 }} />
-                      <Text style={s.breakdownLabel} numberOfLines={1}>{t(tx.title)}</Text>
+                      <Text style={s.breakdownLabel} numberOfLines={1}>{t(tx.description)}</Text>
                     </View>
                     <Text style={[s.breakdownAmount, { color: rowColor }]}>
                       {sign}{fmtINR(tx.amount)}
@@ -106,7 +115,7 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
 
           })}
           </View>
-        }
+        )}
 
         {/* View full transaction history link */}
         <TouchableOpacity accessibilityRole="button" style={s.linkRow}

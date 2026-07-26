@@ -57,7 +57,7 @@ export function BlockCustomerScreen(): React.JSX.Element {
         text: t("alerts.yes_block"), style: 'destructive',
         onPress: () => {
           setBlocking(true);
-          blockCustomer(customerName);
+          blockCustomer(customerName, reason === 'Other' ? otherText : reason);
           navigation.canGoBack() ? navigation.goBack() : undefined;
         }
       }]

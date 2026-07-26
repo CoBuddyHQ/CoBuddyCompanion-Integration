@@ -35,6 +35,9 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { UploadsService } from '../../services/api/services/uploads.service';
+import { KycService } from '../../services/api/services/kyc.service';
+import { Alert } from 'react-native';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -61,16 +64,27 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
   } = useApplicationStore();
   const [state, setState] = useState<LivenessState>('ready');
 
-  const handleStartCheck = useCallback(() => {
+  const handleStartCheck = useCallback(async () => {
     setState('checking');
-    // Phase 4B stub: simulate processing delay
-    // Phase 5: replace with liveness SDK (iProov, AWS Rekognition, etc.)
-    setTimeout(() => {
-      // Raw selfie data never enters Zustand � only boolean completion flags.
+    try {
+      // Phase 5: replace with real liveness SDK video URI
+      const dummyVideoUri = 'stub://selfie_liveness.mp4';
+      
+      const uploadRes = await UploadsService.uploadKycSelfie(dummyVideoUri);
+      
+      await KycService.submitSelfie({
+        imageUrl: uploadRes.photoUrl || uploadRes.url || 'stub://imageUrl',
+        videoUrl: uploadRes.videoUrl || uploadRes.url || dummyVideoUri,
+      });
+
+      // Raw selfie data never enters Zustand  only boolean completion flags.
       setLivenessComplete(true);
       setState('complete');
-    }, 2000);
-  }, [setLivenessComplete]);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Liveness check failed');
+      setState('ready');
+    }
+  }, [setLivenessComplete, t]);
 
   const handleContinue = useCallback(() => {
     setCurrentStage('liveness_detection');

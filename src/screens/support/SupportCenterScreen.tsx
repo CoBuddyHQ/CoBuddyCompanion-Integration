@@ -2,7 +2,7 @@
  * SupportCenterScreen (CPN-166)
  * Main help & support hub.
  */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -24,10 +24,20 @@ const QUICK_HELP = [
 ];
 
 export function SupportCenterScreen(): React.JSX.Element {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
    
   const navigation = useNavigation<any>();
   const articles = useSupportStore(s => s.articles);
+  const fetchArticles = useSupportStore(s => s.fetchArticles);
+  const fetchTickets = useSupportStore(s => s.fetchTickets);
+  const fetchDisputes = useSupportStore(s => s.fetchDisputes);
+
+  useEffect(() => {
+    fetchArticles();
+    fetchTickets();
+    fetchDisputes();
+  }, [fetchArticles, fetchTickets, fetchDisputes]);
+
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
 

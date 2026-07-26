@@ -18,35 +18,14 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 
+import { socketService } from '../../services/api/services/socket.service';
+import { useSessionStore, ChatMessage } from '../../store/slices/sessionStore';
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'companion' | 'customer';
-  time: string;
-  status?: 'sent' | 'read';
-}
-
-// ─── Mock data ────────────────────────────────────────────────────────────────
-
-const MOCK_MESSAGES: Message[] = [
-{ id: '1', sender: 'customer', text: 'Hey! Just reached the entrance, are you here yet?', time: '3:42 PM', status: 'read' },
-{ id: '2', sender: 'companion', text: 'Yes! Coming from the metro side, 2 minutes away 😊', time: '3:43 PM', status: 'read' },
-{ id: '3', sender: 'customer', text: 'No rush at all! I\'ll wait near the coffee counter.', time: '3:43 PM', status: 'read' },
-{ id: '4', sender: 'companion', text: 'Perfect — I can see the sign now. See you in a sec!', time: '3:44 PM', status: 'read' },
-{ id: '5', sender: 'customer', text: 'I\'m in a light blue jacket btw 🙂', time: '3:44 PM', status: 'read' }];
+interface Message extends ChatMessage {}
 
 
-function nowTime(): string {
-  const d = new Date();
-  const h = d.getHours();
-  const m = String(d.getMinutes()).padStart(2, '0');
-  const ampm = h >= 12 ? i18next.t("content.sessions.InSessionChatScreen.pm") : i18next.t("content.sessions.InSessionChatScreen.am");
-  return `${h % 12 || 12}:${m} ${ampm}`;
-}
-
-// ─── Bubble ───────────────────────────────────────────────────────────────────
 
 const Bubble: React.FC<{msg: Message;}> = ({ msg }) => {
   const isMe = msg.sender === 'companion';
@@ -83,22 +62,39 @@ export function InSessionChatScreen(): React.JSX.Element {
   const customerName: string = route.params?.customerName ?? 'Customer';
   const initials = customerName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
 
-  const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
+  const messages = useSessionStore(s => s.chatMessages) as Message[];
   const [input, setInput] = useState('');
   const listRef = useRef<FlatList>(null);
 
-  // Scroll to bottom on mount
+  // Connect socket on mount
   useEffect(() => {
-    setTimeout(() => listRef.current?.scrollToEnd({ animated: false }), 120);
-  }, []);
+    if (sessionId) {
+      socketService.connectSession(sessionId, {
+        onMessage: (msg) => {
+          useSessionStore.getState().addChatMessage(msg);
+        },
+      });
+    }
+    return () => {
+      socketService.disconnectSession();
+    };
+  }, [sessionId]);
+
+  // Scroll to bottom on mount or when messages change
+  useEffect(() => {
+    setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 120);
+  }, [messages.length]);
 
   const handleSend = () => {
     const text = input.trim();
     if (!text) {return;}
-    setMessages((prev) => [
-    ...prev,
-    { id: String(Date.now()), sender: 'companion', text, time: nowTime(), status: 'sent' }]
-    );
+    
+    // Emit via socket service
+    socketService.sendSessionMessage(sessionId, text);
+    // Optimistic UI update handled by store or waiting for broadcast (here we rely on the store if we want optimistic, but currently sending just emits).
+    // Let's add it optimistically:
+    useSessionStore.getState().addChatMessage({ text, senderType: 'companion', status: 'sent' });
+    
     setInput('');
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 80);
   };

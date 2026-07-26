@@ -90,8 +90,9 @@ export function ChangePinScreen(): React.JSX.Element {
   const pinsMatch = next === confirm;
   const notSame = current !== next;
   const canSubmit = allFilled && pinsMatch && notSame;
+  const [loading, setLoading] = useState(false);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!allFilled) {
       Alert.alert(t("alerts.incomplete"), t("alerts.please_fill_in_all_fields"));return;
     }
@@ -101,15 +102,28 @@ export function ChangePinScreen(): React.JSX.Element {
     if (!notSame) {
       Alert.alert(t("alerts.same_value"), t("alerts.new_v0_must_be_different_from_the_curren", { v0: isPin ? t("content.settings.ChangePinScreen.pin") : 'password' }));return;
     }
-    Alert.alert(t("alerts.success"), t("alerts.your_security_details_have_been_updated"), [
-    {
-      text: t("alerts.ok"),
-      onPress: () => {
-        useAuthStore.getState().setPinSet(true);
-        navigation.canGoBack() ? navigation.goBack() : undefined;
+    
+    setLoading(true);
+    try {
+      if (isPin) {
+        await useAuthStore.getState().setPin(next, confirm);
+      } else {
+        // Password change logic would go here if backend supported it
       }
-    }]
-    );
+      
+      Alert.alert(t("alerts.success"), t("alerts.your_security_details_have_been_updated"), [
+      {
+        text: t("alerts.ok"),
+        onPress: () => {
+          navigation.canGoBack() ? navigation.goBack() : undefined;
+        }
+      }]
+      );
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || t("alerts.failed_to_update"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

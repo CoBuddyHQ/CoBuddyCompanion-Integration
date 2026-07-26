@@ -541,6 +541,10 @@ interface ApplicationState {
 
   // Reset (full clear)
   resetApplication: () => void;
+
+  // Backend Integration
+  saveDraftToBackend: () => Promise<void>;
+  submitApplicationToBackend: () => Promise<void>;
 }
 
 // ─── Initial state ────────────────────────────────────────────────────────────
@@ -598,6 +602,8 @@ const initialState: Omit<
   | 'isApplicationReadyForSubmission'
   | 'recalculateCompletion'
   | 'resetApplication'
+  | 'saveDraftToBackend'
+  | 'submitApplicationToBackend'
 > = {
   currentStage:  'not_started',
   currentPhase:  'identity',
@@ -996,4 +1002,28 @@ export const useApplicationStore = create<ApplicationState>((set, get) => ({
     set((s) => ({ completionPct: calcCompletion(s) })),
 
   resetApplication: () => set({ ...initialState }),
+
+  saveDraftToBackend: async () => {
+    try {
+      const state = get();
+      // Remove functions from state to just send data
+      const dataToSave = JSON.parse(JSON.stringify(state));
+      const { KycService } = require('../../services/api/services/kyc.service');
+      await KycService.saveDraft({ draftData: dataToSave });
+    } catch (e) {
+      console.warn('Failed to save draft to backend:', e);
+    }
+  },
+
+  submitApplicationToBackend: async () => {
+    try {
+      const state = get();
+      const dataToSubmit = JSON.parse(JSON.stringify(state));
+      const { KycService } = require('../../services/api/services/kyc.service');
+      await KycService.submit({ applicationData: dataToSubmit });
+    } catch (e) {
+      console.warn('Failed to submit application to backend:', e);
+      throw e;
+    }
+  }
 }));

@@ -51,6 +51,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {cons
   const handleContinue = () => {
     if (!allConfirmed) {return;}
     setCurrentStage('eligibility');
+    useApplicationStore.getState().saveDraftToBackend();
     navigation.navigate(Routes.PROFILE_SETUP_INTRO);
   };
 

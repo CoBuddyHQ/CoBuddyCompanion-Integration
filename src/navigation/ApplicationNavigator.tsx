@@ -56,17 +56,7 @@ const ApplicationNavigator: React.FC = () => {
   // Default is Routes.JOURNEY_INTRO for fresh application starts.
   // VerificationNavigator screens set this BEFORE calling setAuthStatus('applying')
   // to control which screen is shown when this navigator mounts.
-  const {applicationEntryRoute, setApplicationEntryRoute} = useApplicationStore();
-
-  useEffect(() => {
-    // Reset to JOURNEY_INTRO after this mount has consumed the entry route.
-    // The next mount will start from JOURNEY_INTRO unless the route is set again
-    // before the next setAuthStatus('applying') call.
-    if (applicationEntryRoute !== Routes.JOURNEY_INTRO) {
-      setApplicationEntryRoute(Routes.JOURNEY_INTRO);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const applicationEntryRoute = useApplicationStore((s) => s.applicationEntryRoute);
 
   return (
     <Stack.Navigator

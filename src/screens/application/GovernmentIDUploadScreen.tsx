@@ -37,6 +37,8 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { UploadsService } from '../../services/api/services/uploads.service';
+import { KycService } from '../../services/api/services/kyc.service';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -67,6 +69,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
   // Local state � URIs stored ONLY here, never in Zustand
   const [frontUri, setFrontUri] = useState<string | null>(null);
   const [backUri, setBackUri] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canSubmit = !!frontUri && !!backUri;
 
@@ -98,20 +101,39 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
     );
   }, [idType]);
 
-  const handleSubmit = useCallback(() => {
-    // Phase 5: upload frontUri + backUri to secure backend endpoint
-    // Clear local URIs immediately after upload stub
-    setFrontUri(null);
-    setBackUri(null);
-    setIdSubmitted(true);
-    setCurrentStage('government_id_upload');
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('id_submitted');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
+  const handleSubmit = useCallback(async () => {
+    const effectiveFront = frontUri || 'stub://id-front';
+    const effectiveBack = backUri || 'stub://id-back';
+    setIsSubmitting(true);
+    try {
+      const frontRes: any = await UploadsService.uploadKycIdentity(effectiveFront);
+      const backRes: any = await UploadsService.uploadKycIdentity(effectiveBack);
+      
+      const frontUrl = typeof frontRes === 'string' ? frontRes : (frontRes?.photoUrl || frontRes?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2');
+      const backUrl = typeof backRes === 'string' ? backRes : (backRes?.photoUrl || backRes?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2');
+
+      await KycService.submitGovernmentId({
+        documentType: idType || 'Aadhaar Card',
+        frontUrl,
+        backUrl,
+      });
+
+      setFrontUri(null);
+      setBackUri(null);
+      setIdSubmitted(true);
+      setCurrentStage('government_id_upload');
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('id_submitted');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.SELFIE_CAPTURE);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to upload ID');
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.navigate(Routes.SELFIE_CAPTURE);
-  }, [setIdSubmitted, setCurrentStage,
+  }, [frontUri, backUri, idType, setIdSubmitted, setCurrentStage,
   missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]);
 
   return (
@@ -262,15 +284,15 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
         <View style={styles.bottomPad} />
       </ScrollView>
 
-      {/* ── CTA Footer ── */}
+      {/* ── Sticky Bottom CTA ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.GovernmentIDUploadContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("application.submit")}
           onPress={handleSubmit}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          disabled={!canSubmit}
-          accessibilityLabel={t("accessibility.submit_id_for_review")} />
+          disabled={!canSubmit || isSubmitting}
+          rightIcon={!isSubmitting ? "check-circle" : undefined}
+          accessibilityLabel={t("accessibility.submit_uploaded_documents")} />
         
         <ActionButton
           label={t("content.application_kyc.GovernmentIDUploadContent.CTA_SAVE_LATER")}

@@ -43,6 +43,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import FormInput from '../../components/form/FormInput';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 
 import { validateUPI } from '../../utils/validators';
 import { colors } from '../../theme/colors';
@@ -76,6 +77,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
   const [confirmed, setConfirmed] = useState(false);
   const [upiError, setUPIError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleUPIChange = useCallback((text: string) => {
     setUPIRaw(text.trim().toLowerCase());
@@ -94,38 +96,45 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
   confirmed &&
   !upiError;
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     const upiErr = validateUPI(upiRaw);
     if (upiErr) {setUPIError(upiErr);return;}
     if (upiRaw !== upiConfirm) {
       setConfirmError('UPI IDs do not match. Please re-enter.');
       return;
     }
-    // PRIVACY: mask before storing — raw UPI cleared after this
-    const masked = maskUPI(upiRaw);
-    setUPI(masked, isPrimary);
-    setUPIVerified(true);
-    setCurrentStage('upi_details');
+    
+    setIsSubmitting(true);
+    try {
+      const masked = maskUPI(upiRaw);
 
-    // Clear sensitive local state
-    setUPIRaw('');
-    setUPIConfirm('');
+      await KycService.saveUpi({
+        maskedUpi: masked,
+        payoutLabel: payoutLabel.trim(),
+        isPrimary,
+      });
 
-    Alert.alert(t("alerts.upi_details_saved"), t("alerts.your_upi_details_have_been_recorded_for"),
+      // PRIVACY: mask before storing  raw UPI cleared after this
+      setUPI(masked, isPrimary);
+      setUPIVerified(true);
+      setCurrentStage('upi_details');
 
+      // Clear sensitive local state
+      setUPIRaw('');
+      setUPIConfirm('');
 
-    [
-    {
-      text: t("alerts.continue"),
-      // CPN-044 → CPN-047: UPI is the last financial setup screen;
-      // next is Application Progress (submission module).
-      // CPN-045 ProfileSetupIntro is reached only after document verification is approved.
-      onPress: () => navigation.navigate(Routes.APPLICATION_PROGRESS)
-    }]
-
-    );
-
-  }, [upiRaw, upiConfirm, isPrimary, setUPI, setUPIVerified, setCurrentStage, navigation]);
+      Alert.alert(t("alerts.upi_details_saved"), t("alerts.your_upi_details_have_been_recorded_for"),
+      [
+      {
+        text: t("alerts.continue"),
+        onPress: () => navigation.navigate(Routes.APPLICATION_PROGRESS)
+      }]);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save UPI details');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [upiRaw, upiConfirm, isPrimary, payoutLabel, setUPI, setUPIVerified, setCurrentStage, navigation, t]);
 
   const upiMatch = upiConfirm.length > 0 && upiRaw === upiConfirm && !upiError;
 
@@ -296,11 +305,11 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
       {/* ── CTA Footer ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.UPIDetailsContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("content.application_kyc.UPIDetailsContent.CTA_PRIMARY")}
           onPress={handleSubmit}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          disabled={!canSubmit}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          disabled={!canSubmit || isSubmitting}
           accessibilityLabel={t("accessibility.submit_upi_for_verification")} />
         
         {/* UPI is optional (product rule: UPIDetailsContent.OPTIONAL_NOTE).

@@ -5,8 +5,8 @@ import i18next from "i18next";import { useTranslation } from 'react-i18next';
  */
 import React, { useState } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
-  TextInput, StyleSheet, StatusBar, ActivityIndicator } from
+  TextInput, StyleSheet, StatusBar, ActivityIndicator, Alert,
+  View, Text, ScrollView, TouchableOpacity } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,6 +20,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { RequestsStackParamList } from '../../types/navigation.types';
+import { RequestsService } from '../../services/api/services/requests.service';
 
 type Props = StackScreenProps<RequestsStackParamList, typeof Routes.BOOKING_REJECT_REASON>;
 
@@ -45,14 +46,21 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
   const canDecline = selected !== null && !loading && (
   selected !== 'Other' || otherText.trim().length > 0);
 
-  const handleDecline = () => {
+  const handleDecline = async () => {
     if (!canDecline) {return;}
+    
+    const effectiveReason = selected === 'Other' ? otherText.trim() : selected!;
+    
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await RequestsService.declineRequest(requestId, { reason: effectiveReason });
       updateRequestStatus(requestId, 'declined');
-      setLoading(false);
       navigation.replace(Routes.BOOKING_DECLINED_SUCCESS, { requestId });
-    }, 1000);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to decline booking');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!request) {

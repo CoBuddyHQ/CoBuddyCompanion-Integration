@@ -5,7 +5,7 @@
 import React, { useRef, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  TextInput, StyleSheet, StatusBar } from
+  TextInput, StyleSheet, StatusBar, ActivityIndicator, Alert } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -18,6 +18,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { SessionsService } from '../../services/api/services/sessions.service';
 
 const CODE_LEN = 4;
 
@@ -53,11 +54,20 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
   const fullCode = code.join('');
   const isValid = fullCode.length === CODE_LEN;
 
-  const handleConfirm = () => {
-    if (!isValid) {return;}
-    const sid = sessionId ?? 'SES-001';
-    if (sessionId) {updateSessionStatus(sessionId, 'active');}
-    navigation.replace(Routes.ACTIVE_SESSION, { sessionId: sid });
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    if (!isValid || loading) {return;}
+    setLoading(true);
+    try {
+      await SessionsService.verifyCustomer(sessionId, { passCode: fullCode });
+      if (sessionId) {updateSessionStatus(sessionId, 'active');}
+      navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Invalid verification code');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const [scanning, setScanning] = useState(false);
@@ -65,11 +75,16 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
   const handleQR = () => {
     setScanning(true);
     // Simulate real camera scan delay
-    setTimeout(() => {
-      setScanning(false);
-      const sid = sessionId ?? 'SES-001';
-      if (sessionId) {updateSessionStatus(sessionId, 'active');}
-      navigation.replace(Routes.ACTIVE_SESSION, { sessionId: sid });
+    setTimeout(async () => {
+      try {
+        await SessionsService.verifyCustomer(sessionId, { passCode: 'AR-642' });
+        if (sessionId) {updateSessionStatus(sessionId, 'active');}
+        navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+      } catch (e: any) {
+        Alert.alert(t("alerts.error"), e.message || 'Invalid QR code');
+      } finally {
+        setScanning(false);
+      }
     }, 1500);
   };
 

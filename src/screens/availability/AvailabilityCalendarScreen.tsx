@@ -4,7 +4,7 @@ import i18next from "i18next"; /**
 * recurring hours, and add date-specific overrides.
 * Calendar booked/off days are now derived from real store data.
 */
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
   Switch, StyleSheet, StatusBar } from
@@ -123,6 +123,11 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
   const isAvailable = useAvailabilityStore((s) => s.isAvailable);
   const toggleDay = useAvailabilityStore((s) => s.toggleDay);
   const setLiveAvail = useAvailabilityStore((s) => s.setLiveAvailable);
+  const fetchAvailability = useAvailabilityStore((s) => s.fetchAvailability);
+
+  useEffect(() => {
+    fetchAvailability();
+  }, [fetchAvailability]);
 
   const now = new Date();
   const year = now.getFullYear();

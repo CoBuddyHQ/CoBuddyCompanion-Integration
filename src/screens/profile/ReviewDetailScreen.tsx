@@ -59,7 +59,7 @@ export function ReviewDetailScreen(): React.JSX.Element {
       Alert.alert(t("alerts.already_reported"), t("alerts.this_review_is_already_under_investigati"));
       return;
     }
-    reportReview(reviewId);
+    reportReview(reviewId, 'Inappropriate or fake review');
     Alert.alert(t("alerts.report_submitted"), t("alerts.our_team_will_review_this_report_within"));
   };
 

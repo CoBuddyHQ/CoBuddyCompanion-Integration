@@ -22,6 +22,7 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
 import { useTranslation } from "react-i18next";
+import { SessionsService } from '../../services/api/services/sessions.service';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.SESSION_DETAIL>;
 
@@ -344,7 +345,14 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
         {isActive ?
         <TouchableOpacity accessibilityRole="button"
           style={styles.btnRed}
-          onPress={() => (navigation as any).navigate(Routes.SESSION_COMPLETE, { sessionId })}
+          onPress={async () => {
+            try {
+              await SessionsService.completeSession(sessionId);
+              navigation.navigate(Routes.SESSION_COMPLETE, { sessionId });
+            } catch (e: any) {
+              console.error(e);
+            }
+          }}
           activeOpacity={0.85}
           accessibilityLabel={i18next.t("accessibility.end_session")}>
             <Icon name="stop-circle" size={18} color={colors.white} style={{ marginRight: 8 }} />

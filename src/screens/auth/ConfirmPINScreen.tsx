@@ -40,6 +40,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from '../../store/slices/authStore';
 
 type Props = StackScreenProps<AuthStackParamList, typeof Routes.CONFIRM_PIN>;
 
@@ -51,6 +52,7 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const [confirmPin, setConfirmPin] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const hiddenInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
     if (error) {setError(null);}
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (confirmPin.length < PIN_LENGTH) {return;}
     if (confirmPin !== originalPin) {
       setError(t("content.auth_onboarding.ConfirmPINContent.ERROR_MISMATCH"));
@@ -72,8 +74,19 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
       hiddenInputRef.current?.focus();
       return;
     }
-    // PIN confirmed — navigate to biometrics
-    navigation.navigate(Routes.BIOMETRIC_SETUP);
+    
+    setLoading(true);
+    try {
+      await useAuthStore.getState().setPin(originalPin, confirmPin);
+      // PIN confirmed & saved — navigate to biometrics
+      navigation.navigate(Routes.BIOMETRIC_SETUP);
+    } catch (e: any) {
+      setError(e.message || 'Failed to set PIN');
+      setConfirmPin('');
+      hiddenInputRef.current?.focus();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const INFO_CARDS = [

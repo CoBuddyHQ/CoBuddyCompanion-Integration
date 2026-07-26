@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, ActivityIndicator } from
+  StyleSheet, StatusBar, ActivityIndicator, Alert } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -22,6 +22,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { RequestsStackParamList } from '../../types/navigation.types';
+import { RequestsService } from '../../services/api/services/requests.service';
 
 type Props = StackScreenProps<RequestsStackParamList, typeof Routes.BOOKING_ACCEPT_CONFIRMATION>;
 
@@ -91,15 +92,18 @@ export function BookingAcceptConfirmationScreen({ route, navigation }: Props): R
   const [loading, setLoading] = useState(false);
   const canConfirm = check1 && check2 && !loading;
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!canConfirm) {return;}
     setLoading(true);
-    // MOCK: 1 s simulated network delay then accept & navigate to success
-    setTimeout(() => {
+    try {
+      await RequestsService.acceptRequest(requestId);
       updateRequestStatus(requestId, 'accepted');
-      setLoading(false);
       navigation.replace(Routes.BOOKING_ACCEPTED_SUCCESS, { requestId });
-    }, 1000);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to accept booking');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ── Not-found guard ──────────────────────────────────────────────────────────

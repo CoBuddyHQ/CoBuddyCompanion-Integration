@@ -3,7 +3,7 @@ import i18next from "i18next"; /**
 * Onboarding-style initial emergency contact setup.
 */
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, StatusBar, KeyboardAvoidingView, Platform, Switch } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, StatusBar, KeyboardAvoidingView, Platform, Switch, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useSafetyStore } from '../../store/slices/safetyStore';
 import { useTranslation } from "react-i18next";
+import { KycService } from '../../services/api/services/kyc.service';
 
 const RELATIONS = ["Mother", "Father", "Sibling", "Friend", "Partner", "Other"] as any[];
 
@@ -28,12 +29,24 @@ export function EmergencyContactSetupScreen(): React.JSX.Element {
   const [saving, setSaving] = useState(false);
   const canContinue = name.trim().length > 0 && phone.trim().length >= 6;
   const addContact = useSafetyStore((s) => s.addContact);
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (saving) {return;}
     setSaving(true);
-    const newId = `C-${Date.now().toString(36).toUpperCase()}`;
-    addContact({ id: newId, name: name.trim(), phone: `+91 ${phone.trim()}`, relation, isPrimary });
-    setTimeout(() => {setSaving(false);navigation.canGoBack() ? navigation.goBack() : undefined;}, 600);
+    
+    try {
+      await KycService.saveEmergencyContact({
+        name: name.trim(),
+        maskedPhone: `+91 ${phone.trim()}`,
+        relationship: relation,
+      });
+      
+      const newId = `C-${Date.now().toString(36).toUpperCase()}`;
+      addContact({ id: newId, name: name.trim(), phone: `+91 ${phone.trim()}`, relation, isPrimary });
+      setTimeout(() => {setSaving(false);navigation.canGoBack() ? navigation.goBack() : undefined;}, 600);
+    } catch (e: any) {
+      setSaving(false);
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save emergency contact');
+    }
   };
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>

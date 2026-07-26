@@ -2,7 +2,7 @@ import i18next from "i18next"; /**
 * CPN-122 — Transaction History Screen  (mapped to TRANSACTION_HISTORY route)
 * Full filterable list of the companion's earnings and withdrawals.
 */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, StatusBar, Alert } from
@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
-import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
+import { useEarningsStore } from '../../store/slices/earningsStore';
+import type { Transaction } from '../../store/types/store.types';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -32,24 +33,30 @@ const FILTERS: {key: FilterKey;label: string;}[] = [{ key: "all", label: "conten
 
 // ─── Transaction icon/color maps (matches EarningsDashboardScreen) ────────────
 
-const TX_ICONS: Record<Transaction['type'], string> = {
+const getIconType = (tx: Transaction) => {
+  if (tx.status === 'pending_review') return 'pending';
+  if (tx.amount < 0) return 'debit';
+  return 'credit';
+};
+
+const TX_ICONS: Record<string, string> = {
   credit: 'arrow-downward',
   debit: 'arrow-upward',
   pending: 'access-time'
 };
-const TX_ICON_COLORS: Record<Transaction['type'], string> = {
+const TX_ICON_COLORS: Record<string, string> = {
   credit: colors.safetyGreen,
   debit: colors.softWarning,
   pending: colors.gold
 };
-const TX_BG: Record<Transaction['type'], string> = {
+const TX_BG: Record<string, string> = {
   credit: 'rgba(109,214,165,0.10)',
   debit: 'rgba(217,108,108,0.10)',
   pending: 'rgba(214,168,79,0.10)'
 };
 
 function fmtAmount(tx: Transaction): string {
-  const sign = tx.type === 'debit' ? '-' : '+';
+  const sign = tx.amount < 0 ? '-' : '+';
   return `${sign}₹${Math.abs(tx.amount).toLocaleString('en-IN')}`;
 }
 
@@ -57,25 +64,26 @@ function fmtAmount(tx: Transaction): string {
 
 const TransactionRow: React.FC<{tx: Transaction;last: boolean;}> = ({ tx, last }) => {
   const { t } = useTranslation();
+  const iconType = getIconType(tx);
   return (
     <View style={[styles.txRow, last && styles.txRowLast]}>
-    <View style={[styles.txIconWrap, { backgroundColor: TX_BG[tx.type] }]}>
-      <Icon name={TX_ICONS[tx.type] as any} size={18} color={TX_ICON_COLORS[tx.type]} />
+    <View style={[styles.txIconWrap, { backgroundColor: TX_BG[iconType] }]}>
+      <Icon name={TX_ICONS[iconType] as any} size={18} color={TX_ICON_COLORS[iconType]} />
     </View>
     <View style={styles.txMid}>
-      <Text style={styles.txTitle} numberOfLines={1}>{t(tx.title)}</Text>
-      <Text style={styles.txDate}>{tx.date}</Text>
+      <Text style={styles.txTitle} numberOfLines={1}>{t(tx.description)}</Text>
+      <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString()}</Text>
     </View>
     <View style={styles.txRight}>
       <Text style={[
         styles.txAmount,
-        tx.type === 'credit' && styles.txAmountCredit,
-        tx.type === 'debit' && styles.txAmountDebit,
-        tx.type === 'pending' && styles.txAmountPending]
+        iconType === 'credit' && styles.txAmountCredit,
+        iconType === 'debit' && styles.txAmountDebit,
+        iconType === 'pending' && styles.txAmountPending]
         }>
         {fmtAmount(tx)}
       </Text>
-      {tx.type === 'pending' &&
+      {iconType === 'pending' &&
         <Text style={styles.txPendingTag}> {t('earnings.pending')} </Text>
         }
     </View>
@@ -145,21 +153,34 @@ export function PayoutHistoryScreen(): React.JSX.Element {
 
   const navigation = useNavigation<any>();
   const recentTransactions = useEarningsStore((s) => s.recentTransactions);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+  const fetchSummary = useEarningsStore((s) => s.fetchSummary);
+
+  // Load data on mount — screen may open before HomeDashboard has fetched
+  useEffect(() => {
+    fetchTransactions();
+    fetchSummary();
+  }, [fetchTransactions, fetchSummary]);
 
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
 
   const filtered = useMemo(() => {
     if (activeFilter === 'all') {return recentTransactions;}
-    return recentTransactions.filter((tx) => tx.type === activeFilter);
+    return recentTransactions.filter((tx) => {
+      if (activeFilter === 'credit') return tx.amount > 0 && tx.status !== 'pending_review';
+      if (activeFilter === 'debit') return tx.amount < 0;
+      if (activeFilter === 'pending') return tx.status === 'pending_review';
+      return true;
+    });
   }, [recentTransactions, activeFilter]);
 
   // Earnings/debit summaries for the header badge
   const totalEarned = useMemo(
-    () => recentTransactions.filter((t) => t.type === 'credit').reduce((a, t) => a + t.amount, 0),
+    () => recentTransactions.filter((t) => t.amount > 0).reduce((a, t) => a + t.amount, 0),
     [recentTransactions]
   );
   const totalWithdrawn = useMemo(
-    () => Math.abs(recentTransactions.filter((t) => t.type === 'debit').reduce((a, t) => a + t.amount, 0)),
+    () => Math.abs(recentTransactions.filter((t) => t.amount < 0).reduce((a, t) => a + t.amount, 0)),
     [recentTransactions]
   );
 
@@ -201,7 +222,7 @@ export function PayoutHistoryScreen(): React.JSX.Element {
 
       <FlatList
         data={filtered}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.transactionId}
         renderItem={({ item, index }) =>
         <TransactionRow tx={item} last={index === filtered.length - 1} />
         }
@@ -216,7 +237,7 @@ export function PayoutHistoryScreen(): React.JSX.Element {
         ListFooterComponent={
         filtered.length > 0 ?
         <View>
-              {recentTransactions.some((t) => t.type === 'pending') &&
+              {recentTransactions.some((t) => t.status === 'pending_review') &&
           activeFilter !== 'debit' && activeFilter !== 'credit' &&
           <View style={styles.pendingNote}>
                   <Icon name="info-outline" size={12} color={colors.textMuted} />

@@ -1,21 +1,20 @@
 /**
  * CoBuddy Companion App — Safety Store (Zustand)
+ * ✅ INTEGRATED: Real API calls via SafetyService.
  * Manages SOS state, safety timer, trusted contacts, and incident reports.
  * PRIVACY: Trusted contacts stored with masked phone only.
  * CRITICAL: SOS state must never be silently cleared while a session is live.
  */
 
-import {create} from 'zustand';
-import type {
-  TrustedContact,
-  SafetyTimerStatus,
-} from '../types/store.types';
+import { create } from 'zustand';
+import type { TrustedContact, SafetyTimerStatus } from '../types/store.types';
+import { SafetyService } from '../../services/api/services/index';
 
 export interface SafetyTimerState {
   status: SafetyTimerStatus;
   durationMinutes: number;
   startedAt: string | null;
-  expiresAt: number | null; // Changed to numeric timestamp for easy calculation
+  expiresAt: number | null;
   sessionId: string | null;
 }
 
@@ -26,14 +25,14 @@ interface IncidentReport {
   sessionId: string | null;
   description: string;
   category: string;
-  submittedAt: string;      // ISO datetime
+  submittedAt: string;
   status: 'submitted' | 'under_review' | 'resolved';
 }
 
 interface SafetyState {
   // SOS
   sosStatus: SOSStatus;
-  sosTriggeredAt: string | null;   // ISO datetime
+  sosTriggeredAt: string | null;
 
   // Safety Timer
   timer: SafetyTimerState;
@@ -55,49 +54,47 @@ interface SafetyState {
   isLoadingContacts: boolean;
   error: string | null;
 
-  // SOS Actions
-  triggerSOS: () => void;
-  confirmSOS: () => void;
-  resolveSOS: () => void;
+  // ── Feature toggles ────────────────────────────────────────────────────────
+  locationTracking: boolean;
+  autoCheckIn: boolean;
+  disguisedCall: boolean;
+
+  // ── API Actions ────────────────────────────────────────────────────────────
+  
+  fetchTrustedContacts: () => Promise<void>;
+  
+  // Contacts CRUD
+  addContact: (c: { id: string; name: string; phone: string; relation: string; isPrimary: boolean }) => Promise<void>;
+  updateContact: (c: { id: string; name: string; phone: string; relation: string; isPrimary: boolean }) => Promise<void>;
+  removeContact: (id: string) => Promise<void>;
+
+  // SOS
+  triggerSOS: () => Promise<void>;
+  confirmSOS: () => void; // local confirm UI step
+  resolveSOS: (resolution?: string) => Promise<void>;
   resetSOS: () => void;
 
-  // Timer Actions
-  startTimer: (durationMinutes: number, sessionId: string | null) => void;
-  cancelTimer: () => void;
+  // Timer
+  startTimer: (durationMinutes: number, sessionId: string | null) => Promise<void>;
+  cancelTimer: () => Promise<void>;
   expireTimer: () => void;
   setTimerStatus: (status: SafetyTimerStatus) => void;
 
-  // Trusted Contacts
-  setTrustedContacts: (contacts: TrustedContact[]) => void;
-  addTrustedContact: (contact: TrustedContact) => void;
-  updateTrustedContact: (contact: TrustedContact) => void;
-  removeTrustedContact: (contactId: string) => void;
+  // Incidents
+  fileIncident: (sessionId: string | null, category: string, description: string) => Promise<void>;
 
-  // Incident Reports
-  addIncidentReport: (report: IncidentReport) => void;
-  setIncidentReports: (reports: IncidentReport[]) => void;
-
-  // Blocked Customers
-  blockCustomer: (customerName: string) => void;
+  // Block Customer
+  blockCustomer: (customerId: string, reason: string) => Promise<void>;
 
   // Venue
   setCurrentVenue: (approved: boolean, venueName: string | null) => void;
 
-  // Loading
-  setLoadingContacts: (v: boolean) => void;
-  setError: (error: string | null) => void;
-
-  // ── Safety feature toggles ──────────────────────────────────────────────
-  locationTracking: boolean;
-  autoCheckIn:      boolean;
-  disguisedCall:    boolean;
+  // Local Toggles
   toggleSetting: (key: 'locationTracking' | 'autoCheckIn' | 'disguisedCall') => void;
 
-  // ── Screen-friendly contact helpers ────────────────────────────────────
-  // These work with the local Contact shape: {id, name, phone, relation, isPrimary}
-  addContact:    (c: {id: string; name: string; phone: string; relation: string; isPrimary: boolean}) => void;
-  updateContact: (c: {id: string; name: string; phone: string; relation: string; isPrimary: boolean}) => void;
-  removeContact: (id: string) => void;
+  // Helpers
+  setLoadingContacts: (v: boolean) => void;
+  setError: (error: string | null) => void;
 }
 
 const INITIAL_TIMER: SafetyTimerState = {
@@ -108,7 +105,7 @@ const INITIAL_TIMER: SafetyTimerState = {
   sessionId: null,
 };
 
-export const useSafetyStore = create<SafetyState>(set => ({
+export const useSafetyStore = create<SafetyState>((set, get) => ({
   sosStatus: 'idle',
   sosTriggeredAt: null,
   timer: INITIAL_TIMER,
@@ -120,129 +117,184 @@ export const useSafetyStore = create<SafetyState>(set => ({
   isLoadingContacts: false,
   error: null,
 
-  // ── SOS ──────────────────────────────────────────────────────────────────
-  triggerSOS: () =>
-    set({sosStatus: 'triggered', sosTriggeredAt: new Date().toISOString()}),
+  locationTracking: true,
+  autoCheckIn: true,
+  disguisedCall: false,
 
-  confirmSOS: () => set({sosStatus: 'confirmed'}),
+  // ── API Actions ────────────────────────────────────────────────────────────
 
-  resolveSOS: () => set({sosStatus: 'resolved'}),
-
-  resetSOS: () => set({sosStatus: 'idle', sosTriggeredAt: null}),
-
-  // ── Timer ─────────────────────────────────────────────────────────────────
-  startTimer: (durationMinutes, sessionId) => {
-    const startedAt = new Date().toISOString();
-    const expiresAt = Date.now() + durationMinutes * 60 * 1000;
-    set({
-      timer: {
-        status: 'active',
-        durationMinutes,
-        startedAt,
-        expiresAt,
-        sessionId,
-      },
-    });
+  fetchTrustedContacts: async () => {
+    set({ isLoadingContacts: true, error: null });
+    try {
+      const contacts = await SafetyService.getTrustedContacts();
+      set({ trustedContacts: Array.isArray(contacts) ? contacts : (contacts as any).contacts ?? [] });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to load contacts' });
+    } finally {
+      set({ isLoadingContacts: false });
+    }
   },
 
-  cancelTimer: () =>
-    set({timer: {...INITIAL_TIMER, status: 'cancelled'}}),
+  addContact: async (c) => {
+    set({ isLoadingContacts: true, error: null });
+    try {
+      const res: any = await SafetyService.addTrustedContact({
+        name: c.name,
+        phone: c.phone,
+        relationship: c.relation,
+        isEmergencyContact: c.isPrimary
+      });
+      
+      const newContact: TrustedContact = {
+        contactId: res.id || c.id || `temp-${Date.now()}`,
+        name: c.name,
+        maskedPhone: c.phone, // Ideally backend handles masking, but we set what we have locally
+        relationship: c.relation,
+        isEmergencyContact: c.isPrimary
+      };
+      
+      set(state => {
+        const base = c.isPrimary
+          ? state.trustedContacts.map(t => ({ ...t, isEmergencyContact: false }))
+          : [...state.trustedContacts];
+        return { trustedContacts: [...base, newContact] };
+      });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to add contact' });
+    } finally {
+      set({ isLoadingContacts: false });
+    }
+  },
+
+  updateContact: async (c) => {
+    set({ isLoadingContacts: true, error: null });
+    try {
+      await SafetyService.updateTrustedContact(c.id, {
+        name: c.name,
+        phone: c.phone,
+        relationship: c.relation,
+        isEmergencyContact: c.isPrimary
+      });
+      
+      set(state => ({
+        trustedContacts: state.trustedContacts.map(t => {
+          if (t.contactId === c.id) {
+            return {
+              ...t,
+              name: c.name,
+              maskedPhone: c.phone,
+              relationship: c.relation,
+              isEmergencyContact: c.isPrimary,
+            };
+          }
+          if (c.isPrimary) { return { ...t, isEmergencyContact: false }; }
+          return t;
+        }),
+      }));
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to update contact' });
+    } finally {
+      set({ isLoadingContacts: false });
+    }
+  },
+
+  removeContact: async (id) => {
+    const prev = get().trustedContacts;
+    set(state => ({ trustedContacts: state.trustedContacts.filter(t => t.contactId !== id) }));
+    try {
+      await SafetyService.deleteTrustedContact(id);
+    } catch (e: unknown) {
+      set({ trustedContacts: prev, error: e instanceof Error ? e.message : 'Failed to remove contact' });
+    }
+  },
+
+  triggerSOS: async () => {
+    const now = new Date().toISOString();
+    set({ sosStatus: 'triggered', sosTriggeredAt: now, error: null });
+    try {
+      // Typically fires WebSockets & push notifications via backend
+      await SafetyService.triggerSos({ sessionId: get().timer.sessionId || undefined });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to trigger SOS on server' });
+    }
+  },
+
+  confirmSOS: () => set({ sosStatus: 'confirmed' }),
+
+  resolveSOS: async (resolution?: string) => {
+    set({ sosStatus: 'resolved', error: null });
+    try {
+      await SafetyService.resolveSos({ resolution });
+      set({ sosStatus: 'idle', sosTriggeredAt: null });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to resolve SOS' });
+    }
+  },
+
+  resetSOS: () => set({ sosStatus: 'idle', sosTriggeredAt: null }),
+
+  startTimer: async (durationMinutes, sessionId) => {
+    const startedAt = new Date().toISOString();
+    const expiresAt = Date.now() + durationMinutes * 60 * 1000;
+    
+    // Optimistic local update
+    set({
+      timer: { status: 'active', durationMinutes, startedAt, expiresAt, sessionId },
+      error: null
+    });
+
+    try {
+      await SafetyService.startTimer({ durationMinutes, sessionId: sessionId ?? undefined });
+    } catch (e: unknown) {
+      // Revert if failed
+      set({ timer: { ...INITIAL_TIMER }, error: e instanceof Error ? e.message : 'Failed to start timer' });
+    }
+  },
+
+  cancelTimer: async () => {
+    set({ timer: { ...INITIAL_TIMER, status: 'cancelled' }, error: null });
+    try {
+      await SafetyService.cancelTimer();
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to cancel timer' });
+    }
+  },
 
   expireTimer: () =>
-    set(state => ({
-      timer: {...state.timer, status: 'expired'},
-    })),
+    set(state => ({ timer: { ...state.timer, status: 'expired' } })),
 
   setTimerStatus: status =>
-    set(state => ({timer: {...state.timer, status}})),
+    set(state => ({ timer: { ...state.timer, status } })),
 
-  // ── Trusted Contacts ──────────────────────────────────────────────────────
-  setTrustedContacts: contacts => set({trustedContacts: contacts}),
+  fileIncident: async (sessionId, category, description) => {
+    try {
+      await SafetyService.fileIncident({
+        sessionId: sessionId ?? undefined,
+        category,
+        description
+      });
+      // Optionally fetch incidents list again or push optimistically
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to file incident' });
+      throw e;
+    }
+  },
 
-  addTrustedContact: contact =>
-    set(state => ({
-      trustedContacts: [...state.trustedContacts, contact],
-    })),
+  blockCustomer: async (customerId, reason) => {
+    try {
+      await SafetyService.blockCustomer(customerId, { reason });
+      set(state => ({ blockedCustomers: [...state.blockedCustomers, customerId] }));
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to block customer' });
+      throw e;
+    }
+  },
 
-  updateTrustedContact: contact =>
-    set(state => ({
-      trustedContacts: state.trustedContacts.map(c =>
-        c.contactId === contact.contactId ? contact : c,
-      ),
-    })),
-
-  removeTrustedContact: contactId =>
-    set(state => ({
-      trustedContacts: state.trustedContacts.filter(
-        c => c.contactId !== contactId,
-      ),
-    })),
-
-  // ── Incident Reports ──────────────────────────────────────────────────────
-  addIncidentReport: report =>
-    set(state => ({
-      incidentReports: [report, ...state.incidentReports],
-    })),
-
-  setIncidentReports: reports => set({incidentReports: reports}),
-
-  // ── Blocked Customers ──────────────────────────────────────────────────────
-  blockCustomer: (customerName: string) =>
-    set(state => ({
-      blockedCustomers: [...state.blockedCustomers, customerName],
-    })),
-
-  // ── Venue ─────────────────────────────────────────────────────────────────
   setCurrentVenue: (approved, venueName) =>
-    set({currentVenueApproved: approved, currentVenueName: venueName}),
+    set({ currentVenueApproved: approved, currentVenueName: venueName }),
 
-  // ── Loading ───────────────────────────────────────────────────────────────
-  setLoadingContacts: v => set({isLoadingContacts: v}),
-  setError: error => set({error}),
+  toggleSetting: key => set(state => ({ [key]: !state[key as keyof SafetyState] })),
 
-  // ── Feature toggles ────────────────────────────────────────────────────────
-  locationTracking: true,
-  autoCheckIn:      true,
-  disguisedCall:    false,
-  toggleSetting: key => set(state => ({[key]: !state[key as keyof SafetyState]})),
-
-  // ── Screen-friendly contact helpers ──────────────────────────────────────
-  addContact: c =>
-    set(state => {
-      // If new contact is primary, demote all existing primaries
-      const base: TrustedContact[] = c.isPrimary
-        ? state.trustedContacts.map(t => ({...t, isEmergencyContact: false}))
-        : [...state.trustedContacts];
-      const newEntry: TrustedContact = {
-        contactId: c.id,
-        name: c.name,
-        maskedPhone: c.phone,
-        relationship: c.relation,
-        isEmergencyContact: c.isPrimary,
-      };
-      return {trustedContacts: [...base, newEntry]};
-    }),
-
-  updateContact: c =>
-    set(state => ({
-      trustedContacts: state.trustedContacts.map(t => {
-        if (t.contactId === c.id) {
-          return {
-            contactId: c.id,
-            name: c.name,
-            maskedPhone: c.phone,
-            relationship: c.relation,
-            isEmergencyContact: c.isPrimary,
-          };
-        }
-        // If updated is primary, demote others
-        if (c.isPrimary) {return {...t, isEmergencyContact: false};}
-        return t;
-      }),
-    })),
-
-  removeContact: id =>
-    set(state => ({
-      trustedContacts: state.trustedContacts.filter(t => t.contactId !== id),
-    })),
+  setLoadingContacts: v => set({ isLoadingContacts: v }),
+  setError: error => set({ error }),
 }));

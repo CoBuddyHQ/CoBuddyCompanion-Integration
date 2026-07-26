@@ -52,6 +52,9 @@ const BioIntroductionScreen: React.FC<Props> = ({ navigation }) => {const { t } 
     const err = validateBio(professionalBio);
     setBioError(err);
     if (err) {return;}
+    
+    useApplicationStore.getState().saveDraftToBackend();
+
     setCurrentStage('bio_intro');
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('bio');

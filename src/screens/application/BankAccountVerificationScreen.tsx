@@ -32,10 +32,12 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
+import { Alert } from 'react-native';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn } from '../../navigation/missingRequirementNavigation';
@@ -66,16 +68,26 @@ export function BankAccountVerificationScreen({ navigation }: Props): React.JSX.
     completeMissingRequirementFix
   } = useApplicationStore();
 
-  const handleContinue = useCallback(() => {
-    setBankVerified(true);
-    setCurrentStage('bank_verification');
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('bank');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleContinue = useCallback(async () => {
+    setIsSubmitting(true);
+    try {
+      await KycService.verifyBank({ bankId: `bank-${bankAccountLast4}` });
+      setBankVerified(true);
+      setCurrentStage('bank_verification');
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('bank');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.UPI_DETAILS);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Verification failed');
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.navigate(Routes.UPI_DETAILS);
-  }, [setBankVerified, setCurrentStage, missingRequirementFixContext, completeMissingRequirementFix, navigation]);
+  }, [setBankVerified, setCurrentStage, missingRequirementFixContext, completeMissingRequirementFix, navigation, bankAccountLast4, t]);
 
   const maskedAccount = bankAccountLast4 ?
   `•••• •••• ${bankAccountLast4}` :
@@ -190,12 +202,12 @@ export function BankAccountVerificationScreen({ navigation }: Props): React.JSX.
       {/* •• CTA Footer •• */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t('application.bank_verification_cta_continue')}
+          label={isSubmitting ? t("alerts.processing") : t('application.bank_verification_cta_primary')}
           onPress={handleContinue}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          accessibilityLabel={t("accessibility.continue_setup")} />
-
+          disabled={isSubmitting}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          accessibilityLabel={t('accessibility.continue_to_next_step')} />
       </View>
     </SafeAreaView>);
 

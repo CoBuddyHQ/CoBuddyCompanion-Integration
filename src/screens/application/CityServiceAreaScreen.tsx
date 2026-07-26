@@ -239,6 +239,8 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
   const handleContinue = () => {
     if (!canContinue) {return;}
     setCurrentStage('city_service_area');
+    useApplicationStore.getState().saveDraftToBackend();
+    
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
       completeMissingRequirementFix('city');
       navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);

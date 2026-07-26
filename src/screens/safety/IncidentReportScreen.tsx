@@ -3,7 +3,7 @@
  * File a safety incident report during or after a session.
  */
 import React, {useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, StatusBar} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, StatusBar, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -40,22 +40,15 @@ export function IncidentReportScreen(): React.JSX.Element {
   const [description,  setDescription]  = useState('');
   const [when,         setWhen]         = useState('');
 
-  const addIncidentReport = useSafetyStore(s => s.addIncidentReport);
+  const fileIncident = useSafetyStore(s => s.fileIncident);
 
   const canSubmit = incidentType.length > 0 && description.trim().length > 10;
 
   const handleSubmit = () => {
     if (!canSubmit) {return;}
-    const newId = `INC-${Math.floor(1000 + Math.random() * 9000)}`;
-    addIncidentReport({
-      reportId: newId,
-      sessionId: sessionId.trim() || null,
-      description: description.trim(),
-      category: incidentType,
-      submittedAt: new Date().toISOString(),
-      status: 'submitted'
-    });
-    navigation.navigate(Routes.INCIDENT_SUBMITTED, {type: 'incident'});
+    fileIncident(sessionId.trim() || null, incidentType, description.trim())
+      .then(() => navigation.navigate(Routes.INCIDENT_SUBMITTED, {type: 'incident'}))
+      .catch((e: Error) => Alert.alert('Error', e.message));
   };
 
   return (

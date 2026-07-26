@@ -1,7 +1,7 @@
 /**
  * TransactionDetailScreen (CPN-105)
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,15 +20,22 @@ export function TransactionDetailScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { transactionId = 'TXN-001' } = route.params ?? {};
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
 
   // Look up the real transaction from the store
   const tx = useEarningsStore((s) =>
-  s.recentTransactions.find((t) => t.id === transactionId) ?? null
+    s.recentTransactions.find((t) => t.transactionId === transactionId) ?? null
   );
 
-  const isDebit = tx?.type === 'debit';
+  useEffect(() => {
+    if (!tx && transactionId) {
+      fetchTransactions();
+    }
+  }, [tx, transactionId, fetchTransactions]);
+
+  const isDebit = tx ? tx.amount < 0 : false;
   const isPositive = !isDebit;
-  const isPenalty = tx?.title?.toLowerCase().includes('penalty') ?? false;
+  const isPenalty = tx?.type === 'cancellation_penalty' || (tx?.description?.toLowerCase().includes('penalty') ?? false);
   const amountColor = isPositive ? colors.safetyGreen : '#E74C3C';
   const amountText = tx ?
   `${isDebit ? '−' : '+'}₹${Math.abs(tx.amount).toLocaleString('en-IN')}` :

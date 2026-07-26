@@ -4,7 +4,7 @@
  * the Profile tab. Logout here sends the user back to the Auth flow via
  * authStore.logout() → RootNavigator re-renders AuthNavigator.
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
   Switch, StyleSheet, StatusBar, Alert } from
@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useAuthStore } from '../../store/slices/authStore';
 import { useProfileStore } from '../../store/slices/profileStore';
+import { useSettingsStore } from '../../store/slices/settingsStore';
 import { useUIStore } from '../../store/slices/uiStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
@@ -98,6 +99,11 @@ export function AccountSettingsScreen(): React.JSX.Element {
 
   const isDarkMode = useUIStore((s) => s.isDarkMode);
   const setDarkMode = useUIStore((s) => s.setDarkMode);
+  const fetchSettings = useSettingsStore((s) => s.fetchSettings);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   const displayName = profile?.displayName ?? 'Companion';
   const phone = maskedPhone ?? profile?.maskedPhone ?? '';

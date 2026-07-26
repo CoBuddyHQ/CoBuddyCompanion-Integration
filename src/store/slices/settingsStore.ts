@@ -39,8 +39,9 @@ interface SettingsState {
   notificationPrefs: NotificationPrefs;
   privacySettings:   PrivacySettings;
 
-  updateNotificationPrefs: (updates: Partial<NotificationPrefs>) => void;
-  updatePrivacySettings:   (updates: Partial<PrivacySettings>)   => void;
+  updateNotificationPrefs: (updates: Partial<NotificationPrefs>) => Promise<void>;
+  updatePrivacySettings:   (updates: Partial<PrivacySettings>)   => Promise<void>;
+  fetchSettings:           () => Promise<void>;
 }
 
 // ─── Default state ────────────────────────────────────────────────────────────
@@ -70,17 +71,45 @@ export const useSettingsStore = create<SettingsState>(set => ({
   notificationPrefs: DEFAULT_NOTIF_PREFS,
   privacySettings:   DEFAULT_PRIVACY,
 
-  updateNotificationPrefs: updates =>
+  updateNotificationPrefs: async updates => {
+    // Optimistic update
     set(state => ({
       notificationPrefs: {
         ...state.notificationPrefs,
         ...updates,
-        safety_alerts: true, // enforce — can never be disabled
+        safety_alerts: true, // enforce
       },
-    })),
+    }));
+    try {
+      const { SettingsService } = require('../../services/api/services/settings.service');
+      await SettingsService.updateNotificationPrefs(updates);
+    } catch (e) {
+      // Ignore or revert on error
+    }
+  },
 
-  updatePrivacySettings: updates =>
+  updatePrivacySettings: async updates => {
     set(state => ({
       privacySettings: {...state.privacySettings, ...updates},
-    })),
+    }));
+    try {
+      const { SettingsService } = require('../../services/api/services/settings.service');
+      await SettingsService.updatePrivacySettings(updates);
+    } catch (e) {
+      // Ignore or revert on error
+    }
+  },
+  
+  fetchSettings: async () => {
+    try {
+      const { SettingsService } = require('../../services/api/services/settings.service');
+      const settings = await SettingsService.getSettings();
+      set({
+        notificationPrefs: { ...DEFAULT_NOTIF_PREFS, ...(settings.notificationPrefs || {}) },
+        privacySettings: { ...DEFAULT_PRIVACY, ...(settings.privacySettings || {}) }
+      });
+    } catch (e) {
+      // Ignore fetch error
+    }
+  }
 }));

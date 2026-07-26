@@ -45,7 +45,7 @@ import { radius } from '../../theme/radius';
 import { validatePhone } from '../../utils/validators';
 import { useAuthStore } from '../../store/slices/authStore';
 
-import { QA_PHONE } from '../../config/devQaPrefill';
+import { QA_PHONE, AUTHORIZED_TEST_PHONES } from '../../config/devQaPrefill';
 import { useTranslation } from "react-i18next";
 
 type Props = StackScreenProps<AuthStackParamList, typeof Routes.PHONE_LOGIN>;
@@ -77,7 +77,7 @@ function maskPhone(digits: string, code: string): string {
 
 const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const { setMaskedPhone } = useAuthStore();
+  const { setMaskedPhone, sendOtp } = useAuthStore();
 
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -112,6 +112,8 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
     if (error) {setError(null);}
   };
 
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+
   const handleContinue = useCallback(async () => {
     Keyboard.dismiss();
     const validationError = validatePhone(phone);
@@ -120,15 +122,26 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
       shake();
       return;
     }
+
+    if (!AUTHORIZED_TEST_PHONES.includes(phone)) {
+      setComingSoonOpen(true);
+      return;
+    }
+
     setLoading(true);
     try {
+      const fullPhone = `${country.code}${phone}`;
+      await sendOtp(fullPhone);
       setMaskedPhone(maskPhone(phone, country.code));
       // Pass full E.164 number to OTP screen
-      navigation.navigate(Routes.OTP_VERIFICATION, { phoneNumber: `${country.code}${phone}` });
+      navigation.navigate(Routes.OTP_VERIFICATION, { phoneNumber: fullPhone });
+    } catch (e: any) {
+      setError('OTP service is temporarily unavailable. Please try again later.');
+      shake();
     } finally {
       setLoading(false);
     }
-  }, [phone, country, navigation, setMaskedPhone, shake]);
+  }, [phone, country, navigation, setMaskedPhone, shake, sendOtp]);
 
   const displayPhone = phone.length > 0 ?
   `${phone.slice(0, 5)}${phone.length > 5 ? ' ' + phone.slice(5) : ''}` :
@@ -286,6 +299,38 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* OTP Service Coming Soon Modal */}
+      <Modal
+        visible={comingSoonOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setComingSoonOpen(false)}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          style={styles.comingSoonOverlay}
+          activeOpacity={1}
+          onPress={() => setComingSoonOpen(false)}>
+          <GlassCard style={styles.comingSoonCard}>
+            <View style={styles.comingSoonIconWrap}>
+              <Icon name="access-time" size={32} color={colors.gold} />
+            </View>
+            <Text style={styles.comingSoonTitle}>OTP Service Coming Soon</Text>
+            <Text style={styles.comingSoonBody}>
+              Phone number verification for public users is not available yet.{'\n\n'}
+              The application is currently in Development / Beta Testing.{'\n\n'}
+              Please use an authorized testing account or try again after the public release.
+            </Text>
+            <TouchableOpacity
+              accessibilityRole="button"
+              style={styles.comingSoonBtn}
+              onPress={() => setComingSoonOpen(false)}
+              activeOpacity={0.85}>
+              <Text style={styles.comingSoonBtnText}>Got It</Text>
+            </TouchableOpacity>
+          </GlassCard>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>);
 
 };
@@ -294,6 +339,57 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: colors.rootBg
+  },
+  comingSoonOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
+  comingSoonCard: {
+    width: '100%',
+    maxWidth: 360,
+    padding: spacing.xl,
+    alignItems: 'center',
+    borderRadius: radius.lg,
+    backgroundColor: colors.secondaryBg,
+    borderWidth: 1,
+    borderColor: 'rgba(214, 168, 79, 0.30)',
+  },
+  comingSoonIconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(214, 168, 79, 0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  comingSoonTitle: {
+    ...textStyles.headlineSm,
+    color: colors.gold,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  comingSoonBody: {
+    ...textStyles.bodySm,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: spacing.lg,
+  },
+  comingSoonBtn: {
+    width: '100%',
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    backgroundColor: colors.gold,
+    alignItems: 'center',
+  },
+  comingSoonBtnText: {
+    ...textStyles.labelMd,
+    color: colors.rootBg,
+    fontWeight: '700',
   },
   topGlow: {
     position: 'absolute',

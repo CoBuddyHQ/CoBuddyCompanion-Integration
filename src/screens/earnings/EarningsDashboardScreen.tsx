@@ -14,7 +14,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
-import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
+import { useEarningsStore } from '../../store/slices/earningsStore';
+import type { Transaction } from '../../store/types/store.types';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -24,37 +25,44 @@ import { useTranslation } from "react-i18next";
 
 // ─── Transaction Row ──────────────────────────────────────────────────────────
 
-const TX_ICONS: Record<Transaction['type'], string> = {
+const getIconType = (tx: Transaction) => {
+  if (tx.status === 'pending_review') return 'pending';
+  if (tx.amount < 0) return 'debit';
+  return 'credit';
+};
+
+const TX_ICONS: Record<string, string> = {
   credit: 'arrow-downward',
   debit: 'arrow-upward',
   pending: 'access-time'
 };
-const TX_ICON_COLORS: Record<Transaction['type'], string> = {
+const TX_ICON_COLORS: Record<string, string> = {
   credit: colors.safetyGreen,
   debit: colors.softWarning,
   pending: colors.gold
 };
-const TX_BG: Record<Transaction['type'], string> = {
+const TX_BG: Record<string, string> = {
   credit: 'rgba(109,214,165,0.10)',
   debit: 'rgba(217,108,108,0.10)',
   pending: 'rgba(214,168,79,0.10)'
 };
 
 const TransactionRow: React.FC<{tx: Transaction;onPress: () => void;}> = ({ tx, onPress }) => {
-  const iconColor = TX_ICON_COLORS[tx.type];
-  const bgColor = TX_BG[tx.type];
-  const isDebit = tx.type === 'debit';
-  const isPending = tx.type === 'pending';
+  const iconType = getIconType(tx);
+  const iconColor = TX_ICON_COLORS[iconType];
+  const bgColor = TX_BG[iconType];
+  const isDebit = tx.amount < 0;
+  const isPending = tx.status === 'pending_review';
   const amountStr = `${isDebit ? '-' : '+'}₹${Math.abs(tx.amount).toLocaleString('en-IN')}`;
 
   return (
     <TouchableOpacity accessibilityRole="button" style={styles.txRow} onPress={onPress} activeOpacity={0.75}>
       <View style={[styles.txIconWrap, { backgroundColor: bgColor }]}>
-        <Icon name={TX_ICONS[tx.type] as any} size={18} color={iconColor} />
+        <Icon name={TX_ICONS[iconType] as any} size={18} color={iconColor} />
       </View>
       <View style={styles.txMid}>
-        <Text style={styles.txTitle} numberOfLines={1}>{i18next.t(tx.title)}</Text>
-        <Text style={styles.txDate}>{tx.date}</Text>
+        <Text style={styles.txTitle} numberOfLines={1}>{i18next.t(tx.description)}</Text>
+        <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString()}</Text>
       </View>
       <Text style={[
       styles.txAmount,
@@ -223,12 +231,12 @@ export function EarningsDashboardScreen(): React.JSX.Element {
 
           <View style={styles.txList}>
             {recentTransactions.slice(0, 5).map((tx) =>
-            <TransactionRow key={tx.id} tx={tx}
-            onPress={() => navigation.navigate(Routes.TRANSACTION_DETAIL, { transactionId: tx.id })} />
+            <TransactionRow key={tx.transactionId} tx={tx}
+            onPress={() => navigation.navigate(Routes.TRANSACTION_DETAIL, { transactionId: tx.transactionId })} />
             )}
           </View>
 
-          {recentTransactions.some((tx) => tx.type === 'pending') &&
+          {recentTransactions.some((tx) => tx.status === 'pending_review') &&
           <View style={styles.pendingNote}>
               <Text style={styles.pendingNoteText}>
                  {t('earnings.pending_transactions_clear_within_24_hours_after_session_completion')} </Text>

@@ -98,12 +98,8 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
   const updateProfile = useProfileStore((s) => s.updateProfile);
 
   // Seed local gallery state from store (or mock fallback)
-  const [photos, setPhotos] = useState<string[]>(
-    profile?.galleryPhotos?.length ?
-    profile.galleryPhotos :
-    ['photo_cafe.jpg', 'photo_cityWalk.jpg', 'photo_bookstore.jpg']
-  );
-  const [hasChanges, setHasChanges] = useState(false);
+  const photos = profile?.galleryPhotos || [];
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
   const handleDelete = (idx: number) => {
@@ -117,9 +113,17 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
       { text: t("alerts.cancel"), style: 'cancel' },
       {
         text: t("alerts.delete"), style: 'destructive',
-        onPress: () => {
-          setPhotos((prev) => prev.filter((_, i) => i !== idx));
-          setHasChanges(true);
+        onPress: async () => {
+          setIsProcessing(true);
+          try {
+            const photoId = photos[idx];
+            await useProfileStore.getState().deleteGalleryPhoto(photoId);
+            Alert.alert(t("alerts.success"), t("alerts.photo_deleted"));
+          } catch (e: any) {
+            Alert.alert(t("alerts.error"), e.message || 'Failed to delete photo');
+          } finally {
+            setIsProcessing(false);
+          }
         }
       }]
 
@@ -134,18 +138,32 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
     [
     {
       text: t("alerts.take_photo"),
-      onPress: () => {
-        const newPhoto = `photo_new_${Date.now()}.jpg`;
-        setPhotos((prev) => [...prev, newPhoto]);
-        setHasChanges(true);
+      onPress: async () => {
+        const newPhoto = `stub://camera_photo_${Date.now()}.jpg`;
+        setIsProcessing(true);
+        try {
+          await useProfileStore.getState().uploadGalleryPhoto(newPhoto);
+          Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
+        } catch (e: any) {
+          Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
+        } finally {
+          setIsProcessing(false);
+        }
       }
     },
     {
       text: t("alerts.choose_from_gallery"),
-      onPress: () => {
-        const newPhoto = `photo_gallery_${Date.now()}.jpg`;
-        setPhotos((prev) => [...prev, newPhoto]);
-        setHasChanges(true);
+      onPress: async () => {
+        const newPhoto = `stub://gallery_photo_${Date.now()}.jpg`;
+        setIsProcessing(true);
+        try {
+          await useProfileStore.getState().uploadGalleryPhoto(newPhoto);
+          Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
+        } catch (e: any) {
+          Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
+        } finally {
+          setIsProcessing(false);
+        }
       }
     },
     { text: t("alerts.cancel"), style: 'cancel' }]
@@ -154,11 +172,9 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
   };
 
   const handleSave = () => {
-
-    updateProfile({ galleryPhotos: photos });
-    Alert.alert(t("alerts.gallery_updated"), t("alerts.your_profile_gallery_has_been_saved"), [
-    { text: t("alerts.done"), onPress: () => navigation.canGoBack() ? navigation.goBack() : undefined }]
-    );
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const canAddMore = photos.length < MAX_PHOTOS;
@@ -250,18 +266,15 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
                STICKY BOTTOM BAR
             ══════════════════════════════════════════ */}
       <View style={styles.stickyBar}>
-        {hasChanges &&
-        <Text style={styles.unsavedHint}> {t('profile.you_have_unsaved_changes')} </Text>
-        }
         <TouchableOpacity accessibilityRole="button"
-          style={[styles.saveBtn, !hasChanges && styles.saveBtnDisabled]}
+          style={[styles.saveBtn, isProcessing && styles.saveBtnDisabled]}
           onPress={handleSave}
-          disabled={!hasChanges}
+          disabled={isProcessing}
           activeOpacity={0.85}
           accessibilityLabel={t("accessibility.save_gallery_changes")}>
           <Icon name="check-circle" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={styles.saveBtnText}>
-            {hasChanges ? t("content.profile.GalleryPhotoManagerScreen.save_gallery") : t("content.profile.GalleryPhotoManagerScreen.no_changes")}
+            {isProcessing ? t("alerts.processing") : t("profile.done")}
           </Text>
         </TouchableOpacity>
       </View>

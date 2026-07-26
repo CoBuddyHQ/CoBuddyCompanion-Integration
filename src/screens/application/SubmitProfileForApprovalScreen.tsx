@@ -25,7 +25,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToRequirementFixScreen } from '../../navigation/missingRequirementNavigation';
-
+import { KycService } from '../../services/api/services/kyc.service';
 import { getApplicationReadiness } from '../../store/selectors/applicationReadinessSelector';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.SUBMIT_PROFILE_FOR_APPROVAL>;
@@ -55,6 +55,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
   );
   const { setAuthStatus } = useAuthStore();
   const [confirmed, setConfirmed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // ── Clear stale fix context when returning via Back from a fix screen ──
   useFocusEffect(
@@ -106,18 +107,27 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
 
   const canSubmit = confirmed && readiness.ready;
 
-  const handleSubmit = useCallback(() => {
-    setProfileSubmittedForApproval(true);
-    setProfileReviewStatus('pending');
-    setCurrentStage('submit_profile_for_approval');
-    // Clear all stale correction state on successful resubmission (Safeguard 1).
-    // profileEditRejectionSections, correctedSections, profileCorrectionContext,
-    // and profileChecklistMode are cleared here � NOT before the user leaves CPN-046.
-    setProfileEditRejectionSections([]);
-    clearProfileCorrection();
-    setProfileChecklistMode('profile_setup');
-    // RootNavigator is authStatus-gated: 'pending_verification' mounts VerificationNavigator.
-    setAuthStatus('pending_verification');
+  const handleSubmit = useCallback(async () => {
+    setIsSubmitting(true);
+    try {
+      await KycService.submit({});
+      setProfileSubmittedForApproval(true);
+      setProfileReviewStatus('pending');
+      setCurrentStage('submit_profile_for_approval');
+      // Clear all stale correction state on successful resubmission (Safeguard 1).
+      // profileEditRejectionSections, correctedSections, profileCorrectionContext,
+      // and profileChecklistMode are cleared here  NOT before the user leaves CPN-046.
+      setProfileEditRejectionSections([]);
+      clearProfileCorrection();
+      setProfileChecklistMode('profile_setup');
+      // RootNavigator is authStatus-gated: 'pending_verification' mounts VerificationNavigator.
+      setAuthStatus('pending_verification');
+    } catch (e: any) {
+      // Could show an alert here
+      console.error(e);
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [
   setProfileSubmittedForApproval, setProfileReviewStatus, setCurrentStage,
   setProfileEditRejectionSections, clearProfileCorrection, setProfileChecklistMode,
@@ -266,12 +276,12 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
       {/* ── CTA Footer ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.SubmitProfileForApprovalContent.CTA_SUBMIT")}
+          label={isSubmitting ? t("alerts.processing") : t("content.application_kyc.SubmitProfileForApprovalContent.CTA_PRIMARY")}
           onPress={handleSubmit}
           variant="primary"
-          rightIcon={t("application.send")}
-          disabled={!canSubmit}
-          accessibilityLabel={t("accessibility.submit_profile_for_approval")} />
+          disabled={!canSubmit || isSubmitting}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          accessibilityLabel={t("accessibility.submit_profile_for_review")} />
         
         <ActionButton
           label={t("content.application_kyc.SubmitProfileForApprovalContent.CTA_BACK_PREVIEW")}

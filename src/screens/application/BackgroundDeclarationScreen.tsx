@@ -12,7 +12,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity } from
+  TouchableOpacity,
+  Alert } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -29,6 +30,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore, BackgroundDeclKey } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.BACKGROUND_DECLARATION>;
 type DeclKey = BackgroundDeclKey;
@@ -38,6 +40,8 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
     backgroundDeclaration, setBackgroundDeclaration, setCurrentStage,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
+  
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const allConfirmed = ((Array.isArray(t("content.application_kyc.BackgroundDeclarationContent.DECLARATIONS", { returnObjects: true })) ? (t("content.application_kyc.BackgroundDeclarationContent.DECLARATIONS", { returnObjects: true }) as any[]) : [])).every(
     (d) => backgroundDeclaration[d.id as DeclKey]
@@ -48,18 +52,31 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
     setBackgroundDeclaration(id as DeclKey, newVal);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const vals = Object.values(backgroundDeclaration);
     const completed = vals.every(Boolean);
     if (!completed) {return;}
-    setCurrentStage('background_declaration');
-    // If opened from a hub screen for missing-requirement fix, return there instead.
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('background_declaration');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
+    
+    setIsSubmitting(true);
+    try {
+      await KycService.saveDeclaration({
+        ...backgroundDeclaration,
+        agreedAt: new Date().toISOString()
+      });
+
+      setCurrentStage('background_declaration');
+      // If opened from a hub screen for missing-requirement fix, return there instead.
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('background_declaration');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.WORK_PREFERENCE);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save declaration');
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.navigate(Routes.WORK_PREFERENCE);
   };
 
   return (
@@ -144,11 +161,11 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
       {/* CTA */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.BackgroundDeclarationContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("content.application_kyc.BackgroundDeclarationContent.CTA_PRIMARY")}
           onPress={handleContinue}
           variant="primary"
-          disabled={!allConfirmed}
-          rightIcon={t("application.arrow_forward")}
+          disabled={!allConfirmed || isSubmitting}
+          rightIcon={!isSubmitting ? t("application.arrow_forward") : undefined}
           accessibilityLabel={t("accessibility.confirm_declaration_and_continue")} />
         
       </View>

@@ -171,10 +171,10 @@ export function WeeklyRecurringAvailabilityScreen(): React.JSX.Element {
   const defaultHours = useAvailabilityStore((s) => s.defaultHours);
   const setDayTimes = useAvailabilityStore((s) => s.setDayTimes);
   const toggleDay = useAvailabilityStore((s) => s.toggleDay);
+  const fetchAvailability = useAvailabilityStore((s) => s.fetchAvailability);
 
-  // Local editable state — seed from store
   const [days, setDays] = useState<DayState[]>(() => defaultHours.map((d) => {
-    const parts = d.times.split(' - ');
+    const parts = d.times ? d.times.split(' - ') : ['09:00 AM', '05:00 PM'];
     return {
       day: d.day,
       fullDay: FULL_DAY_MAP[d.day] ?? d.day,
@@ -184,6 +184,26 @@ export function WeeklyRecurringAvailabilityScreen(): React.JSX.Element {
     };
   }));
   const [loading, setLoading] = useState(false);
+
+  // Sync with store on mount / updates
+  React.useEffect(() => {
+    fetchAvailability();
+  }, []);
+
+  React.useEffect(() => {
+    if (defaultHours && defaultHours.length > 0) {
+      setDays(defaultHours.map((d) => {
+        const parts = d.times ? d.times.split(' - ') : ['09:00 AM', '05:00 PM'];
+        return {
+          day: d.day,
+          fullDay: FULL_DAY_MAP[d.day] ?? d.day,
+          active: d.active,
+          startTime: parts[0] ?? '09:00 AM',
+          endTime: parts[1] ?? '05:00 PM'
+        };
+      }));
+    }
+  }, [defaultHours]);
 
   // ── Day updates ─────────────────────────────────────────────────────────────
   const handleToggle = useCallback((idx: number) => {

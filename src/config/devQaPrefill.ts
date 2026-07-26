@@ -39,4 +39,14 @@ export const QA_OTP_DIGITS: string[] = DEV_QA_PREFILL
   ? ['1', '2', '3', '4', '5', '6']
   : [];
 
+/** Phone numbers authorized for development / QA testing. */
+export const AUTHORIZED_TEST_PHONES: string[] = [
+  '9999992398',
+  '8435892398',
+  '9876543210',
+  '9000000001',
+  '9000000002',
+  '9000000003',
+];
+
 export default DEV_QA_PREFILL;

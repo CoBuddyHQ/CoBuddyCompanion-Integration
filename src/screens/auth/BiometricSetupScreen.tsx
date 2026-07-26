@@ -19,7 +19,7 @@ import i18next from 'i18next';
  * Content: BiometricContent from authOnboardingContent.ts
  */
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -55,7 +55,8 @@ const FEATURES = [
 const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
   const { t } = useTranslation();
   const pulseAnim = useRef(new Animated.Value(0.85)).current;
-  const { setAuthStatus, setBiometricEnabled } = useAuthStore();
+  const { setAuthStatus, setBiometricEnabled, enrollBiometric } = useAuthStore();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     Animated.loop(
@@ -66,11 +67,22 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
     ).start();
   }, [pulseAnim]);
 
-  const handleEnable = () => {
-    // In production: call react-native-biometrics / TouchID
-    setBiometricEnabled(true);
-    // Transition to OnboardingStack (CPN-010 CompanionWelcome)
-    setAuthStatus('onboarding');
+  const handleEnable = async () => {
+    setLoading(true);
+    try {
+      // In production: call react-native-biometrics / TouchID to get the real publicKey
+      const mockDeviceId = 'device-123';
+      const mockPublicKey = 'base64-encoded-pub-key';
+      
+      await enrollBiometric(mockDeviceId, mockPublicKey);
+      
+      // Transition to OnboardingStack (CPN-010 CompanionWelcome)
+      setAuthStatus('onboarding');
+    } catch (e: any) {
+      console.warn('Failed to enroll biometric', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSkip = () => {
@@ -149,9 +161,10 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
             label={t("content.auth_onboarding.BiometricContent.CTA_PRIMARY")}
             onPress={handleEnable}
             style={styles.primaryBtn}
+            disabled={loading}
             accessibilityLabel={t("accessibility.enable_biometric_access")} />
           
-          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip} disabled={loading}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.BiometricContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>

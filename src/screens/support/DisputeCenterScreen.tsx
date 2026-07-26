@@ -2,7 +2,7 @@
  * DisputeCenterScreen (CPN-172)
  * View and manage booking disputes.
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -17,10 +17,15 @@ import {useSupportStore} from '../../store/slices/supportStore';
 import { useTranslation } from "react-i18next";
 
 export function DisputeCenterScreen(): React.JSX.Element {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
    
   const navigation = useNavigation<any>();
   const disputes = useSupportStore(s => s.disputes);
+  const fetchDisputes = useSupportStore(s => s.fetchDisputes);
+
+  useEffect(() => {
+    fetchDisputes();
+  }, [fetchDisputes]);
   
   const activeDisputes = disputes.filter(d => d.status === 'Under Review');
   const pastDisputes = disputes.filter(d => d.status === 'Resolved');

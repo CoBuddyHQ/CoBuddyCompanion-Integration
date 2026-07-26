@@ -29,7 +29,8 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform } from
+  Platform,
+  Alert } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -40,6 +41,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import FormInput from '../../components/form/FormInput';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 import type { BankAccountType } from '../../store/slices/applicationStore';
 
 import { validateBankAccount, validateIFSC } from '../../utils/validators';
@@ -78,6 +80,7 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
   const [accountType, setAccountType] = useState<BankAccountType>('savings');
   const [confirmed, setConfirmed] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleIFSCChange = useCallback((text: string) => {
     const upper = text.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 11);
@@ -94,7 +97,7 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
   ifsc.length === 11 &&
   confirmed;
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     const newErrors: Record<string, string> = {};
     if (holderName.trim().length < 3) {newErrors.holderName = 'Name must be at least 3 characters.';}
     const accErr = validateBankAccount(accountNum);
@@ -105,22 +108,38 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {return;}
 
-    // PRIVACY: extract last 4 only � full account NOT stored in Zustand
-    const last4 = accountNum.slice(-4);
-    setBankAccount(last4, detectedBank || 'Unknown Bank', ifsc, accountType);
-    setCurrentStage('bank_account');
+    setIsSubmitting(true);
+    try {
+      const last4 = accountNum.slice(-4);
+      
+      await KycService.saveBank({
+        holderName: holderName.trim(),
+        maskedAccount: last4,
+        ifsc: ifsc,
+        bankName: detectedBank || 'Unknown Bank',
+        accountType,
+      });
 
-    // Clear sensitive local state
-    setAccountNum('');
-    setConfirmNum('');
+      // PRIVACY: extract last 4 only  full account NOT stored in Zustand
+      setBankAccount(last4, detectedBank || 'Unknown Bank', ifsc, accountType);
+      setCurrentStage('bank_account');
 
-    // If this was opened as a missing-requirement fix, navigate to verification
-    // which will complete the fix after verifying the account.
-    navigation.navigate(Routes.BANK_ACCOUNT_VERIFICATION);
+      // Clear sensitive local state
+      setAccountNum('');
+      setConfirmNum('');
+
+      // If this was opened as a missing-requirement fix, navigate to verification
+      // which will complete the fix after verifying the account.
+      navigation.navigate(Routes.BANK_ACCOUNT_VERIFICATION);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save bank details');
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [
   holderName, accountNum, confirmNum, ifsc, detectedBank, accountType, confirmed,
   setBankAccount, setCurrentStage,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]
+  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t]
   );
 
   const accountsMatch = confirmNum.length > 0 && accountNum === confirmNum;
@@ -324,15 +343,15 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* ── CTA Footer ── */}
+      {/* ── Sticky Bottom CTA ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.AddBankAccountContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("application.continue_to_verification")}
           onPress={handleSubmit}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          disabled={!canSubmit}
-          accessibilityLabel={t("accessibility.submit_bank_account_for_verification")} />
+          disabled={!canSubmit || isSubmitting}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          accessibilityLabel={t("accessibility.save_and_verify_bank_account")} />
         
         <ActionButton
           label={t("application.save_draft")}

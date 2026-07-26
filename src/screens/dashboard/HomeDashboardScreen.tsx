@@ -157,6 +157,24 @@ export function HomeDashboardScreen(): React.JSX.Element {
   const sosStatus = useSafetyStore((s) => s.sosStatus);
   const venueApproved = useSafetyStore((s) => s.currentVenueApproved);
 
+  const fetchProfile = useProfileStore((s) => s.fetchProfile);
+  const fetchUpcomingSessions = useSessionStore((s) => s.fetchUpcomingSessions);
+  const fetchRequests = useRequestStore((s) => s.fetchRequests);
+  const fetchSummary = useEarningsStore((s) => s.fetchSummary);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+  const fetchAvailability = useAvailabilityStore((s) => s.fetchAvailability);
+  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
+
+  useEffect(() => {
+    fetchProfile();
+    fetchUpcomingSessions();
+    fetchRequests();
+    fetchSummary();
+    fetchTransactions(1, 10);
+    fetchAvailability();
+    fetchNotifications();
+  }, []);
+
   const [showRequest, setShowRequest] = useState(true);
 
   const displayName = profile?.displayName ?? 'Companion';
@@ -170,7 +188,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
   const todayEarnings = availableBalance;
   // Week earnings: sum credits from recentTransactions
   const weekEarnings = recentTransactions.
-  filter((t) => t.type === 'credit' || t.type === 'pending').
+  filter((t) => t.amount > 0 || t.status === 'pending_review').
   reduce((sum, t) => sum + t.amount, 0);
   const pendingEarnings = pendingClearance;
 

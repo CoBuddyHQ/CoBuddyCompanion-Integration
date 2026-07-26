@@ -15,6 +15,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { SessionsService } from '../../services/api/services/sessions.service';
 
 const CHECKLIST = [{ label: "content.sessions.PreArrivalScreen.checklist.0.label", done: "content.sessions.PreArrivalScreen.checklist.0.done" }, { label: "content.sessions.PreArrivalScreen.checklist.1.label", done: "content.sessions.PreArrivalScreen.checklist.1.done" }, { label: "content.sessions.PreArrivalScreen.checklist.2.label", done: "content.sessions.PreArrivalScreen.checklist.2.done" }] as any[];
 
@@ -34,6 +35,8 @@ export function PreArrivalScreen(): React.JSX.Element {
   [...s.upcomingSessions, ...(s.activeSession ? [s.activeSession] : [])].
   find((ses) => ses.sessionId === sessionId) ?? null
   );
+
+  const [loading, setLoading] = React.useState(false);
 
   // ── Not found fallback ────────────────────────────────────────────────────
   if (!session) {
@@ -98,10 +101,21 @@ export function PreArrivalScreen(): React.JSX.Element {
 
       {/* Sticky button */}
       <View style={s.bar}>
-        <TouchableOpacity accessibilityRole="button" style={s.btn}
-        onPress={() => navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId })} activeOpacity={0.85}>
+        <TouchableOpacity accessibilityRole="button" style={[s.btn, loading && { opacity: 0.7 }]}
+        disabled={loading}
+        onPress={async () => {
+          setLoading(true);
+          try {
+            await SessionsService.checkIn(sessionId!);
+            navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId });
+          } catch (e: any) {
+            console.error(e);
+          } finally {
+            setLoading(false);
+          }
+        }} activeOpacity={0.85}>
           <Icon name="where-to-vote" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
-          <Text style={s.btnText}> {t('sessions.i_m_at_the_venue')} </Text>
+          <Text style={s.btnText}>{loading ? t("alerts.processing") : t('sessions.i_m_at_the_venue')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>);

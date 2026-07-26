@@ -2,7 +2,7 @@ import i18next from "i18next"; /**
 * LiveSupportChatScreen (CPN-170)
 * Real-time chat with a CoBuddy support agent.
 */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -13,6 +13,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useSupportStore, Message } from '../../store/slices/supportStore';
+import { socketService } from '../../services/api/services/socket.service';
 import { useTranslation } from "react-i18next";
 
 const QUICK_REPLIES = ["Payment issue", "Session problem", "Account help", "Other"] as any[];
@@ -27,13 +28,23 @@ export function LiveSupportChatScreen(): React.JSX.Element {
   const [input, setInput] = useState('');
   const listRef = useRef<FlatList>(null);
 
+  useEffect(() => {
+    socketService.connectSupport('live_chat_default', (msg) => {
+      useSupportStore.getState().receiveLiveChatMessage(msg);
+    });
+    return () => {
+      socketService.disconnectSupport();
+    };
+  }, []);
+
   const sendMessage = (text: string) => {
     if (!text.trim()) {return;}
+    // Emit via socket service
+    socketService.sendSupportMessage('live_chat_default', text.trim());
+    // Optimistic local update
     sendLiveChatMessage(text.trim());
     setInput('');
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 100);
-    // The simulated agent reply timeout is now correctly handled inside the zustand action.
-    setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 1300);
   };
 
   const renderMsg = ({ item }: {item: Message;}) => {

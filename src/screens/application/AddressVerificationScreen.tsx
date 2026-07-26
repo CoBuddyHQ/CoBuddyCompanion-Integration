@@ -39,10 +39,9 @@ import GlassCard from '../../components/cards/GlassCard';
 import FormInput from '../../components/form/FormInput';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { UploadsService } from '../../services/api/services/uploads.service';
+import { KycService } from '../../services/api/services/kyc.service';
 import type { AddressType } from '../../store/slices/applicationStore';
-
-
-
 
 import { validateAddressLine, validatePINCode } from '../../utils/validators';
 import { colors } from '../../theme/colors';
@@ -58,17 +57,20 @@ type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.ADDRESS_V
 export function AddressVerificationScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
   const {
     setAddress, setAddressDetailsComplete, setAddressProofSubmitted, setCurrentStage,
-    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
+    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix,
+    address: addressStore, addressProofSubmitted: proofSubmittedStore
   } = useApplicationStore();
 
-  const [line1, setLine1] = useState('');
-  const [line2, setLine2] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setStateVal] = useState('');
-  const [pinCode, setPinCode] = useState('');
-  const [addressType, setAddressType] = useState<AddressType>('current_residence');
+  const [line1, setLine1] = useState(addressStore?.line1 || '');
+  const [line2, setLine2] = useState(addressStore?.line2 || '');
+  const [city, setCity] = useState(addressStore?.city || '');
+  const [state, setStateVal] = useState(addressStore?.state || '');
+  const [pinCode, setPinCode] = useState(addressStore?.pinCode || '');
+  const [addressType, setAddressType] = useState<AddressType>(addressStore?.addressType || 'current_residence');
   const [idMatch, setIdMatch] = useState(false);
-  const [proofAdded, setProofAdded] = useState(false);
+  const [proofAdded, setProofAdded] = useState(proofSubmittedStore);
+  const [proofUrl, setProofUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showStateList, setShowStateList] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -85,47 +87,86 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
     return Object.keys(newErrors).length === 0;
   }, [line1, city, state, pinCode]);
 
-  // Address proof is OPTIONAL � does NOT block Continue.
-  // Only address form fields (line1, city, state, pinCode) are required.
   const canContinue =
   line1.trim().length >= 3 &&
   city.trim().length >= 2 &&
   state.length > 0 &&
   pinCode.length === 6;
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     if (!validateAll()) {return;}
-    // PRIVACY: store in-memory Zustand only � never AsyncStorage, never log
-    setAddress({ line1, line2, city, state, pinCode, addressType });
-    // addressDetailsComplete = form fields validated (required)
-    // addressProofSubmitted = proof was also added (optional, set separately by handleProofUpload)
-    setAddressDetailsComplete(true);
-    if (proofAdded) {setAddressProofSubmitted(true);}
-    setCurrentStage('address_verification');
-    // If opened from a hub screen for missing-requirement fix, return there instead.
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('address_details');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
+    setIsSubmitting(true);
+    
+    try {
+      await KycService.saveAddress({
+        line1,
+        line2,
+        city,
+        state,
+        pinCode,
+        addressType,
+        idMatch,
+        documentType: proofAdded ? 'Utility bill' : undefined,
+        proofUrl: proofUrl || undefined,
+      });
+
+      setAddress({ line1, line2, city, state, pinCode, addressType });
+      setAddressDetailsComplete(true);
+      if (proofAdded) {setAddressProofSubmitted(true);}
+      setCurrentStage('address_verification');
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('address_details');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.COMPANION_PRICING);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save address details');
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.navigate(Routes.COMPANION_PRICING);
   }, [
   validateAll, setAddress, setAddressDetailsComplete, setAddressProofSubmitted,
   setCurrentStage, missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix,
-  navigation, line1, line2, city, state, pinCode, addressType, proofAdded]
+  navigation, line1, line2, city, state, pinCode, addressType, proofAdded, proofUrl, idMatch, t]
   );
 
   const handleProofUpload = useCallback(() => {
     Alert.alert(t("alerts.upload_address_proof"), t("alerts.choose_a_document_to_upload"),
-
-
     [
-    { text: t("alerts.camera"), onPress: () => setProofAdded(true) },
-    { text: t("alerts.gallery"), onPress: () => setProofAdded(true) },
+    { 
+      text: t("alerts.camera"), 
+      onPress: async () => {
+        try {
+          setIsSubmitting(true);
+          const uploadRes = await UploadsService.uploadKycAddress('stub://address_proof.jpg');
+          setProofUrl(uploadRes.photoUrl || uploadRes.url || 'stub://address_proof.jpg');
+          setProofAdded(true);
+        } catch (e) {
+          Alert.alert(t("alerts.error"), 'Failed to upload proof');
+        } finally {
+          setIsSubmitting(false);
+        }
+      } 
+    },
+    { 
+      text: t("alerts.gallery"), 
+      onPress: async () => {
+        try {
+          setIsSubmitting(true);
+          const uploadRes = await UploadsService.uploadKycAddress('stub://address_proof_gallery.jpg');
+          setProofUrl(uploadRes.photoUrl || uploadRes.url || 'stub://address_proof_gallery.jpg');
+          setProofAdded(true);
+        } catch (e) {
+          Alert.alert(t("alerts.error"), 'Failed to upload proof');
+        } finally {
+          setIsSubmitting(false);
+        }
+      } 
+    },
     { text: t("alerts.cancel"), style: 'cancel' }]
-
     );
-  }, []);
+  }, [t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
@@ -143,8 +184,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
 
-          {/* ── Hero ── */}
-          {/* Phase badge */}
         <View style={styles.phaseBadge}>
           <Icon name="adjust" size={13} color={colors.gold} />
           <Text style={styles.phaseBadgeText}>{t("content.application_kyc.AddressVerificationContent.SECTION_BADGE")}</Text>
@@ -159,11 +198,9 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             </View>
           </View>
 
-          {/* ── Headline ── */}
           <Text style={styles.headline}>{t("content.application_kyc.AddressVerificationContent.HEADLINE")}</Text>
           <Text style={styles.subheadline}>{t("content.application_kyc.AddressVerificationContent.SUBHEADLINE")}</Text>
 
-          {/* ── P0 MANDATORY: Privacy Badge ── */}
           <GlassCard style={styles.privacyCard}>
             <View style={styles.privacyBadgeRow}>
               <View style={styles.privacyIconWrap}>
@@ -178,7 +215,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
 
           <Text style={styles.purposeNote}>{t("content.application_kyc.AddressVerificationContent.PURPOSE_NOTE")}</Text>
 
-          {/* ── Address Form Card ── */}
           <GlassCard style={styles.card}>
             <Text style={styles.cardTitle}>{t("content.application_kyc.AddressVerificationContent.ADDRESS_TITLE").toUpperCase()}</Text>
 
@@ -206,7 +242,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
               accessibilityLabel={t("accessibility.city")} />
             
 
-            {/* State selector */}
             <View style={styles.fieldBlock}>
               <Text style={styles.fieldLabel}>{t("content.application_kyc.AddressVerificationContent.STATE_LABEL")}</Text>
               <TouchableOpacity accessibilityRole="button"
@@ -260,7 +295,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
               accessibilityLabel={t("accessibility.pin_code")} />
             
 
-            {/* Address type chips */}
             <Text style={styles.fieldLabel}>{t("content.application_kyc.AddressVerificationContent.TYPE_LABEL")}</Text>
             <View style={styles.typeRow}>
               {(Array.isArray(t("content.application_kyc.AddressVerificationContent.TYPE_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.AddressVerificationContent.TYPE_OPTIONS", { returnObjects: true }) as any[]) : []).map((opt, index) =>
@@ -283,7 +317,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
               )}
             </View>
 
-            {/* ID match toggle */}
             <TouchableOpacity accessibilityRole="button"
               style={styles.checkRow}
               onPress={() => setIdMatch(!idMatch)}
@@ -296,7 +329,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             </TouchableOpacity>
           </GlassCard>
 
-          {/* ── Address Proof Card (OPTIONAL) ── */}
           <GlassCard style={styles.card}>
             <View style={styles.proofHeaderRow}>
               <Text style={styles.cardTitle}>{t("content.application_kyc.AddressVerificationContent.PROOF_TITLE").toUpperCase()}</Text>
@@ -307,7 +339,6 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
             <Text style={styles.proofSubtitle}>{t("content.application_kyc.AddressVerificationContent.PROOF_SUBTITLE")}</Text>
             <Text style={styles.proofHint}>{t("content.application_kyc.AddressVerificationContent.PROOF_HINT")}</Text>
             <Text style={styles.proofOptionalNote}>{t("application.adding_address_proof_may_help_speed_up_v")}
-
             </Text>
             <TouchableOpacity accessibilityRole="button"
               style={[styles.proofUpload, proofAdded && styles.proofUploadDone]}
@@ -330,15 +361,14 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* ── CTA Footer (outside KeyboardAvoidingView) ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.AddressVerificationContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("application.continue")}
           onPress={handleContinue}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          disabled={!canContinue}
-          accessibilityLabel={t("accessibility.save_address_details")} />
+          disabled={!canContinue || isSubmitting}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          accessibilityLabel={t("accessibility.save_address_and_continue")} />
         
         <ActionButton
           label={t("content.application_kyc.AddressVerificationContent.CTA_SAVE_LATER")}

@@ -9,7 +9,7 @@ import i18next from "i18next";import { useTranslation } from 'react-i18next';
 import React, { useState, useMemo } from 'react';
 import {
   View, Text, TouchableOpacity, ScrollView, TextInput,
-  StyleSheet, StatusBar, Alert, KeyboardAvoidingView, Platform } from
+  StyleSheet, StatusBar, Alert, KeyboardAvoidingView, Platform, ActivityIndicator } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -21,6 +21,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
+import { RequestsService } from '../../services/api/services/requests.service';
 
 // ─── Dynamic date generator (same pattern as Availability module) ─────────────
 
@@ -115,20 +116,34 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
   const [start, setStart] = useState(STARTS[2]); // 10:00 AM
   const [end, setEnd] = useState(ENDS[4]); // 02:00 PM
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!requestId) {
       Alert.alert(i18next.t("alerts.error"), i18next.t("alerts.request_not_found"));
       return;
     }
-    // Persist counter-proposal to store (moves request from pending → reviewed as counter_proposed)
-    updateRequestStatus(requestId, 'counter_proposed');
+    
+    setLoading(true);
+    try {
+      const newStart = new Date(`${newDate} ${start}`).toISOString();
+      const newEnd = new Date(`${newDate} ${end}`).toISOString();
+      
+      await RequestsService.counterPropose(requestId, { newStart, newEnd });
+      
+      // Persist counter-proposal to store (moves request from pending → reviewed as counter_proposed)
+      updateRequestStatus(requestId, 'counter_proposed');
 
-    Alert.alert(i18next.t("alerts.suggestion_sent"), i18next.t("alerts.your_suggested_time_v0_v1_v2_has_been_se", { v0:
+      Alert.alert(i18next.t("alerts.suggestion_sent"), i18next.t("alerts.your_suggested_time_v0_v1_v2_has_been_se", { v0:
 
-      newDate, v1: start, v2: end }),
-    [{ text: i18next.t("alerts.ok"), onPress: () => navigation.navigate(Routes.BOOKING_REQUESTS_INBOX) }]
-    );
+        newDate, v1: start, v2: end }),
+      [{ text: i18next.t("alerts.ok"), onPress: () => navigation.navigate(Routes.BOOKING_REQUESTS_INBOX) }]
+      );
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to send counter proposal');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -196,10 +211,9 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
       </KeyboardAvoidingView>
 
       <View style={s.footer}>
-        <TouchableOpacity accessibilityRole="button" style={s.sendBtn} onPress={handleSend} activeOpacity={0.85}
+        <TouchableOpacity accessibilityRole="button" style={[s.sendBtn, loading && s.sendBtnDisabled]} onPress={handleSend} activeOpacity={0.85} disabled={loading}
         accessibilityLabel={i18next.t("accessibility.send_time_suggestion_to_customer")}>
-          <Icon name="send" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
-          <Text style={s.sendText}>{i18next.t("application.send_suggestion")}</Text>
+          <Text style={s.sendBtnText}>{loading ? t("alerts.processing") : i18next.t("application.send_suggestion")}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>);
@@ -237,8 +251,10 @@ const s = StyleSheet.create({
   charCount: { fontFamily: fontFamily.interRegular, fontSize: 11, color: colors.textMuted,
     textAlign: 'right', padding: spacing.sm },
   footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.md, paddingTop: spacing.sm,
-    borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.07)' },
-  sendBtn: { height: 52, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    backgroundColor: colors.gold, borderRadius: radius.md },
-  sendText: { fontFamily: fontFamily.interBold, fontSize: 15, color: colors.rootBg }
+    borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.07)',
+    shadowOffset: { width: 0, height: -2 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 20 },
+  sendBtn: { backgroundColor: colors.gold, paddingVertical: 14, borderRadius: radius.full,
+    alignItems: 'center' },
+  sendBtnDisabled: { opacity: 0.6 },
+  sendBtnText: { fontFamily: fontFamily.interSemiBold, fontSize: 15, color: colors.rootBg }
 });

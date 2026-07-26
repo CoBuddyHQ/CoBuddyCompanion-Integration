@@ -43,6 +43,7 @@ import { validateOTP } from '../../utils/validators';
 
 import { QA_OTP_DIGITS } from '../../config/devQaPrefill';
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from '../../store/slices/authStore';
 
 type Props = StackScreenProps<AuthStackParamList, typeof Routes.OTP_VERIFICATION>;
 
@@ -110,31 +111,44 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
     }
     setLoading(true);
     try {
-      // TODO (BACKEND INTEGRATION): 
-      // When API is integrated, the verify-otp endpoint should return a flag like `isNewUser`.
-      // If the user already exists (Existing User) -> bypass onboarding and navigate to Home or PIN screen.
-      // If the user is new (New User) -> navigate to the Language Selection screen to continue onboarding.
+      const { isNewCompanion, hasPIN } = await useAuthStore.getState().verifyOtp(phoneNumber, otpValue);
 
-      const isNewUser = true; // Hardcoded to true for UI flow testing
-
-      if (isNewUser) {
+      if (isNewCompanion) {
         navigation.navigate(Routes.LANGUAGE_SELECTION);
       } else {
+        // AuthGuard in App.tsx or RootNavigator usually takes over if token is present and status is active.
+        // But if we need to explicitly navigate for pin flow:
+        if (!hasPIN) {
+           navigation.navigate(Routes.CREATE_PIN);
+        } else {
+           // We could navigate to CONFIRM_PIN if we require PIN on every app launch, 
+           // but for initial login, the token is set and the navigator will switch.
+        }
+      }
+    } catch (e: any) {
+      const rawMsg = e?.message || '';
+      if (rawMsg.includes('Expired') || rawMsg.includes('expired')) {
+        setError('Verification code has expired. Please request a new code.');
+      } else {
+        setError('Invalid verification code. Please check and try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [otpValue, navigation, phoneNumber, t]);
 
-
-
-
-        // Example for existing user:
-        // navigation.navigate(Routes.CONFIRM_PIN); // or bypass to MainApp
-      }} finally {setLoading(false);}}, [otpValue, navigation]);
-
-  const handleResend = () => {
+  const handleResend = async () => {
     if (!canResend) {return;}
-    setDigits(Array(OTP_LENGTH).fill(''));
-    setError(null);
-    setResendSecs(30);
-    setCanResend(false);
-    inputRefs.current[0]?.focus();
+    try {
+      await useAuthStore.getState().sendOtp(phoneNumber);
+      setDigits(Array(OTP_LENGTH).fill(''));
+      setError(null);
+      setResendSecs(30);
+      setCanResend(false);
+      inputRefs.current[0]?.focus();
+    } catch (e: any) {
+      setError('Unable to resend verification code. Please try again later.');
+    }
   };
 
   const resendTimerLabel = canResend ? t("content.auth_onboarding.OTPContent.RESEND_LABEL") :

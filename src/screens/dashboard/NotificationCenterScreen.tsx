@@ -3,7 +3,7 @@ import i18next from 'i18next';
  * NotificationCenterScreen (CPN-065)
  * Connected to useNotificationStore — badge on HomeDashboard stays in sync.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -76,6 +76,11 @@ export function NotificationCenterScreen(): React.JSX.Element {
   const unreadCount = useNotificationStore((s) => s.unreadCount);
   const markAsRead = useNotificationStore((s) => s.markAsRead);
   const markAllAsRead = useNotificationStore((s) => s.markAllAsRead);
+  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const renderItem = ({ item }: {item: AppNotification;}) =>
   <NotifCard

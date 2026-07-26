@@ -2,7 +2,7 @@
  * CompletedPayoutsScreen (CPN-104)
  * Shows past withdrawals from earningsStore.recentTransactions (debit type).
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,7 +12,8 @@ import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
-import { useEarningsStore, Transaction } from '../../store/slices/earningsStore';
+import { useEarningsStore } from '../../store/slices/earningsStore';
+import type { Transaction } from '../../store/types/store.types';
 import { useTranslation } from "react-i18next";
 
 // Nested component extraction: ItemSeparator was defined inside CompletedPayoutsScreen render.
@@ -26,10 +27,18 @@ export function CompletedPayoutsScreen(): React.JSX.Element {
   // ── Store data ──────────────────────────────────────────────────────────────
   const lifetimeEarnings = useEarningsStore((s) => s.lifetimeEarnings);
   const recentTransactions = useEarningsStore((s) => s.recentTransactions);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+  const fetchSummary = useEarningsStore((s) => s.fetchSummary);
+
+  useEffect(() => {
+    fetchTransactions();
+    fetchSummary();
+  }, [fetchTransactions, fetchSummary]);
+
   const lifetimeStr = `₹${lifetimeEarnings.toLocaleString('en-IN')}`;
 
   // Show only debit (withdrawal) transactions as "completed payouts"
-  const payouts = recentTransactions.filter((tx) => tx.type === 'debit');
+  const payouts = recentTransactions.filter((tx) => tx.type === 'payout_transfer' || tx.amount < 0);
 
   const renderItem = ({ item }: {item: Transaction;}) =>
   <View style={s.row}>
@@ -37,8 +46,8 @@ export function CompletedPayoutsScreen(): React.JSX.Element {
         <Icon name="check-circle" size={20} color={colors.safetyGreen} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={s.rowLabel}>{t(item.title)}</Text>
-        <Text style={s.rowDate}>{item.date}</Text>
+        <Text style={s.rowLabel}>{t(item.description)}</Text>
+        <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
       <Text style={s.rowAmount}>{t("content.earnings.CompletedPayoutsScreen.text")}{Math.abs(item.amount).toLocaleString('en-IN')}</Text>
     </View>;
@@ -56,7 +65,7 @@ export function CompletedPayoutsScreen(): React.JSX.Element {
       </View>
       <FlatList
         data={payouts}
-        keyExtractor={(i) => i.id}
+        keyExtractor={(i) => i.transactionId}
         renderItem={renderItem}
         contentContainerStyle={s.list}
         ItemSeparatorComponent={ItemSeparator}

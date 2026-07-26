@@ -15,6 +15,7 @@ import { Routes } from '../../navigation/routes';
 import { useEarningsStore } from '../../store/slices/earningsStore';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { useTranslation } from "react-i18next";
+import { EarningsService } from '../../services/api/services/earnings.service';
 
 function fmtINR(n: number): string {
   return `₹${n.toLocaleString('en-IN')}`;
@@ -34,29 +35,26 @@ export function PayoutReviewScreen(): React.JSX.Element {
   const bankName = useApplicationStore((s) => s.bankName);
   const last4 = useApplicationStore((s) => s.bankAccountLast4);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (loading) {return;}
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-
-      // Update balance
+    try {
+      // 1. Hit the backend API
+      const response: any = await EarningsService.requestPayout({ amount });
+      
+      // 2. Update local available balance optimistically
       setAvailableBalance(availableBalance - amount);
-
-      // Generate a simple reference ID and thread the real amount forward
-      const payoutId = `PAY-${Date.now().toString().slice(-6)}`;
-
-      // Log the transaction
-      addTransaction({
-        id: payoutId,
-        title: t("content.earnings.PayoutReviewScreen.withdrawal_to_bank_account"),
-        date: 'Today',
-        amount: -amount,
-        type: 'pending'
-      });
-
+      
+      // 3. Fallback ID in case backend doesn't return one directly
+      const payoutId = response?.payoutId || `PAY-${Date.now().toString().slice(-6)}`;
+      
       navigation.navigate(Routes.PAYOUT_SUCCESS, { payoutId, amount });
-    }, 2000);
+    } catch (e: any) {
+      console.error('Payout failed:', e);
+      // Optional: Add an Alert here
+    } finally {
+      setLoading(false);
+    }
   };
 
   const details = [{ icon: "account-balance", label: t("content.earnings.PayoutReviewScreen.details.0.label"), value: bankName }, { icon: "credit-card", label: t("content.earnings.PayoutReviewScreen.details.1.label"), value: `**** **** **** ${last4}` }, { icon: "schedule", label: t("content.earnings.PayoutReviewScreen.details.2.label"), value: t("content.earnings.PayoutReviewScreen.details.2.value") }] as any[];

@@ -39,7 +39,7 @@ import { useTranslation } from 'react-i18next';
  */
 
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Modal, FlatList, Pressable, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Modal, FlatList, Pressable, NativeSyntheticEvent, NativeScrollEvent, Alert } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -56,6 +56,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { validateLegalName, validateDisplayName, validateEmail, validateDateOfBirth } from '../../utils/validators';
+import { KycService } from '../../services/api/services/kyc.service';
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.BASIC_DETAILS>;
 
 // â”€â”€â”€ Constants (module-level, never recreated) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -479,9 +480,12 @@ const BasicDetailsScreen: React.FC<Props> = ({
     profileCorrectionContext,
     completeProfileCorrection,
     missingRequirementFixContext,
-    completeMissingRequirementFix,
-    clearMissingRequirementFix
+    completeMissingRequirementFix
   } = useApplicationStore();
+  const clearMissingRequirementFix = useApplicationStore(s => s.clearMissingRequirementFix);
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [legalNameError, setLegalNameError] = useState<string | null>(null);
   const [displayNameError, setDisplayNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -510,7 +514,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
     setDobError(validateDOB(iso));
   }, [updateBasicDetails, validateDOB]);
   const canContinue = basicDetails.legalName.trim().length > 1 && basicDetails.displayName.trim().length > 1 && basicDetails.email.trim().length > 3 && !!basicDetails.dateOfBirth && !legalNameError && !displayNameError && !emailError && !dobError;
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const le = validateLegalName(basicDetails.legalName);
     const de = validateDisplayName(basicDetails.displayName);
     const ee = validateEmail(basicDetails.email);
@@ -522,21 +526,39 @@ const BasicDetailsScreen: React.FC<Props> = ({
     if (le || de || ee || dobe) {
       return;
     }
-    setCurrentStage('basic_details');
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('basic_details');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, {
-        mode: 'correction'
+    
+    setIsSubmitting(true);
+    try {
+      await KycService.saveBasicDetails({
+        legalName: basicDetails.legalName.trim(),
+        displayName: basicDetails.displayName.trim(),
+        email: basicDetails.email.trim(),
+        dateOfBirth: basicDetails.dateOfBirth,
+        gender: basicDetails.gender || '',
       });
-      return;
+
+      setCurrentStage('basic_details');
+      useApplicationStore.getState().saveDraftToBackend();
+      
+      if (profileCorrectionContext.isActive) {
+        completeProfileCorrection('basic_details');
+        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, {
+          mode: 'correction'
+        });
+        return;
+      }
+      // Missing-requirement fix return: navigate back to source hub.
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('basic_details');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.BIO_INTRODUCTION);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save basic details');
+    } finally {
+      setIsSubmitting(false);
     }
-    // Missing-requirement fix return: navigate back to source hub.
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('basic_details');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.BIO_INTRODUCTION);
   };
   return <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
       <ScreenTopBar title={t("application.cobuddy_companion")} onBack={() => cancelMissingRequirementFixAndReturn(navigation, missingRequirementFixContext.isActive, missingRequirementFixContext.returnRoute, clearMissingRequirementFix)} />
@@ -657,7 +679,7 @@ const BasicDetailsScreen: React.FC<Props> = ({
 
       {/* CTA */}
       <View style={styles.ctaWrap}>
-        <ActionButton label={t("content.application_kyc.BasicDetailsContent.CTA_PRIMARY")} onPress={handleContinue} variant="primary" disabled={!canContinue} rightIcon={t("application.arrow_forward")} accessibilityLabel={t("content.application_kyc.BasicDetailsContent.ACCESSIBILITY_SAVE")} />
+        <ActionButton label={isSubmitting ? t("alerts.processing") : t("content.application_kyc.BasicDetailsContent.CTA_PRIMARY")} onPress={handleContinue} variant="primary" disabled={!canContinue || isSubmitting} rightIcon={!isSubmitting ? t("application.arrow_forward") : undefined} accessibilityLabel={t("content.application_kyc.BasicDetailsContent.ACCESSIBILITY_SAVE")} />
         
       </View>
 

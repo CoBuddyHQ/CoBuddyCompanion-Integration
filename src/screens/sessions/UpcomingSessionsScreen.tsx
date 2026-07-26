@@ -5,7 +5,7 @@ import i18next from "i18next";
  * Shows confirmed and upcoming sessions from sessionStore.
  */
 import { useTranslation } from 'react-i18next';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, StatusBar } from
@@ -214,12 +214,21 @@ export function UpcomingSessionsScreen(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState<TabKey>('upcoming');
 
   // Stable-ref selectors — no derivation inside the hook (prevents infinite loop)
-  const { upcomingSessions, sessionHistory } = useSessionStore(
+  const { upcomingSessions, sessionHistory, fetchUpcomingSessions, fetchSessionHistory, isLoadingUpcoming } = useSessionStore(
     useShallow((s) => ({
       upcomingSessions: s.upcomingSessions,
-      sessionHistory: s.sessionHistory
+      sessionHistory: s.sessionHistory,
+      fetchUpcomingSessions: s.fetchUpcomingSessions,
+      fetchSessionHistory: s.fetchSessionHistory,
+      isLoadingUpcoming: s.isLoadingUpcoming,
     }))
   );
+
+  // Load data on mount
+  useEffect(() => {
+    fetchUpcomingSessions();
+    fetchSessionHistory();
+  }, [fetchUpcomingSessions, fetchSessionHistory]);
 
   // All sessions pool — derived outside the hook with useMemo
   const allSessions = useMemo(

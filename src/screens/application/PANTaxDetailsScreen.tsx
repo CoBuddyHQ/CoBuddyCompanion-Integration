@@ -41,8 +41,8 @@ import GlassCard from '../../components/cards/GlassCard';
 import FormInput from '../../components/form/FormInput';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 
-import { validatePAN } from '../../utils/validators';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -55,21 +55,32 @@ type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.PAN_TAX_D
 
 function maskPAN(pan: string): string {
   if (pan.length !== 10) {return pan;}
-  return `${pan[0]}${pan[1]}������${pan[8]}${pan[9]}`;
+  return `${pan[0]}${pan[1]}${pan[8]}${pan[9]}`;
+}
+
+function validatePAN(pan: string): string | null {
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  if (!panRegex.test(pan)) {
+    return 'Invalid PAN format';
+  }
+  return null;
 }
 
 export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
   const {
     setPANDetails, setPANConfirmed, setCurrentStage, basicDetails,
+    panName: storePanName, taxResidency: storeTaxResidency, hasGST: storeHasGST,
+    gstNumber: storeGstNumber, panConfirmed: storePanConfirmed,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
 
-  const [panRaw, setPANRaw] = useState('');
-  const [panName, setPANName] = useState('');
-  const [taxResidency] = useState('India');
-  const [hasGST, setHasGST] = useState(false);
-  const [gstNumber, setGSTNumber] = useState('');
-  const [confirmed, setConfirmed] = useState(false);
+  const [panName, setPanName] = useState(storePanName || '');
+  const [panRaw, setPANRaw] = useState(''); // Only storing locally
+  const [taxResidency] = useState(storeTaxResidency || 'India');
+  const [hasGST, setHasGST] = useState(storeHasGST || false);
+  const [gstNumber, setGstNumber] = useState(storeGstNumber || '');
+  const [confirmed, setConfirmed] = useState(storePanConfirmed || false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [panError, setPANError] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
 
@@ -85,7 +96,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
     }
   }, []);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     const panErr = validatePAN(panRaw);
     if (panErr) {setPANError(panErr);return;}
     if (panName.trim().length < 3) {setNameError('Name must be at least 3 characters.');return;}
@@ -93,21 +104,38 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
       Alert.alert(t("alerts.confirmation_required"), t("alerts.please_confirm_the_pan_details_are_accur"));
       return;
     }
-    // PRIVACY: mask PAN before storing � raw PAN NOT stored in Zustand
-    const masked = maskPAN(panRaw);
-    setPANDetails(panName.trim(), masked, taxResidency, hasGST, gstNumber.trim());
-    setPANConfirmed(true);
-    setCurrentStage('pan_tax_details');
-    setPANRaw(''); // clear raw PAN from component state
-    // If opened from a hub screen for missing-requirement fix, return there instead.
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('pan');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
+    
+    setIsSubmitting(true);
+    try {
+      await KycService.savePan({
+        panName: panName.trim(),
+        panNumber: panRaw,
+        taxResidency,
+        hasGST,
+        gstNumber: hasGST ? gstNumber.trim() : undefined,
+      });
+
+      // PRIVACY: mask PAN before storing  raw PAN NOT stored in Zustand
+      const masked = maskPAN(panRaw);
+      setPANDetails(panName.trim(), masked, taxResidency, hasGST, gstNumber.trim());
+      setPANConfirmed(true);
+      setCurrentStage('pan_tax_details');
+      setPANRaw(''); // clear raw PAN from component state
+      
+      // If opened from a hub screen for missing-requirement fix, return there instead.
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('pan');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.ADD_BANK_ACCOUNT);
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e.message || 'Failed to save PAN details');
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.navigate(Routes.ADD_BANK_ACCOUNT);
   }, [panRaw, panName, taxResidency, hasGST, gstNumber, confirmed, setPANDetails, setPANConfirmed, setCurrentStage,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]);
+  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
@@ -174,7 +202,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
             <FormInput
               label={t("content.application_kyc.PANTaxDetailsContent.PAN_NAME_LABEL")}
               value={panName}
-              onChangeText={(t) => {setPANName(t);if (nameError) {setNameError(null);}}}
+              onChangeText={(t) => {setPanName(t);if (nameError) {setNameError(null);}}}
               placeholder={t("content.application_kyc.PANTaxDetailsContent.PAN_NAME_PLACEHOLDER")}
               autoCapitalize="words"
               error={nameError ?? undefined}
@@ -222,7 +250,7 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
                 <FormInput
                 label={t("content.application_kyc.PANTaxDetailsContent.GST_LABEL")}
                 value={gstNumber}
-                onChangeText={setGSTNumber}
+                onChangeText={setGstNumber}
                 placeholder={t("content.application_kyc.PANTaxDetailsContent.GST_PLACEHOLDER")}
                 autoCapitalize="characters"
                 maxLength={15}
@@ -270,12 +298,12 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
       {/* ── CTA Footer ── */}
       <View style={styles.ctaWrap}>
         <ActionButton
-          label={t("content.application_kyc.PANTaxDetailsContent.CTA_PRIMARY")}
+          label={isSubmitting ? t("alerts.processing") : t("application.save_continue")}
           onPress={handleSave}
           variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          disabled={!canSave}
-          accessibilityLabel={t("accessibility.save_tax_details")} />
+          disabled={!canSave || isSubmitting}
+          rightIcon={!isSubmitting ? "arrow-forward" : undefined}
+          accessibilityLabel={t("accessibility.save_pan_details")} />
         
         <ActionButton
           label={t("content.application_kyc.PANTaxDetailsContent.CTA_SAVE_LATER")}
