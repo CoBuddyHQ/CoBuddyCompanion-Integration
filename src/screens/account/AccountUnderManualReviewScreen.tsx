@@ -70,7 +70,7 @@ export function AccountUnderManualReviewScreen(): React.JSX.Element {
 
         {/* CTAs */}
         <TouchableOpacity accessibilityRole="button" style={s.dashBtn} activeOpacity={0.85}
-        onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}>
+        onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}>
           <Icon name="dashboard" size={17} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.dashBtnText}> {t('account.go_to_dashboard')} </Text>
         </TouchableOpacity>

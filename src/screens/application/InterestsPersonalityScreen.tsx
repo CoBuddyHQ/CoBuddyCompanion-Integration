@@ -36,6 +36,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -97,9 +98,16 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
   replace('{count}', String(count)).
   replace('{max}', String(MAX_TAGS));
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     if (!canContinue) {return;}
     setCurrentStage('interests_personality');
+
+    try {
+      await ProfileService.updateCommActivity({ interests: interestTags });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('interests');
       navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
@@ -113,6 +121,7 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
     navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
   }, [
   canContinue,
+  interestTags,
   setCurrentStage,
   profileCorrectionContext,
   completeProfileCorrection,

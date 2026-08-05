@@ -22,15 +22,21 @@ const LANGUAGES: {id: AppLanguage;label: string;sub: string;}[] = [{ id: "en", l
 
 
 
+import { apiPut } from '../../services/api/client';
+import { Endpoints } from '../../services/api/endpoints';
+
 export function AppLanguageSettingsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const language = useUIStore((s) => s.language);
   const setLanguage = useUIStore((s) => s.setLanguage);
 
-  const handleSave = () => {
-    // language is already set in store via setLanguage on each tap;
-    // goBack commits the change (no extra call needed).
+  const handleSave = async () => {
+    try {
+      await apiPut(Endpoints.ACCOUNT.LANGUAGE, { language });
+    } catch (e) {
+      // Gracefully silent if offline
+    }
     navigation.canGoBack() ? navigation.goBack() : undefined;
   };
 

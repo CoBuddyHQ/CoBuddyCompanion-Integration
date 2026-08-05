@@ -41,10 +41,17 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
     fetchTransactions();
   }, [fetchTransactions]);
 
-  // For "today" show all credits/debits from the store (future: filter by date via API)
-  // For other days we show an empty state since we only have "recent" mock data
   const isToday = dateIdx === 6;
-  const dayTxns = isToday ? recentTransactions.filter((tx) => tx.status !== 'pending_review') : [];
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() - (6 - dateIdx));
+  const targetDateStr = targetDate.toISOString().slice(0, 10);
+
+  const dayTxns = recentTransactions.filter((tx) => {
+    if (tx.status === 'pending_review') return false;
+    const rawDate = (tx as any).date || tx.createdAt;
+    const txDateStr = rawDate ? new Date(rawDate).toISOString().slice(0, 10) : '';
+    return txDateStr === targetDateStr || (isToday && (!txDateStr || txDateStr === new Date().toISOString().slice(0, 10)));
+  });
 
   // Compute net for the displayed day: sum of amounts (negatives are deductions)
   const netAmount = dayTxns.reduce((sum, tx) => sum + tx.amount, 0);

@@ -9,7 +9,7 @@ import React, { useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 import type { BookingRequest as BR } from '../../store/types/store.types';
 import AppHeader from '../../components/layout/AppHeader';
@@ -200,6 +200,12 @@ export function BookingRequestsInboxScreen(): React.JSX.Element {
   // Cross-stack hub screen — useNavigation<any> avoids CompositeNavigationProp complexity
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigation = useNavigation<any>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      useRequestStore.getState().fetchRequests();
+    }, [])
+  );
 
   // Split into two atomic selectors — never derive new arrays inside a selector.
   // .filter() inside a selector creates a new array ref every render → infinite loop.

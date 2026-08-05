@@ -145,10 +145,12 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
   const disguisedCall = useSafetyStore((s) => s.disguisedCall);
   const toggleSetting = useSafetyStore((s) => s.toggleSetting);
   const fetchTrustedContacts = useSafetyStore((s) => s.fetchTrustedContacts);
+  const fetchSafetySettings = useSafetyStore((s) => s.fetchSafetySettings);
 
   useEffect(() => {
     fetchTrustedContacts();
-  }, [fetchTrustedContacts]);
+    fetchSafetySettings();
+  }, [fetchTrustedContacts, fetchSafetySettings]);
 
   const handleSOS = () => {
 

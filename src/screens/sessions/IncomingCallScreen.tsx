@@ -109,7 +109,7 @@ export function IncomingCallScreen(): React.JSX.Element {
           <View style={s.actionWrap}>
             <TouchableOpacity accessibilityRole="button"
               style={s.acceptBtn}
-              onPress={() => navigation.replace(Routes.IN_SESSION_CALL, {})}
+              onPress={() => navigation.replace(Routes.IN_SESSION_CALL, { sessionId: (route.params as any)?.sessionId, customerName })}
               activeOpacity={0.8}
               accessibilityLabel={t("accessibility.accept_call")}>
               <Icon name="call" size={32} color={colors.white} />

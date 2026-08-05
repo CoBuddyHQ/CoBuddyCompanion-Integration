@@ -36,11 +36,35 @@ const DATA: Record<Period, {views: number;delta: number;rows: {label: string;val
   }
 };
 
+import { useEffect } from 'react';
+import { apiGet } from '../../services/api/client';
+
 export function PerformanceInsightsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const [period, setPeriod] = useState<Period>('week');
+  const [liveMetrics, setLiveMetrics] = useState<any>(null);
+
+  useEffect(() => {
+    apiGet('/companion/dashboard/performance')
+      .then((res: any) => {
+        if (res) {
+          setLiveMetrics(res);
+        }
+      })
+      .catch(() => {});
+  }, [period]);
+
   const d = DATA[period];
+  const views = liveMetrics?.views ?? d.views;
+  const delta = liveMetrics?.delta ?? d.delta;
+  const conversionRate = liveMetrics?.conversionRate ?? '15%';
+
+  const rows = [
+    { label: i18next.t("content.dashboard.PerformanceInsightsScreen.booking_conversion_rate"), value: conversionRate, icon: 'trending-up' },
+    { label: i18next.t("content.dashboard.PerformanceInsightsScreen.avg_response_time"), value: liveMetrics?.avgResponseTime || '5 min', icon: 'timer' },
+    { label: i18next.t("content.dashboard.PerformanceInsightsScreen.profile_click_through"), value: liveMetrics?.profileClickThrough || '8%', icon: 'ads-click' },
+  ];
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -69,18 +93,18 @@ export function PerformanceInsightsScreen(): React.JSX.Element {
           </View>
           <View style={s.metricCenter}>
             <Text style={s.metricLabel}> {t('dashboard.profile_views')} </Text>
-            <Text style={s.metricValue}>{d.views.toLocaleString()}</Text>
+            <Text style={s.metricValue}>{views.toLocaleString()}</Text>
           </View>
           <View style={s.deltaBadge}>
             <Icon name="arrow-upward" size={12} color={colors.safetyGreen} />
-            <Text style={s.deltaText}>+{d.delta}{t("content.dashboard.PerformanceInsightsScreen.text")}</Text>
+            <Text style={s.deltaText}>+{delta}{t("content.dashboard.PerformanceInsightsScreen.text")}</Text>
           </View>
         </View>
 
         {/* Info rows */}
         <Text style={s.sectionLabel}> {t('dashboard.key_metrics')} </Text>
         <View style={s.card}>
-          {d.rows.map((row, i) =>
+          {rows.map((row, i) =>
           <View key={t(row.label)}>
               {i > 0 && <View style={s.sep} />}
               <View style={s.infoRow}>

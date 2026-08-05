@@ -30,6 +30,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.EXPERIENCE_CATEGORIES>;
 
@@ -43,9 +44,16 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
   const count = experienceCategories.length;
   const canContinue = count >= 1;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!canContinue) {return;}
     setCurrentStage('experience_categories');
+
+    try {
+      await ProfileService.updateCategories({ categories: experienceCategories });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('experience_categories');
       navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });

@@ -29,6 +29,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.WORK_PREFERENCE>;
 
@@ -54,9 +55,23 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
   workPreference.days.length > 0 &&
   workPreference.timeRanges.length > 0;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!canContinue) {return;}
     setCurrentStage('work_preference');
+
+    try {
+      const payload = {
+        durations: Array.isArray(workPreference.durations) ? workPreference.durations.map(String) : [],
+        days: Array.isArray(workPreference.days) ? workPreference.days.map(String) : [],
+        timeRanges: Array.isArray(workPreference.timeRanges) ? workPreference.timeRanges.map(String) : [],
+        frequency: typeof workPreference.frequency === 'string' ? workPreference.frequency : '',
+      };
+      await ProfileService.updateWorkPreference(payload);
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
+
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
       completeMissingRequirementFix('work_preference');
       navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);

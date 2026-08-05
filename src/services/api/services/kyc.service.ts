@@ -24,18 +24,27 @@ export const KycService = {
   saveAddress: (data: any) => 
     apiPost(Endpoints.KYC.SAVE_ADDRESS, data),
     
-  savePan: (data: any) => 
-    apiPost(Endpoints.KYC.SAVE_PAN, data),
-    
-  saveBank: (data: any) => 
-    apiPost(Endpoints.KYC.SAVE_BANK, data),
-    
+  savePan: (data: any) => {
+    const rawPan = data?.panNumber || data?.maskedPan || '';
+    const maskedPan = data?.maskedPan || (rawPan.length >= 6 ? `${rawPan.slice(0, 4)}****${rawPan.slice(-2)}` : rawPan);
+    return apiPost(Endpoints.KYC.SAVE_PAN, { ...data, maskedPan });
+  },
+
+  saveBank: (data: any) => {
+    const rawAcc = data?.accountNumber || data?.maskedAccount || '';
+    const maskedAccount = data?.maskedAccount || (rawAcc.length >= 4 ? `••••${rawAcc.slice(-4)}` : rawAcc || '••••');
+    return apiPost(Endpoints.KYC.SAVE_BANK, { ...data, maskedAccount });
+  },
+
   verifyBank: (data: any) => 
     apiPost(Endpoints.KYC.VERIFY_BANK, data),
-    
-  saveUpi: (data: any) => 
-    apiPost(Endpoints.KYC.SAVE_UPI, data),
-    
+
+  saveUpi: (data: any) => {
+    const rawUpi = data?.upiId || data?.maskedUpi || '';
+    const maskedUpi = data?.maskedUpi || (rawUpi.includes('@') ? `${rawUpi.slice(0, 2)}••••@${rawUpi.split('@')[1]}` : rawUpi);
+    return apiPost(Endpoints.KYC.SAVE_UPI, { ...data, maskedUpi });
+  },
+
   saveEmergencyContact: (data: any) =>
     apiPost(Endpoints.KYC.SAVE_EMERGENCY, data),
 };

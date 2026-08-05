@@ -1,4 +1,4 @@
-﻿/**
+/**
  * missingRequirementNavigation.ts
  *
  * Shared helpers for the missing-requirement fix flow.
@@ -136,7 +136,9 @@ export function cancelMissingRequirementFixAndReturn(
   clearMissingRequirementFix: () => void,
 ): void {
   if (!isActive || !returnRoute) {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
     return;
   }
   clearMissingRequirementFix();

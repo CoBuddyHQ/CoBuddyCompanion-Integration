@@ -38,6 +38,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -103,7 +104,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
     setComfort((prev) => ({ ...prev, [idx]: !prev[idx] }));
   }, []);
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     if (selected.size === 0) {
       Alert.alert(
         t('application.languages_required_alert_title'),
@@ -112,8 +113,19 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
       return;
     }
     const comfortLabels = COMFORT_LABELS.filter((_, idx) => comfort[idx]);
-    setLanguages([...selected], primaryLang ?? '', comfortLabels);
+    const langArray = [...selected];
+    setLanguages(langArray, primaryLang ?? '', comfortLabels);
     setCurrentStage('languages_selection');
+
+    try {
+      await ProfileService.updateLanguages({
+        languages: langArray,
+        primaryLanguage: primaryLang ?? '',
+      });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('languages');
       navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
@@ -137,8 +149,7 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
   missingRequirementFixContext,
   completeMissingRequirementFix,
   clearMissingRequirementFix,
-  navigation,
-  t]
+  navigation]
   );
 
   const primaryOptions = ALL_LANGUAGES.filter((l) => selected.has(l));

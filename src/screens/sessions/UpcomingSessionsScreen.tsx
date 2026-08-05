@@ -12,7 +12,7 @@ import {
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 
 import AppHeader from '../../components/layout/AppHeader';
@@ -83,7 +83,7 @@ interface SessionCardProps {
 const SessionCard: React.FC<SessionCardProps> = ({ session, onViewPass, onDetails, onReminder }) => {
   const { t } = useTranslation();
   const soon = isStartingSoon(session.scheduledStart);
-  const isActive = session.status === 'active' || session.status === 'checked_in';
+  const isActive = session.status === 'checked_in' || session.status === 'active';
 
   return (
     <View style={styles.card}>
@@ -224,11 +224,13 @@ export function UpcomingSessionsScreen(): React.JSX.Element {
     }))
   );
 
-  // Load data on mount
-  useEffect(() => {
-    fetchUpcomingSessions();
-    fetchSessionHistory();
-  }, [fetchUpcomingSessions, fetchSessionHistory]);
+  // Load data on mount & focus
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUpcomingSessions();
+      fetchSessionHistory();
+    }, [fetchUpcomingSessions, fetchSessionHistory])
+  );
 
   // All sessions pool — derived outside the hook with useMemo
   const allSessions = useMemo(

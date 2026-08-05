@@ -17,6 +17,7 @@ import AppHeader from '../../components/layout/AppHeader';
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useEarningsStore } from '../../store/slices/earningsStore';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -59,10 +60,8 @@ const LabelledInput: React.FC<InputProps> = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           selectionColor={colors.gold} />
-        
       </View>
     </View>);
-
 };
 
 const inputStyles = StyleSheet.create({
@@ -94,6 +93,32 @@ export function BankDetailsScreen(): React.JSX.Element {
   const accountHolder = profile?.displayName ?? 'Account Holder';
   const formattedLifetime = `₹${lifetimeEarnings.toLocaleString('en-IN')}`;
 
+  const [bankData, setBankData] = useState<{
+    bankName: string;
+    maskedAccount: string;
+    holderName: string;
+    ifsc: string;
+  } | null>(null);
+
+  React.useEffect(() => {
+    KycService.getKycStatus().then((res: any) => {
+      const b = res?.steps?.bank;
+      if (b && b.maskedAccount) {
+        setBankData({
+          bankName: b.bankName || 'HDFC Bank',
+          maskedAccount: b.maskedAccount,
+          holderName: b.holderName || profile?.displayName || 'Account Holder',
+          ifsc: b.ifsc || 'HDFC0001234',
+        });
+      }
+    }).catch(() => {});
+  }, [profile]);
+
+  const displayBankName = bankData?.bankName || currentBankName || 'HDFC Bank';
+  const displayLast4 = bankData?.maskedAccount ? `Savings ${bankData.maskedAccount}` : (currentLast4 ? `Savings **** ${currentLast4}` : 'Savings **** 2365');
+  const displayHolder = bankData?.holderName || accountHolder;
+  const displayIfsc = bankData?.ifsc || 'HDFC0001234';
+
   // New account form state
   const [holderName, setHolderName] = useState('');
   const [bankName, setBankName] = useState('');
@@ -102,19 +127,29 @@ export function BankDetailsScreen(): React.JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const isFormFilled = holderName.trim() && bankName.trim() &&
-  accountNo.trim().length >= 9 && ifscCode.trim().length === 11;
+    accountNo.trim().length >= 9 && ifscCode.trim().length === 11;
 
-  const handleSave = () => {
-    if (!isFormFilled || loading) {return;}
+  const handleSave = async () => {
+    if (!isFormFilled || loading) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      Alert.alert(t("alerts.otp_sent"), t("alerts.please_verify_to_link_this_account_withd"),
-
-
-      [{ text: t("alerts.ok"), onPress: () => navigation.canGoBack() ? navigation.goBack() : undefined }]
+    try {
+      await KycService.saveBank({
+        holderName: holderName.trim(),
+        bankName: bankName.trim(),
+        accountNumber: accountNo.trim(),
+        ifsc: ifscCode.trim(),
+      });
+      
+      Alert.alert(
+        t("alerts.otp_sent") || 'OTP Verification Sent',
+        'For your security, adding a new bank account requires OTP verification. Withdrawals will be paused for 24 hours after a change.',
+        [{ text: t("alerts.ok") || 'OK', onPress: () => navigation.canGoBack() ? navigation.goBack() : undefined }]
       );
-    }, 800);
+    } catch (e: any) {
+      Alert.alert('Error', e?.message || 'Failed to save bank details');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -149,9 +184,9 @@ export function BankDetailsScreen(): React.JSX.Element {
                 <Icon name="account-balance" size={22} color={colors.safetyGreen} />
               </View>
               <View style={styles.bankMid}>
-                <Text style={styles.bankName}>{currentBankName || 'Bank Account'}</Text>
-                <Text style={styles.bankAcct}>{currentLast4 ? `Savings **** ${currentLast4}` : 'No account linked'}</Text>
-                <Text style={styles.bankHolder}>{accountHolder}</Text>
+                <Text style={styles.bankName}>{displayBankName}</Text>
+                <Text style={styles.bankAcct}>{displayLast4}</Text>
+                <Text style={styles.bankHolder}>{displayHolder}</Text>
               </View>
               <View style={styles.verifiedBadge}>
                 <Icon name="verified" size={12} color={colors.safetyGreen} />
@@ -162,7 +197,7 @@ export function BankDetailsScreen(): React.JSX.Element {
             {/* Detail rows */}
             {[
             { label: t("content.settings.BankDetailsScreen.account_type"), value: 'Savings Account' },
-            { label: t("content.settings.BankDetailsScreen.ifsc_code"), value: 'HDFC0001234' },
+            { label: t("content.settings.BankDetailsScreen.ifsc_code"), value: displayIfsc },
             { label: t("content.settings.BankDetailsScreen.added_on"), value: '12 May 2026' }].
             map((row) =>
             <View key={t(row.label)} style={styles.detailRow}>

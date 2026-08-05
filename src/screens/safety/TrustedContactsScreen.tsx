@@ -10,7 +10,7 @@ import {
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
@@ -29,6 +29,13 @@ export function TrustedContactsScreen(): React.JSX.Element {
   // ── Store ───────────────────────────────────────────────────────────────────
   const contacts = useSafetyStore((s) => s.trustedContacts);
   const removeContact = useSafetyStore((s) => s.removeContact);
+  const fetchTrustedContacts = useSafetyStore((s) => s.fetchTrustedContacts);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTrustedContacts();
+    }, [fetchTrustedContacts])
+  );
 
   const handleRemove = (contactId: string, name: string) => {
     Alert.alert(

@@ -36,6 +36,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.BOUNDARIES_SAFETY>;
 
@@ -45,10 +46,17 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (!boundariesAccepted) {return;}
     setCurrentStage('boundaries_safety');
     recalculateCompletion();
+
+    try {
+      await ProfileService.updateBoundaries({ boundariesAccepted });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
       completeMissingRequirementFix('boundaries');
       navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);

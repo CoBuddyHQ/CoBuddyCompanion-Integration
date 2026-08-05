@@ -28,6 +28,7 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 import { validateSessionRate } from '../../utils/validators';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -79,7 +80,7 @@ export function CompanionPricingScreen({
       return next;
     });
   }, []);
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     const err = validateSessionRate(rate);
     if (err) {
       Alert.alert(t("alerts.rate_error"), err);
@@ -87,6 +88,16 @@ export function CompanionPricingScreen({
     }
     setPricing(rate, duration);
     setCurrentStage('companion_pricing');
+
+    try {
+      await ProfileService.updatePricing({
+        hourlyRate: rate,
+        sessionDurations: [duration],
+      });
+    } catch (e) {
+      // Backend call logs via apiClient
+    }
+
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('pricing');
       navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, {

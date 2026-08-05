@@ -6,7 +6,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useTrainingStore, Lesson } from '../../store/slices/trainingStore';
 import { colors } from '../../theme/colors';
@@ -19,9 +19,14 @@ import { useTranslation } from "react-i18next";
 export function TrainingHubScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
-
   const navigation = useNavigation<any>();
-  const { lessons, completedLessons } = useTrainingStore((s) => s);
+  const { lessons, completedLessons, fetchLessons } = useTrainingStore((s) => s);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchLessons();
+    }, [fetchLessons])
+  );
 
   const REQUIRED_IDS = lessons.filter((l) => l.required).map((l) => l.id);
   const TOTAL_REQUIRED = REQUIRED_IDS.length;

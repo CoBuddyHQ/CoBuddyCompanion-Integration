@@ -35,6 +35,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.SERVICE_STYLE_PREFERENCES>;
 
@@ -49,9 +50,16 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
   !!commActivityPrefs.activityPace &&
   !!commActivityPrefs.groupPreference;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!canContinue) {return;}
     setCurrentStage('comm_activity_prefs');
+
+    try {
+      await ProfileService.updateCommActivity(commActivityPrefs as unknown as Record<string, unknown>);
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
       completeMissingRequirementFix('comm_activity');
       navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);

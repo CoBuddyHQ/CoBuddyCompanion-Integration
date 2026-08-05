@@ -13,14 +13,35 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
 
+import { useState } from 'react';
+import { apiPost, apiGet } from '../../services/api/client';
+import { Endpoints } from '../../services/api/endpoints';
+
 export function DataDownloadScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
+  const [requests, setRequests] = useState<Array<{ id: string; date: string; status: string }>>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleRequest = () =>
-  Alert.alert(t("alerts.request_submitted"), t("alerts.we_will_email_you_a_download_link_within"),
-
-  [{ text: t("alerts.ok") }]);
+  const handleRequest = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      await apiPost(Endpoints.ACCOUNT.DATA_EXPORT, {});
+      const now = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      setRequests((prev) => [{ id: String(Date.now()), date: now, status: 'Processing' }, ...prev]);
+      
+      Alert.alert(
+        t("alerts.request_submitted") || 'Request Submitted',
+        'We will prepare your complete account data archive and email a secure download link to your registered email address within 24 hours.',
+        [{ text: t("alerts.ok") || 'OK' }]
+      );
+    } catch (e: any) {
+      Alert.alert('Error', e?.message || 'Failed to submit data download request');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -67,10 +88,27 @@ export function DataDownloadScreen(): React.JSX.Element {
 
         {/* Recent requests */}
         <Text style={s.sectionLabel}> {t('settings.recent_requests')} </Text>
-        <View style={s.emptyCard}>
-          <Icon name="inbox" size={28} color={colors.textMuted} />
-          <Text style={s.emptyText}> {t('settings.no_recent_requests')} </Text>
-        </View>
+        {requests.length === 0 ? (
+          <View style={s.emptyCard}>
+            <Icon name="inbox" size={28} color={colors.textMuted} />
+            <Text style={s.emptyText}> {t('settings.no_recent_requests')} </Text>
+          </View>
+        ) : (
+          <View style={s.card}>
+            {requests.map((req, i) => (
+              <View key={req.id}>
+                {i > 0 && <View style={s.sep} />}
+                <View style={s.row}>
+                  <Icon name="cloud-done" size={20} color={colors.gold} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.rowLabel}>Data Archive ({req.date})</Text>
+                    <Text style={{ fontSize: 12, color: colors.safetyGreen }}>{req.status}</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
 
         <View style={{ height: 40 }} />
       </ScrollView>

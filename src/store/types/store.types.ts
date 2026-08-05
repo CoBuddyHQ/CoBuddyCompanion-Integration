@@ -27,6 +27,7 @@ export type TrustLevel = 'new' | 'building' | 'trusted' | 'highly_trusted';
 export interface CompanionProfile {
   companionId: string;
   displayName: string;           // Public display name — first name only
+  tagline?: string;
   maskedPhone: string;           // e.g. "+91 ••••••7890"
   city: string;
   serviceAreas: string[];        // e.g. ["MP Nagar", "Bhopal Old City"]

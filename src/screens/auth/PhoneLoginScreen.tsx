@@ -123,11 +123,6 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    if (!AUTHORIZED_TEST_PHONES.includes(phone)) {
-      setComingSoonOpen(true);
-      return;
-    }
-
     setLoading(true);
     try {
       const fullPhone = `${country.code}${phone}`;

@@ -4,10 +4,10 @@
  * All data read from useProfileStore — no hardcoded dummy values.
  */
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -22,6 +22,12 @@ export function ProfilePreviewScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const profile = useProfileStore((s) => s.profile);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      useProfileStore.getState().fetchProfile();
+    }, [])
+  );
 
   // ── Dynamic display values ──────────────────────────────────────────────────
   const displayName = profile?.displayName ?? 'Companion';
@@ -67,7 +73,11 @@ export function ProfilePreviewScreen(): React.JSX.Element {
           <View style={s.dot2} />
           <View style={s.avatarWrap}>
             <View style={s.avatar}>
-              <Icon name="person" size={44} color={colors.gold} />
+              {profile?.photoUrl ? (
+                <Image source={{ uri: profile.photoUrl }} style={{ width: '100%', height: '100%', borderRadius: 48 }} resizeMode="cover" />
+              ) : (
+                <Icon name="person" size={44} color={colors.gold} />
+              )}
             </View>
             <View style={s.onlineDot} />
           </View>

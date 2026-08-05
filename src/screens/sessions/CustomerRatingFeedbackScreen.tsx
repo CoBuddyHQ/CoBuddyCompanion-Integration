@@ -5,12 +5,13 @@ import i18next from "i18next"; /**
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  TextInput, StyleSheet, StatusBar } from
+  TextInput, StyleSheet, StatusBar, Alert } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSessionStore } from '../../store/slices/sessionStore';
+import { SessionsService } from '../../services/api/services/sessions.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -54,13 +55,23 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
   const toggleTag = (t: string) =>
   setTags((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!rating || submitting) {return;}
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await SessionsService.rateCustomer(sessionId, {
+        rating,
+        highlights: tags.length > 0 ? tags : undefined,
+        comment: comment.trim() || undefined,
+        isPublic: false,
+      });
       navigation.navigate(Routes.POST_SESSION_NOTES, { sessionId });
-    }, 800);
+    } catch (e: any) {
+      // Navigate anyway — rating is non-blocking
+      navigation.navigate(Routes.POST_SESSION_NOTES, { sessionId });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const showPraise = rating >= 4;
@@ -166,7 +177,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
 
         {/* Skip link */}
         <TouchableOpacity accessibilityRole="button" style={s.skipLink}
-        onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}
+        onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}
         activeOpacity={0.6}>
           <Text style={s.skipText}> {t('sessions.skip_for_now')} </Text>
         </TouchableOpacity>

@@ -302,10 +302,15 @@ export const Endpoints = {
  */
 export function buildPath(
   template: string,
-  params: Record<string, string>,
+  params: Record<string, any>,
 ): string {
-  return Object.entries(params).reduce(
-    (path, [key, value]) => path.replace(`:${key}`, encodeURIComponent(value)),
-    template,
-  );
+  return Object.entries(params).reduce((path, [key, value]) => {
+    let valStr: string;
+    if (typeof value === 'object' && value !== null) {
+      valStr = value[key] || value.id || value.ticketId || value.disputeId || value.sessionId || String(value);
+    } else {
+      valStr = String(value);
+    }
+    return path.replace(`:${key}`, encodeURIComponent(valStr));
+  }, template);
 }

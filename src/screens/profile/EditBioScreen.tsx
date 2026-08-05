@@ -11,6 +11,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useProfileStore } from '../../store/slices/profileStore';
+import { useApplicationStore } from '../../store/slices/applicationStore';
 import { useTranslation } from "react-i18next";
 
 const MAX_CHARS = 500;
@@ -22,12 +23,14 @@ export function EditBioScreen(): React.JSX.Element {
 
   const profile = useProfileStore((s) => s.profile);
   const updateProfile = useProfileStore((s) => s.updateProfile);
+  const applicationBio = useApplicationStore((s) => s.professionalBio);
 
-  const [bio, setBio] = useState(profile?.bio ?? '');
+  const [bio, setBio] = useState(profile?.bio || applicationBio || '');
   const [focused, setFocused] = useState(false);
 
   const handleSave = () => {
     updateProfile({ bio: bio.trim() });
+    useApplicationStore.getState().setProfessionalBio(bio.trim());
     navigation.canGoBack() ? navigation.goBack() : undefined;
   };
 

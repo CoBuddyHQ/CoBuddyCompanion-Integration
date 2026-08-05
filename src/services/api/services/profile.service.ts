@@ -94,6 +94,10 @@ export const ProfileService = {
   updateWorkPreference: (dto: Record<string, unknown>) =>
     apiPut(Endpoints.PROFILE.UPDATE_WORK_PREF, dto),
 
+  /** PUT /companion/profile/comm-activity */
+  updateCommActivity: (dto: Record<string, unknown>) =>
+    apiPut(Endpoints.PROFILE.UPDATE_COMM_ACTIVITY, dto),
+
   /** PUT /companion/profile/boundaries */
   updateBoundaries: (dto: Record<string, unknown>) =>
     apiPut(Endpoints.PROFILE.UPDATE_BOUNDARIES, dto),

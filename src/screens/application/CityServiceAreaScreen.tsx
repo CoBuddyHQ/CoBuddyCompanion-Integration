@@ -40,6 +40,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.CITY_SERVICE_AREA>;
 
@@ -236,9 +237,19 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
     toggleBroadArea(area);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!canContinue) {return;}
     setCurrentStage('city_service_area');
+
+    try {
+      await Promise.all([
+        ProfileService.updateBasic({ city }),
+        ProfileService.updateAreas({ serviceAreas: broadAreas }),
+      ]);
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     useApplicationStore.getState().saveDraftToBackend();
     
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {

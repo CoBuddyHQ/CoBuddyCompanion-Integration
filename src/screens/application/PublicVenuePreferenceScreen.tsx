@@ -33,6 +33,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.PUBLIC_VENUE_PREFERENCE>;
 
@@ -45,9 +46,16 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
   const count = venuePreferences.length;
   const canContinue = count >= 1;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!canContinue) {return;}
     setCurrentStage('public_venue_pref');
+
+    try {
+      await ProfileService.updateWorkPreference({ venuePreferences });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
       completeMissingRequirementFix('venue_preference');
       navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);

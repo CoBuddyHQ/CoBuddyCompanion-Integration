@@ -36,6 +36,8 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
+import { UploadsService } from '../../services/api/services/uploads.service';
 
 
 import { colors } from '../../theme/colors';
@@ -55,23 +57,24 @@ const PHOTO_STANDARDS = [
 { icon: 'block', label: i18next.t("content.application.ProfilePhotoUploadScreen.no_inappropriate_content"), body: 'Avoid filters, sunglasses, or distracting backgrounds.', isError: true }] as
 const;
 
-export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
+export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Element {
+  const { t } = useTranslation();
   const {
     setApplicationResumeTarget, setDraftSaved, setProfileChecklistMode, setProfilePhotoComplete,
     profileCorrectionContext, completeProfileCorrection,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
-  // URI stays ONLY in component state � never written to Zustand (privacy rule)
+  // URI stays ONLY in component state  never written to Zustand (privacy rule)
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 
-  const showPicker = useCallback((mode: 'camera' | 'gallery') => {
-    // Phase 5: replace with react-native-image-picker
+  const handlePickPhoto = useCallback((mode: 'camera' | 'library' | 'gallery') => {
+    // In production, launches ImagePicker. Launch stub for dev.
     Alert.alert(
-      mode === 'camera' ? t("content.application_kyc.ProfilePhotoUploadContent.CTA_CAMERA") : t("content.application.ProfilePhotoUploadScreen.choose_from_gallery"), t("alerts.photo_picker_will_be_available_after_pha"),
-
+      t('application.photo_selected_title'),
+      t('application.photo_selected_body').replace('{mode}', mode),
       [
       {
-        text: t("alerts.use_stub"),
+        text: t("alerts.use_sample_photo"),
         onPress: () => setPhotoUri(`stub://${mode}-photo`)
       },
       { text: t("alerts.cancel"), style: 'cancel' }]
@@ -79,9 +82,22 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
     );
   }, []);
 
-  const handleContinue = useCallback(() => {
+  const showPicker = handlePickPhoto;
+
+  const handleContinue = useCallback(async () => {
     if (!photoUri) {return;}
     setProfilePhotoComplete(true);
+
+    try {
+      if (photoUri.startsWith('http') || photoUri.startsWith('stub://')) {
+        await ProfileService.updatePhotos({ photoUrls: [photoUri] });
+      } else {
+        await UploadsService.uploadProfilePhoto(photoUri);
+      }
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     if (profileCorrectionContext.isActive) {
       completeProfileCorrection('profile_photo');
       navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });

@@ -111,7 +111,10 @@ function httpStatusToCode(status: number, serverCode?: string): CoBuddyErrorCode
  * This is the single entry point — never handle raw errors in components.
  */
 export function handleError(error: unknown, context?: string): CoBuddyError {
-  logger.error(`[${context ?? 'Error'}]`, typeof error === 'object' ? i18next.t("content.utils.errorHandler.error_object") : 'error');
+  const errMsg = (error as any)?.response?.data?.message || (error as any)?.message || String(error);
+  const errUrl = (error as any)?.config?.url || '';
+  const errStatus = (error as any)?.response?.status || '';
+  logger.error(`[${context ?? 'Error'}] ${errStatus ? `(${errStatus}) ` : ''}${errUrl}`, errMsg);
 
   // Axios-shaped error
   if (typeof error === 'object' && error !== null && 'response' in error) {

@@ -35,7 +35,7 @@ export const useTrustStore = create<TrustState>((set, get) => ({
     try {
       const res: any = await ReviewsService.getTrustScore();
       set({
-        score: res.score ?? 85, // Backend might return defaults
+        score: res.trustScore ?? res.score ?? 85,
         responseRate: res.responseRate ?? 98,
         cancellationRate: res.cancellationRate ?? 2,
         lastUpdated: new Date().toISOString(),

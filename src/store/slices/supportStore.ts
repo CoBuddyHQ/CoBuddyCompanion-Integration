@@ -228,16 +228,30 @@ export const useSupportStore = create<SupportState>((set, get) => ({
   sendLiveChatMessage: (text) => {
     const newMsg: Message = { id: genId('msg'), from: 'me', text, time: nowTime() };
     set(state => ({ liveChatMessages: [...state.liveChatMessages, newMsg] }));
-    // Note: Emitting to socket will be handled by UI layer calling socketService
   },
 
   receiveLiveChatMessage: (msg: any) => {
-    const newMsg: Message = { 
-      id: msg.id || genId('msg'), 
-      from: msg.senderType === 'companion' ? 'me' : 'agent', 
-      text: msg.text, 
-      time: msg.time || new Date(msg.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) 
-    };
-    set(state => ({ liveChatMessages: [...state.liveChatMessages, newMsg] }));
+    // Ignore echo of own messages sent by companion (already added optimistically)
+    if (msg?.senderType === 'companion') return;
+
+    const text = typeof msg === 'string' ? msg : (msg?.text || msg?.message || '');
+    if (!text) return;
+
+    const messageId = msg?.id || `agent-${text.slice(0, 15)}`;
+
+    set(state => {
+      const isDuplicate = state.liveChatMessages.some(
+        m => m.id === messageId || (m.text === text && m.from === 'agent')
+      );
+      if (isDuplicate) return state;
+
+      const newMsg: Message = { 
+        id: messageId, 
+        from: 'agent', 
+        text, 
+        time: msg?.time || new Date(msg?.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) 
+      };
+      return { liveChatMessages: [...state.liveChatMessages, newMsg] };
+    });
   }
 }));

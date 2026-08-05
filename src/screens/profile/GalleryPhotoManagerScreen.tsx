@@ -6,7 +6,7 @@ import i18next from "i18next"; /**
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, Dimensions, Alert } from
+  StyleSheet, StatusBar, Dimensions, Alert, Image } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -26,12 +26,9 @@ const GRID_GAP = spacing.sm;
 const TILE_SIZE = (SCREEN_W - GRID_PAD - GRID_GAP * 2) / 3;
 const MAX_PHOTOS = 9;
 
-// ─── Placeholder colors for mock tiles (no real image library) ───────────────
+// ─── Placeholder colors for mock tiles ───────────────────────────────────────
 
 const TILE_COLORS = ["#1A2D48", "#162638", "#1E3350", "#15243A", "#1B3044", "#122033", "#192C44", "#13223A", "#1D3252"] as any[];
-
-
-
 
 // ─── Photo Tile ───────────────────────────────────────────────────────────────
 
@@ -44,16 +41,21 @@ interface PhotoTileProps {
 const PhotoTile: React.FC<PhotoTileProps> = ({ index, photoRef, onDelete }) => {
   const { t } = useTranslation();
   const isCover = index === 0;
-  // Derive a stable color from the photo ref string
+  const isUrl = typeof photoRef === 'string' && (photoRef.startsWith('http') || photoRef.startsWith('file') || photoRef.startsWith('data') || photoRef.startsWith('content'));
   const colorIdx = photoRef.charCodeAt(photoRef.length - 1) % TILE_COLORS.length;
 
   return (
     <View style={[styles.tile, { backgroundColor: TILE_COLORS[colorIdx] }]}>
-      {/* Mock image placeholder */}
-      <Icon name="image" size={28} color="rgba(255,255,255,0.12)" />
-      <Text style={styles.tilePhotoLabel} numberOfLines={1}>
-        {photoRef.replace(/\.[^.]+$/, '')}
-      </Text>
+      {isUrl ? (
+        <Image source={{ uri: photoRef }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      ) : (
+        <>
+          <Icon name="image" size={28} color="rgba(255,255,255,0.12)" />
+          <Text style={styles.tilePhotoLabel} numberOfLines={1}>
+            {photoRef.replace(/\.[^.]+$/, '')}
+          </Text>
+        </>
+      )}
 
       {/* Cover badge */}
       {isCover &&

@@ -60,7 +60,7 @@ interface SafetyState {
   disguisedCall: boolean;
 
   // ── API Actions ────────────────────────────────────────────────────────────
-  
+  fetchSafetySettings: () => Promise<void>;
   fetchTrustedContacts: () => Promise<void>;
   
   // Contacts CRUD
@@ -290,10 +290,36 @@ export const useSafetyStore = create<SafetyState>((set, get) => ({
     }
   },
 
+  fetchSafetySettings: async () => {
+    try {
+      const settings: any = await SafetyService.getSettings();
+      set({
+        locationTracking: settings?.locationTracking ?? true,
+        autoCheckIn: settings?.autoCheckIn ?? true,
+        disguisedCall: settings?.disguisedCall ?? false,
+      });
+    } catch (e: unknown) {
+      // Keep defaults
+    }
+  },
+
   setCurrentVenue: (approved, venueName) =>
     set({ currentVenueApproved: approved, currentVenueName: venueName }),
 
-  toggleSetting: key => set(state => ({ [key]: !state[key as keyof SafetyState] })),
+  toggleSetting: async (key) => {
+    const state = get();
+    const newValue = !state[key];
+    set({ [key]: newValue } as any);
+    try {
+      await SafetyService.updateSettings({
+        locationTracking: key === 'locationTracking' ? newValue : state.locationTracking,
+        autoCheckIn: key === 'autoCheckIn' ? newValue : state.autoCheckIn,
+        disguisedCall: key === 'disguisedCall' ? newValue : state.disguisedCall,
+      });
+    } catch (e: unknown) {
+      set({ [key]: !newValue } as any);
+    }
+  },
 
   setLoadingContacts: v => set({ isLoadingContacts: v }),
   setError: error => set({ error }),

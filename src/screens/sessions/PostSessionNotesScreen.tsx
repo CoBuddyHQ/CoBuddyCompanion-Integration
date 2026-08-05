@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useSessionStore } from '../../store/slices/sessionStore';
+import { SessionsService } from '../../services/api/services/sessions.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -45,12 +46,23 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   const toggleTag = (t: string) =>
   setTags((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
 
-  const handleSave = () => {
+  const goToDashboard = () => {
+    navigation.navigate('MainApp', { screen: 'DashboardTab' });
+  };
+
+  const handleSave = async () => {
     setSaving(true);
-    setTimeout(() => {
+    try {
+      await SessionsService.saveNotes(sessionId, {
+        notes: notes.trim(),
+        isPrivate: true,
+      });
+    } catch (_) {
+      // Notes are non-blocking — navigate regardless
+    } finally {
       setSaving(false);
-      navigation.canGoBack() ? navigation.goBack() : undefined;
-    }, 600);
+      goToDashboard();
+    }
   };
 
   return (
@@ -137,7 +149,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
         onPress={handleSave} disabled={saving} activeOpacity={0.85}>
           <Text style={s.btnSaveText}>{saving ? t("content.sessions.PostSessionNotesScreen.saving") : t("content.sessions.PostSessionNotesScreen.save_notes")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity accessibilityRole="button" onPress={() => navigation.canGoBack() ? navigation.goBack() : undefined}
+        <TouchableOpacity accessibilityRole="button" onPress={goToDashboard}
         activeOpacity={0.6} style={s.skipBtn}>
           <Text style={s.skipText}> {t('sessions.skip')} </Text>
         </TouchableOpacity>

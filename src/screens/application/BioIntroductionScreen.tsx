@@ -32,6 +32,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ProfileService } from '../../services/api/services/profile.service';
 import { validateBio } from '../../utils/validators';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.BIO_INTRODUCTION>;
@@ -48,11 +49,17 @@ const BioIntroductionScreen: React.FC<Props> = ({ navigation }) => {const { t } 
   const charCount = professionalBio.trim().length;
   const canContinue = charCount >= 150 && charCount <= 1000 && !bioError;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const err = validateBio(professionalBio);
     setBioError(err);
     if (err) {return;}
     
+    try {
+      await ProfileService.updateBio({ bio: professionalBio });
+    } catch (e) {
+      // ApiClient logs request & response
+    }
+
     useApplicationStore.getState().saveDraftToBackend();
 
     setCurrentStage('bio_intro');

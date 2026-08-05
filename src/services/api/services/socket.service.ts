@@ -63,11 +63,11 @@ class SocketService {
   private makeSocketOptions() {
     return {
       auth: { token: this.getToken() },
-      transports: ['websocket'] as any,
+      transports: ['polling', 'websocket'] as any,
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: 10,
       reconnectionDelay: 1000,
-      reconnectionDelayMax: 10000,
+      reconnectionDelayMax: 5000,
       timeout: 10000,
     };
   }

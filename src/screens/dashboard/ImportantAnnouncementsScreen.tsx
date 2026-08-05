@@ -116,9 +116,23 @@ async function openArticle(title: string, url: string) {
   }
 }
 
+import { useState, useEffect } from 'react';
+import { apiGet } from '../../services/api/client';
+
 export function ImportantAnnouncementsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
+  const [items, setItems] = useState<Announcement[]>(ANNOUNCEMENTS);
+
+  useEffect(() => {
+    apiGet('/companion/dashboard/announcements')
+      .then((res: any) => {
+        if (res?.announcements && Array.isArray(res.announcements)) {
+          setItems(res.announcements);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -129,7 +143,7 @@ export function ImportantAnnouncementsScreen(): React.JSX.Element {
       <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <Text style={s.subtitle}> {t('dashboard.stay_up_to_date_with_platform_updates')} </Text>
 
-        {ANNOUNCEMENTS.map((item) =>
+        {items.map((item) =>
         <View key={item.id} style={s.card}>
             {/* Top row */}
             <View style={s.cardTop}>

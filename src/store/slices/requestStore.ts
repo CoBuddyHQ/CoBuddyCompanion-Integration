@@ -87,14 +87,23 @@ export const useRequestStore = create<RequestState>((set, get) => ({
       const res = await RequestsService.listRequests({
         status: filter.status,
         categories: filter.categories.length > 0 ? filter.categories.join(',') : undefined,
-        minEarning: filter.minEarning > 0 ? filter.minEarning : undefined,
+        // Never send minEarning to server — server returns all; client filters locally.
+        // This prevents a persisted minEarning from hiding seeded demo data.
         sortBy: filter.sortBy,
       });
       const requests = Array.isArray(res)
         ? res
         : (res as { requests: BookingRequest[] }).requests ?? [];
+
+      // If filter has minEarning and result is empty AND there are actually requests → reset filter
+      const pending = requests.filter(r => r.status === 'pending' || r.status === 'counter_proposed');
+      if (pending.length === 0 && filter.minEarning > 0) {
+        // Auto-reset minEarning so user can see data
+        set({ activeFilter: { ...filter, minEarning: 0 } });
+      }
+
       set({
-        pendingRequests: requests.filter(r => r.status === 'pending' || r.status === 'counter_proposed'),
+        pendingRequests: pending,
         reviewedRequests: requests.filter(r => r.status !== 'pending' && r.status !== 'counter_proposed'),
         unreadCount: requests.filter(r => r.status === 'pending').length,
       });
@@ -104,6 +113,7 @@ export const useRequestStore = create<RequestState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+
 
   // ── acceptRequest ─────────────────────────────────────────────────────────
   acceptRequest: async (requestId) => {

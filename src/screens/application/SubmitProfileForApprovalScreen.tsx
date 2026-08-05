@@ -26,12 +26,13 @@ import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToRequirementFixScreen } from '../../navigation/missingRequirementNavigation';
 import { KycService } from '../../services/api/services/kyc.service';
+import { ProfileService } from '../../services/api/services/profile.service';
 import { getApplicationReadiness } from '../../store/selectors/applicationReadinessSelector';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.SUBMIT_PROFILE_FOR_APPROVAL>;
 
 export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
-  // ── Actions (narrowed subscription � useShallow prevents re-render on unrelated store changes) ──
+  // ── Actions (narrowed subscription  useShallow prevents re-render on unrelated store changes) ──
   const {
     setProfileSubmittedForApproval,
     setProfileReviewStatus,
@@ -64,10 +65,10 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
     }, [clearMissingRequirementFix])
   );
 
-  // ── Stable slice � only the 22 primitives that getApplicationReadiness reads ──
+  // ── Stable slice  only the 22 primitives that getApplicationReadiness reads ──
   // useShallow performs a shallow equality check so Zustand only re-renders
   // when one of these primitive values actually changes.
-  // NEVER call getApplicationReadiness() inside a Zustand selector � it returns
+  // NEVER call getApplicationReadiness() inside a Zustand selector  it returns
   // a new object on every call, causing an infinite getSnapshot loop.
   const readinessInput = useApplicationStore(
     useShallow((state) => ({
@@ -97,7 +98,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
     }))
   );
 
-  // ── Derived readiness � computed once per stable input change ──
+  // ── Derived readiness  computed once per stable input change ──
   // useMemo ensures getApplicationReadiness is not called on every render,
   // only when readinessInput (shallow-equal) actually changes.
   const readiness = useMemo(
@@ -110,7 +111,10 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     try {
-      await KycService.submit({});
+      await Promise.all([
+        KycService.submit({}),
+        ProfileService.submitForReview(),
+      ]);
       setProfileSubmittedForApproval(true);
       setProfileReviewStatus('pending');
       setCurrentStage('submit_profile_for_approval');

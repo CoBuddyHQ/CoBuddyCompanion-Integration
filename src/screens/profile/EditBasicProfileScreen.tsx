@@ -105,14 +105,11 @@ export function EditBasicProfileScreen(): React.JSX.Element {
   const profile = useProfileStore((s) => s.profile);
   const updateProfile = useProfileStore((s) => s.updateProfile);
 
-  // Local editable state — seeded from store or mock fallbacks
+  // Local editable state — seeded from store
   const [name, setName] = useState(profile?.displayName ?? '');
-  const [tagline, setTagline] = useState('Explorer & Food Enthusiast');
-  const [bio, setBio] = useState(
-    profile?.bio ??
-    "Hi! I love showing people around the city's hidden gems, trying new cafes, and having deep conversations about tech and life. Let's explore together!"
-  );
-  const [city, setCity] = useState(profile?.city ?? 'Bhopal');
+  const [tagline, setTagline] = useState(profile?.tagline ?? '');
+  const [bio, setBio] = useState(profile?.bio ?? '');
+  const [city, setCity] = useState(profile?.city ?? '');
   const [loading, setLoading] = useState(false);
 
   const languages = profile?.languages ?? ['Hindi', 'English'];
@@ -120,19 +117,22 @@ export function EditBasicProfileScreen(): React.JSX.Element {
 
   // Dirty flag — any field changed?
   const isDirty =
-  name !== (profile?.displayName ?? '') ||
-  bio !== (profile?.bio ?? '') ||
-  city !== (profile?.city ?? '');
+    name !== (profile?.displayName ?? '') ||
+    tagline !== (profile?.tagline ?? '') ||
+    bio !== (profile?.bio ?? '') ||
+    city !== (profile?.city ?? '');
 
-  const handleSave = () => {
-    if (loading) {return;}
+  const handleSave = async () => {
+    if (loading) return;
     setLoading(true);
-    // Merge back into store
-    updateProfile({ displayName: name.trim(), bio: bio.trim(), city: city.trim() });
-    setTimeout(() => {
+    try {
+      await updateProfile({ displayName: name.trim(), tagline: tagline.trim(), bio: bio.trim(), city: city.trim() });
+    } catch (e) {
+      // Handled in store
+    } finally {
       setLoading(false);
       navigation.canGoBack() ? navigation.goBack() : undefined;
-    }, 800);
+    }
   };
 
   return (

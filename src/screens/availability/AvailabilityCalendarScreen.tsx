@@ -248,7 +248,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
 
           {defaultHours.map((item) =>
           <TouchableOpacity accessibilityRole="button" key={item.day} style={styles.dayRow} activeOpacity={0.7}
-          onPress={() => navigation.navigate(Routes.EDIT_AVAILABILITY_SLOT, { slotId: item.day })}>
+          onPress={() => navigation.navigate(Routes.WEEKLY_RECURRING_AVAILABILITY)}>
               {/* Toggle + Day */}
               <Switch
               value={item.active}

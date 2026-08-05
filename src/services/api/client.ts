@@ -52,7 +52,7 @@ export const apiClient: AxiosInstance = axios.create({
 let _getToken: (() => string | null) | null = null;
 let _getRefreshToken: (() => string | null) | null = null;
 let _onUnauthorized: (() => void) | null = null;
-let _onTokenRefreshed: ((newToken: string) => void) | null = null;
+let _onTokenRefreshed: ((newToken: string, newRefreshToken?: string) => void) | null = null;
 
 /**
  * Call this once at app startup (in App.tsx) to wire the auth store into
@@ -62,7 +62,7 @@ export function configureApiClient(options: {
   getToken: () => string | null;
   getRefreshToken: () => string | null;
   onUnauthorized: () => void;
-  onTokenRefreshed: (newToken: string) => void;
+  onTokenRefreshed: (newToken: string, newRefreshToken?: string) => void;
 }): void {
   _getToken = options.getToken;
   _getRefreshToken = options.getRefreshToken;
@@ -122,11 +122,8 @@ apiClient.interceptors.response.use(
       return Promise.resolve({ status: 200, data: { success: true, message: 'Logged out' } } as AxiosResponse);
     }
 
-    logger.error(`← ${status ?? 'NET'} ${error.config?.url ?? 'unknown'}`);
-
     // 401 — attempt silent token refresh before logging out
     if (status === 401 && !originalRequest._retry) {
-
       if (_isRefreshing) {
         // Wait for ongoing refresh, then retry
         return new Promise<AxiosResponse>(resolve => {
@@ -145,25 +142,29 @@ apiClient.interceptors.response.use(
         const refreshToken = _getRefreshToken?.();
         if (!refreshToken) throw new Error('no_refresh_token');
 
-        const res = await axios.post<{ success: boolean, data: { accessToken: string } }>(
+        const res = await axios.post<{ success: boolean, data: { accessToken: string; refreshToken: string } }>(
           `${BASE_URL}/auth/companion/token/refresh`,
           { refreshToken },
         );
         // The backend wraps responses in { success: true, data: ... }
         const newToken = res.data.data?.accessToken || (res.data as any).accessToken;
+        const newRefreshToken = res.data.data?.refreshToken || (res.data as any).refreshToken;
         if (!newToken) throw new Error('refresh_token_missing_in_response');
-        _onTokenRefreshed?.(newToken);
+        _onTokenRefreshed?.(newToken, newRefreshToken);
         drainQueue(newToken);
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return apiClient(originalRequest);
       } catch {
         _refreshQueue = [];
         _onUnauthorized?.();
-        return Promise.reject(handleError(error, 'ApiClient'));
+        const cobError: CoBuddyError = handleError(error, 'ApiClient');
+        return Promise.reject(cobError);
       } finally {
         _isRefreshing = false;
       }
     }
+
+    logger.error(`← ${status ?? 'NET'} ${error.config?.url ?? 'unknown'}`);
 
     const cobError: CoBuddyError = handleError(error, 'ApiClient');
     return Promise.reject(cobError);

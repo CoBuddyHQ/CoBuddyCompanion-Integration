@@ -6,15 +6,15 @@ import i18next from "i18next"; /**
 import React from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar } from
+  StyleSheet, StatusBar, Image } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useProfileStore } from '../../store/slices/profileStore';
+import { useApplicationStore } from '../../store/slices/applicationStore';
 import { useReviewsStore } from '../../store/slices/reviewsStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
@@ -26,19 +26,11 @@ import { useTranslation } from "react-i18next";
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function getInitials(name: string): string {
-  return name.
-  split(' ').
-  filter(Boolean).
-  slice(0, 2).
-  map((n) => n[0].toUpperCase()).
-  join('');
+  const parts = name.trim().split(' ').filter(Boolean);
+  if (parts.length === 0) return 'CP';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
 }
-
-// ─── Placeholder gallery blocks ───────────────────────────────────────────────
-
-const GALLERY_COLORS = ["#1E2D45", "#22344F", "#192840", "#1A2C43", "#1D3050"] as any[];
-
-
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
@@ -48,10 +40,20 @@ export function CompanionProfileScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
 
   const profile = useProfileStore((s) => s.profile);
+  const fetchProfile = useProfileStore((s) => s.fetchProfile);
+  const applicationBio = useApplicationStore((s) => s.professionalBio);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchProfile();
+      useReviewsStore.getState().fetchReviews();
+    }, [fetchProfile])
+  );
 
   // Display values — fall back gracefully; never show another companion's data
+  const bio = profile?.bio || applicationBio || '';
   const displayName = profile?.displayName ?? 'Companion';
-  const tagline = profile?.bio ?? '';
+  const tagline = bio;
   const rating = profile?.rating ?? 0;
   const totalReviews = profile?.totalReviews ?? 0;
   const sessionsCount = profile?.totalSessions ?? 0; // authoritative lifetime aggregate
@@ -59,13 +61,11 @@ export function CompanionProfileScreen(): React.JSX.Element {
   const isSuperBuddy = (profile?.trustScore ?? 0) >= 90;
   const initials = getInitials(displayName);
 
-  const bio = profile?.bio ?? '';
-
   const languages = profile?.languages ?? [];
   const categories = profile?.categories ?? [];
+  const galleryPhotos = profile?.galleryPhotos ?? [];
 
   // Reviews — useReviewsStore is the single source of truth for all review data.
-  // profile.reviews was a redundant duplicate; removed in unification refactor.
   const allReviews = useReviewsStore((s) => s.reviews ?? []);
   const topReviews = allReviews.slice(0, 2);
 
@@ -110,7 +110,11 @@ export function CompanionProfileScreen(): React.JSX.Element {
           {/* Avatar */}
           <View style={styles.avatarWrap}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>{initials}</Text>
+              {profile?.photoUrl ? (
+                <Image source={{ uri: profile.photoUrl }} style={{ width: '100%', height: '100%', borderRadius: 48 }} resizeMode="cover" />
+              ) : (
+                <Text style={styles.avatarText}>{initials}</Text>
+              )}
             </View>
             {/* Online indicator */}
             <View style={styles.onlineDot} />
@@ -230,15 +234,21 @@ export function CompanionProfileScreen(): React.JSX.Element {
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.galleryScroll}>
-              {GALLERY_COLORS.map((bg, i) =>
-              <View key={i} style={[styles.galleryThumb, { backgroundColor: bg }]}>
-                  <Icon name="image" size={24} color="rgba(255,255,255,0.15)" />
-                  <Text style={styles.galleryThumbLabel}> {t('profile.photo')} {i + 1}</Text>
+              {galleryPhotos.length > 0 ? (
+                galleryPhotos.map((photoUrl, i) => (
+                  <View key={photoUrl + i} style={styles.galleryThumb}>
+                    <Image source={{ uri: photoUrl }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                  </View>
+                ))
+              ) : (
+                <View style={[styles.galleryThumb, { backgroundColor: '#1E2D45' }]}>
+                  <Icon name="image" size={24} color="rgba(255,255,255,0.2)" />
+                  <Text style={styles.galleryThumbLabel}>{t('profile.no_photos')}</Text>
                 </View>
               )}
               <TouchableOpacity accessibilityRole="button"
                 style={[styles.galleryThumb, styles.galleryAddThumb]}
-                onPress={() => (navigation as any).navigate(Routes.GALLERY_PHOTO_MANAGER  )}>
+                onPress={() => (navigation as any).navigate(Routes.GALLERY_PHOTO_MANAGER)}>
                 <Icon name="add-photo-alternate" size={26} color={colors.textMuted} />
                 <Text style={styles.galleryAddLabel}> {t('profile.manage')} </Text>
               </TouchableOpacity>

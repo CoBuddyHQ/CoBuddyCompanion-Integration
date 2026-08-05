@@ -11,9 +11,11 @@ export * from './earnings.service';
 export * from './uploads.service';
 export * from './availability.service';
 
-import { apiGet, apiPost, apiPut, apiDelete } from '../client';
+import { apiGet, apiPost, apiPut, apiPatch, apiDelete } from '../client';
 import { Endpoints, buildPath } from '../endpoints';
 import type { TrustedContact, AppNotification } from '../../../store/types/store.types';
+
+// NotificationsService is declared above (lines 21-39)
 
 // ═══════════════════════════════════════════════════════════════// ═══════════════════════════════════════════════════════════════
 // SAFETY SERVICE
@@ -210,68 +212,7 @@ export const ReviewsService = {
     apiGet(Endpoints.REVIEWS.BADGES),
 };
 
-// ═══════════════════════════════════════════════════════════════
-// UPLOADS SERVICE
-// ═══════════════════════════════════════════════════════════════
-function normalizeFile(file: { uri: string; name: string; type: string } | string): { uri: string; name: string; type: string } | null {
-  if (typeof file === 'string') {
-    return { uri: file, name: 'upload.jpg', type: 'image/jpeg' };
-  }
-  return file;
-}
-
-function makeFormData(file: { uri: string; name: string; type: string }): FormData {
-  const fd = new FormData();
-  fd.append('file', file as unknown as Blob);
-  return fd;
-}
-
-const DEFAULT_STUB_URL = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400';
-
-export const UploadsService = {
-  uploadProfilePhoto: (file: { uri: string; name: string; type: string } | string) => {
-    const f = normalizeFile(file);
-    if (!f || f.uri.startsWith('stub://')) {
-      return Promise.resolve({ photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL });
-    }
-    return apiPost(Endpoints.UPLOADS.PROFILE_PHOTO, makeFormData(f));
-  },
-
-  addGalleryPhoto: (file: { uri: string; name: string; type: string } | string) => {
-    const f = normalizeFile(file);
-    if (!f || f.uri.startsWith('stub://')) {
-      return Promise.resolve({ photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL, photoId: `stub-${Date.now()}` });
-    }
-    return apiPost(Endpoints.UPLOADS.GALLERY_PHOTO, makeFormData(f));
-  },
-
-  deleteGalleryPhoto: (photoId: string) =>
-    apiDelete(buildPath(Endpoints.UPLOADS.DELETE_PHOTO, { photoId })),
-
-  uploadKycIdentity: (file: { uri: string; name: string; type: string } | string) => {
-    const f = normalizeFile(file);
-    if (!f || f.uri.startsWith('stub://')) {
-      return Promise.resolve({ photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL });
-    }
-    return apiPost(Endpoints.UPLOADS.KYC_IDENTITY, makeFormData(f));
-  },
-
-  uploadKycSelfie: (file: { uri: string; name: string; type: string } | string) => {
-    const f = normalizeFile(file);
-    if (!f || f.uri.startsWith('stub://')) {
-      return Promise.resolve({ photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL });
-    }
-    return apiPost(Endpoints.UPLOADS.KYC_SELFIE, makeFormData(f));
-  },
-
-  uploadEvidence: (file: { uri: string; name: string; type: string } | string) => {
-    const f = normalizeFile(file);
-    if (!f || f.uri.startsWith('stub://')) {
-      return Promise.resolve({ photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL });
-    }
-    return apiPost(Endpoints.UPLOADS.EVIDENCE, makeFormData(f));
-  },
-};
+// UploadsService is exported from ./uploads.service.ts
 
 // ═══════════════════════════════════════════════════════════════
 // DASHBOARD SERVICE

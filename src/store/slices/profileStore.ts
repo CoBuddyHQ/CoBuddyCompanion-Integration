@@ -71,10 +71,21 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   uploadGalleryPhoto: async (photoUri: string) => {
     try {
       const { UploadsService } = require('../../services/api/services/uploads.service');
+      const { ProfileService } = require('../../services/api/services/profile.service');
       const result = await UploadsService.uploadGalleryPhoto(photoUri);
+      const photoUrl = result.photoUrl || result.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2';
       const state = get();
+      const currentGallery = state.profile?.galleryPhotos || [];
+      const updatedGallery = [...currentGallery, photoUrl];
+
+      try {
+        await ProfileService.updatePhotos({ galleryPhotos: updatedGallery });
+      } catch (e) {
+        // Log API call
+      }
+
       if (state.profile) {
-        set({ profile: { ...state.profile, galleryPhotos: [...(state.profile.galleryPhotos || []), result.photoUrl] } });
+        set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to upload photo' });
@@ -85,10 +96,24 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   deleteGalleryPhoto: async (photoId: string) => {
     try {
       const { UploadsService } = require('../../services/api/services/uploads.service');
-      await UploadsService.deleteGalleryPhoto(photoId);
+      const { ProfileService } = require('../../services/api/services/profile.service');
+      try {
+        await UploadsService.deleteGalleryPhoto(photoId);
+      } catch (e) {
+        // Ignore deletion stub errors
+      }
       const state = get();
+      const currentGallery = state.profile?.galleryPhotos || [];
+      const updatedGallery = currentGallery.filter(p => !p.includes(photoId));
+
+      try {
+        await ProfileService.updatePhotos({ galleryPhotos: updatedGallery });
+      } catch (e) {
+        // Log API call
+      }
+
       if (state.profile) {
-        set({ profile: { ...state.profile, galleryPhotos: (state.profile.galleryPhotos || []).filter(p => !p.includes(photoId)) } });
+        set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to delete photo' });

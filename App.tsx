@@ -11,7 +11,6 @@ import { useNotificationStore } from './src/store/slices/notificationStore';
 import { socketService } from './src/services/api/services/socket.service';
 import { firebaseService } from './src/services/firebase/firebase.service';
 
-import 'react-native-gesture-handler';
 
 const CoBuddyTheme = {
   ...DefaultTheme,

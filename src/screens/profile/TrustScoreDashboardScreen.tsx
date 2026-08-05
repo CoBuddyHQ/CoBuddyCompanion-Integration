@@ -5,7 +5,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
@@ -19,8 +19,15 @@ import { useTranslation } from "react-i18next";
 export function TrustScoreDashboardScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
-  const { score, responseRate } = useTrustStore((s) => s);
+  const { score, responseRate, fetchTrustScore } = useTrustStore((s) => s);
   const profile = useProfileStore((s) => s.profile);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTrustScore();
+      useProfileStore.getState().fetchProfile();
+    }, [fetchTrustScore])
+  );
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>

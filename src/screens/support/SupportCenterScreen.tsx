@@ -6,7 +6,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import {colors} from '../../theme/colors';
 import {fontFamily} from '../../theme/typography';
@@ -32,11 +32,13 @@ export function SupportCenterScreen(): React.JSX.Element {
   const fetchTickets = useSupportStore(s => s.fetchTickets);
   const fetchDisputes = useSupportStore(s => s.fetchDisputes);
 
-  useEffect(() => {
-    fetchArticles();
-    fetchTickets();
-    fetchDisputes();
-  }, [fetchArticles, fetchTickets, fetchDisputes]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchArticles();
+      fetchTickets();
+      fetchDisputes();
+    }, [fetchArticles, fetchTickets, fetchDisputes])
+  );
 
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);

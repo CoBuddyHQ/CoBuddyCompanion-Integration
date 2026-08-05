@@ -11,7 +11,13 @@ import { configureApiClient } from '../../services/api/client';
 import { AuthService } from '../../services/api/services/auth.service';
 import { KycService, ProfileService } from '../../services/api/services';
 import { useApplicationStore } from './applicationStore';
+import { useSessionStore } from './sessionStore';
+import { useRequestStore } from './requestStore';
+import { useEarningsStore } from './earningsStore';
+import { useNotificationStore } from './notificationStore';
 import { Routes } from '../../navigation/routes';
+
+
 
 async function syncProgressWithBackend(): Promise<AuthStatus> {
   try {
@@ -21,20 +27,35 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
     ]);
 
     const overallStatus = (kyc?.overallStatus || '').toLowerCase();
+    // Profile verificationStatus is the PRIMARY source of truth (set by admin/DB)
+    const verificationStatus = (profile?.verificationStatus || '').toLowerCase();
     const profileStatus = (kyc?.profileStatus || profile?.profileStatus || '').toLowerCase();
 
-    // 1. Approved & Active Companion → Main Dashboard
-    if (overallStatus === 'verified' && (profileStatus === 'approved' || profileStatus === 'active')) {
+    // 1. Companion is verified/approved → Main Dashboard (check BOTH fields)
+    if (
+      verificationStatus === 'approved' ||
+      (overallStatus === 'approved' || overallStatus === 'verified') ||
+      (profileStatus === 'approved' || profileStatus === 'active' || profileStatus === 'published')
+    ) {
       return 'active';
     }
 
     // 2. Application Pending Admin Review → Verification Review Pending
-    if (overallStatus === 'pending_review' || profileStatus === 'submitted' || profileStatus === 'under_review') {
+    if (
+      overallStatus === 'pending_review' ||
+      overallStatus === 'in_progress' ||
+      profileStatus === 'submitted' ||
+      profileStatus === 'under_review'
+    ) {
       return 'pending_verification';
     }
 
     // 3. Rejected Application → Resubmit Verification Flow
-    if (overallStatus === 'rejected' || profileStatus === 'rejected') {
+    if (
+      overallStatus === 'rejected' ||
+      overallStatus === 'resubmit_required' ||
+      profileStatus === 'rejected'
+    ) {
       useApplicationStore.getState().setApplicationEntryRoute(Routes.RESUBMIT_VERIFICATION as any);
       return 'applying';
     }
@@ -72,6 +93,7 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
     return 'applying';
   }
 }
+
 
 export type AuthStatus =
   | 'unauthenticated'       // Not logged in
@@ -113,7 +135,7 @@ interface AuthState {
   enrollBiometric: (deviceId: string, publicKey: string) => Promise<void>;
   logout: () => Promise<void>;
   restoreAuth: () => Promise<void>;
-  updateAccessToken: (newToken: string) => void;
+  updateAccessToken: (newToken: string, newRefreshToken?: string) => void;
 
   // ── Simple setters ─────────────────────────────────────────────────────────
   setAuthStatus: (status: AuthStatus) => void;
@@ -255,6 +277,34 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     
     useApplicationStore.getState().setApplicationEntryRoute(Routes.JOURNEY_INTRO as any);
     
+    // Clear all stores to prevent old user data leakage or leftover state on logout
+    useSessionStore.setState({
+      upcomingSessions: [],
+      sessionHistory: [],
+      activeSession: null,
+      liveElapsedSeconds: 0,
+      safetyTimerActive: false,
+      nextCheckInAt: null,
+      chatMessages: [],
+    });
+    useRequestStore.setState({
+      pendingRequests: [],
+      reviewedRequests: [],
+      selectedRequest: null,
+      unreadCount: 0,
+    });
+    useEarningsStore.setState({
+      availableBalance: 0,
+      pendingClearance: 0,
+      lifetimeEarnings: 0,
+      recentTransactions: [],
+    });
+    useNotificationStore.setState({
+      notifications: [],
+      unreadCount: 0,
+    });
+
+
     set({
       authStatus: 'unauthenticated',
       companionId: null,
@@ -288,9 +338,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   // ── updateAccessToken — called by Axios interceptor after silent refresh ───
-  updateAccessToken: (newToken) => {
-    set({ token: newToken });
+  updateAccessToken: (newToken: string, newRefreshToken?: string) => {
+    set({
+      token: newToken,
+      ...(newRefreshToken ? { refreshToken: newRefreshToken } : {}),
+    });
     AsyncStorage.setItem(K.TOKEN, newToken).catch(() => {});
+    if (newRefreshToken) {
+      AsyncStorage.setItem(K.REFRESH, newRefreshToken).catch(() => {});
+    }
   },
 
   // ── Simple setters ─────────────────────────────────────────────────────────
@@ -310,6 +366,6 @@ function _wireApiClient(get: () => AuthState) {
     getToken: () => get().token,
     getRefreshToken: () => get().refreshToken,
     onUnauthorized: () => get().logout(),
-    onTokenRefreshed: (newToken) => get().updateAccessToken(newToken),
+    onTokenRefreshed: (newToken, newRefreshToken) => get().updateAccessToken(newToken, newRefreshToken),
   });
 }

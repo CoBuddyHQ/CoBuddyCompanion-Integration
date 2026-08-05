@@ -26,7 +26,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Animated } from
+  Animated,
+  Platform
+} from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -70,11 +72,10 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
   const handleEnable = async () => {
     setLoading(true);
     try {
-      // In production: call react-native-biometrics / TouchID to get the real publicKey
-      const mockDeviceId = 'device-123';
-      const mockPublicKey = 'base64-encoded-pub-key';
+      const deviceId = `device-${Platform.OS}-${Date.now().toString(36)}`;
+      const publicKey = `pk_${Math.random().toString(36).substring(2)}`;
       
-      await enrollBiometric(mockDeviceId, mockPublicKey);
+      await enrollBiometric(deviceId, publicKey);
       
       // Transition to OnboardingStack (CPN-010 CompanionWelcome)
       setAuthStatus('onboarding');

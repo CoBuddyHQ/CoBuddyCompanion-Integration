@@ -69,7 +69,7 @@ export function CancellationReviewPendingScreen(): React.JSX.Element {
       {/* Buttons */}
       <View style={s.bar}>
         <TouchableOpacity accessibilityRole="button" style={s.btnGold}
-        onPress={() => (navigation as any).navigate(Routes.HOME_DASHBOARD  )}
+        onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}
         activeOpacity={0.85} accessibilityLabel={t("accessibility.go_to_home")}>
           <Icon name="home" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
           <Text style={s.btnGoldText}> {t('sessions.go_to_home')} </Text>
