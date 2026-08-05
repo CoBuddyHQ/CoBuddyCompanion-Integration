@@ -96,3 +96,29 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 "# CoBuddyCompanion" 
+# 🤝 CoBuddy Companion Mobile Application
+
+CoBuddy Companion is a full-featured, production-ready React Native (CLI) mobile platform built for companions to manage their availability, handle real-time booking requests, conduct secure sessions, track earnings, and complete KYC onboarding.
+
+---
+
+## 🚀 Key Features
+
+- **🔐 Secure Multi-Step Authentication & Onboarding**: Phone OTP Verification, Encrypted PIN Setup, Biometric Authentication, and Multi-Step Companion Onboarding (Government ID, PAN, Bank Details, Bio, & Service Areas).
+- **📋 Live Booking Requests & Auto-Simulator**: Real-time incoming booking requests with instant accept, reject, or counter-propose workflows + Automated Request Simulator for dev testing.
+- **⏱️ Active Session Management**: Live session tracking, QR/PassCode Verification (`0000` dev bypass), In-Session Chat (Socket.IO), Safety Timers, and Emergency SOS integration.
+- **💳 Razorpay Payment Gateway**: Integrated Standard Razorpay Checkout for wallet top-ups, booking confirmation payments, HMAC-SHA256 signature verification, and automated payouts tracking.
+- **📊 Real-time Dashboard & Earnings**: Earnings overview, payout clearance statuses, transaction history, weekly availability calendar, and performance insights.
+- **🛡️ Safety & Trust Framework**: Trust score calculation, background declarations, incident reporting, and real-time GPS location sharing.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: React Native CLI (TypeScript)
+- **State Management**: Zustand
+- **Navigation**: React Navigation v6 (Native Stack, Bottom Tabs)
+- **HTTP Client**: Axios with global API response mapping & interceptors
+- **Real-Time Communication**: Socket.IO Client
+- **Payments**: `react-native-razorpay` SDK
+- **Backend Stack**: NestJS, Prisma ORM, PostgreSQL, Redis, Docker

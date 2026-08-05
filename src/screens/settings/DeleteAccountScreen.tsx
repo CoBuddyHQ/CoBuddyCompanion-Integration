@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useAuthStore } from '../../store/slices/authStore';
 import { useProfileStore } from '../../store/slices/profileStore';
+import { SettingsService } from '../../services/api/services/settings.service';
+
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -32,18 +34,25 @@ export function DeleteAccountScreen(): React.JSX.Element {
 
   const handleDelete = () => {
     if (!canDelete) {return;}
-    Alert.alert(t("alerts.account_deleted"), t("alerts.your_account_has_been_permanently_delete"),
-
-
-    [{
-      text: t("alerts.ok"),
-      onPress: () => {
-        clearProfile(); // Wipe all profile data
-        logout(); // Clear auth state → RootNavigator auto-shows AuthNavigator
-      }
-    }]
+    Alert.alert(
+      t("alerts.account_deleted"),
+      t("alerts.your_account_has_been_permanently_delete"),
+      [{
+        text: t("alerts.ok"),
+        onPress: async () => {
+          try {
+            await SettingsService.deleteAccount();
+          } catch (_) {
+            // Ignore API error if account was already deleted/offline
+          } finally {
+            clearProfile(); // Wipe all profile data locally
+            await logout(); // Clear auth state & stores → RootNavigator auto-shows AuthNavigator
+          }
+        }
+      }]
     );
   };
+
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>

@@ -3,7 +3,7 @@
  * Wraps all /companion/settings/* endpoints.
  */
 
-import { apiGet, apiPut } from '../client';
+import { apiGet, apiPut, apiPost } from '../client';
 import { Endpoints } from '../endpoints';
 import type { NotificationPrefs, PrivacySettings } from '../../../store/slices/settingsStore';
 
@@ -16,4 +16,8 @@ export const SettingsService = {
 
   updatePrivacySettings: (dto: Partial<PrivacySettings>) =>
     apiPut(Endpoints.ACCOUNT.PRIVACY_CONTROLS, dto),
+
+  deleteAccount: () =>
+    apiPost<{ success: boolean; message: string }>(Endpoints.SETTINGS.ACCOUNT_DELETE, {}),
 };
+
