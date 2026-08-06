@@ -184,10 +184,12 @@ export function VerificationHubScreen({ navigation }: Props): React.JSX.Element 
           label={t("content.application_kyc.VerificationHubContent.CTA_SAVE_LATER")}
           onPress={() => {
             setDraftSaved(new Date().toISOString());
+            navigation.navigate(Routes.APPLICATION_SAVED_DRAFT as any);
           }}
           variant="ghost"
           style={styles.saveBtn}
           accessibilityLabel={t("accessibility.save_and_continue_later")} />
+
         
         {/* ─── DEV BYPASS — remove before production release ─── */}
         <TouchableOpacity accessibilityRole="button"
