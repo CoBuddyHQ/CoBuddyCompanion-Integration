@@ -60,9 +60,21 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       return 'applying';
     }
 
-    // 4. Update applicationStore boolean flags directly from backend KYC steps
+    // 4. Update applicationStore boolean flags & form state directly from backend profile & KYC steps
     const appStore = useApplicationStore.getState();
     const steps = kyc?.steps || {};
+
+    if (profile) {
+      if (profile.displayName) { appStore.updateBasicDetails({ displayName: profile.displayName }); }
+      if (profile.bio) { appStore.setProfessionalBio(profile.bio); }
+      if (profile.city) { appStore.setCity(profile.city); }
+      if (profile.languages && profile.languages.length > 0) {
+        appStore.setLanguages(profile.languages, profile.languages[0] || 'English', ['Fluent']);
+      }
+      if (profile.hourlyRate) { appStore.setPricing(profile.hourlyRate, (profile as any).sessionDuration || 90); }
+    }
+
+
 
     if (steps.identity?.status === 'submitted') {
       appStore.setIdSubmitted(true);
@@ -85,6 +97,7 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       appStore.setBackgroundDeclaration('safety_policy', true);
       appStore.setBackgroundDeclaration('no_misrepresentation', true);
     }
+
 
 
     let targetRoute: any = Routes.JOURNEY_INTRO;
