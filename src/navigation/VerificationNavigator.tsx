@@ -53,9 +53,14 @@ import {AddBankAccountScreen}          from '../screens/application/AddBankAccou
 import {BankAccountVerificationScreen} from '../screens/application/BankAccountVerificationScreen';
 import {UPIDetailsScreen}              from '../screens/application/UPIDetailsScreen';
 import {ApplicationSavedDraftScreen}   from '../screens/application/ApplicationSavedDraftScreen';
-
+import {ApplicationReviewInfoScreen}   from '../screens/application/ApplicationReviewInfoScreen';
+import {SubmitProfileForApprovalScreen} from '../screens/application/SubmitProfileForApprovalScreen';
+import {ProfileSetupIntroScreen}        from '../screens/application/ProfileSetupIntroScreen';
+import {ProfileCompletionChecklistScreen} from '../screens/application/ProfileCompletionChecklistScreen';
+import {ApplicationProgressScreen}      from '../screens/application/ApplicationProgressScreen';
 
 const Stack = createStackNavigator<VerificationStackParamList>();
+
 
 
 
@@ -139,8 +144,15 @@ const VerificationNavigator: React.FC = () => (
     <Stack.Screen name={Routes.UPI_DETAILS}                component={UPIDetailsScreen} />
     {/* CPN-050: Application Saved Draft */}
     <Stack.Screen name={Routes.APPLICATION_SAVED_DRAFT as any} component={ApplicationSavedDraftScreen as any} />
+    {/* Phase 4C resume screens */}
+    <Stack.Screen name={Routes.APPLICATION_REVIEW_INFO as any} component={ApplicationReviewInfoScreen as any} />
+    <Stack.Screen name={Routes.SUBMIT_PROFILE_FOR_APPROVAL as any} component={SubmitProfileForApprovalScreen as any} />
+    <Stack.Screen name={Routes.PROFILE_SETUP_INTRO as any} component={ProfileSetupIntroScreen as any} />
+    <Stack.Screen name={Routes.PROFILE_COMPLETION_CHECKLIST as any} component={ProfileCompletionChecklistScreen as any} />
+    <Stack.Screen name={Routes.APPLICATION_PROGRESS as any} component={ApplicationProgressScreen as any} />
   </Stack.Navigator>
 );
+
 
 
 
