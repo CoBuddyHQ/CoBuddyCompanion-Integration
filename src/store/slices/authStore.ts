@@ -60,8 +60,32 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       return 'applying';
     }
 
-    // 4. In-Progress Application — Determine exact next pending step from backend KYC steps
+    // 4. Update applicationStore boolean flags directly from backend KYC steps
+    const appStore = useApplicationStore.getState();
     const steps = kyc?.steps || {};
+
+    if (steps.identity?.status === 'submitted') {
+      appStore.setIdSubmitted(true);
+    }
+    if (steps.pan?.status === 'submitted') {
+      appStore.setPANConfirmed(true);
+    }
+    if (steps.selfie?.status === 'submitted') {
+      appStore.setSelfieCaptureComplete(true);
+      appStore.setLivenessComplete(true);
+    }
+    if (steps.address?.status === 'submitted') {
+      appStore.setAddressDetailsComplete(true);
+    }
+    if (steps.declaration?.status === 'submitted') {
+      appStore.setBackgroundDeclaration('accurate_info', true);
+      appStore.setBackgroundDeclaration('public_venue_only', true);
+      appStore.setBackgroundDeclaration('professional_conduct', true);
+      appStore.setBackgroundDeclaration('no_private_contact', true);
+      appStore.setBackgroundDeclaration('safety_policy', true);
+      appStore.setBackgroundDeclaration('no_misrepresentation', true);
+    }
+
 
     let targetRoute: any = Routes.JOURNEY_INTRO;
 
@@ -69,30 +93,25 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       targetRoute = Routes.BASIC_DETAILS;
     } else if (!steps.identity || steps.identity.status === 'pending') {
       targetRoute = steps.identity?.documentType ? Routes.GOVERNMENT_ID_UPLOAD : Routes.GOVERNMENT_ID_TYPE;
+    } else if (!steps.pan || steps.pan.status === 'pending') {
+      targetRoute = Routes.PAN_TAX_DETAILS;
     } else if (!steps.selfie || steps.selfie.status === 'pending') {
       targetRoute = Routes.SELFIE_CAPTURE;
     } else if (!steps.address || steps.address.status === 'pending') {
       targetRoute = Routes.ADDRESS_VERIFICATION;
-    } else if (!steps.pan || steps.pan.status === 'pending') {
-      targetRoute = Routes.PAN_TAX_DETAILS;
-    } else if (!steps.bank || steps.bank.status === 'pending') {
-      targetRoute = Routes.ADD_BANK_ACCOUNT;
-    } else if (!steps.upi || steps.upi.status === 'pending') {
-      targetRoute = Routes.UPI_DETAILS;
-    } else if (!steps.emergencyContact || steps.emergencyContact.status === 'pending') {
-      targetRoute = Routes.BACKGROUND_DECLARATION;
     } else if (!steps.declaration || steps.declaration.status === 'pending') {
       targetRoute = Routes.BACKGROUND_DECLARATION;
     } else {
-      targetRoute = Routes.SUBMIT_PROFILE_FOR_APPROVAL;
+      targetRoute = Routes.VERIFICATION_HUB;
     }
 
-    useApplicationStore.getState().setApplicationEntryRoute(targetRoute);
+    appStore.setApplicationEntryRoute(targetRoute);
     return 'applying';
   } catch (err) {
     return 'applying';
   }
 }
+
 
 
 export type AuthStatus =

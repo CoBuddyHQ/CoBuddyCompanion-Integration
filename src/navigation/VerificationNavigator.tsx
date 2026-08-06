@@ -52,8 +52,13 @@ import {PANTaxDetailsScreen}           from '../screens/application/PANTaxDetail
 import {AddBankAccountScreen}          from '../screens/application/AddBankAccountScreen';
 import {BankAccountVerificationScreen} from '../screens/application/BankAccountVerificationScreen';
 import {UPIDetailsScreen}              from '../screens/application/UPIDetailsScreen';
+import {ApplicationSavedDraftScreen}   from '../screens/application/ApplicationSavedDraftScreen';
+
 
 const Stack = createStackNavigator<VerificationStackParamList>();
+
+
+
 
 const VerificationNavigator: React.FC = () => (
   // Initial screen is VERIFICATION_HUB (CPN-051):
@@ -132,7 +137,11 @@ const VerificationNavigator: React.FC = () => (
     <Stack.Screen name={Routes.BANK_ACCOUNT_VERIFICATION}  component={BankAccountVerificationScreen} />
     {/* CPN-044: UPI Details */}
     <Stack.Screen name={Routes.UPI_DETAILS}                component={UPIDetailsScreen} />
+    {/* CPN-050: Application Saved Draft */}
+    <Stack.Screen name={Routes.APPLICATION_SAVED_DRAFT as any} component={ApplicationSavedDraftScreen as any} />
   </Stack.Navigator>
 );
+
+
 
 export default VerificationNavigator;

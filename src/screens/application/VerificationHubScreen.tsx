@@ -16,6 +16,8 @@ import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { useAuthStore } from '../../store/slices/authStore';
+import { KycService } from '../../services/api/services/kyc.service';
+
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -37,12 +39,34 @@ export function VerificationHubScreen({ navigation }: Props): React.JSX.Element 
     startMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
 
-  // ── Clear stale fix context when returning via Back from a fix screen ──
+  // ── Fetch fresh KYC status from backend whenever screen gains focus ──
   useFocusEffect(
     useCallback(() => {
       clearMissingRequirementFix();
+      KycService.getKycStatus().then((kyc: any) => {
+        if (!kyc?.steps) {return;}
+        const steps = kyc.steps;
+        if (steps.identity?.status === 'submitted') { useApplicationStore.getState().setIdSubmitted(true); }
+        if (steps.pan?.status === 'submitted') { useApplicationStore.getState().setPANConfirmed(true); }
+        if (steps.selfie?.status === 'submitted') {
+          useApplicationStore.getState().setSelfieCaptureComplete(true);
+          useApplicationStore.getState().setLivenessComplete(true);
+        }
+        if (steps.address?.status === 'submitted') { useApplicationStore.getState().setAddressDetailsComplete(true); }
+        if (steps.declaration?.status === 'submitted') {
+          const store = useApplicationStore.getState();
+          store.setBackgroundDeclaration('accurate_info', true);
+          store.setBackgroundDeclaration('public_venue_only', true);
+          store.setBackgroundDeclaration('professional_conduct', true);
+          store.setBackgroundDeclaration('no_private_contact', true);
+          store.setBackgroundDeclaration('safety_policy', true);
+          store.setBackgroundDeclaration('no_misrepresentation', true);
+        }
+
+      }).catch(() => null);
     }, [clearMissingRequirementFix])
   );
+
 
   // Background Declaration: ALL sub-declarations must be accepted
   const backgroundDeclarationComplete = Object.values(backgroundDeclaration).every(Boolean);
