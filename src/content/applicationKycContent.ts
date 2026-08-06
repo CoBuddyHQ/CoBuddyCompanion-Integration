@@ -1046,7 +1046,7 @@ export const VerificationApprovedContent = {
 export const VerificationPendingContent = {
   STATUS_BADGE: 'Under Review',
   HEADLINE: 'Verification In Progress',
-  SUBHEADLINE: 'Your documents have been submitted and are being reviewed. This typically takes 1u{2013}3 business days.',
+  SUBHEADLINE: 'Your documents have been submitted and are being reviewed. This typically takes 1–3 business days.',
   SUBMITTED_TITLE: 'Submitted Steps',
   SUBMITTED_STEPS: [
   'Government ID uploaded',
