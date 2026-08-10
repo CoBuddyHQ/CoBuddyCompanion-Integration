@@ -1,8 +1,6 @@
 import { apiClient } from '../client';
 import { Endpoints } from '../endpoints';
 
-const DEFAULT_STUB_URL = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400';
-
 function extractUri(file: any): string {
   if (typeof file === 'string') return file;
   if (file && typeof file.uri === 'string') return file.uri;
@@ -12,8 +10,8 @@ function extractUri(file: any): string {
 export const UploadsService = {
   uploadProfilePhoto: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL };
+    if (!uri) {
+      throw new Error('No valid image file provided');
     }
     const formData = new FormData();
     formData.append('photo', {
@@ -30,8 +28,8 @@ export const UploadsService = {
 
   uploadGalleryPhoto: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL, photoId: `stub-${Date.now()}` };
+    if (!uri) {
+      throw new Error('No valid image file provided');
     }
     const formData = new FormData();
     formData.append('photo', {
@@ -54,8 +52,8 @@ export const UploadsService = {
 
   uploadKycIdentity: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL };
+    if (!uri) {
+      throw new Error('No valid document file provided');
     }
     const formData = new FormData();
     formData.append('document', {
@@ -72,8 +70,8 @@ export const UploadsService = {
 
   uploadKycSelfie: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL };
+    if (!uri) {
+      throw new Error('No valid video/photo file provided');
     }
     const formData = new FormData();
     formData.append('video', {
@@ -90,8 +88,8 @@ export const UploadsService = {
 
   uploadKycAddress: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL };
+    if (!uri) {
+      throw new Error('No valid address proof file provided');
     }
     const formData = new FormData();
     formData.append('document', {
@@ -108,8 +106,8 @@ export const UploadsService = {
 
   uploadEvidence: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri || uri.startsWith('stub://')) {
-      return { photoUrl: DEFAULT_STUB_URL, url: DEFAULT_STUB_URL };
+    if (!uri) {
+      throw new Error('No valid evidence file provided');
     }
     const formData = new FormData();
     formData.append('document', {

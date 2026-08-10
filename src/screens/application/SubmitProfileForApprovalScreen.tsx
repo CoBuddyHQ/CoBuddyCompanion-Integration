@@ -72,6 +72,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
   // a new object on every call, causing an infinite getSnapshot loop.
   const readinessInput = useApplicationStore(
     useShallow((state) => ({
+      onboardingStatus: state.onboardingStatus,
       basicDetails: state.basicDetails,
       professionalBio: state.professionalBio,
       interestTags: state.interestTags,

@@ -54,6 +54,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
   // new object on every call, causing an infinite useSyncExternalStore getSnapshot loop.
   const readinessInput = useApplicationStore(
     useShallow((state) => ({
+      onboardingStatus: state.onboardingStatus,
       basicDetails: state.basicDetails,
       professionalBio: state.professionalBio,
       interestTags: state.interestTags,

@@ -49,6 +49,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
   // ── Stable slice of readiness primitives (shallow equality) ──
   const readinessInput = useApplicationStore(
     useShallow((state) => ({
+      onboardingStatus: state.onboardingStatus,
       basicDetails: state.basicDetails,
       professionalBio: state.professionalBio,
       interestTags: state.interestTags,

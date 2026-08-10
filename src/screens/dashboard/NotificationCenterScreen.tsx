@@ -101,7 +101,7 @@ export function NotificationCenterScreen(): React.JSX.Element {
       
       <FlatList
         data={notifications}
-        keyExtractor={(n) => n.notificationId}
+        keyExtractor={(n, idx) => n.notificationId || (n as any).id || `notif_${idx}`}
         renderItem={renderItem}
         contentContainerStyle={s.list}
         showsVerticalScrollIndicator={false}

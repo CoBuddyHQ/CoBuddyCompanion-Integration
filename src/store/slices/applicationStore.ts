@@ -20,6 +20,7 @@ import {create} from 'zustand';
 import {Routes} from '../../navigation/routes';
 import {getApplicationReadiness, MandatoryItemResult} from '../selectors/applicationReadinessSelector';
 import type {MandatoryRequirementKey} from '../../navigation/missingRequirementNavigation';
+import type {OnboardingStatus} from '../types/store.types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -67,10 +68,14 @@ export type ApplicationResumeTarget =
   | { route: typeof Routes.PROFILE_PHOTO_UPLOAD }
   | { route: typeof Routes.GOVERNMENT_ID_UPLOAD; params: { idType: string } }
   | { route: typeof Routes.ADD_BANK_ACCOUNT }
+  | { route: typeof Routes.PAN_TAX_DETAILS }
+  | { route: typeof Routes.ADDRESS_VERIFICATION }
   | { route: typeof Routes.APPLICATION_PROGRESS }
+
   | { route: typeof Routes.APPLICATION_REVIEW_INFO }
   | { route: typeof Routes.SUBMIT_PROFILE_FOR_APPROVAL }
   | { route: typeof Routes.PROFILE_COMPLETION_CHECKLIST; params: { mode: 'profile_setup' | 'correction' } };
+
 
 // Safe default — no params required.
 export const DEFAULT_RESUME_TARGET: ApplicationResumeTarget = {
@@ -225,6 +230,9 @@ interface CommActivityPrefs {
 // ─── State interface ──────────────────────────────────────────────────────────
 
 interface ApplicationState {
+  // Master Onboarding Status from Backend
+  onboardingStatus: OnboardingStatus | null;
+
   // Stage tracking
   currentStage:   ApplicationStage;
   currentPhase:   ApplicationPhase;
@@ -404,6 +412,10 @@ interface ApplicationState {
 
   // ─── Actions ─────────────────────────────────────────────────────
 
+  // Master Backend Hydration
+  hydrateOnboardingStatus: (status: OnboardingStatus) => void;
+  hydrateProfileData: (profile: any) => void;
+
   // Stage
   setCurrentStage: (stage: ApplicationStage) => void;
 
@@ -551,6 +563,7 @@ interface ApplicationState {
 
 const initialState: Omit<
   ApplicationState,
+  | 'hydrateOnboardingStatus'
   | 'setCurrentStage'
   | 'setEligibilityConfirmed'
   | 'updateBasicDetails'
@@ -604,7 +617,9 @@ const initialState: Omit<
   | 'resetApplication'
   | 'saveDraftToBackend'
   | 'submitApplicationToBackend'
+  | 'hydrateProfileData'
 > = {
+  onboardingStatus: null,
   currentStage:  'not_started',
   currentPhase:  'identity',
   completionPct: 0,
@@ -799,6 +814,84 @@ function calcCompletion(state: Omit<ApplicationState, keyof Pick<ApplicationStat
 
 export const useApplicationStore = create<ApplicationState>((set, get) => ({
   ...initialState,
+
+  hydrateOnboardingStatus: (status) =>
+    set((s) => {
+      const completed = status?.completedModules || [];
+
+      const bgDone = completed.includes('declaration') || completed.includes('eligibility');
+      const selfieDone = completed.includes('selfie');
+      const idDone = completed.includes('government_id');
+      const addressDone = completed.includes('address');
+      const panDone = completed.includes('pan');
+      const bankDone = completed.includes('bank');
+      const upiDone = completed.includes('upi');
+      const boundariesDone = completed.includes('boundaries');
+
+      return {
+        onboardingStatus: status,
+        completionPct: status.profileCompletion,
+        verificationStatus: status.verificationStatus as any,
+        profileReviewStatus: status.applicationStatus as any,
+        draftSavedAt: status.lastUpdated,
+        applicationResumeTarget: { route: status.resumeRoute as any },
+
+        idSubmittedForReview: idDone || s.idSubmittedForReview,
+        panConfirmed: panDone || s.panConfirmed,
+        bankVerified: bankDone || s.bankVerified,
+        upiVerified: upiDone || s.upiVerified,
+        selfieCaptureComplete: selfieDone || s.selfieCaptureComplete,
+        livenessComplete: selfieDone || s.livenessComplete,
+        addressDetailsComplete: addressDone || s.addressDetailsComplete,
+        boundariesAccepted: boundariesDone || s.boundariesAccepted,
+
+        backgroundDeclaration: bgDone
+          ? {
+              accurate_info: true,
+              public_venue_only: true,
+              professional_conduct: true,
+              no_private_contact: true,
+              safety_policy: true,
+              no_misrepresentation: true,
+            }
+          : s.backgroundDeclaration,
+      };
+    }),
+
+  hydrateProfileData: (profile) =>
+    set((s) => {
+      let dobFormatted = s.basicDetails.dateOfBirth;
+      if (profile.dateOfBirth) {
+        try {
+          const d = new Date(profile.dateOfBirth);
+          if (!isNaN(d.getTime())) {
+            dobFormatted = d.toISOString().split('T')[0];
+          }
+        } catch {
+          // Keep current dob
+        }
+      }
+
+      return {
+        professionalBio: profile.bio || s.professionalBio,
+        basicDetails: {
+          ...s.basicDetails,
+          displayName: profile.displayName || s.basicDetails.displayName,
+          email: profile.email || s.basicDetails.email,
+          dateOfBirth: dobFormatted,
+          gender: profile.gender || s.basicDetails.gender,
+        },
+        experienceCategories: profile.categories || s.experienceCategories,
+        interestTags: profile.interestTags || s.interestTags,
+        spokenLanguages: profile.languages || s.spokenLanguages,
+        primaryLanguage: profile.primaryLanguage || s.primaryLanguage,
+        sessionRateINR: profile.hourlyRate || s.sessionRateINR,
+        venuePreferences: profile.serviceAreas || s.venuePreferences,
+        workPreference: profile.workPreference ? { ...s.workPreference, ...profile.workPreference } : s.workPreference,
+        commActivityPrefs: profile.commActivity ? { ...s.commActivityPrefs, ...profile.commActivity } : s.commActivityPrefs,
+        profilePhotoComplete: !!profile.photoUrl || s.profilePhotoComplete,
+      };
+    }),
 
   setCurrentStage: (stage) =>
     set((s) => {
@@ -998,8 +1091,10 @@ export const useApplicationStore = create<ApplicationState>((set, get) => ({
     return { ready: result.ready, missing: result.missing as MandatoryItemResult[] };
   },
 
-  recalculateCompletion: () =>
-    set((s) => ({ completionPct: calcCompletion(s) })),
+  recalculateCompletion: () => {
+    // Deprecated: Backend ProgressEngineService now calculates completion.
+    // This is handled by hydrateOnboardingStatus via client.ts interceptor.
+  },
 
   resetApplication: () => set({ ...initialState }),
 

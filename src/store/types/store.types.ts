@@ -289,3 +289,20 @@ export interface SupportTicket {
   updatedAt: string;
   resolvedAt: string | null;
 }
+
+export interface OnboardingStatus {
+  profile: CompanionProfile;
+  completedModules: string[];
+  pendingModules: string[];
+  completedSteps: string[];
+  currentStep: string;
+  nextStep: string;
+  profileCompletion: number;
+  resumeScreen: string;
+  resumeRoute: string;
+  draftStatus: string;
+  verificationStatus: string;
+  applicationStatus: string;
+  lastUpdated: string;
+  hasStarted: boolean;          // true when completedModules.length > 0
+}

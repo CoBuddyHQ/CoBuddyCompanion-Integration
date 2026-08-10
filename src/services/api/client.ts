@@ -53,6 +53,7 @@ let _getToken: (() => string | null) | null = null;
 let _getRefreshToken: (() => string | null) | null = null;
 let _onUnauthorized: (() => void) | null = null;
 let _onTokenRefreshed: ((newToken: string, newRefreshToken?: string) => void) | null = null;
+let _onOnboardingStatusReceived: ((status: any) => void) | null = null;
 
 /**
  * Call this once at app startup (in App.tsx) to wire the auth store into
@@ -63,11 +64,13 @@ export function configureApiClient(options: {
   getRefreshToken: () => string | null;
   onUnauthorized: () => void;
   onTokenRefreshed: (newToken: string, newRefreshToken?: string) => void;
+  onOnboardingStatusReceived?: (status: any) => void;
 }): void {
   _getToken = options.getToken;
   _getRefreshToken = options.getRefreshToken;
   _onUnauthorized = options.onUnauthorized;
   _onTokenRefreshed = options.onTokenRefreshed;
+  _onOnboardingStatusReceived = options.onOnboardingStatusReceived || null;
 }
 
 apiClient.interceptors.request.use(
@@ -108,6 +111,11 @@ apiClient.interceptors.response.use(
     console.log(`✅ [API RESPONSE ${response.status}] ${response.config.url ?? ''}`);
     if (response.data) {
       console.log(`📥 [DATA RECEIVED]:`, typeof response.data === 'string' ? response.data : JSON.stringify(response.data, null, 2));
+      
+      // Auto-hydrate onboarding status if it exists in the response payload
+      if (response.data.onboardingStatus) {
+        _onOnboardingStatusReceived?.(response.data.onboardingStatus);
+      }
     }
     console.log(`========================================\n`);
     logger.log(`← ${response.status} ${response.config.url ?? ''}`);

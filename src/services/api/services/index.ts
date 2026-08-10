@@ -159,11 +159,15 @@ export const NotificationsService = {
   getUnreadCount: (): Promise<{ count: number }> =>
     apiGet<{ count: number }>(Endpoints.NOTIFICATIONS.UNREAD_COUNT),
 
-  markRead: (notificationId: string) =>
-    apiPut(buildPath(Endpoints.NOTIFICATIONS.MARK_READ, { notificationId }), {}),
+  markRead: (notificationId: string) => {
+    if (!notificationId || notificationId.includes('undefined') || notificationId.startsWith('req-')) {
+      return Promise.resolve({ success: true });
+    }
+    return apiPatch(buildPath(Endpoints.NOTIFICATIONS.MARK_READ, { notificationId }), {});
+  },
 
   markAllRead: () =>
-    apiPut(Endpoints.NOTIFICATIONS.MARK_ALL_READ, {}),
+    apiPatch(Endpoints.NOTIFICATIONS.MARK_ALL_READ, {}),
 
   getAnnouncements: () =>
     apiGet(Endpoints.NOTIFICATIONS.ANNOUNCEMENTS),

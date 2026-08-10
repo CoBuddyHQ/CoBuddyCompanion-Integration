@@ -66,6 +66,7 @@ export interface ApplicationReadinessResult {
 // ─── Selector input type ─────────────────────────────────────────────────────
 
 export interface ReadinessSelectorInput {
+  onboardingStatus?: { completedModules?: string[] } | null;
   basicDetails: {
     legalName: string;
     displayName: string;
@@ -116,120 +117,113 @@ items: MandatoryItemResult[])
  * Call with `get()` in Zustand or subscribe via `useApplicationStore(s => getApplicationReadiness(s))`.
  */
 export function getApplicationReadiness(s: ReadinessSelectorInput): ApplicationReadinessResult {
+  const backendCompleted = s.onboardingStatus?.completedModules || [];
+  const isDone = (backendKey: string, localDone: boolean) => backendCompleted.includes(backendKey) || localDone;
 
   // ── 1. Profile Module ────────────────────────────────────────────────────
   const bd = s.basicDetails;
   const profileItems: MandatoryItemResult[] = [
   {
     key: 'basic_details', label: i18next.t("content.selectors.applicationReadinessSelector.basic_details"), route: Routes.BASIC_DETAILS,
-    done: !!(bd.displayName || bd.legalName)
+    done: isDone('basic_details', !!(bd.displayName || bd.legalName))
   },
   {
     key: 'bio', label: i18next.t("content.selectors.applicationReadinessSelector.professional_bio"), route: Routes.BIO_INTRODUCTION,
-    done: !!(s.professionalBio && s.professionalBio.trim().length > 0)
+    done: isDone('bio', !!(s.professionalBio && s.professionalBio.trim().length > 0))
   },
   {
     key: 'interests', label: i18next.t("content.selectors.applicationReadinessSelector.interests_personality"), route: Routes.INTERESTS_PERSONALITY,
-    done: s.interestTags.length > 0 || true // auto-marked when profile exists
+    done: isDone('interests', s.interestTags.length > 0)
   },
   {
     key: 'experience', label: i18next.t("content.selectors.applicationReadinessSelector.experience_categories"), route: Routes.EXPERIENCE_CATEGORIES,
-    done: s.experienceCategories.length > 0 || true
+    done: isDone('categories', s.experienceCategories.length > 0)
   },
   {
     key: 'languages', label: i18next.t("content.selectors.applicationReadinessSelector.languages"), route: Routes.LANGUAGES_SELECTION,
-    done: s.spokenLanguages.length > 0
+    done: isDone('languages', s.spokenLanguages.length > 0)
   },
   {
     key: 'profile_photo', label: i18next.t("content.selectors.applicationReadinessSelector.profile_photo"), route: Routes.PROFILE_PHOTO_UPLOAD,
-    done: s.profilePhotoComplete || true
+    done: isDone('photo', s.profilePhotoComplete)
   }];
 
-
-
-  // bgDone = true when all declarations have been confirmed (all fields are true).
-  // The BackgroundDeclarationScreen requires the companion to check every item
-  // before the CTA is enabled and setCurrentStage('background_declaration') is called.
+  // bgDone = true when all declarations have been confirmed
   const bgDone = Object.values(s.backgroundDeclaration).every(Boolean);
   const wp = s.workPreference;
   const cap = s.commActivityPrefs;
   const safetyItems: MandatoryItemResult[] = [
   {
     key: 'background_declaration', label: i18next.t("content.selectors.applicationReadinessSelector.background_declaration"),
-    route: Routes.BACKGROUND_DECLARATION, done: bgDone
+    route: Routes.BACKGROUND_DECLARATION, done: isDone('declaration', isDone('eligibility', bgDone))
   },
   {
     key: 'work_preference', label: i18next.t("content.selectors.applicationReadinessSelector.work_preferences"), route: Routes.WORK_PREFERENCE,
-    done: wp.durations.length > 0 || wp.days.length > 0 || true
+    done: isDone('work_preference', wp.durations.length > 0 || wp.days.length > 0)
   },
   {
     key: 'city', label: i18next.t("content.selectors.applicationReadinessSelector.city_service_areas"), route: Routes.CITY_SERVICE_AREA,
-    done: !!s.city
+    done: isDone('service_area', !!s.city)
   },
   {
     key: 'comm_activity', label: i18next.t("content.selectors.applicationReadinessSelector.communication_activity_preferences"),
     route: Routes.SERVICE_STYLE_PREFERENCES,
-    done: !!(cap.commStyle || cap.activityPace || true)
+    done: isDone('service_style', !!(cap.commStyle || cap.activityPace))
   },
   {
     key: 'venue_preference', label: i18next.t("content.selectors.applicationReadinessSelector.venue_preferences"), route: Routes.PUBLIC_VENUE_PREFERENCE,
-    done: s.venuePreferences.length > 0 || true
+    done: isDone('public_venue', s.venuePreferences.length > 0)
   },
   {
     key: 'boundaries', label: i18next.t("content.selectors.applicationReadinessSelector.boundaries_safety"), route: Routes.BOUNDARIES_SAFETY,
-    done: s.boundariesAccepted || true
+    done: isDone('boundaries', s.boundariesAccepted)
   }];
-
-
 
   // ── 3. Identity Module ────────────────────────────────────────────────────
   const identityItems: MandatoryItemResult[] = [
   {
     key: 'id_type', label: i18next.t("content.selectors.applicationReadinessSelector.government_id_type"), route: Routes.GOVERNMENT_ID_TYPE,
-    done: !!s.selectedIdType
+    done: isDone('government_id', !!s.selectedIdType || s.idSubmittedForReview)
   },
   {
     key: 'id_submitted', label: i18next.t("content.selectors.applicationReadinessSelector.government_id_submitted"), route: Routes.GOVERNMENT_ID_UPLOAD,
-    done: s.idSubmittedForReview
+    done: isDone('government_id', s.idSubmittedForReview)
   },
   {
     key: 'selfie_liveness', label: i18next.t("content.selectors.applicationReadinessSelector.selfie_liveness_check"), route: Routes.SELFIE_CAPTURE,
-    // Both must be complete. Liveness is set only after a successful selfie capture exists.
-    done: s.selfieCaptureComplete && s.livenessComplete
+    done: isDone('selfie', s.selfieCaptureComplete && s.livenessComplete)
   },
   {
     key: 'address_details', label: i18next.t("content.selectors.applicationReadinessSelector.address_details"), route: Routes.ADDRESS_VERIFICATION,
-    done: s.addressDetailsComplete
+    done: isDone('address', s.addressDetailsComplete)
   },
   {
     key: 'address_proof', label: i18next.t("content.selectors.applicationReadinessSelector.address_proof_uploaded"), route: Routes.ADDRESS_VERIFICATION,
-    done: s.addressProofSubmitted,
-    optional: true // product decision: address details required, proof is optional
+    done: isDone('address', s.addressProofSubmitted),
+    optional: true
   }];
-
 
   // ── 4. Financial Module ───────────────────────────────────────────────────
   const financialItems: MandatoryItemResult[] = [
   {
     key: 'pricing', label: i18next.t("content.selectors.applicationReadinessSelector.companion_pricing"), route: Routes.COMPANION_PRICING,
-    done: s.sessionRateINR > 0
+    done: isDone('pricing', s.sessionRateINR > 0)
   },
   {
     key: 'pan', label: i18next.t("content.selectors.applicationReadinessSelector.pan_tax_details"), route: Routes.PAN_TAX_DETAILS,
-    done: s.panConfirmed
+    done: isDone('pan', s.panConfirmed)
   },
   {
     key: 'bank', label: i18next.t("content.selectors.applicationReadinessSelector.bank_account_verified"), route: Routes.BANK_ACCOUNT_VERIFICATION,
-    done: s.bankVerified
+    done: isDone('bank', s.bankVerified)
   },
   {
     key: 'upi', label: i18next.t("content.selectors.applicationReadinessSelector.upi_payout_details"), route: Routes.UPI_DETAILS,
-    done: s.upiVerified,
-    optional: true // excluded from mandatory total per product rule above
+    done: isDone('upi', s.upiVerified),
   }];
 
 
-  // ── Aggregate ─────────────────────────────────────────────────────────────
+  // --- Aggregate -------------------------------------------------------------
   const profile = buildModule('1. Profile Setup', 'person', profileItems);
   const safetyService = buildModule('2. Safety & Service', 'shield', safetyItems);
   const identity = buildModule('3. Identity', 'badge', identityItems);

@@ -267,13 +267,14 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
   if (mode === 'profile_setup') {
     const getIsComplete = (key: typeof PROFILE_SETUP_ITEMS[0]['storeKey']): boolean => {
       switch (key) {
-        case 'basicDetails':return (basicDetails.displayName || basicDetails.legalName).trim().length > 0;
-        case 'professionalBio':return professionalBio.trim().length > 0;
-        case 'interestTags':return interestTags.length > 0 || true;
-        case 'experienceCategories':return experienceCategories.length > 0 || true;
-        case 'spokenLanguages':return spokenLanguages.length > 0;
-        case 'profilePhotoComplete':return profilePhotoComplete || true;
-        default:return true;
+        case 'basicDetails': return (basicDetails.displayName || basicDetails.legalName).trim().length > 0;
+        case 'professionalBio': return professionalBio.trim().length > 0;
+        case 'interestTags': return interestTags.length > 0;
+        case 'experienceCategories': return experienceCategories.length > 0;
+        case 'spokenLanguages': return spokenLanguages.length > 0;
+        case 'profilePhotoComplete': return profilePhotoComplete;
+        default: return false;
+
       }
     };
 

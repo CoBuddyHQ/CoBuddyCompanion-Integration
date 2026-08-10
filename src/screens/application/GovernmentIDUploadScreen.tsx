@@ -102,15 +102,28 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
   }, [idType]);
 
   const handleSubmit = useCallback(async () => {
-    const effectiveFront = frontUri || 'stub://id-front';
-    const effectiveBack = backUri || 'stub://id-back';
+    if (!frontUri || !backUri) {
+      Alert.alert(t('alerts.error'), 'Please capture or select both front and back sides of your Government ID.');
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const frontRes: any = await UploadsService.uploadKycIdentity(effectiveFront);
-      const backRes: any = await UploadsService.uploadKycIdentity(effectiveBack);
+      const frontFile = {
+        uri: frontUri,
+        type: 'image/jpeg',
+        name: `id_front_${Date.now()}.jpg`,
+      };
+      const backFile = {
+        uri: backUri,
+        type: 'image/jpeg',
+        name: `id_back_${Date.now()}.jpg`,
+      };
+
+      const frontRes: any = await UploadsService.uploadKycIdentity(frontFile);
+      const backRes: any = await UploadsService.uploadKycIdentity(backFile);
       
-      const frontUrl = typeof frontRes === 'string' ? frontRes : (frontRes?.photoUrl || frontRes?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2');
-      const backUrl = typeof backRes === 'string' ? backRes : (backRes?.photoUrl || backRes?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2');
+      const frontUrl = frontRes?.url || frontRes?.photoUrl || frontUri;
+      const backUrl = backRes?.url || backRes?.photoUrl || backUri;
 
       await KycService.submitGovernmentId({
         documentType: idType || 'Aadhaar Card',
@@ -134,7 +147,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
       setIsSubmitting(false);
     }
   }, [frontUri, backUri, idType, setIdSubmitted, setCurrentStage,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]);
+  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>

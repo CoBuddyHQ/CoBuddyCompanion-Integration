@@ -71,8 +71,10 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
     setPANDetails, setPANConfirmed, setCurrentStage, basicDetails,
     panName: storePanName, taxResidency: storeTaxResidency, hasGST: storeHasGST,
     gstNumber: storeGstNumber, panConfirmed: storePanConfirmed,
-    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
+    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix,
+    setDraftSaved, setApplicationResumeTarget
   } = useApplicationStore();
+
 
   const [panName, setPanName] = useState(storePanName || '');
   const [panRaw, setPANRaw] = useState(''); // Only storing locally
@@ -307,10 +309,16 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
         
         <ActionButton
           label={t("content.application_kyc.PANTaxDetailsContent.CTA_SAVE_LATER")}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            setApplicationResumeTarget({ route: Routes.PAN_TAX_DETAILS });
+            setDraftSaved(new Date().toISOString());
+            navigation.navigate(Routes.APPLICATION_SAVED_DRAFT as any);
+          }}
+
           variant="ghost"
           style={styles.saveBtn}
           accessibilityLabel={t("accessibility.save_and_continue_later")} />
+
         
       </View>
     </SafeAreaView>);

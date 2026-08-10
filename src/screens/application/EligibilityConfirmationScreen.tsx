@@ -12,13 +12,14 @@ import { useTranslation } from 'react-i18next';
  * Content: EligibilityContent from applicationKycContent.ts
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity } from
+  TouchableOpacity,
+  Alert } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -34,11 +35,21 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore, EligibilityKey } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.ELIGIBILITY_CONFIRMATION>;
 
-const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {const { t } = useTranslation();
-  const { eligibilityConfirmed, setEligibilityConfirmed, setCurrentStage } = useApplicationStore();
+const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
+  const { t } = useTranslation();
+  const { eligibilityConfirmed, setEligibilityConfirmed, setCurrentStage, onboardingStatus, hydrateOnboardingStatus } = useApplicationStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-redirect if backend already completed eligibility
+  useEffect(() => {
+    if (onboardingStatus?.completedModules?.includes('eligibility')) {
+      navigation.replace(Routes.PROFILE_SETUP_INTRO);
+    }
+  }, [onboardingStatus, navigation]);
 
   const allConfirmed = ((Array.isArray(t("content.application_kyc.EligibilityContent.CONFIRMATIONS", { returnObjects: true })) ? (t("content.application_kyc.EligibilityContent.CONFIRMATIONS", { returnObjects: true }) as any[]) : [])).every(
     (c) => eligibilityConfirmed[c.id as EligibilityKey]
@@ -48,11 +59,26 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {cons
     setEligibilityConfirmed(id as EligibilityKey, !eligibilityConfirmed[id as EligibilityKey]);
   };
 
-  const handleContinue = () => {
-    if (!allConfirmed) {return;}
-    setCurrentStage('eligibility');
-    useApplicationStore.getState().saveDraftToBackend();
-    navigation.navigate(Routes.PROFILE_SETUP_INTRO);
+  const handleContinue = async () => {
+    if (!allConfirmed || isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      const res = await KycService.saveDeclaration({
+        agreedAt: new Date().toISOString(),
+        eligibilityConfirmed: true,
+      });
+      if ((res as any)?.onboardingStatus) {
+        hydrateOnboardingStatus((res as any).onboardingStatus);
+      }
+      setCurrentStage('eligibility');
+      navigation.navigate(Routes.PROFILE_SETUP_INTRO);
+    } catch (e: any) {
+      console.warn('[EligibilityConfirmation] Save error:', e);
+      setCurrentStage('eligibility');
+      navigation.navigate(Routes.PROFILE_SETUP_INTRO);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -145,11 +171,11 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {cons
         <Text style={styles.disabledTip}>{t("content.application_kyc.EligibilityContent.CTA_DISABLED_TIP")}</Text>
         }
         <ActionButton
-          label={t("content.application_kyc.EligibilityContent.CTA_PRIMARY")}
+          label={isSubmitting ? 'Saving…' : t("content.application_kyc.EligibilityContent.CTA_PRIMARY")}
           onPress={handleContinue}
           variant="primary"
-          disabled={!allConfirmed}
-          rightIcon={t("application.arrow_forward")}
+          disabled={!allConfirmed || isSubmitting}
+          rightIcon={isSubmitting ? undefined : t("application.arrow_forward")}
           accessibilityLabel={t("accessibility.confirm_eligibility_and_continue")} />
         
       </View>

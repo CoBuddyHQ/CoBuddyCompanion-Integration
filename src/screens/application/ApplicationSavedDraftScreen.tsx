@@ -13,6 +13,8 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore, DEFAULT_RESUME_TARGET } from '../../store/slices/applicationStore';
+import { getApplicationReadiness } from '../../store/selectors/applicationReadinessSelector';
+
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -38,61 +40,36 @@ function navigateToResumeTarget(
 navigation: StackNavigationProp<ApplicationStackParamList>,
 target: ApplicationResumeTarget)
 : void {
-  switch (target.route) {
-    case Routes.PROFILE_SETUP_INTRO:
-      navigation.navigate(Routes.PROFILE_SETUP_INTRO);
-      break;
-    case Routes.LANGUAGES_SELECTION:
-      navigation.navigate(Routes.LANGUAGES_SELECTION);
-      break;
-    case Routes.COMPANION_PRICING:
-      navigation.navigate(Routes.COMPANION_PRICING);
-      break;
-    case Routes.PROFILE_PHOTO_UPLOAD:
-      navigation.navigate(Routes.PROFILE_PHOTO_UPLOAD);
-      break;
-    case Routes.GOVERNMENT_ID_UPLOAD:
-      navigation.navigate(Routes.GOVERNMENT_ID_UPLOAD, target.params);
-      break;
-    case Routes.ADD_BANK_ACCOUNT:
-      navigation.navigate(Routes.ADD_BANK_ACCOUNT);
-      break;
-    case Routes.APPLICATION_PROGRESS:
-      navigation.navigate(Routes.APPLICATION_PROGRESS);
-      break;
-    case Routes.APPLICATION_REVIEW_INFO:
-      navigation.navigate(Routes.APPLICATION_REVIEW_INFO);
-      break;
-    case Routes.SUBMIT_PROFILE_FOR_APPROVAL:
-      navigation.navigate(Routes.SUBMIT_PROFILE_FOR_APPROVAL);
-      break;
-    case Routes.PROFILE_COMPLETION_CHECKLIST:
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, target.params);
-      break;
-    default:
-      assertNever(target);
-  }
+  // Blindly navigate to the backend-provided route.
+  navigation.navigate(target.route as any, (target as any).params as any);
 }
 
 export function ApplicationSavedDraftScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
-  const { completionPct, setDraftSaved, setCurrentStage, applicationResumeTarget, setApplicationResumeTarget } = useApplicationStore();
+  const store = useApplicationStore();
+  const { setDraftSaved, setCurrentStage, applicationResumeTarget, setApplicationResumeTarget } = store;
 
-  const displayPct = Math.max(completionPct, 75);
+  // Single Source of Truth selector for completed & pending items from backend profile/kyc state
+  const readiness = getApplicationReadiness(store);
+  const displayPct = readiness.percentage;
 
-  // Sensitive screens: raw uploads and financial values intentionally not persisted.
-  // Show an honest privacy note when the companion will resume one of these screens.
+  const allItems = [
+    ...readiness.modules.profile.items,
+    ...readiness.modules.safetyService.items,
+    ...readiness.modules.identity.items,
+    ...readiness.modules.financial.items,
+  ];
+
+  const completedItems = allItems.filter(i => i.done).map(i => i.label);
+  const pendingItems = readiness.missing.length > 0
+    ? readiness.missing.map(i => `${i.label} pending`)
+    : ['Review information pending'];
+
   const isSensitiveUpload =
-  applicationResumeTarget.route === Routes.PROFILE_PHOTO_UPLOAD ||
-  applicationResumeTarget.route === Routes.GOVERNMENT_ID_UPLOAD ||
-  applicationResumeTarget.route === Routes.ADD_BANK_ACCOUNT;
+    applicationResumeTarget.route === Routes.PROFILE_PHOTO_UPLOAD ||
+    applicationResumeTarget.route === Routes.GOVERNMENT_ID_UPLOAD ||
+    applicationResumeTarget.route === Routes.ADD_BANK_ACCOUNT;
 
 
-  const completedItems = [
-  'Eligibility confirmed',
-  'Basic details saved',
-  'City and work preferences saved'];
-
-  const pendingItems = ['Review information pending'];
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
@@ -197,13 +174,13 @@ export function ApplicationSavedDraftScreen({ navigation }: Props): React.JSX.El
           label={t("content.application_kyc.ApplicationSavedDraftContent.CTA_CONTINUE")}
           onPress={() => {
             setCurrentStage('application_saved_draft');
-            // Capture and reset BEFORE navigating so any Save Draft from the
-            // resumed screen starts with a clean target.
-            const target = applicationResumeTarget;
+            const backendRoute = store.onboardingStatus?.resumeRoute;
+            const targetRoute = backendRoute || applicationResumeTarget.route || Routes.BASIC_DETAILS;
             setApplicationResumeTarget(DEFAULT_RESUME_TARGET);
-            // Exhaustive switch — every ApplicationResumeTarget variant handled.
-            // TypeScript will error here if a new variant is added but not covered.
-            navigateToResumeTarget(navigation, target);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: targetRoute as any }],
+            });
           }}
           variant="primary"
           rightIcon={t("application.arrow_forward")}

@@ -19,15 +19,21 @@ import i18next from "i18next";import { useTranslation } from 'react-i18next';
 *   - navigation CPN-035 ? CPN-036 (normal) or ? CPN-046 correction (correction mode)
 */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { launchCamera, launchImageLibrary, MediaType, PhotoQuality } from 'react-native-image-picker';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert } from
-'react-native';
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  Linking,
+  AppState,
+  type AppStateStatus,
+} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -67,35 +73,172 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
   // URI stays ONLY in component state  never written to Zustand (privacy rule)
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 
-  const handlePickPhoto = useCallback((mode: 'camera' | 'library' | 'gallery') => {
-    // In production, launches ImagePicker. Launch stub for dev.
-    Alert.alert(
-      t('application.photo_selected_title'),
-      t('application.photo_selected_body').replace('{mode}', mode),
-      [
-      {
-        text: t("alerts.use_sample_photo"),
-        onPress: () => setPhotoUri(`stub://${mode}-photo`)
-      },
-      { text: t("alerts.cancel"), style: 'cancel' }]
 
-    );
+  // ─── AppState ref — used to recheck permission after returning from Settings ───
+  const appStateRef = useRef<AppStateStatus>(AppState.currentState);
+  const pendingPickerMode = useRef<'camera' | 'library' | 'gallery' | null>(null);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', async (nextState) => {
+      // App came back to foreground after being in background (Settings)
+      if (appStateRef.current === 'background' && nextState === 'active') {
+        const mode = pendingPickerMode.current;
+        if (mode) {
+          pendingPickerMode.current = null;
+          const alreadyGranted = await checkPermission(mode);
+          if (alreadyGranted) {
+            openPicker(mode);
+          }
+        }
+      }
+      appStateRef.current = nextState;
+    });
+    return () => sub.remove();
   }, []);
+
+  // ─── Check current permission status (no dialog) ─────────────────────────
+  const checkPermission = async (mode: 'camera' | 'library' | 'gallery'): Promise<boolean> => {
+    if (Platform.OS !== 'android') return true;
+    try {
+      const perm = getPermissionForMode(mode);
+      const result = await PermissionsAndroid.check(perm);
+      return result;
+    } catch {
+      return false;
+    }
+  };
+
+  // ─── Pick the right Android permission for mode + OS version ─────────────
+  const getPermissionForMode = (mode: 'camera' | 'library' | 'gallery') => {
+    if (mode === 'camera') return PermissionsAndroid.PERMISSIONS.CAMERA;
+    // Android 13+ (API 33+): READ_MEDIA_IMAGES
+    // Android 12 and below: READ_EXTERNAL_STORAGE
+    return Number(Platform.Version) >= 33
+      ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+      : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+  };
+
+  // ─── Show "Open Settings" alert ──────────────────────────────────────────
+  const showSettingsAlert = (mode: 'camera' | 'library' | 'gallery') => {
+    const permName = mode === 'camera' ? 'Camera' : 'Photos/Storage';
+    pendingPickerMode.current = mode; // Will recheck when app returns
+    Alert.alert(
+      `${permName} Permission Required`,
+      `CoBuddy needs ${permName} access to add your profile photo. Please enable it in Settings.`,
+      [
+        { text: 'Cancel', style: 'cancel', onPress: () => { pendingPickerMode.current = null; } },
+        {
+          text: 'Open Settings',
+          onPress: () => Linking.openSettings(),
+        },
+      ]
+    );
+  };
+
+  // ─── Request permission → returns grant result ───────────────────────────
+  const requestPermission = async (mode: 'camera' | 'library' | 'gallery'): Promise<'granted' | 'denied' | 'never_ask_again'> => {
+    if (Platform.OS !== 'android') return 'granted';
+    try {
+      const perm = getPermissionForMode(mode);
+      const isCamera = mode === 'camera';
+      const result = await PermissionsAndroid.request(perm, {
+        title: isCamera ? 'Camera Permission' : 'Gallery Permission',
+        message: isCamera
+          ? 'CoBuddy Companion needs camera access to take your profile photo.'
+          : 'CoBuddy Companion needs gallery access to choose your profile photo.',
+        buttonPositive: 'Allow',
+        buttonNegative: 'Deny',
+        buttonNeutral: 'Ask Me Later',
+      });
+      if (result === PermissionsAndroid.RESULTS.GRANTED) return 'granted';
+      if (result === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) return 'never_ask_again';
+      return 'denied';
+    } catch {
+      return 'denied';
+    }
+  };
+
+  // ─── Actually open camera or gallery ─────────────────────────────────────
+  const openPicker = useCallback(async (mode: 'camera' | 'library' | 'gallery') => {
+    const options = {
+      mediaType: 'photo' as MediaType,
+      quality: 0.8 as PhotoQuality,
+    };
+    try {
+      const response = mode === 'camera'
+        ? await launchCamera(options)
+        : await launchImageLibrary(options);
+
+      if (!response) return; // cancelled via back button on some devices
+      if (response.didCancel) return; // user tapped Cancel
+      if (response.errorCode) {
+        Alert.alert(t('alerts.error'), response.errorMessage || 'Image picker error');
+        return;
+      }
+      if (response.assets && response.assets.length > 0) {
+        const asset = response.assets[0];
+        setPhotoUri(asset.uri ?? null);
+      }
+    } catch (err: any) {
+      console.warn('[ImagePicker]', err?.message);
+      // Don't show alert on user cancellation
+      if (!err?.message?.includes('cancel')) {
+        Alert.alert(t('alerts.error'), 'Could not open. Please try again.');
+      }
+    }
+  }, [t]);
+
+  // ─── Main entry point: check → request → open ────────────────────────────
+  const handlePickPhoto = useCallback(async (mode: 'camera' | 'library' | 'gallery') => {
+    // 1. Check if already granted — skip the dialog
+    const already = await checkPermission(mode);
+    if (already) {
+      openPicker(mode);
+      return;
+    }
+
+    // 2. Request — shows Android system dialog
+    const result = await requestPermission(mode);
+
+    if (result === 'granted') {
+      openPicker(mode);
+    } else if (result === 'never_ask_again') {
+      // Android won't show dialog anymore — send to Settings
+      showSettingsAlert(mode);
+    } else {
+      // Denied this time — offer Settings anyway
+      showSettingsAlert(mode);
+    }
+  }, [openPicker]);
 
   const showPicker = handlePickPhoto;
 
   const handleContinue = useCallback(async () => {
-    if (!photoUri) {return;}
+    if (!photoUri) return;
     setProfilePhotoComplete(true);
 
     try {
       if (photoUri.startsWith('http') || photoUri.startsWith('stub://')) {
         await ProfileService.updatePhotos({ photoUrls: [photoUri] });
       } else {
-        await UploadsService.uploadProfilePhoto(photoUri);
+        // Prepare file object for FormData
+        const file = {
+          uri: photoUri,
+          type: 'image/jpeg',
+          name: `profile_${Date.now()}.jpg`
+        };
+        const result = await UploadsService.uploadProfilePhoto(file);
+        // Ensure photo is populated correctly in store
+        useApplicationStore.getState().hydrateProfileData({ photoUrl: result.photoUrl });
+        if (result.onboardingStatus) {
+          useApplicationStore.getState().hydrateOnboardingStatus(result.onboardingStatus);
+        }
       }
-    } catch (e) {
+    } catch (e: any) {
       // ApiClient logs request & response
+      Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
+      setProfilePhotoComplete(false); // Revert on failure
+      return;
     }
 
     if (profileCorrectionContext.isActive) {
@@ -111,10 +254,10 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
     setProfileChecklistMode('profile_setup');
     navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'profile_setup' });
   }, [
-  photoUri, setProfilePhotoComplete, setProfileChecklistMode,
-  profileCorrectionContext, completeProfileCorrection,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]
-  );
+    photoUri, setProfilePhotoComplete, setProfileChecklistMode,
+    profileCorrectionContext, completeProfileCorrection,
+    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t
+  ]);
 
   const handleSaveFinishLater = useCallback(() => {
     // 'Save & Finish Later' in normal mode: saves draft, navigates to APPLICATION_SAVED_DRAFT.

@@ -58,8 +58,10 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
   const {
     setAddress, setAddressDetailsComplete, setAddressProofSubmitted, setCurrentStage,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix,
+    setDraftSaved, setApplicationResumeTarget,
     address: addressStore, addressProofSubmitted: proofSubmittedStore
   } = useApplicationStore();
+
 
   const [line1, setLine1] = useState(addressStore?.line1 || '');
   const [line2, setLine2] = useState(addressStore?.line2 || '');
@@ -139,11 +141,17 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
       onPress: async () => {
         try {
           setIsSubmitting(true);
-          const uploadRes = await UploadsService.uploadKycAddress('stub://address_proof.jpg');
-          setProofUrl(uploadRes.photoUrl || uploadRes.url || 'stub://address_proof.jpg');
+          const file = {
+            uri: 'file:///data/user/0/com.cobuddycompanion/cache/address_proof_camera.jpg',
+            type: 'image/jpeg',
+            name: `address_proof_camera_${Date.now()}.jpg`,
+          };
+          const uploadRes = await UploadsService.uploadKycAddress(file);
+          const uploadedUrl = uploadRes.url || uploadRes.photoUrl;
+          setProofUrl(uploadedUrl);
           setProofAdded(true);
-        } catch (e) {
-          Alert.alert(t("alerts.error"), 'Failed to upload proof');
+        } catch (e: any) {
+          Alert.alert(t("alerts.error"), e.message || 'Failed to upload proof');
         } finally {
           setIsSubmitting(false);
         }
@@ -154,11 +162,17 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
       onPress: async () => {
         try {
           setIsSubmitting(true);
-          const uploadRes = await UploadsService.uploadKycAddress('stub://address_proof_gallery.jpg');
-          setProofUrl(uploadRes.photoUrl || uploadRes.url || 'stub://address_proof_gallery.jpg');
+          const file = {
+            uri: 'file:///data/user/0/com.cobuddycompanion/cache/address_proof_gallery.jpg',
+            type: 'image/jpeg',
+            name: `address_proof_gallery_${Date.now()}.jpg`,
+          };
+          const uploadRes = await UploadsService.uploadKycAddress(file);
+          const uploadedUrl = uploadRes.url || uploadRes.photoUrl;
+          setProofUrl(uploadedUrl);
           setProofAdded(true);
-        } catch (e) {
-          Alert.alert(t("alerts.error"), 'Failed to upload proof');
+        } catch (e: any) {
+          Alert.alert(t("alerts.error"), e.message || 'Failed to upload proof');
         } finally {
           setIsSubmitting(false);
         }
@@ -372,10 +386,15 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
         
         <ActionButton
           label={t("content.application_kyc.AddressVerificationContent.CTA_SAVE_LATER")}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            setApplicationResumeTarget({ route: Routes.ADDRESS_VERIFICATION });
+            setDraftSaved(new Date().toISOString());
+            navigation.navigate(Routes.APPLICATION_SAVED_DRAFT as any);
+          }}
           variant="ghost"
           style={styles.saveBtn}
           accessibilityLabel={t("accessibility.save_and_continue_later")} />
+
         
       </View>
     </SafeAreaView>);

@@ -85,7 +85,10 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
   // ── Local Actions ──────────────────────────────────────────────────────────
   addNotification: (notification) =>
     set((state) => {
-      const notifications = [notification, ...state.notifications];
+      const id = (notification as any).id || notification.notificationId || `notif_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
+      const safeNotif = { ...notification, notificationId: id };
+      const filtered = state.notifications.filter(n => ((n as any).id || n.notificationId) !== id);
+      const notifications = [safeNotif, ...filtered];
       return {
         notifications,
         unreadCount: countUnread(notifications)

@@ -21,109 +21,59 @@ import { Routes } from '../../navigation/routes';
 
 async function syncProgressWithBackend(): Promise<AuthStatus> {
   try {
-    const [kyc, profile] = await Promise.all([
+    const [res, profile] = await Promise.all([
       KycService.getKycStatus().catch(() => null),
-      ProfileService.getProfile().catch(() => null),
+      ProfileService.getProfile().catch(() => null)
     ]);
 
-    const overallStatus = (kyc?.overallStatus || '').toLowerCase();
-    // Profile verificationStatus is the PRIMARY source of truth (set by admin/DB)
-    const verificationStatus = (profile?.verificationStatus || '').toLowerCase();
-    const profileStatus = (kyc?.profileStatus || profile?.profileStatus || '').toLowerCase();
+    if (!res || !res.onboardingStatus) {
+       return 'applying';
+    }
 
-    // 1. Companion is verified/approved → Main Dashboard (check BOTH fields)
-    if (
-      verificationStatus === 'approved' ||
-      (overallStatus === 'approved' || overallStatus === 'verified') ||
-      (profileStatus === 'approved' || profileStatus === 'active' || profileStatus === 'published')
-    ) {
+    const { onboardingStatus } = res;
+    
+    // 1. Hydrate the frontend store completely
+    const appStore = useApplicationStore.getState();
+    appStore.hydrateOnboardingStatus(onboardingStatus);
+    
+    if (profile) {
+      appStore.hydrateProfileData(profile);
+    }
+
+    const verificationStatus = (onboardingStatus.verificationStatus || '').toLowerCase();
+    const applicationStatus = (onboardingStatus.applicationStatus || '').toLowerCase();
+
+    // 2. Companion is verified/approved → Main Dashboard
+    if (verificationStatus === 'approved' || applicationStatus === 'approved' || applicationStatus === 'published' || applicationStatus === 'active') {
       return 'active';
     }
 
-    // 2. Application Pending Admin Review → Verification Review Pending
-    if (
-      overallStatus === 'pending_review' ||
-      overallStatus === 'in_progress' ||
-      profileStatus === 'submitted' ||
-      profileStatus === 'under_review'
-    ) {
+    // 3. Application Pending Admin Review → Verification Review Pending
+    if (verificationStatus === 'pending_review' || applicationStatus === 'submitted' || applicationStatus === 'under_review' || applicationStatus === 'pending') {
+      // If they submitted, route to the hub instead of intro
+      appStore.setApplicationEntryRoute(Routes.VERIFICATION_HUB as any);
       return 'pending_verification';
     }
 
-    // 3. Rejected Application → Resubmit Verification Flow
-    if (
-      overallStatus === 'rejected' ||
-      overallStatus === 'resubmit_required' ||
-      profileStatus === 'rejected'
-    ) {
-      useApplicationStore.getState().setApplicationEntryRoute(Routes.RESUBMIT_VERIFICATION as any);
+    // 4. Rejected Application → Resubmit Verification Flow
+    if (verificationStatus === 'rejected' || applicationStatus === 'rejected') {
+      appStore.setApplicationEntryRoute(Routes.RESUBMIT_VERIFICATION as any);
       return 'applying';
     }
 
-    // 4. Update applicationStore boolean flags & form state directly from backend profile & KYC steps
-    const appStore = useApplicationStore.getState();
-    const steps = kyc?.steps || {};
-
-    if (profile) {
-      if (profile.displayName) { appStore.updateBasicDetails({ displayName: profile.displayName }); }
-      if (profile.bio) { appStore.setProfessionalBio(profile.bio); }
-      if (profile.city) { appStore.setCity(profile.city); }
-      if (profile.languages && profile.languages.length > 0) {
-        appStore.setLanguages(profile.languages, profile.languages[0] || 'English', ['Fluent']);
-      }
-      if (profile.hourlyRate) { appStore.setPricing(profile.hourlyRate, (profile as any).sessionDuration || 90); }
+    // 5. Still applying — set applicationEntryRoute directly to backend resumeRoute
+    // so on app reload/restart, the app lands DIRECTLY on the exact incomplete screen!
+    if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute) {
+      appStore.setApplicationEntryRoute(onboardingStatus.resumeRoute as any);
     }
 
-
-
-    if (steps.identity?.status === 'submitted') {
-      appStore.setIdSubmitted(true);
-    }
-    if (steps.pan?.status === 'submitted') {
-      appStore.setPANConfirmed(true);
-    }
-    if (steps.selfie?.status === 'submitted') {
-      appStore.setSelfieCaptureComplete(true);
-      appStore.setLivenessComplete(true);
-    }
-    if (steps.address?.status === 'submitted') {
-      appStore.setAddressDetailsComplete(true);
-    }
-    if (steps.declaration?.status === 'submitted') {
-      appStore.setBackgroundDeclaration('accurate_info', true);
-      appStore.setBackgroundDeclaration('public_venue_only', true);
-      appStore.setBackgroundDeclaration('professional_conduct', true);
-      appStore.setBackgroundDeclaration('no_private_contact', true);
-      appStore.setBackgroundDeclaration('safety_policy', true);
-      appStore.setBackgroundDeclaration('no_misrepresentation', true);
-    }
-
-
-
-    let targetRoute: any = Routes.JOURNEY_INTRO;
-
-    if (!profile?.displayName && !profile?.bio) {
-      targetRoute = Routes.BASIC_DETAILS;
-    } else if (!steps.identity || steps.identity.status === 'pending') {
-      targetRoute = steps.identity?.documentType ? Routes.GOVERNMENT_ID_UPLOAD : Routes.GOVERNMENT_ID_TYPE;
-    } else if (!steps.pan || steps.pan.status === 'pending') {
-      targetRoute = Routes.PAN_TAX_DETAILS;
-    } else if (!steps.selfie || steps.selfie.status === 'pending') {
-      targetRoute = Routes.SELFIE_CAPTURE;
-    } else if (!steps.address || steps.address.status === 'pending') {
-      targetRoute = Routes.ADDRESS_VERIFICATION;
-    } else if (!steps.declaration || steps.declaration.status === 'pending') {
-      targetRoute = Routes.BACKGROUND_DECLARATION;
-    } else {
-      targetRoute = Routes.VERIFICATION_HUB;
-    }
-
-    appStore.setApplicationEntryRoute(targetRoute);
     return 'applying';
   } catch (err) {
     return 'applying';
   }
 }
+
+
 
 
 
@@ -399,5 +349,6 @@ function _wireApiClient(get: () => AuthState) {
     getRefreshToken: () => get().refreshToken,
     onUnauthorized: () => get().logout(),
     onTokenRefreshed: (newToken, newRefreshToken) => get().updateAccessToken(newToken, newRefreshToken),
+    onOnboardingStatusReceived: (status) => useApplicationStore.getState().hydrateOnboardingStatus(status),
   });
 }

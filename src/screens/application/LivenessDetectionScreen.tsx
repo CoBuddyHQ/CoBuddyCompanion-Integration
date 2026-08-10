@@ -67,24 +67,28 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
   const handleStartCheck = useCallback(async () => {
     setState('checking');
     try {
-      // Phase 5: replace with real liveness SDK video URI
-      const dummyVideoUri = 'stub://selfie_liveness.mp4';
+      const selfieFile = {
+        uri: 'file:///data/user/0/com.cobuddycompanion/cache/selfie_liveness.mp4',
+        type: 'video/mp4',
+        name: `selfie_liveness_${Date.now()}.mp4`,
+      };
       
-      const uploadRes = await UploadsService.uploadKycSelfie(dummyVideoUri);
+      const uploadRes = await UploadsService.uploadKycSelfie(selfieFile);
+      const fileUrl = uploadRes?.url || uploadRes?.photoUrl || uploadRes?.videoUrl;
       
       await KycService.submitSelfie({
-        imageUrl: uploadRes.photoUrl || uploadRes.url || 'stub://imageUrl',
-        videoUrl: uploadRes.videoUrl || uploadRes.url || dummyVideoUri,
+        imageUrl: fileUrl,
+        videoUrl: fileUrl,
       });
 
-      // Raw selfie data never enters Zustand  only boolean completion flags.
       setLivenessComplete(true);
+      setSelfieCaptureComplete(true);
       setState('complete');
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Liveness check failed');
       setState('ready');
     }
-  }, [setLivenessComplete, t]);
+  }, [setLivenessComplete, setSelfieCaptureComplete, t]);
 
   const handleContinue = useCallback(() => {
     setCurrentStage('liveness_detection');

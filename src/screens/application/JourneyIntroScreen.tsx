@@ -15,13 +15,14 @@ import { useTranslation } from 'react-i18next';
 * Content: JourneyIntroContent from applicationKycContent.ts
 */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView } from
-'react-native';
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,8 +35,9 @@ import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
-
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { KycService } from '../../services/api/services/kyc.service';
+import type { OnboardingStatus } from '../../store/types/store.types';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.JOURNEY_INTRO>;
 
@@ -46,17 +48,80 @@ const APPLICATION_PHASES = [
   { id: 'phase4', icon: 'task-alt' }
 ];
 
+// ─── Button config for each application state ────────────────────────────────
+type ButtonMode = 'loading' | 'begin' | 'continue' | 'review' | 'submitted';
+
 const JourneyIntroScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const { setCurrentStage } = useApplicationStore();
+  const { setCurrentStage, hydrateOnboardingStatus } = useApplicationStore();
+  const [buttonMode, setButtonMode] = useState<ButtonMode>('loading');
+  const [resumeRoute, setResumeRoute] = useState<string | null>(null);
+
+  // ─── Live backend fetch on every mount (no stale cache) ──────────────────
+  const fetchProgress = useCallback(async () => {
+    setButtonMode('loading');
+    try {
+      const res = await KycService.getKycStatus();
+      if (!res?.onboardingStatus) {
+        setButtonMode('begin');
+        return;
+      }
+      const status: OnboardingStatus = res.onboardingStatus;
+
+      // Hydrate Zustand so all other screens stay in sync
+      hydrateOnboardingStatus(status);
+
+      const appStatus = (status.applicationStatus || '').toLowerCase();
+      const allModules = 19; // total modules in MODULES array
+
+      if (appStatus === 'submitted' || appStatus === 'under_review' || appStatus === 'pending_review') {
+        setButtonMode('submitted');
+      } else if (status.completedModules.length >= allModules) {
+        setButtonMode('review');
+      } else if (status.hasStarted) {
+        // User has progress — resume from backend route
+        setResumeRoute(status.resumeRoute || null);
+        setButtonMode('continue');
+      } else {
+        setButtonMode('begin');
+      }
+    } catch {
+      setButtonMode('begin'); // network error → allow fresh start
+    }
+  }, [hydrateOnboardingStatus]);
 
   useEffect(() => {
     setCurrentStage('journey_intro');
-  }, [setCurrentStage]);
+    fetchProgress();
+  }, [setCurrentStage, fetchProgress]);
 
-  const handleBegin = () => {
-    navigation.navigate(Routes.ELIGIBILITY_CONFIRMATION);
+  // ─── Button press handlers ────────────────────────────────────────────────
+  const handleBegin = () => navigation.navigate(Routes.ELIGIBILITY_CONFIRMATION);
+
+  const handleContinue = () => {
+    if (!resumeRoute) {
+      navigation.navigate(Routes.ELIGIBILITY_CONFIRMATION);
+      return;
+    }
+    // Navigate directly to the backend's first incomplete step,
+    // resetting the stack so Back goes to dashboard, not this screen.
+    navigation.reset({
+      index: 0,
+      routes: [{ name: resumeRoute as any }],
+    });
   };
+
+  const handleReview = () => navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST as any);
+  const handleSubmitted = () => navigation.navigate(Routes.VERIFICATION_HUB as any);
+
+  // ─── Derive button props from mode ───────────────────────────────────────
+  const buttonConfig = {
+    loading:   { label: 'Loading…',               onPress: () => {}, disabled: true },
+    begin:     { label: 'Begin Application →',     onPress: handleBegin,     disabled: false },
+    continue:  { label: 'Continue Application →',  onPress: handleContinue,  disabled: false },
+    review:    { label: 'Review Application →',    onPress: handleReview,    disabled: false },
+    submitted: { label: 'View Application Status', onPress: handleSubmitted, disabled: false },
+  }[buttonMode];
 
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
@@ -130,15 +195,21 @@ const JourneyIntroScreen: React.FC<Props> = ({ navigation }) => {
 
       </ScrollView>
 
-      {/* CTA */}
+      {/* CTA — backend-driven label */}
       <View style={styles.ctaWrap}>
-        <ActionButton
-          label={t("content.application_kyc.JourneyIntroContent.CTA_PRIMARY")}
-          onPress={handleBegin}
-          variant="primary"
-          rightIcon={t("application.arrow_forward")}
-          accessibilityLabel={t("accessibility.begin_your_companion_application")} />
-        
+        {buttonMode === 'loading' ? (
+          <View style={styles.loadingWrap}>
+            <ActivityIndicator size="small" color={colors.gold} />
+            <Text style={styles.loadingText}>Checking your progress…</Text>
+          </View>
+        ) : (
+          <ActionButton
+            label={buttonConfig.label}
+            onPress={buttonConfig.onPress}
+            variant="primary"
+            disabled={buttonConfig.disabled}
+            accessibilityLabel={buttonConfig.label} />
+        )}
       </View>
     </SafeAreaView>);
 
@@ -274,6 +345,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.rootBg,
     borderTopWidth: 1,
     borderTopColor: colors.border
+  },
+  loadingWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+  },
+  loadingText: {
+    ...textStyles.bodySm,
+    color: colors.textSecondary,
   },
   phaseBadge: {
     flexDirection: 'row',

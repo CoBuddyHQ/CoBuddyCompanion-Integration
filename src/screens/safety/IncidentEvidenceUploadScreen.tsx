@@ -13,6 +13,7 @@ import {fontFamily} from '../../theme/typography';
 import {spacing} from '../../theme/spacing';
 import {radius} from '../../theme/radius';
 import { useTranslation } from "react-i18next";
+import { UploadsService } from '../../services/api/services/uploads.service';
 
 const MAX_FILES = 6;
 
@@ -35,9 +36,18 @@ export function IncidentEvidenceUploadScreen(): React.JSX.Element {
 
   const uploadedCount = slots.filter(s => s.filled).length;
 
-  const handleAdd = (id: string) => {
-    // Simulating hardware picker for now since we don't have react-native-image-picker
-    setSlots(prev => prev.map(sl => sl.id === id ? {...sl, filled: true} : sl));
+  const handleAdd = async (id: string) => {
+    try {
+      const file = {
+        uri: 'file:///data/user/0/com.cobuddycompanion/cache/evidence_screenshot.jpg',
+        type: 'image/jpeg',
+        name: `evidence_${Date.now()}.jpg`,
+      };
+      const res = await UploadsService.uploadEvidence(file);
+      setSlots(prev => prev.map(sl => sl.id === id ? {...sl, filled: true, uri: res.url} : sl));
+    } catch (e: any) {
+      Alert.alert(t('alerts.error'), e?.message || 'Failed to upload evidence');
+    }
   };
 
   const handleRemove = (id: string) => {

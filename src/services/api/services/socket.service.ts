@@ -91,15 +91,17 @@ class SocketService {
 
     // New booking request — add to notification store
     this.appSocket.on('new_booking_request', (data: any) => {
-      console.log('[Socket] New booking request received:', data?.requestId);
+      const reqId = data?.requestId || data?.id || `req_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
+      console.log('[Socket] New booking request received:', reqId);
       const notification: AppNotification = {
-        notificationId: `req-${data.requestId}`,
+        id: `req-${reqId}`,
+        notificationId: `req-${reqId}`,
         category: 'booking',
         title: 'New Booking Request',
-        body: `New request from ${data.customerInitials ?? 'a customer'}`,
+        body: `New request from ${data?.customerInitials ?? 'a customer'}`,
         isRead: false,
         createdAt: new Date().toISOString(),
-        actionUrl: `/requests/${data.requestId}`,
+        actionUrl: `/requests/${reqId}`,
       } as any;
       useNotificationStore.getState().addNotification(notification);
     });
