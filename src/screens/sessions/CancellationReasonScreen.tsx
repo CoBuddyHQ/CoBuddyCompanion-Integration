@@ -34,13 +34,24 @@ export function CancellationReasonScreen(): React.JSX.Element {
   const [details, setDetails] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    if (submitting) {return;}
+  const handleSubmit = async () => {
+    if (submitting || !sessionId) { return; }
     setSubmitting(true);
-    setTimeout(() => {
-      if (sessionId) {updateSessionStatus(sessionId, 'cancelled');}
+    try {
+      // 1. Call Backend to perform real cancellation
+      const { SessionsService } = await import('../../services/api/services/sessions.service');
+      await SessionsService.cancelSession(sessionId, { reason, details: details.trim() });
+      
+      // 2. Update local state
+      updateSessionStatus(sessionId, 'cancelled');
+      
+      // 3. Navigate
       navigation.replace(Routes.CANCELLATION_REVIEW_PENDING, { sessionId });
-    }, 900);
+    } catch (e: any) {
+      console.warn("Failed to cancel session:", e);
+      // Fallback UI or toast could be handled here
+      setSubmitting(false);
+    }
   };
 
   return (
