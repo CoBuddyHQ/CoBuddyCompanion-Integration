@@ -101,6 +101,13 @@ export function EarningsDashboardScreen(): React.JSX.Element {
   const lifetimeEarnings = useEarningsStore((s) => s.lifetimeEarnings);
   const totalSessions = useEarningsStore((s) => s.totalSessions);
   const recentTransactions = useEarningsStore((s) => s.recentTransactions);
+  const fetchSummary = useEarningsStore((s) => s.fetchSummary);
+  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
+
+  React.useEffect(() => {
+    fetchSummary();
+    fetchTransactions(1, 10);
+  }, [fetchSummary, fetchTransactions]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
