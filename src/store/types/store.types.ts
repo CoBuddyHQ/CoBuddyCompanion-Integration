@@ -126,7 +126,8 @@ export type RequestStatus =
   | 'accepted'
   | 'declined'
   | 'expired'
-  | 'counter_proposed';
+  | 'counter_proposed'
+  | 'cancelled';
 
 export interface BookingRequest {
   requestId: string;
