@@ -41,7 +41,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
   };
   const currentEnd = fmtTime(session?.scheduledEnd);
 
-  const [selected, setSelected] = useState(1); // default +1 hour
+  const [selected, setSelected] = useState(0); // default first option
 
   const opt = OPTIONS[selected];
 
@@ -52,7 +52,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
     if (loading) return;
     setLoading(true);
     try {
-      await requestExtension(sessionId, opt.minutes);
+      await requestExtension(sessionId, Number(opt.minutes));
       navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: opt.minutes });
     } catch (e: any) {
       Alert.alert(t('alerts.error'), e?.message || 'Failed to request extension');
@@ -91,7 +91,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
                 {t(opt2.label)}
               </Text>
               <Text style={[s.optPillPrice, idx === selected && s.optPillPriceActive]}>{t("content.sessions.ExtendSessionRequestScreen.text")}
-              {opt2.price.toLocaleString('en-IN')}
+                {Number(opt2.price).toLocaleString('en-IN')}
               </Text>
             </TouchableOpacity>
           )}
@@ -106,12 +106,12 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
           <View style={s.priceDivider} />
           <View style={s.priceRow}>
             <Text style={s.priceLabelBold}> {t('sessions.additional_cost')} </Text>
-            <Text style={s.priceValueGold}>{t("content.sessions.ExtendSessionRequestScreen.text")}{opt.price.toLocaleString('en-IN')}</Text>
+            <Text style={s.priceValueGold}>{Number(opt.price).toLocaleString('en-IN')}</Text>
           </View>
           <View style={s.priceRow}>
             <Text style={s.priceLabel}> {t('sessions.new_end_time')} </Text>
             <Text style={s.priceValue}>
-              {fmtTime(session?.scheduledEnd, opt.minutes)}
+                {fmtTime(session?.scheduledEnd, Number(opt.minutes))}
             </Text>
           </View>
         </View>

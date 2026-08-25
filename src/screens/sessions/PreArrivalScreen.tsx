@@ -3,7 +3,7 @@ import i18next from "i18next"; /**
 * Shows customer waiting status and pre-arrival checklist before check-in.
 */
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,8 +14,8 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
-import { useTranslation } from "react-i18next";
-import { SessionsService } from '../../services/api/services/sessions.service';
+import { useTranslation } from 'react-i18next';
+
 
 const CHECKLIST = [{ label: "content.sessions.PreArrivalScreen.checklist.0.label", done: "content.sessions.PreArrivalScreen.checklist.0.done" }, { label: "content.sessions.PreArrivalScreen.checklist.1.label", done: "content.sessions.PreArrivalScreen.checklist.1.done" }, { label: "content.sessions.PreArrivalScreen.checklist.2.label", done: "content.sessions.PreArrivalScreen.checklist.2.done" }] as any[];
 
@@ -36,7 +36,9 @@ export function PreArrivalScreen(): React.JSX.Element {
   find((ses) => ses.sessionId === sessionId) ?? null
   );
 
+  const checkInSession = useSessionStore((s) => s.checkInSession);
   const [loading, setLoading] = React.useState(false);
+
 
   // ── Not found fallback ────────────────────────────────────────────────────
   if (!session) {
@@ -106,10 +108,10 @@ export function PreArrivalScreen(): React.JSX.Element {
         onPress={async () => {
           setLoading(true);
           try {
-            await SessionsService.checkIn(sessionId!);
+            await checkInSession(sessionId!);
             navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId });
           } catch (e: any) {
-            console.error(e);
+            Alert.alert(t('alerts.error'), e?.message || 'Check-in failed');
           } finally {
             setLoading(false);
           }

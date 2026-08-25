@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useSessionStore } from '../../store/slices/sessionStore';
-import { SessionsService } from '../../services/api/services/sessions.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -32,6 +31,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   const session = useSessionStore((s) =>
   [...s.upcomingSessions, ...(s.activeSession ? [s.activeSession] : []), ...s.sessionHistory].
   find((ses) => ses.sessionId === sessionId) ?? null);
+  const saveNotes = useSessionStore((s) => s.saveNotes);
   const customerName = session?.customer?.displayInitials ?? '—';
   const activityLabel = session?.category ? session.category.replace(/_/g, ' ') : '—';
   const durationLabel = session?.durationMinutes ? `${session.durationMinutes} min` : '—';
@@ -53,10 +53,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await SessionsService.saveNotes(sessionId, {
-        notes: notes.trim(),
-        isPrivate: true,
-      });
+      await saveNotes(sessionId, notes.trim(), true);
     } catch (_) {
       // Notes are non-blocking — navigate regardless
     } finally {

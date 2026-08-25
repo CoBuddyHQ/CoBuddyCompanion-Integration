@@ -69,20 +69,16 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
     }
   };
 
-  const [scanning, setScanning] = useState(false);
+
 
   const handleQR = () => {
-    setScanning(true);
-    setTimeout(async () => {
-      try {
-        await startSession(sessionId, 'AR-642');
-        navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
-      } catch (e: any) {
-        Alert.alert(t("alerts.error"), e?.message || 'Invalid QR code');
-      } finally {
-        setScanning(false);
-      }
-    }, 1500);
+    // TODO: Integrate a real QR scanner library (e.g. react-native-camera, vision-camera)
+    // For now, show an informational message instead of sending a fake code to the backend.
+    Alert.alert(
+      t('alerts.coming_soon') || 'QR Scanner Coming Soon',
+      t('sessions.qr_scanner_not_yet_available') || 'QR scanning is not yet available. Please ask the customer for their 4-digit code.',
+      [{ text: t('common.ok') || 'OK' }],
+    );
   };
 
   return (
@@ -130,9 +126,9 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
           <View style={s.divLine} />
         </View>
 
-        <TouchableOpacity accessibilityRole="button" style={s.qrBtn} onPress={handleQR} activeOpacity={0.75} disabled={scanning}>
+        <TouchableOpacity accessibilityRole="button" style={s.qrBtn} onPress={handleQR} activeOpacity={0.75}>
           <Icon name="qr-code" size={20} color={colors.gold} />
-          <Text style={s.qrBtnText}>{scanning ? t("content.sessions.CustomerArrivalVerificationScreen.simulating_scanner") : t("content.sessions.CustomerArrivalVerificationScreen.scan_customer_s_qr_code")}</Text>
+          <Text style={s.qrBtnText}>{t('sessions.scan_customer_qr_code') || 'Scan Customer\'s QR Code'}</Text>
         </TouchableOpacity>
 
         {/* No-show link */}
