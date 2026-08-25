@@ -49,6 +49,39 @@ import {ApplicationReviewInfoScreen}      from '../screens/application/Applicati
 import {SubmitProfileForApprovalScreen}   from '../screens/application/SubmitProfileForApprovalScreen';
 import {ApplicationSavedDraftScreen}      from '../screens/application/ApplicationSavedDraftScreen';
 
+const VALID_APPLICATION_ROUTES = new Set<string>([
+  Routes.JOURNEY_INTRO,
+  Routes.ELIGIBILITY_CONFIRMATION,
+  Routes.BASIC_DETAILS,
+  Routes.BIO_INTRODUCTION,
+  Routes.BACKGROUND_DECLARATION,
+  Routes.EXPERIENCE_CATEGORIES,
+  Routes.INTERESTS_PERSONALITY,
+  Routes.WORK_PREFERENCE,
+  Routes.CITY_SERVICE_AREA,
+  Routes.SERVICE_STYLE_PREFERENCES,
+  Routes.PUBLIC_VENUE_PREFERENCE,
+  Routes.BOUNDARIES_SAFETY,
+  Routes.COMPANION_PRICING,
+  Routes.LANGUAGES_SELECTION,
+  Routes.PROFILE_PHOTO_UPLOAD,
+  Routes.GOVERNMENT_ID_TYPE,
+  Routes.GOVERNMENT_ID_UPLOAD,
+  Routes.SELFIE_CAPTURE,
+  Routes.LIVENESS_DETECTION,
+  Routes.ADDRESS_VERIFICATION,
+  Routes.PAN_TAX_DETAILS,
+  Routes.ADD_BANK_ACCOUNT,
+  Routes.BANK_ACCOUNT_VERIFICATION,
+  Routes.UPI_DETAILS,
+  Routes.PROFILE_SETUP_INTRO,
+  Routes.PROFILE_COMPLETION_CHECKLIST,
+  Routes.APPLICATION_PROGRESS,
+  Routes.APPLICATION_REVIEW_INFO,
+  Routes.SUBMIT_PROFILE_FOR_APPROVAL,
+  Routes.APPLICATION_SAVED_DRAFT,
+]);
+
 const Stack = createStackNavigator<ApplicationStackParamList>();
 
 const ApplicationNavigator: React.FC = () => {
@@ -57,10 +90,13 @@ const ApplicationNavigator: React.FC = () => {
   // VerificationNavigator screens set this BEFORE calling setAuthStatus('applying')
   // to control which screen is shown when this navigator mounts.
   const applicationEntryRoute = useApplicationStore((s) => s.applicationEntryRoute);
+  const safeInitialRoute = (applicationEntryRoute && VALID_APPLICATION_ROUTES.has(applicationEntryRoute))
+    ? (applicationEntryRoute as keyof ApplicationStackParamList)
+    : (Routes.JOURNEY_INTRO as keyof ApplicationStackParamList);
 
   return (
     <Stack.Navigator
-      initialRouteName={applicationEntryRoute}
+      initialRouteName={safeInitialRoute}
       screenOptions={defaultStackScreenOptions}>
 
       {/* ── Phase 4A: Application Profile (CPN-021 to CPN-032) ── */}

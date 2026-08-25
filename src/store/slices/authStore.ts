@@ -74,11 +74,44 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
 
     // 5. Still applying — check saved active screen from FlowTracker first so reload stays on exact same screen!
     const activeRoute = await FlowTracker.getActiveScreen();
-    const isExempt = activeRoute && [Routes.TERMS_CONSENT, Routes.ROLE_CONFIRMATION, Routes.COMPANION_WELCOME].includes(activeRoute as any);
-    if (activeRoute && !isExempt) {
+    const VALID_APP_ROUTES = [
+      Routes.JOURNEY_INTRO,
+      Routes.ELIGIBILITY_CONFIRMATION,
+      Routes.BASIC_DETAILS,
+      Routes.BIO_INTRODUCTION,
+      Routes.BACKGROUND_DECLARATION,
+      Routes.EXPERIENCE_CATEGORIES,
+      Routes.INTERESTS_PERSONALITY,
+      Routes.WORK_PREFERENCE,
+      Routes.CITY_SERVICE_AREA,
+      Routes.SERVICE_STYLE_PREFERENCES,
+      Routes.PUBLIC_VENUE_PREFERENCE,
+      Routes.BOUNDARIES_SAFETY,
+      Routes.COMPANION_PRICING,
+      Routes.LANGUAGES_SELECTION,
+      Routes.PROFILE_PHOTO_UPLOAD,
+      Routes.GOVERNMENT_ID_TYPE,
+      Routes.GOVERNMENT_ID_UPLOAD,
+      Routes.SELFIE_CAPTURE,
+      Routes.LIVENESS_DETECTION,
+      Routes.ADDRESS_VERIFICATION,
+      Routes.PAN_TAX_DETAILS,
+      Routes.ADD_BANK_ACCOUNT,
+      Routes.BANK_ACCOUNT_VERIFICATION,
+      Routes.UPI_DETAILS,
+      Routes.PROFILE_SETUP_INTRO,
+      Routes.PROFILE_COMPLETION_CHECKLIST,
+      Routes.APPLICATION_PROGRESS,
+      Routes.APPLICATION_REVIEW_INFO,
+      Routes.SUBMIT_PROFILE_FOR_APPROVAL,
+      Routes.APPLICATION_SAVED_DRAFT,
+    ];
+    if (activeRoute && VALID_APP_ROUTES.includes(activeRoute as any)) {
       appStore.setApplicationEntryRoute(activeRoute as any);
-    } else if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute) {
+    } else if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute && VALID_APP_ROUTES.includes(onboardingStatus.resumeRoute as any)) {
       appStore.setApplicationEntryRoute(onboardingStatus.resumeRoute as any);
+    } else {
+      appStore.setApplicationEntryRoute(Routes.JOURNEY_INTRO as any);
     }
 
     return 'applying';
