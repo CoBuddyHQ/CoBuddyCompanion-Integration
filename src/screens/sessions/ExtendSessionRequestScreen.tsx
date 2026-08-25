@@ -3,7 +3,7 @@ import i18next from "i18next"; /**
 * Companion requests a session extension with duration selection and price preview.
 */
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -44,6 +44,22 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
   const [selected, setSelected] = useState(1); // default +1 hour
 
   const opt = OPTIONS[selected];
+
+  const requestExtension = useSessionStore((s) => s.requestExtension);
+  const [loading, setLoading] = useState(false);
+
+  const handleRequest = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      await requestExtension(sessionId, opt.minutes);
+      navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: opt.minutes });
+    } catch (e: any) {
+      Alert.alert(t('alerts.error'), e?.message || 'Failed to request extension');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={s.root} edges={['top']}>
@@ -112,12 +128,13 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
 
       {/* Sticky CTA */}
       <View style={s.bar}>
-        <TouchableOpacity accessibilityRole="button" style={s.btn}
-        onPress={() => navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: opt.minutes })}
+        <TouchableOpacity accessibilityRole="button" style={[s.btn, loading && { opacity: 0.7 }]}
+        onPress={handleRequest}
+        disabled={loading}
         activeOpacity={0.85}
         accessibilityLabel={t("accessibility.request_extension")}>
           <Icon name="timer" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
-          <Text style={s.btnText}> {t('sessions.request_extension')} </Text>
+          <Text style={s.btnText}> {loading ? t('common.loading') || 'Processing...' : t('sessions.request_extension')} </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>);

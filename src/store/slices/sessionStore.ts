@@ -51,6 +51,20 @@ interface SessionState {
   /** End a session (active -> completed via backend) */
   endSession: (sessionId: string) => Promise<void>;
 
+  checkInSession: (sessionId: string) => Promise<void>;
+  requestExtension: (sessionId: string, extraMinutes: number) => Promise<void>;
+  confirmExtension: (sessionId: string, extraMinutes: number) => Promise<void>;
+  endEarly: (sessionId: string, reason?: string) => Promise<void>;
+  cancelSession: (sessionId: string, reason: string, details?: string) => Promise<void>;
+  markNoShow: (sessionId: string) => Promise<void>;
+  saveNotes: (sessionId: string, notes: string, isPrivate?: boolean) => Promise<void>;
+  rateCustomer: (sessionId: string, rating: number, highlights?: string[], comment?: string, isPublic?: boolean) => Promise<void>;
+  fetchChatMessages: (sessionId: string) => Promise<void>;
+  sendChatMessage: (sessionId: string, message: string) => Promise<void>;
+  getCallToken: (sessionId: string) => Promise<string>;
+  updateLocation: (sessionId: string, latitude: number, longitude: number, accuracy?: number) => Promise<void>;
+  stopLocationSharing: (sessionId: string) => Promise<void>;
+
   // ── List actions (local state updates) ─────────────────────────────────────
   setUpcomingSessions: (sessions: Session[]) => void;
   setSessionHistory: (sessions: Session[]) => void;
@@ -186,6 +200,163 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       throw e;
     } finally {
       set({ isLoadingActive: false });
+    }
+  },
+
+  checkInSession: async (sessionId) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.checkIn(sessionId);
+      get().updateSessionStatus(sessionId, 'checked_in');
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to check in' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  requestExtension: async (sessionId, extraMinutes) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.requestExtension(sessionId, { extraMinutes });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to request extension' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  confirmExtension: async (sessionId, extraMinutes) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.confirmExtension(sessionId, { extraMinutes });
+      const current = get().activeSession;
+      if (current && current.sessionId === sessionId) {
+        set({
+          activeSession: {
+            ...current,
+            durationMinutes: current.durationMinutes + extraMinutes,
+          },
+        });
+      }
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to confirm extension' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  endEarly: async (sessionId, reason) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.endEarly(sessionId, { reason });
+      get().updateSessionStatus(sessionId, 'completed');
+      set({ activeSession: null, liveElapsedSeconds: 0, safetyTimerActive: false });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to end session early' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  cancelSession: async (sessionId, reason, details) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.cancelSession(sessionId, { reason, details });
+      get().updateSessionStatus(sessionId, 'cancelled');
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to cancel session' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  markNoShow: async (sessionId) => {
+    set({ isLoadingActive: true, error: null });
+    try {
+      await SessionsService.markNoShow(sessionId);
+      get().updateSessionStatus(sessionId, 'no_show');
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to mark no-show' });
+      throw e;
+    } finally {
+      set({ isLoadingActive: false });
+    }
+  },
+
+  saveNotes: async (sessionId, notes, isPrivate = true) => {
+    set({ error: null });
+    try {
+      await SessionsService.saveNotes(sessionId, { notes, isPrivate });
+      get().setSessionNotes(notes);
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to save notes' });
+      throw e;
+    }
+  },
+
+  rateCustomer: async (sessionId, rating, highlights = [], comment = '', isPublic = false) => {
+    set({ error: null });
+    try {
+      await SessionsService.rateCustomer(sessionId, { rating, highlights, comment, isPublic });
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to rate customer' });
+      throw e;
+    }
+  },
+
+  fetchChatMessages: async (sessionId) => {
+    set({ error: null });
+    try {
+      const res = await SessionsService.getChatHistory(sessionId);
+      if (res && Array.isArray(res)) {
+        get().setChatMessages(res);
+      }
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to fetch chat messages' });
+    }
+  },
+
+  sendChatMessage: async (sessionId, text) => {
+    set({ error: null });
+    try {
+      const res = await SessionsService.sendChatMessage(sessionId, { text });
+      get().addChatMessage(res);
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to send message' });
+      throw e;
+    }
+  },
+
+  getCallToken: async (sessionId) => {
+    set({ error: null });
+    try {
+      const res = await SessionsService.getCallToken(sessionId);
+      return res?.token || '';
+    } catch (e: unknown) {
+      set({ error: e instanceof Error ? e.message : 'Failed to get call token' });
+      throw e;
+    }
+  },
+
+  updateLocation: async (sessionId, latitude, longitude, accuracy) => {
+    try {
+      await SessionsService.updateLocation(sessionId, { latitude, longitude, accuracy });
+    } catch (e: unknown) {
+      console.warn('Failed to update location', e);
+    }
+  },
+
+  stopLocationSharing: async (sessionId) => {
+    try {
+      await SessionsService.stopLocationSharing(sessionId);
+    } catch (e: unknown) {
+      console.warn('Failed to stop location sharing', e);
     }
   },
 

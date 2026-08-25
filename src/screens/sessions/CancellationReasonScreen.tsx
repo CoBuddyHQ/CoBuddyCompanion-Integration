@@ -30,7 +30,7 @@ export function CancellationReasonScreen(): React.JSX.Element {
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
   const reason: string = route.params?.reason ?? 'Not specified';
-  const updateSessionStatus = useSessionStore((s) => s.updateSessionStatus);
+  const cancelSession = useSessionStore((s) => s.cancelSession);
   const [details, setDetails] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -38,18 +38,11 @@ export function CancellationReasonScreen(): React.JSX.Element {
     if (submitting || !sessionId) { return; }
     setSubmitting(true);
     try {
-      // 1. Call Backend to perform real cancellation
-      const { SessionsService } = await import('../../services/api/services/sessions.service');
-      await SessionsService.cancelSession(sessionId, { reason, details: details.trim() });
-      
-      // 2. Update local state
-      updateSessionStatus(sessionId, 'cancelled');
-      
-      // 3. Navigate
+      await cancelSession(sessionId, reason, details.trim());
       navigation.replace(Routes.CANCELLATION_REVIEW_PENDING, { sessionId });
     } catch (e: any) {
-      console.warn("Failed to cancel session:", e);
-      // Fallback UI or toast could be handled here
+      const { Alert } = await import('react-native');
+      Alert.alert(t('alerts.error'), e?.message || 'Failed to cancel session');
       setSubmitting(false);
     }
   };

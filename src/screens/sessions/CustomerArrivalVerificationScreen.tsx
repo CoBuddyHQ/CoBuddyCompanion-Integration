@@ -29,7 +29,7 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
 
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
-  const updateSessionStatus = useSessionStore((s) => s.updateSessionStatus);
+  const startSession = useSessionStore((s) => s.startSession);
 
   const [code, setCode] = useState<string[]>(Array(CODE_LEN).fill(''));
   const inputs = useRef<(TextInput | null)[]>([]);
@@ -60,11 +60,10 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
     if (!isValid || loading) {return;}
     setLoading(true);
     try {
-      await SessionsService.verifyCustomer(sessionId, { passCode: fullCode });
-      if (sessionId) {updateSessionStatus(sessionId, 'active');}
+      await startSession(sessionId, fullCode);
       navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
     } catch (e: any) {
-      Alert.alert(t("alerts.error"), e.message || 'Invalid verification code');
+      Alert.alert(t("alerts.error"), e?.message || 'Invalid verification code');
     } finally {
       setLoading(false);
     }
@@ -74,14 +73,12 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
 
   const handleQR = () => {
     setScanning(true);
-    // Simulate real camera scan delay
     setTimeout(async () => {
       try {
-        await SessionsService.verifyCustomer(sessionId, { passCode: 'AR-642' });
-        if (sessionId) {updateSessionStatus(sessionId, 'active');}
+        await startSession(sessionId, 'AR-642');
         navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
       } catch (e: any) {
-        Alert.alert(t("alerts.error"), e.message || 'Invalid QR code');
+        Alert.alert(t("alerts.error"), e?.message || 'Invalid QR code');
       } finally {
         setScanning(false);
       }

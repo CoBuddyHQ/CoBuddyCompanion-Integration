@@ -3,7 +3,7 @@ import i18next from "i18next"; /**
 * Companion ends session before scheduled time with reason selection and earnings impact.
 */
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -30,23 +30,32 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
 
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
-  const updateSessionStatus = useSessionStore((s) => s.updateSessionStatus);
+  const endEarly = useSessionStore((s) => s.endEarly);
   const session = useSessionStore((s) =>
-  [...s.upcomingSessions, ...(s.activeSession ? [s.activeSession] : []), ...s.sessionHistory].
-  find((ses) => ses.sessionId === sessionId) ?? null);
+    [...s.upcomingSessions, ...(s.activeSession ? [s.activeSession] : []), ...s.sessionHistory].
+    find((ses) => ses.sessionId === sessionId) ?? null
+  );
 
   const scheduledMins = session?.durationMinutes ?? 0;
   const scheduledEarn = session?.baseEarning ?? 0;
   const scheduledLabel = scheduledMins >= 60 ?
-  `${Math.floor(scheduledMins / 60)} hr${Math.floor(scheduledMins / 60) > 1 ? 's' : ''} = ₹${scheduledEarn.toLocaleString('en-IN')}` :
-  `${scheduledMins} min = ₹${scheduledEarn.toLocaleString('en-IN')}`;
+    `${Math.floor(scheduledMins / 60)} hr${Math.floor(scheduledMins / 60) > 1 ? 's' : ''} = ₹${scheduledEarn.toLocaleString('en-IN')}` :
+    `${scheduledMins} min = ₹${scheduledEarn.toLocaleString('en-IN')}`;
 
   const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleConfirm = () => {
-    if (!selected) {return;}
-    if (sessionId) {updateSessionStatus(sessionId, 'completed');}
-    navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+  const handleConfirm = async () => {
+    if (!selected || loading) {return;}
+    setLoading(true);
+    try {
+      await endEarly(sessionId, selected);
+      navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+    } catch (e: any) {
+      Alert.alert(t('alerts.error'), e?.message || 'Failed to end session early');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
