@@ -79,10 +79,15 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    if (config.data instanceof FormData || (config.headers && config.headers['Content-Type'] === 'multipart/form-data')) {
+      delete config.headers['Content-Type'];
+    }
     console.log(`\n========================================`);
     console.log(`🚀 [API SEND] ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
-    if (config.data) {
+    if (config.data && !(config.data instanceof FormData)) {
       console.log(`📦 [PAYLOAD SENT]:`, typeof config.data === 'string' ? config.data : JSON.stringify(config.data, null, 2));
+    } else if (config.data instanceof FormData) {
+      console.log(`📦 [FORM DATA SENT] (multipart payload)`);
     }
     console.log(`========================================\n`);
     logger.log(`→ ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
