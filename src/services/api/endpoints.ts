@@ -75,6 +75,7 @@ export const Endpoints = {
     SAVE_DECLARATION:       '/companion/kyc/declaration',         // POST
     SUBMIT:                 '/companion/kyc/submit',              // POST
     RESUBMIT:               '/companion/kyc/resubmit',            // POST
+    ACCEPT_TERMS:           '/companion/onboarding/terms/accept', // POST
   },
 
   // ═══════════════════════════════════════════════════════════════════

@@ -38,13 +38,11 @@ import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
-
+import { Alert } from 'react-native';
 import { useAuthStore } from '../../store/slices/authStore';
 import { useTranslation } from "react-i18next";
 
 type Props = StackScreenProps<OnboardingStackParamList, typeof Routes.TERMS_CONSENT>;
-
-
 
 const CHECKBOX_LABELS = [i18next.t("content.auth_onboarding.TermsConsentContent.CHECKBOX_LABEL"),
 
@@ -55,7 +53,8 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState<boolean[]>(Array(CHECKBOX_LABELS.length).fill(false));
-  const { setAuthStatus } = useAuthStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { acceptTerms } = useAuthStore();
 
   const allChecked = checked.every(Boolean);
 
@@ -65,9 +64,28 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
     setChecked(next);
   };
 
-  const handleAccept = () => {
-    // Persist consent + transition to Application stack via root navigator
-    setAuthStatus('applying');
+  const handleAccept = async () => {
+    if (!allChecked || isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      await acceptTerms();
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        t('onboarding.unable_to_save_confirmation', 'Unable to save your confirmation. Please try again.');
+      const displayMsg = Array.isArray(msg) ? msg[0] : msg;
+      Alert.alert(
+        t('onboarding.confirmation_failed', 'Confirmation Failed'),
+        displayMsg,
+        [
+          { text: t('common.cancel', 'Cancel'), style: 'cancel' },
+          { text: t('common.retry', 'Retry'), onPress: handleAccept },
+        ]
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReviewLater = () => {
@@ -166,6 +184,7 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
             label={t("content.auth_onboarding.TermsConsentContent.CTA_PRIMARY")}
             onPress={handleAccept}
             disabled={!allChecked}
+            loading={isSubmitting}
             rightIcon="arrow-forward"
             accessibilityLabel={t("accessibility.accept_terms_and_continue")} />
           

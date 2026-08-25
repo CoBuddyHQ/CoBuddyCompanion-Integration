@@ -47,4 +47,7 @@ export const KycService = {
 
   saveEmergencyContact: (data: any) =>
     apiPost(Endpoints.KYC.SAVE_EMERGENCY, data),
+
+  acceptTerms: (): Promise<any> =>
+    apiPost(Endpoints.KYC.ACCEPT_TERMS, {}),
 };

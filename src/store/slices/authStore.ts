@@ -27,10 +27,22 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
     ]);
 
     if (!res || !res.onboardingStatus) {
-       return 'applying';
+       return 'onboarding';
     }
 
     const { onboardingStatus } = res;
+    
+    // Check authoritative terms acceptance from backend
+    const termsAccepted = !!(
+      onboardingStatus.termsAccepted ||
+      (profile as any)?.boundariesAccepted ||
+      (profile as any)?.termsAccepted ||
+      (res?.companion && res.companion.termsAccepted)
+    );
+
+    if (!termsAccepted) {
+      return 'onboarding';
+    }
     
     // 1. Hydrate the frontend store completely
     const appStore = useApplicationStore.getState();
@@ -115,6 +127,7 @@ interface AuthState {
   setPin: (pin: string, confirmPin: string) => Promise<void>;
   verifyPin: (pin: string) => Promise<void>;
   enrollBiometric: (deviceId: string, publicKey: string) => Promise<void>;
+  acceptTerms: () => Promise<void>;
   logout: () => Promise<void>;
   restoreAuth: () => Promise<void>;
   updateAccessToken: (newToken: string, newRefreshToken?: string) => void;
@@ -238,6 +251,31 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ biometricEnabled: true });
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Failed to enroll biometric';
+      set({ error: msg });
+      throw e;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // ── acceptTerms ────────────────────────────────────────────────────────────
+  acceptTerms: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await KycService.acceptTerms();
+      if (res?.onboardingStatus) {
+        useApplicationStore.getState().hydrateOnboardingStatus(res.onboardingStatus);
+        if (res.onboardingStatus.resumeRoute) {
+          useApplicationStore.getState().setApplicationEntryRoute(res.onboardingStatus.resumeRoute as any);
+        }
+      }
+      set({
+        authStatus: 'applying',
+        hasCompletedOnboarding: true,
+      });
+      await AsyncStorage.setItem(K.AUTH_STATUS, 'applying');
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Failed to save terms acceptance';
       set({ error: msg });
       throw e;
     } finally {
