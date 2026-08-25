@@ -16,8 +16,7 @@ import { useRequestStore } from './requestStore';
 import { useEarningsStore } from './earningsStore';
 import { useNotificationStore } from './notificationStore';
 import { Routes } from '../../navigation/routes';
-
-
+import { FlowTracker } from '../../services/flowTracker';
 
 async function syncProgressWithBackend(): Promise<AuthStatus> {
   try {
@@ -73,9 +72,12 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       return 'applying';
     }
 
-    // 5. Still applying — set applicationEntryRoute directly to backend resumeRoute
-    // so on app reload/restart, the app lands DIRECTLY on the exact incomplete screen!
-    if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute) {
+    // 5. Still applying — check saved active screen from FlowTracker first so reload stays on exact same screen!
+    const activeRoute = await FlowTracker.getActiveScreen();
+    const isExempt = activeRoute && [Routes.TERMS_CONSENT, Routes.ROLE_CONFIRMATION, Routes.COMPANION_WELCOME].includes(activeRoute as any);
+    if (activeRoute && !isExempt) {
+      appStore.setApplicationEntryRoute(activeRoute as any);
+    } else if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute) {
       appStore.setApplicationEntryRoute(onboardingStatus.resumeRoute as any);
     }
 

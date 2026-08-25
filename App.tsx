@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './src/i18n';
 import { StatusBar, StyleSheet } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, createNavigationContainerRef } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RootNavigator from './src/navigation/RootNavigator';
@@ -10,9 +10,10 @@ import { useAuthStore } from './src/store/slices/authStore';
 import { useNotificationStore } from './src/store/slices/notificationStore';
 import { socketService } from './src/services/api/services/socket.service';
 import { firebaseService } from './src/services/firebase/firebase.service';
-
-
+import { FlowTracker } from './src/services/flowTracker';
 import { initAppStateSync } from './src/services/serverState';
+
+export const navigationRef = createNavigationContainerRef<any>();
 
 const CoBuddyTheme = {
   ...DefaultTheme,
@@ -79,7 +80,18 @@ const App: React.FC = () => {
           backgroundColor={colors.rootBg}
           translucent={false}
         />
-        <NavigationContainer theme={CoBuddyTheme}>
+        <NavigationContainer
+          ref={navigationRef}
+          theme={CoBuddyTheme}
+          onStateChange={() => {
+            if (navigationRef.isReady()) {
+              const currentRoute = navigationRef.getCurrentRoute();
+              if (currentRoute && currentRoute.name) {
+                FlowTracker.saveActiveScreen(currentRoute.name);
+              }
+            }
+          }}
+        >
           <RootNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
