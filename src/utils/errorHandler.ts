@@ -71,7 +71,7 @@ const ERROR_MAP: Record<CoBuddyErrorCode, Omit<CoBuddyError, 'raw'>> = {
   KYC_RESUBMIT_REQUIRED: { code: 'KYC_RESUBMIT_REQUIRED', message: i18next.t("content.utils.errorHandler.your_verification_needs_corrections_plea"), retryable: true, supportable: true },
   REQUEST_EXPIRED: { code: 'REQUEST_EXPIRED', message: i18next.t("content.utils.errorHandler.this_booking_request_has_expired_the_cus"), retryable: false, supportable: false },
   REQUEST_ALREADY_ACCEPTED: { code: 'REQUEST_ALREADY_ACCEPTED', message: i18next.t("content.utils.errorHandler.this_request_has_already_been_accepted"), retryable: false, supportable: false },
-  REQUEST_CONFLICT: { code: 'REQUEST_CONFLICT', message: i18next.t("content.utils.errorHandler.you_already_have_a_session_during_this_t"), retryable: false, supportable: false },
+  REQUEST_CONFLICT: { code: 'REQUEST_CONFLICT', message: 'This action or information conflicts with an existing record. Please review and try again.', retryable: true, supportable: false },
   SESSION_CHECKIN_TOO_FAR: { code: 'SESSION_CHECKIN_TOO_FAR', message: i18next.t("content.utils.errorHandler.you_are_too_far_from_the_approved_venue"), retryable: true, supportable: false },
   SESSION_NOT_ACTIVE: { code: 'SESSION_NOT_ACTIVE', message: i18next.t("content.utils.errorHandler.this_session_is_no_longer_active"), retryable: false, supportable: true },
   SESSION_EXTEND_REJECTED: { code: 'SESSION_EXTEND_REJECTED', message: i18next.t("content.utils.errorHandler.the_customer_declined_the_extension_requ"), retryable: false, supportable: false },
@@ -128,7 +128,10 @@ export function handleError(error: unknown, context?: string): CoBuddyError {
       const serverCode = data?.code;
       const errorCode = httpStatusToCode(status, serverCode);
       const base = ERROR_MAP[errorCode];
-      return { ...base, raw: data?.message };
+      const finalMessage = data?.message && typeof data.message === 'string' && data.message.trim().length > 0
+        ? data.message
+        : base.message;
+      return { ...base, message: finalMessage, raw: data?.message };
     }
 
     // Network-level Axios error (no response)
