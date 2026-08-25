@@ -325,7 +325,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   sendChatMessage: async (sessionId, text) => {
     set({ error: null });
     try {
-      const res = await SessionsService.sendChatMessage(sessionId, { text });
+      const res = await SessionsService.sendChatMessage(sessionId, { message: text });
+
       get().addChatMessage(res);
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to send message' });
@@ -337,7 +338,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     set({ error: null });
     try {
       const res = await SessionsService.getCallToken(sessionId);
-      return res?.token || '';
+      return (res as any)?.token || '';
+
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to get call token' });
       throw e;
