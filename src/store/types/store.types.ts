@@ -48,6 +48,16 @@ export interface CompanionProfile {
   photoUrl: string | null;       // Approved profile photo URL
   galleryPhotos: string[];       // Up to 9 gallery image refs
   joinedAt: string;              // ISO date string
+  interestTags?: string[];
+  interests?: string[];
+  email?: string;
+  gender?: string;
+  dateOfBirth?: string;
+  boundariesAccepted?: boolean;
+  termsAccepted?: boolean;
+  workPreference?: any;
+  commActivity?: any;
+  venuePreferences?: string[];
 }
 
 // ─── Session ─────────────────────────────────────────────────────────────────

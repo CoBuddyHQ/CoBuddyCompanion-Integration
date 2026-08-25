@@ -15,6 +15,7 @@
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../../../store/slices/authStore';
 import { useNotificationStore } from '../../../store/slices/notificationStore';
+import { queryClient } from '../../serverState';
 import { ENV } from '../../../config/env';
 import type { AppNotification } from '../../../store/types/store.types';
 
@@ -89,10 +90,11 @@ class SocketService {
       console.log('[Socket] App disconnected:', reason);
     });
 
-    // New booking request — add to notification store
+    // New booking request — add to notification store and invalidate requests cache
     this.appSocket.on('new_booking_request', (data: any) => {
       const reqId = data?.requestId || data?.id || `req_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
       console.log('[Socket] New booking request received:', reqId);
+      queryClient.invalidateQueries(['requests']);
       const notification: AppNotification = {
         id: `req-${reqId}`,
         notificationId: `req-${reqId}`,
@@ -109,6 +111,17 @@ class SocketService {
     // Real-time notification push
     this.appSocket.on('notification', (data: AppNotification) => {
       useNotificationStore.getState().addNotification(data);
+      if (data.category === 'request' || data.category === 'session') {
+        queryClient.invalidateQueries(['requests']);
+        queryClient.invalidateQueries(['sessions']);
+      } else if (data.category === 'payout') {
+        queryClient.invalidateQueries(['earnings']);
+      }
+    });
+
+    this.appSocket.on('booking_updated', () => {
+      queryClient.invalidateQueries(['requests']);
+      queryClient.invalidateQueries(['sessions']);
     });
 
     this.appSocket.on('connect_error', (err: Error) => {

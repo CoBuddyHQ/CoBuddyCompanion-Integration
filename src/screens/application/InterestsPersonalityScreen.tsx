@@ -79,10 +79,12 @@ const MAX_TAGS = 5;
 
 export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Element {
   const { t } = useTranslation();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const {
     interestTags,
     toggleInterestTag,
     setCurrentStage,
+    hydrateOnboardingStatus,
     profileCorrectionContext,
     completeProfileCorrection,
     missingRequirementFixContext,
@@ -99,30 +101,53 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
   replace('{max}', String(MAX_TAGS));
 
   const handleContinue = useCallback(async () => {
-    if (!canContinue) {return;}
+    if (!canContinue || isSubmitting) {return;}
+    setIsSubmitting(true);
     setCurrentStage('interests_personality');
 
     try {
-      await ProfileService.updateCommActivity({ interests: interestTags });
-    } catch (e) {
+      const res: any = await ProfileService.updateInterests({
+        interestTags,
+        interests: interestTags,
+      });
+      if (res?.onboardingStatus) {
+        hydrateOnboardingStatus(res.onboardingStatus);
+      }
+      
+      if (profileCorrectionContext.isActive) {
+        completeProfileCorrection('interests');
+        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
+        return;
+      }
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('interests');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
+    } catch (e: any) {
       // ApiClient logs request & response
+      // Continue locally if offline fallback needed
+      if (profileCorrectionContext.isActive) {
+        completeProfileCorrection('interests');
+        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
+        return;
+      }
+      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
+        completeMissingRequirementFix('interests');
+        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
+        return;
+      }
+      navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('interests');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-      return;
-    }
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('interests');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
   }, [
   canContinue,
+  isSubmitting,
   interestTags,
   setCurrentStage,
+  hydrateOnboardingStatus,
   profileCorrectionContext,
   completeProfileCorrection,
   missingRequirementFixContext,
@@ -250,6 +275,7 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
           onPress={handleContinue}
           variant="primary"
           disabled={!canContinue}
+          loading={isSubmitting}
           rightIcon={t('application.arrow_forward')}
           accessibilityLabel={t('application.interests_cta_primary')} />
         

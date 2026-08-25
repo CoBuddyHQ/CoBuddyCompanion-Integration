@@ -1,16 +1,38 @@
 import { apiGet, apiPost } from '../client';
 import { Endpoints } from '../endpoints';
+import { queryClient } from '../../serverState';
 
 export const KycService = {
-  getKycStatus: (): Promise<any> => apiGet(Endpoints.KYC.STATUS),
-  saveDraft: (data: any) => apiPost(Endpoints.KYC.SAVE_DRAFT, data),
-  submit: (data: any) => apiPost(Endpoints.KYC.SUBMIT, data),
+  getKycStatus: (): Promise<any> =>
+    queryClient.fetchQuery(
+      ['companion', 'kyc_status'],
+      () => apiGet(Endpoints.KYC.STATUS),
+      { staleTime: 30_000, cacheTime: 900_000, persist: true }
+    ),
+  saveDraft: async (data: any) => {
+    const res = await apiPost(Endpoints.KYC.SAVE_DRAFT, data);
+    queryClient.invalidateQueries(['companion', 'kyc_status']);
+    return res;
+  },
+  submit: async (data: any) => {
+    const res = await apiPost(Endpoints.KYC.SUBMIT, data);
+    queryClient.invalidateQueries(['companion', 'kyc_status']);
+    queryClient.invalidateQueries(['companion', 'profile']);
+    return res;
+  },
   
-  saveBasicDetails: (data: any) =>
-    apiPost(Endpoints.KYC.BASIC_DETAILS, data),
+  saveBasicDetails: async (data: any) => {
+    const res = await apiPost(Endpoints.KYC.BASIC_DETAILS, data);
+    queryClient.invalidateQueries(['companion', 'kyc_status']);
+    queryClient.invalidateQueries(['companion', 'profile']);
+    return res;
+  },
     
-  saveDeclaration: (data: any) =>
-    apiPost(Endpoints.KYC.SAVE_DECLARATION, data),
+  saveDeclaration: async (data: any) => {
+    const res = await apiPost(Endpoints.KYC.SAVE_DECLARATION, data);
+    queryClient.invalidateQueries(['companion', 'kyc_status']);
+    return res;
+  },
   
   updateGovernmentIdType: (data: { documentType: string }) => 
     apiPost(Endpoints.KYC.SET_GOVERNMENT_ID_TYPE, data),

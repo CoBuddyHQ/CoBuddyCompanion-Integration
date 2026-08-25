@@ -12,6 +12,8 @@ import { socketService } from './src/services/api/services/socket.service';
 import { firebaseService } from './src/services/firebase/firebase.service';
 
 
+import { initAppStateSync } from './src/services/serverState';
+
 const CoBuddyTheme = {
   ...DefaultTheme,
   dark: true,
@@ -31,9 +33,15 @@ const App: React.FC = () => {
   const authStatus = useAuthStore((s) => s.authStatus);
   const addNotification = useNotificationStore((s) => s.addNotification);
 
-  // ── Restore auth on mount ──────────────────────────────────────────────────
+  // ── Restore auth on mount & start AppState sync ───────────────────────────
   useEffect(() => {
     restoreAuth();
+    const cleanup = initAppStateSync(async () => {
+      if (useAuthStore.getState().authStatus !== 'unauthenticated') {
+        await useAuthStore.getState().restoreAuth();
+      }
+    });
+    return cleanup;
   }, []);
 
   // ── Wire Socket.IO & Firebase FCM after auth ──────────────────────────────
