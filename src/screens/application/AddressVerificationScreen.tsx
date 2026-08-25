@@ -41,6 +41,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { UploadsService } from '../../services/api/services/uploads.service';
 import { KycService } from '../../services/api/services/kyc.service';
+import { pickMedia } from '../../utils/mediaPicker';
 import type { AddressType } from '../../store/slices/applicationStore';
 
 import { validateAddressLine, validatePINCode } from '../../utils/validators';
@@ -134,51 +135,58 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
   );
 
   const handleProofUpload = useCallback(() => {
-    Alert.alert(t("alerts.upload_address_proof"), t("alerts.choose_a_document_to_upload"),
-    [
-    { 
-      text: t("alerts.camera"), 
-      onPress: async () => {
-        try {
-          setIsSubmitting(true);
-          const file = {
-            uri: 'file:///data/user/0/com.cobuddycompanion/cache/address_proof_camera.jpg',
-            type: 'image/jpeg',
-            name: `address_proof_camera_${Date.now()}.jpg`,
-          };
-          const uploadRes = await UploadsService.uploadKycAddress(file);
-          const uploadedUrl = uploadRes.url || uploadRes.photoUrl;
-          setProofUrl(uploadedUrl);
-          setProofAdded(true);
-        } catch (e: any) {
-          Alert.alert(t("alerts.error"), e.message || 'Failed to upload proof');
-        } finally {
-          setIsSubmitting(false);
-        }
-      } 
-    },
-    { 
-      text: t("alerts.gallery"), 
-      onPress: async () => {
-        try {
-          setIsSubmitting(true);
-          const file = {
-            uri: 'file:///data/user/0/com.cobuddycompanion/cache/address_proof_gallery.jpg',
-            type: 'image/jpeg',
-            name: `address_proof_gallery_${Date.now()}.jpg`,
-          };
-          const uploadRes = await UploadsService.uploadKycAddress(file);
-          const uploadedUrl = uploadRes.url || uploadRes.photoUrl;
-          setProofUrl(uploadedUrl);
-          setProofAdded(true);
-        } catch (e: any) {
-          Alert.alert(t("alerts.error"), e.message || 'Failed to upload proof');
-        } finally {
-          setIsSubmitting(false);
-        }
-      } 
-    },
-    { text: t("alerts.cancel"), style: 'cancel' }]
+    Alert.alert(
+      t("alerts.upload_address_proof"),
+      t("alerts.choose_a_document_to_upload"),
+      [
+        {
+          text: t("alerts.camera"),
+          onPress: async () => {
+            const result = await pickMedia('camera', { mediaType: 'photo' });
+            if (!result) return;
+            try {
+              setIsSubmitting(true);
+              const file = {
+                uri: result.uri,
+                type: result.type || 'image/jpeg',
+                name: result.name || `address_proof_${Date.now()}.jpg`,
+              };
+              const uploadRes = await UploadsService.uploadKycAddress(file);
+              const uploadedUrl = uploadRes.url || uploadRes.photoUrl || result.uri;
+              setProofUrl(uploadedUrl);
+              setProofAdded(true);
+            } catch (e: any) {
+              Alert.alert(t("alerts.error"), e?.message || 'Failed to upload address proof');
+            } finally {
+              setIsSubmitting(false);
+            }
+          },
+        },
+        {
+          text: t("alerts.gallery"),
+          onPress: async () => {
+            const result = await pickMedia('gallery', { mediaType: 'photo' });
+            if (!result) return;
+            try {
+              setIsSubmitting(true);
+              const file = {
+                uri: result.uri,
+                type: result.type || 'image/jpeg',
+                name: result.name || `address_proof_${Date.now()}.jpg`,
+              };
+              const uploadRes = await UploadsService.uploadKycAddress(file);
+              const uploadedUrl = uploadRes.url || uploadRes.photoUrl || result.uri;
+              setProofUrl(uploadedUrl);
+              setProofAdded(true);
+            } catch (e: any) {
+              Alert.alert(t("alerts.error"), e?.message || 'Failed to upload address proof');
+            } finally {
+              setIsSubmitting(false);
+            }
+          },
+        },
+        { text: t("alerts.cancel"), style: 'cancel' },
+      ],
     );
   }, [t]);
 

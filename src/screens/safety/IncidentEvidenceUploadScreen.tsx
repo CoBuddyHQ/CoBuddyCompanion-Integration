@@ -14,14 +14,15 @@ import {spacing} from '../../theme/spacing';
 import {radius} from '../../theme/radius';
 import { useTranslation } from "react-i18next";
 import { UploadsService } from '../../services/api/services/uploads.service';
+import { pickMedia } from '../../utils/mediaPicker';
 
 const MAX_FILES = 6;
 
-interface FileSlot {id: string; filled: boolean;}
+interface FileSlot {id: string; filled: boolean; uri?: string;}
 
 const INITIAL_SLOTS: FileSlot[] = [
-  {id: '1', filled: true},
-  {id: '2', filled: true},
+  {id: '1', filled: false},
+  {id: '2', filled: false},
   {id: '3', filled: false},
   {id: '4', filled: false},
   {id: '5', filled: false},
@@ -29,25 +30,56 @@ const INITIAL_SLOTS: FileSlot[] = [
 ];
 
 export function IncidentEvidenceUploadScreen(): React.JSX.Element {
-    const { t } = useTranslation();
-   
+  const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const [slots, setSlots] = useState<FileSlot[]>(INITIAL_SLOTS);
 
   const uploadedCount = slots.filter(s => s.filled).length;
 
   const handleAdd = async (id: string) => {
-    try {
-      const file = {
-        uri: 'file:///data/user/0/com.cobuddycompanion/cache/evidence_screenshot.jpg',
-        type: 'image/jpeg',
-        name: `evidence_${Date.now()}.jpg`,
-      };
-      const res = await UploadsService.uploadEvidence(file);
-      setSlots(prev => prev.map(sl => sl.id === id ? {...sl, filled: true, uri: res.url} : sl));
-    } catch (e: any) {
-      Alert.alert(t('alerts.error'), e?.message || 'Failed to upload evidence');
-    }
+    Alert.alert(
+      t('safety.add_evidence'),
+      t('alerts.choose_how_you_want_to_upload'),
+      [
+        {
+          text: t('alerts.camera'),
+          onPress: async () => {
+            const result = await pickMedia('camera', { mediaType: 'photo' });
+            if (!result) return;
+            try {
+              const file = {
+                uri: result.uri,
+                type: result.type || 'image/jpeg',
+                name: result.name || `evidence_${Date.now()}.jpg`,
+              };
+              const res = await UploadsService.uploadEvidence(file);
+              setSlots(prev => prev.map(sl => sl.id === id ? {...sl, filled: true, uri: res?.url || result.uri} : sl));
+            } catch (e: any) {
+              Alert.alert(t('alerts.error'), e?.message || 'Failed to upload evidence');
+            }
+          },
+        },
+        {
+          text: t('alerts.gallery'),
+          onPress: async () => {
+            const result = await pickMedia('gallery', { mediaType: 'photo' });
+            if (!result) return;
+            try {
+              const file = {
+                uri: result.uri,
+                type: result.type || 'image/jpeg',
+                name: result.name || `evidence_${Date.now()}.jpg`,
+              };
+              const res = await UploadsService.uploadEvidence(file);
+              setSlots(prev => prev.map(sl => sl.id === id ? {...sl, filled: true, uri: res?.url || result.uri} : sl));
+            } catch (e: any) {
+              Alert.alert(t('alerts.error'), e?.message || 'Failed to upload evidence');
+            }
+          },
+        },
+        { text: t('alerts.cancel'), style: 'cancel' },
+      ],
+    );
   };
 
   const handleRemove = (id: string) => {

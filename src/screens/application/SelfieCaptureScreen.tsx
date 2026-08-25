@@ -37,6 +37,7 @@ import ScreenTopBar from '../../components/layout/ScreenTopBar';
 import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { pickMedia, PickedMedia } from '../../utils/mediaPicker';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -60,29 +61,20 @@ export function SelfieCaptureScreen({ navigation }: Props): React.JSX.Element {c
     setSelfieCaptureComplete, setCurrentStage,
     missingRequirementFixContext, clearMissingRequirementFix
   } = useApplicationStore();
+  const [capturedFile, setCapturedFile] = useState<PickedMedia | null>(null);
   const [captured, setCaptured] = useState(false);
 
-  const handleCapture = useCallback(() => {
-    Alert.alert(t("alerts.capture_selfie"), t("alerts.position_your_face_in_the_oval_frame_and"),
-
-
-    [
-    {
-      text: t("content.application_kyc.SelfieCaptureContent.CTA_CAPTURE"),
-      onPress: () => {
-        // Phase 5: launchCamera({ mediaType: 'photo', cameraType: 'front', quality: 0.9 }, ...)
-        // Raw URI stays in local state — only the boolean completion flag goes to Zustand.
-        setSelfieCaptureComplete(true);
-        setCaptured(true);
-      }
-    },
-    { text: t("alerts.cancel"), style: 'cancel' }]
-
-    );
+  const handleCapture = useCallback(async () => {
+    const result = await pickMedia('camera', { mediaType: 'photo' });
+    if (result) {
+      setCapturedFile(result);
+      setSelfieCaptureComplete(true);
+      setCaptured(true);
+    }
   }, [setSelfieCaptureComplete]);
 
   const handleRetake = useCallback(() => {
-    // Reset both local UI state and the store completion boolean on retake.
+    setCapturedFile(null);
     setSelfieCaptureComplete(false);
     setCaptured(false);
   }, [setSelfieCaptureComplete]);

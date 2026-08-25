@@ -37,6 +37,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { UploadsService } from '../../services/api/services/uploads.service';
 import { KycService } from '../../services/api/services/kyc.service';
+import { pickMedia } from '../../utils/mediaPicker';
 import { Alert } from 'react-native';
 
 import { colors } from '../../theme/colors';
@@ -57,7 +58,8 @@ const LIVENESS_INSTRUCTIONS = [
 { icon: 'light-mode', label: i18next.t("content.application.LivenessDetectionScreen.stay_in_good_lighting"), body: 'Avoid shadows or bright backlight.' }] as
 const;
 
-export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
+export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Element {
+  const { t } = useTranslation();
   const {
     setSelfieCaptureComplete, setLivenessComplete, setCurrentStage,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
@@ -65,17 +67,20 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
   const [state, setState] = useState<LivenessState>('ready');
 
   const handleStartCheck = useCallback(async () => {
+    const result = await pickMedia('camera', { mediaType: 'photo' });
+    if (!result) return;
+
     setState('checking');
     try {
       const selfieFile = {
-        uri: 'file:///data/user/0/com.cobuddycompanion/cache/selfie_liveness.mp4',
-        type: 'video/mp4',
-        name: `selfie_liveness_${Date.now()}.mp4`,
+        uri: result.uri,
+        type: result.type || 'image/jpeg',
+        name: result.name || `selfie_liveness_${Date.now()}.jpg`,
       };
-      
+
       const uploadRes = await UploadsService.uploadKycSelfie(selfieFile);
-      const fileUrl = uploadRes?.url || uploadRes?.photoUrl || uploadRes?.videoUrl;
-      
+      const fileUrl = uploadRes?.url || uploadRes?.photoUrl || uploadRes?.videoUrl || result.uri;
+
       await KycService.submitSelfie({
         imageUrl: fileUrl,
         videoUrl: fileUrl,
@@ -85,7 +90,7 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
       setSelfieCaptureComplete(true);
       setState('complete');
     } catch (e: any) {
-      Alert.alert(t("alerts.error"), e.message || 'Liveness check failed');
+      Alert.alert(t("alerts.error"), e?.message || 'Liveness check failed');
       setState('ready');
     }
   }, [setLivenessComplete, setSelfieCaptureComplete, t]);

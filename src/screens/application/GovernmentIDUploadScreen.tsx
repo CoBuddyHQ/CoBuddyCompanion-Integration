@@ -39,6 +39,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { UploadsService } from '../../services/api/services/uploads.service';
 import { KycService } from '../../services/api/services/kyc.service';
+import { pickMedia, PickedMedia } from '../../utils/mediaPicker';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -57,73 +58,76 @@ const UPLOAD_GUIDELINES = [
 'Details must match your basic profile'] as
 const;
 
-export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JSX.Element {const { t } = useTranslation();
+export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JSX.Element {
+  const { t } = useTranslation();
+  const idType = (route.params as {idType?: string;})?.idType ?? 'Government ID';
+
   const {
     setIdSubmitted, setCurrentStage, setApplicationResumeTarget, setDraftSaved,
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
 
-  // Receive selected ID type from CPN-036 via route params
-  const idType = (route.params as {idType?: string;})?.idType ?? 'Government ID';
-
-  // Local state � URIs stored ONLY here, never in Zustand
-  const [frontUri, setFrontUri] = useState<string | null>(null);
-  const [backUri, setBackUri] = useState<string | null>(null);
+  const [frontFile, setFrontFile] = useState<PickedMedia | null>(null);
+  const [backFile, setBackFile] = useState<PickedMedia | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const frontUri = frontFile?.uri ?? null;
+  const backUri = backFile?.uri ?? null;
   const canSubmit = !!frontUri && !!backUri;
 
-  /**
-   * Phase 4B stub. Phase 5: replace with react-native-image-picker.
-   * URI must NOT be stored in applicationStore � only used in this component.
-   */
   const pickImage = useCallback((side: 'front' | 'back') => {
     Alert.alert(
-      `Upload ${side === 'front' ? t("content.application.GovernmentIDUploadScreen.front") : t("content.application.GovernmentIDUploadScreen.back")} of ${idType}`, t("alerts.choose_how_you_want_to_upload"),
-
+      `Upload ${side === 'front' ? t("content.application.GovernmentIDUploadScreen.front") : t("content.application.GovernmentIDUploadScreen.back")} of ${idType}`,
+      t("alerts.choose_how_you_want_to_upload"),
       [
-      {
-        text: t("alerts.camera"),
-        onPress: () => {
-          if (side === 'front') {setFrontUri('stub://id-front');} else
-          {setBackUri('stub://id-back');}
-        }
-      },
-      {
-        text: t("alerts.gallery"),
-        onPress: () => {
-          if (side === 'front') {setFrontUri('stub://id-front-gallery');} else
-          {setBackUri('stub://id-back-gallery');}
-        }
-      },
-      { text: t("alerts.cancel"), style: 'cancel' }]
-
+        {
+          text: t("alerts.camera"),
+          onPress: async () => {
+            const result = await pickMedia('camera', { mediaType: 'photo' });
+            if (result) {
+              if (side === 'front') setFrontFile(result);
+              else setBackFile(result);
+            }
+          },
+        },
+        {
+          text: t("alerts.gallery"),
+          onPress: async () => {
+            const result = await pickMedia('gallery', { mediaType: 'photo' });
+            if (result) {
+              if (side === 'front') setFrontFile(result);
+              else setBackFile(result);
+            }
+          },
+        },
+        { text: t("alerts.cancel"), style: 'cancel' },
+      ],
     );
-  }, [idType]);
+  }, [idType, t]);
 
   const handleSubmit = useCallback(async () => {
-    if (!frontUri || !backUri) {
+    if (!frontFile || !backFile) {
       Alert.alert(t('alerts.error'), 'Please capture or select both front and back sides of your Government ID.');
       return;
     }
     setIsSubmitting(true);
     try {
-      const frontFile = {
-        uri: frontUri,
-        type: 'image/jpeg',
-        name: `id_front_${Date.now()}.jpg`,
+      const frontUpload = {
+        uri: frontFile.uri,
+        type: frontFile.type || 'image/jpeg',
+        name: frontFile.name || `id_front_${Date.now()}.jpg`,
       };
-      const backFile = {
-        uri: backUri,
-        type: 'image/jpeg',
-        name: `id_back_${Date.now()}.jpg`,
+      const backUpload = {
+        uri: backFile.uri,
+        type: backFile.type || 'image/jpeg',
+        name: backFile.name || `id_back_${Date.now()}.jpg`,
       };
 
-      const frontRes: any = await UploadsService.uploadKycIdentity(frontFile);
-      const backRes: any = await UploadsService.uploadKycIdentity(backFile);
+      const frontRes: any = await UploadsService.uploadKycIdentity(frontUpload);
+      const backRes: any = await UploadsService.uploadKycIdentity(backUpload);
       
-      const frontUrl = frontRes?.url || frontRes?.photoUrl || frontUri;
-      const backUrl = backRes?.url || backRes?.photoUrl || backUri;
+      const frontUrl = frontRes?.url || frontRes?.photoUrl || frontFile.uri;
+      const backUrl = backRes?.url || backRes?.photoUrl || backFile.uri;
 
       await KycService.submitGovernmentId({
         documentType: idType || 'Aadhaar Card',
@@ -131,8 +135,8 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
         backUrl,
       });
 
-      setFrontUri(null);
-      setBackUri(null);
+      setFrontFile(null);
+      setBackFile(null);
       setIdSubmitted(true);
       setCurrentStage('government_id_upload');
       if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
@@ -142,12 +146,11 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
       }
       navigation.navigate(Routes.SELFIE_CAPTURE);
     } catch (e: any) {
-      Alert.alert(t("alerts.error"), e.message || 'Failed to upload ID');
+      Alert.alert(t("alerts.error"), e?.message || 'Failed to upload Government ID');
     } finally {
       setIsSubmitting(false);
     }
-  }, [frontUri, backUri, idType, setIdSubmitted, setCurrentStage,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t]);
+  }, [frontFile, backFile, idType, missingRequirementFixContext, navigation, setCurrentStage, setIdSubmitted, completeMissingRequirementFix, t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
