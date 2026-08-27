@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -68,21 +68,21 @@
     "verified_companion": "Verified Companion",
     "verified_customer": "Verified customer",
     "view_all": "View all",
-    "view_earnings": "View earnings →",
+    "view_earnings": "View earnings â†’",
     "view_today": "View Today",
     "you_are_visible_to_vetted_clients_and_ready_to_receive_verified_requests": "You are visible to vetted clients and ready to receive verified requests.",
     "your_profile_is_live": "Your profile is live"
   },
   "account": {
     "1_of_2": "1 of 2",
-    "24_48_hours": "24–48 hours",
+    "24_48_hours": "24â€“48 hours",
     "28_jun_2026": "28 Jun 2026",
     "3_business_days": "3 business days",
     "account_deactivated": "Account Deactivated",
     "account_suspended": "Account Suspended",
     "acknowledge": "Acknowledge",
     "after_that_your_account_will_be_permanently_deleted": ". After that, your account will be permanently deleted.",
-    "community_guidelines_3_1": "Community Guidelines §3.1",
+    "community_guidelines_3_1": "Community Guidelines Â§3.1",
     "contact_support": "Contact Support",
     "exit_to_login": "Exit to Login",
     "for_acceptable_language_and_conduct_during_sessions": "for acceptable language and conduct during sessions.",
@@ -103,12 +103,12 @@
     "questions_email": "Questions? Email",
     "request_reactivation": "Request Reactivation",
     "session_date": "Session date",
-    "sharing_personal_contact_information_phone_number_social_handle_with_a_customer_during_a_session_violates_cobuddy_community_guidelines_4_2": "Sharing personal contact information (phone number / social handle) with a customer during a session — violates CoBuddy Community Guidelines §4.2.",
+    "sharing_personal_contact_information_phone_number_social_handle_with_a_customer_during_a_session_violates_cobuddy_community_guidelines_4_2": "Sharing personal contact information (phone number / social handle) with a customer during a session â€” violates CoBuddy Community Guidelines Â§4.2.",
     "submit_appeal": "Submit Appeal",
     "support_cobuddy_in": "support@cobuddy.in",
     "tips_for_a_strong_appeal": "Tips for a strong appeal",
     "trust_cobuddy_in": "trust@cobuddy.in",
-    "type_your_appeal_message_here": "Type your appeal message here…",
+    "type_your_appeal_message_here": "Type your appeal message hereâ€¦",
     "violation_reason": "Violation Reason",
     "violation_type": "Violation type",
     "warning_count": "Warning count",
@@ -133,7 +133,7 @@
     "acknowledge_the_violation_clearly": "Acknowledge the violation clearly",
     "explain_any_misunderstanding": "Explain any misunderstanding",
     "commit_to_following_community_guidelines": "Commit to following Community Guidelines",
-    "submitting": "Submitting…",
+    "submitting": "Submittingâ€¦",
     "submit_appeal_btn": "Submit Appeal",
     "suspension_issued": "Suspension issued",
     "review_deadline": "Review deadline",
@@ -162,9 +162,9 @@
     "cancel_existing_booking": "Cancel Existing Booking",
     "choose_when_you_want_to_be_available": "Choose when you want to be available.",
     "closed": "Closed",
-    "closed_tap_toggle_to_enable": "Closed — tap toggle to enable",
+    "closed_tap_toggle_to_enable": "Closed â€” tap toggle to enable",
     "confirm_block_time": "Confirm & Block Time",
-    "confirmed_booking": "Confirmed booking ·",
+    "confirmed_booking": "Confirmed booking Â·",
     "currently": "Currently",
     "d_active": "d active",
     "danger_zone": "Danger Zone",
@@ -251,7 +251,7 @@
     "download_tax_invoice": "Download Tax Invoice",
     "earned": "Earned",
     "earnings": "Earnings",
-    "earnings_from_completed_sessions_take_24_48_hours_to_clear_security_checks": "Earnings from completed sessions take 24–48 hours to clear security checks.",
+    "earnings_from_completed_sessions_take_24_48_hours_to_clear_security_checks": "Earnings from completed sessions take 24â€“48 hours to clear security checks.",
     "earnings_report": "Earnings Report",
     "enter_amount_to_withdraw": "Enter Amount to Withdraw",
     "from_your_cobuddy_wallet": "From your CoBuddy Wallet",
@@ -261,8 +261,8 @@
     "invoice_inv_2026_001": "INVOICE #INV-2026-001",
     "is_being_processed": "is being processed.",
     "issue_with_pending_amount_contact_support": "Issue with pending amount? Contact Support",
-    "it_usually_takes_2_4_hours_to_reflect_in_your_account": "It usually takes 2–4 hours to reflect in your account.",
-    "late_cancellation_of_session_ses_8821_as_per_policy_cancellations_within_2_hours_of_the_session_start_time_incur_a_penalty_of_150": "Late cancellation of session SES-8821. As per policy, cancellations within 2 hours of the session start time incur a penalty of ₹150.",
+    "it_usually_takes_2_4_hours_to_reflect_in_your_account": "It usually takes 2â€“4 hours to reflect in your account.",
+    "late_cancellation_of_session_ses_8821_as_per_policy_cancellations_within_2_hours_of_the_session_start_time_incur_a_penalty_of_150": "Late cancellation of session SES-8821. As per policy, cancellations within 2 hours of the session start time incur a penalty of â‚¹150.",
     "lifetime_earnings": "Lifetime Earnings",
     "lifetime_paid_out": "Lifetime Paid Out",
     "line_items": "Line Items",
@@ -342,7 +342,7 @@
     "3_areas": "3 areas",
     "60_more_bookings": "60% more bookings!",
     "9_photos": "9 photos",
-    "a_great_bio_helps_you_get_3_more_bookings": "A great bio helps you get 3× more bookings!",
+    "a_great_bio_helps_you_get_3_more_bookings": "A great bio helps you get 3Ã— more bookings!",
     "a_larger_radius_means": "A larger radius means",
     "about": "About",
     "about_me": "About Me",
@@ -350,7 +350,7 @@
     "add_photo": "Add Photo",
     "adjust_radius": "Adjust Radius",
     "area": "area",
-    "avg_read_all": "avg · Read all",
+    "avg_read_all": "avg Â· Read all",
     "badges": "Badges",
     "badges_achievements": "Badges & Achievements",
     "badges_earned": "badges earned",
@@ -392,7 +392,7 @@
     "long_press_and_drag_photos_to_reorder_the": "Long-press and drag photos to reorder. The",
     "manage": "Manage",
     "manage_gallery": "Manage Gallery",
-    "maximum_reached_deselect_one_to_change": "Maximum reached — deselect one to change",
+    "maximum_reached_deselect_one_to_change": "Maximum reached â€” deselect one to change",
     "more": "More",
     "more_bookings": "more bookings",
     "more_points": "more points",
@@ -416,7 +416,7 @@
     "profile_not_loaded_yet": "Profile not loaded yet.",
     "pts": "pts",
     "recent_reviews": "Recent Reviews",
-    "recommended_for_your_city_300_800": "Recommended for your city: ₹300 – ₹800",
+    "recommended_for_your_city_300_200": "Recommended for your city: â‚¹300 â€“ â‚¹200",
     "review_details": "Review Details",
     "reviews": "reviews",
     "save_changes": "Save Changes",
@@ -456,7 +456,7 @@
     "you_can_earn_up_to": "You can earn up to",
     "you_charge": "You Charge",
     "you_earn": "You Earn",
-    "you_earn_400_after_platform_fee": "You earn ₹400 after platform fee",
+    "you_earn_400_after_platform_fee": "You earn â‚¹400 after platform fee",
     "you_have_unsaved_changes": "You have unsaved changes",
     "your_hourly_rate": "Your Hourly Rate",
     "your_primary_city": "Your primary city",
@@ -475,7 +475,7 @@
     "and_has_completed": "and has completed",
     "back_to_dashboard": "Back to Dashboard",
     "back_to_inbox": "Back to Inbox",
-    "back_to_inbox_1": "← Back to Inbox",
+    "back_to_inbox_1": "â† Back to Inbox",
     "based_on_history_verifications_and_behaviour": "Based on history, verifications and behaviour.",
     "before_you_confirm": "Before you confirm",
     "booking_confirmed": "Booking Confirmed!",
@@ -505,7 +505,7 @@
     "expired_requests": "Expired Requests",
     "expiring_in": "Expiring in",
     "filter_requests": "Filter Requests",
-    "go_back": "← Go back",
+    "go_back": "â† Go back",
     "go_live_for_instant_bookings": "Go Live for Instant Bookings",
     "go_to_upcoming_sessions": "Go to Upcoming Sessions",
     "i_agree_to_the_cobuddy_public_venue_safety_policy": "I agree to the CoBuddy public venue safety policy",
@@ -521,16 +521,16 @@
     "meeting_point": "Meeting Point",
     "message_to_customer": "Message to Customer",
     "message_unavailable": "Message Unavailable",
-    "min_review_quickly_to_confirm": "min — review quickly to confirm",
+    "min_review_quickly_to_confirm": "min â€” review quickly to confirm",
     "minimum_earning": "Minimum Earning",
     "near": "Near",
     "new_date": "New Date",
     "new_request": "New Request",
     "no_new_requests_right_now": "No new requests right now",
     "no_pending_requests": "No Pending Requests",
-    "not_accepted_in_time": "— not accepted in time",
+    "not_accepted_in_time": "â€” not accepted in time",
     "note_from_customer": "Note from Customer",
-    "optional_message_to_customer": "Optional message to customer…",
+    "optional_message_to_customer": "Optional message to customerâ€¦",
     "original_request": "Original Request",
     "pending": "pending",
     "pending_1": "Pending",
@@ -570,7 +570,7 @@
     "verified_phone_number": "Verified Phone Number",
     "what_s_next": "What's next?",
     "when_customers_book_you_their_requests_will_appear_here": "When customers book you, their requests will appear here.",
-    "while_you_wait": "While you wait…",
+    "while_you_wait": "While you waitâ€¦",
     "why_are_you_declining_this_request": "Why are you declining this request?",
     "will_be_credited_after_the_session": "will be credited after the session",
     "with": "with",
@@ -589,7 +589,7 @@
     "keep_your_rating_above": "Keep your rating above",
     "of": "of",
     "reviews": "reviews",
-    "reviews_more_coming_soon": "reviews · More coming soon",
+    "reviews_more_coming_soon": "reviews Â· More coming soon",
     "reviews_ratings": "Reviews & Ratings",
     "showing": "Showing",
     "status": "status!",
@@ -609,19 +609,19 @@
     "all_cobuddy_sessions_must_take_place_at": "All CoBuddy sessions must take place at",
     "also_block_this_customer": "Also block this customer",
     "approved_public_venues": "approved public venues",
-    "approved_venue_types": "✅ Approved Venue Types",
+    "approved_venue_types": "âœ… Approved Venue Types",
     "attach_evidence": "Attach Evidence",
     "auto_check_in_reminders": "Auto Check-In Reminders",
     "before_every_session": "Before Every Session",
     "block_customer": "Block Customer",
     "blocking_this_customer_will_prevent_future_bookings_existing_sessions_will_not_be_affected": "Blocking this customer will prevent future bookings. Existing sessions will not be affected.",
     "called_first_in_an_emergency": "Called first in an emergency",
-    "cancel_sos_i_m_safe": "Cancel SOS — I'm Safe",
+    "cancel_sos_i_m_safe": "Cancel SOS â€” I'm Safe",
     "cancel_timer": "Cancel Timer",
     "cobuddy_s_live_monitoring_and_sos_system_is_active_during_all_your_sessions": "CoBuddy's live monitoring and SOS system is active during all your sessions.",
-    "complete_this_quiz_to_unlock_your_safety_certified_badge": "Complete this quiz to unlock your Safety Certified badge! 🛡",
-    "describe_the_incident_in_detail": "Describe the incident in detail…",
-    "describe_what_happened_in_detail": "Describe what happened in detail…",
+    "complete_this_quiz_to_unlock_your_safety_certified_badge": "Complete this quiz to unlock your Safety Certified badge! ðŸ›¡",
+    "describe_the_incident_in_detail": "Describe the incident in detailâ€¦",
+    "describe_what_happened_in_detail": "Describe what happened in detailâ€¦",
     "description": "Description",
     "disguised_call_option": "Disguised Call Option",
     "during_your_session": "During Your Session",
@@ -638,19 +638,19 @@
     "full_name": "Full Name",
     "full_name_1": "Full name",
     "help_is_on_the_way": "Help is on the way.",
-    "i_m_safe_go_back": "I'm Safe — Go Back",
+    "i_m_safe_go_back": "I'm Safe â€” Go Back",
     "in_a_real_emergency_tapping_sos_immediately_alerts_local_authorities_and_cobuddy_support": "In a real emergency, tapping SOS immediately alerts local authorities and CoBuddy Support.",
     "incident_report": "Incident Report",
     "incident_type": "Incident Type",
-    "jpg_png_pdf_up_to_10mb_each": "JPG, PNG, PDF — up to 10MB each",
+    "jpg_png_pdf_up_to_10mb_each": "JPG, PNG, PDF â€” up to 10MB each",
     "live_location_tracking": "Live Location Tracking",
     "need_immediate_help": "Need immediate help?",
     "no_emergency_contacts_added_yet": "No emergency contacts added yet.",
-    "not_allowed": "🚫 Not Allowed",
+    "not_allowed": "ðŸš« Not Allowed",
     "of": "of",
     "only": "only.",
     "phone_number": "Phone Number",
-    "please_describe_the_reason": "Please describe the reason…",
+    "please_describe_the_reason": "Please describe the reasonâ€¦",
     "primary": "Primary",
     "question": "Question",
     "reason_for_blocking": "Reason for blocking",
@@ -705,7 +705,7 @@
   "sessions": {
     "15_minutes_before": "15 minutes before",
     "2_30_pm": "2:30 PM",
-    "2_4_hours": "2–4 hours",
+    "2_4_hours": "2â€“4 hours",
     "30_minutes": "30 minutes",
     "3_00_pm": "3:00 PM",
     "4_digit_start_pin": "4-digit start PIN",
@@ -723,7 +723,7 @@
     "almost_there": "Almost There!",
     "and_more_tips": "and more tips!",
     "any_concerns": "Any concerns?",
-    "anything_else_you_d_like_to_share": "Anything else you'd like to share…",
+    "anything_else_you_d_like_to_share": "Anything else you'd like to shareâ€¦",
     "area": "Area",
     "ask_the_customer_for_their": "Ask the customer for their",
     "ask_the_customer_to_show_their_booking_qr_code_or_tell_you_their": "Ask the customer to show their booking QR code or tell you their",
@@ -768,7 +768,7 @@
     "date_time": "DATE & TIME",
     "decline": "Decline",
     "deducted_from_next_payout": "deducted from next payout.",
-    "describe_your_reason": "Describe your reason…",
+    "describe_your_reason": "Describe your reasonâ€¦",
     "difference": "Difference",
     "digital_pass": "Digital Pass",
     "digital_session_pass": "Digital Session Pass",
@@ -793,9 +793,9 @@
     "full_address": "Full Address",
     "full_session_payment": "full session payment",
     "get_directions": "Get Directions",
-    "get_ready_your_session_is_coming_up": "Get ready — your session is coming up!",
+    "get_ready_your_session_is_coming_up": "Get ready â€” your session is coming up!",
     "go_back": "Go Back",
-    "go_back_1": "← Go back",
+    "go_back_1": "â† Go back",
     "go_to_home": "Go to Home",
     "great_job_you_ve_successfully_finished_your_session": "Great job! You've successfully finished your session",
     "high_accuracy": "High Accuracy",
@@ -828,7 +828,7 @@
     "no_incidents_or_complaints_on_record_for_this_customer": "No incidents or complaints on record for this customer.",
     "notes": "Notes",
     "of": "of",
-    "online": "● Online",
+    "online": "â— Online",
     "or": "OR",
     "our_team_is_reviewing_your_cancellation_request_this_usually_takes": "Our team is reviewing your cancellation request. This usually takes",
     "overall_mood": "Overall Mood",
@@ -841,7 +841,7 @@
     "pending_review": "Pending Review",
     "per_cobuddy_policy_you_are_entitled_to": "Per CoBuddy policy, you are entitled to",
     "platform_fee_20": "Platform Fee (20%)",
-    "please_add_any_additional_details_that_may_help_our_team": "Please add any additional details that may help our team…",
+    "please_add_any_additional_details_that_may_help_our_team": "Please add any additional details that may help our teamâ€¦",
     "please_rate_the_customer_to_help_keep_the_community_safe_and_improve_future_matches": "Please rate the customer to help keep the community safe and improve future matches.",
     "pre_arrival_checklist": "Pre-Arrival Checklist",
     "premium_entry": "PREMIUM ENTRY",
@@ -856,7 +856,7 @@
     "report_no_show": "Report No-Show",
     "request_extension": "Request Extension",
     "required_for_entry_at_premium_venues": "Required for entry at premium venues.",
-    "review_safety_guidelines": "📋 Review Safety Guidelines",
+    "review_safety_guidelines": "ðŸ“‹ Review Safety Guidelines",
     "safety": "Safety",
     "safety_bonus": "Safety Bonus",
     "safety_bonus_1": "Safety bonus",
@@ -886,7 +886,7 @@
     "session_prep_checklist": "Session Prep Checklist",
     "session_reminder": "Session Reminder",
     "session_summary": "Session Summary",
-    "session_time_reached": "⚠ Session time reached",
+    "session_time_reached": "âš  Session time reached",
     "sessions": "sessions",
     "sessions_1": "Sessions",
     "sessions_completed": "sessions completed",
@@ -905,14 +905,14 @@
     "take_a_venue_selfie_instead": "Take a Venue Selfie Instead",
     "tap_to_contact_emergency_services": "Tap to contact emergency services",
     "the": "The",
-    "these_notes_are_private_and_only_visible_to_you": "🔒 These notes are private and only visible to you.",
+    "these_notes_are_private_and_only_visible_to_you": "ðŸ”’ These notes are private and only visible to you.",
     "they_arrived_5_minutes_ago": "They arrived 5 minutes ago.",
     "this_chat_is_monitored_for_your_safety": "This chat is monitored for your safety",
     "tips": "Tips",
     "to_officially_begin_the_session": "to officially begin the session.",
-    "today": "• Today",
+    "today": "â€¢ Today",
     "total_earned": "Total Earned",
-    "type_a_message": "Type a message…",
+    "type_a_message": "Type a messageâ€¦",
     "upcoming_history": "Upcoming & history",
     "upcoming_session": "Upcoming Session",
     "venue": "VENUE",
@@ -948,7 +948,7 @@
     "your_session_start_time": "your session start time.",
     "your_trusted_contacts_can_see_your_location": "Your trusted contacts can see your location",
     "cancellation_customer_notified": "Customer will be notified immediately",
-    "cancellation_penalty": "₹200 penalty deducted from next payout",
+    "cancellation_penalty": "â‚¹200 penalty deducted from next payout",
     "cancellation_rate_updated": "Your cancellation rate will be updated"
   },
   "settings": {
@@ -960,7 +960,7 @@
     "account_security": "Account & Security",
     "after_a_change": "after a change.",
     "alerts_on": "alerts ON.",
-    "all_good_ready_to_update": "All good — ready to update.",
+    "all_good_ready_to_update": "All good â€” ready to update.",
     "and": "and",
     "and_confirmation_don_t_match": "and confirmation don't match.",
     "app_display_language": "App display language",
@@ -973,7 +973,7 @@
     "changing_app_language_requires_a_restart": "Changing app language requires a restart.",
     "choose_how_you_want_to_be_notified_we_recommend_keeping": "Choose how you want to be notified. We recommend keeping",
     "choose_the_language_for_the_cobuddy_app_interface": "Choose the language for the CoBuddy app interface.",
-    "cobuddy_companion": "· CoBuddy Companion",
+    "cobuddy_companion": "Â· CoBuddy Companion",
     "cobuddy_companion_v1_0_0_build_42": "CoBuddy Companion v1.0.0 (Build 42)",
     "confirm_deletion": "Confirm deletion",
     "contrast": "Contrast",
@@ -1057,11 +1057,11 @@
     "cobuddy": "CoBuddy",
     "companion_panel": "Companion Panel",
     "this_screen_will_be_implemented_in_the_next_phase": "This screen will be implemented in the next phase.",
-    "under_construction": "🔧 Under Construction"
+    "under_construction": "ðŸ”§ Under Construction"
   },
   "support": {
     "active_disputes": "Active Disputes",
-    "add_a_reply": "Add a reply…",
+    "add_a_reply": "Add a replyâ€¦",
     "add_attachment": "Add Attachment",
     "add_more_evidence": "Add More Evidence",
     "appeal_decision": "Appeal Decision",
@@ -1077,9 +1077,9 @@
     "dispute_center": "Dispute Center",
     "disputes_are_reviewed_within_5_business_days_keep_all_evidence_ready": "Disputes are reviewed within 5 business days. Keep all evidence ready.",
     "estimated_wait_2_mins": "Estimated wait: 2 mins",
-    "explain_why_you_think_the_decision_was_wrong": "Explain why you think the decision was wrong…",
-    "explain_your_dispute_in_detail": "Explain your dispute in detail…",
-    "explain_your_issue_in_detail": "Explain your issue in detail…",
+    "explain_why_you_think_the_decision_was_wrong": "Explain why you think the decision was wrongâ€¦",
+    "explain_your_dispute_in_detail": "Explain your dispute in detailâ€¦",
+    "explain_your_issue_in_detail": "Explain your issue in detailâ€¦",
     "file_new_dispute": "File New Dispute",
     "help_support": "Help & Support",
     "live_chat": "Live Chat",
@@ -1094,15 +1094,15 @@
     "quick_help": "Quick Help",
     "resolved": "Resolved",
     "safety_team_is_reviewing_your_case": "Safety team is reviewing your case",
-    "search_help_articles": "Search help articles…",
-    "session": "Session —",
+    "search_help_articles": "Search help articlesâ€¦",
+    "session": "Session â€”",
     "session_details": "Session Details",
     "subject": "Subject",
     "submitted": "Submitted:",
     "support_online": "Support Online",
     "ticket_submitted_successfully": "Ticket submitted successfully!",
     "timeline": "Timeline",
-    "type_a_message": "Type a message…",
+    "type_a_message": "Type a messageâ€¦",
     "under_review": "Under Review",
     "updated": "Updated",
     "was_this_helpful": "Was this helpful?",
@@ -1110,7 +1110,7 @@
     "submit_dispute": "Submit Dispute"
   },
   "system": {
-    "01_jul_2026_02_00_04_00_am_ist": "01 Jul 2026 · 02:00 – 04:00 AM IST",
+    "01_jul_2026_02_00_04_00_am_ist": "01 Jul 2026 Â· 02:00 â€“ 04:00 AM IST",
     "a_new_version_of_cobuddy_companion_is_available_please_update_to_continue_accepting_bookings_and_accessing_new_features": "A new version of CoBuddy Companion is available. Please update to continue accepting bookings and accessing new features.",
     "approximately_2_hours": "Approximately 2 hours",
     "check_status_page": "Check Status Page",
@@ -1124,7 +1124,7 @@
     "try_toggling_airplane_mode_switching_between_wi_fi_and_mobile_data_or_restarting_the_app": "Try toggling Airplane Mode, switching between Wi-Fi and mobile data, or restarting the app.",
     "update_now": "Update Now",
     "update_required": "Update Required",
-    "update_size_18_mb_free_no_data_will_be_lost": "Update size: ~18 MB · Free · No data will be lost",
+    "update_size_18_mb_free_no_data_will_be_lost": "Update size: ~18 MB Â· Free Â· No data will be lost",
     "v2_4_1": "v2.4.1",
     "v2_5_0": "v2.5.0",
     "we_ll_be_right_back": "We'll be right back!",
@@ -1157,7 +1157,7 @@
     "application_readiness": "APPLICATION READINESS",
     "incomplete_required_items": "INCOMPLETE REQUIRED ITEMS",
     "tap_any_item_below_to_complete_it_you_must_finish_all_required_items_before_submitting": "Tap any item below to complete it. You must finish all required items before submitting.",
-    "all_required_items_complete_ready_to_submit": "All required items complete � ready to submit",
+    "all_required_items_complete_ready_to_submit": "All required items complete ï¿½ ready to submit",
     "complete": "Complete",
     "confirmed": "confirmed",
     "account": "Account",
@@ -1186,10 +1186,10 @@
     "change": "Change",
     "upload_id_images": "UPLOAD ID IMAGES",
     "secure_document_handling": "Secure document handling",
-    "checking_liveness": "Checking liveness…",
+    "checking_liveness": "Checking livenessâ€¦",
     "turn_your_head_slightly_left_keep_your_face_inside_the_frame": "Turn your head slightly left. Keep your face inside the frame.",
     "live_check_complete": "Live Check Complete",
-    "checking": "Checking…",
+    "checking": "Checkingâ€¦",
     "continue_to_address_verification": "Continue to Address Verification",
     "pan_details": "PAN DETAILS",
     "gst_optional": "GST (OPTIONAL)",
@@ -1206,7 +1206,7 @@
     "profile_corrections_needed": "Profile Corrections Needed",
     "cobuddy_has_reviewed_your_profile_and_identified_sections_that_need_to_be_updated_before_approval": "CoBuddy has reviewed your profile and identified sections that need to be updated before approval.",
     "sections_to_fix": "SECTIONS TO FIX",
-    "update_each_section_below_only_these_sections_need_correction_your_other_profile_data_is_unaffected": "Update each section below. Only these sections need correction — your other profile data is unaffected.",
+    "update_each_section_below_only_these_sections_need_correction_your_other_profile_data_is_unaffected": "Update each section below. Only these sections need correction â€” your other profile data is unaffected.",
     "no_specific_sections_flagged_contact_cobuddy_support_for_details": "No specific sections flagged. Contact CoBuddy Support for details.",
     "your_existing_profile_is_still_active": "Your existing profile is still active",
     "only_the_sections_listed_above_need_updating_your_approved_profile_remains_unchanged_until_the_corrected_version_is_reviewed": "Only the sections listed above need updating. Your approved profile remains unchanged until the corrected version is reviewed.",
@@ -1217,7 +1217,7 @@
     "gallery": "Gallery",
     "a_valid_profile_photo_is_required_to_complete_this_correction": "A valid profile photo is required to complete this correction.",
     "save_amp_finish_later": "Save &amp; Finish Later",
-    "dev_bypass_skip_to_main_app": "⚙ DEV BYPASS: Skip to Main App",
+    "dev_bypass_skip_to_main_app": "âš™ DEV BYPASS: Skip to Main App",
     "approved_public_venues_only": "Approved public venues only",
     "selected": "selected",
     "update_id_images": "UPDATE ID IMAGES",
@@ -1254,7 +1254,7 @@
     "complete_these_profile_sections_before_c": "Complete these profile sections before continuing to safety and background details.",
     "after_completing_your_profile_details_yo": "After completing your profile details, you will move to safety declaration and background checks.",
     "cobuddy_has_reviewed_your_profile_and_id": "CoBuddy has reviewed your profile and identified sections that need to be updated before approval.",
-    "update_each_section_below_only_these_sec": "Update each section below. Only these sections need correction — your other profile data is unaffected.",
+    "update_each_section_below_only_these_sec": "Update each section below. Only these sections need correction â€” your other profile data is unaffected.",
     "no_specific_sections_flagged_contact_cob": "No specific sections flagged. Contact CoBuddy Support for details.",
     "only_the_sections_listed_above_need_upda": "Only the sections listed above need updating. Your approved profile remains unchanged until the corrected version is reviewed.",
     "complete_all_corrections_above_to_contin": "Complete all corrections above to continue.",
@@ -1264,7 +1264,7 @@
     "refresh": "refresh",
     "adding_address_proof_may_help_speed_up_v": "Adding address proof may help speed up verification, but it is not required to continue.",
     "tap_any_item_below_to_complete_it_you_mu": "Tap any item below to complete it. You must finish all required items before submitting.",
-    "all_required_items_complete_ready_to_sub": "All required items complete � ready to submit",
+    "all_required_items_complete_ready_to_sub": "All required items complete ï¿½ ready to submit",
     "select_your_city_first_to_choose_broad_s": "Select your city first to choose broad service areas.",
     "choose_a_professional_rate_for_verified": "Choose a professional rate for verified public experiences. Pricing is reviewed before your profile goes live.",
     "set_your_standard_price_for_a_verified_p": "Set your standard price for a verified public companion session.",
@@ -1295,14 +1295,14 @@
     "expired_requests": "Expired Requests",
     "expired": "Expired",
     "with": "with",
-    "not_accepted_in_time": "— not accepted in time",
+    "not_accepted_in_time": "â€” not accepted in time",
     "tap_to_view_details": "Tap to view details",
     "govt_id_confirmed_by_cobuddy": "Govt. ID confirmed by CoBuddy",
     "agreed_to_cobuddy_code_of_conduct": "Agreed to CoBuddy Code of Conduct",
     "mobile_number_verified": "Mobile number verified",
     "confirm_booking": "Confirm Booking",
     "request_not_found": "Request not found",
-    "go_back": "← Go back",
+    "go_back": "â† Go back",
     "by_accepting_you_commit_to_this_session": "By accepting, you commit to this session. Cancellations after acceptance\n            will affect your trust score.",
     "booking_summary": "Booking Summary",
     "your_earnings": "Your Earnings",
@@ -1335,7 +1335,7 @@
     "booking_requests": "Booking Requests",
     "no_pending_requests": "No Pending Requests",
     "you_have_caught_up_on_all_your_booking_r": "You have caught up on all your booking requests. Nice work!",
-    "while_you_wait": "While you wait…",
+    "while_you_wait": "While you waitâ€¦",
     "manage_availability": "Manage Availability",
     "filter_requests": "Filter Requests",
     "sort_by": "Sort By",
@@ -1366,7 +1366,7 @@
     "to_boost_your_acceptance_rate_and_visibi": "to boost\n            your acceptance rate and visibility.",
     "message_unavailable": "Message Unavailable",
     "request_detail": "Request Detail",
-    "min_review_quickly_to_confirm": "min — review quickly to confirm",
+    "min_review_quickly_to_confirm": "min â€” review quickly to confirm",
     "verified_member": "Verified Member",
     "match": "match",
     "id_verified": "ID Verified",
@@ -1392,9 +1392,9 @@
     "start": "Start",
     "end": "End",
     "message_to_customer": "Message to Customer",
-    "optional_message_to_customer": "Optional message to customer…",
+    "optional_message_to_customer": "Optional message to customerâ€¦",
     "send_suggestion": "Send Suggestion",
-    "languages_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "languages_section_badge": "Phase 1 of 4  Â·  Profile Setup",
     "languages_headline": "Select Your Spoken Languages",
     "languages_subheadline": "Choose the languages you're comfortable using during customer conversations and verified public experiences.",
     "languages_title": "Languages You Speak",
@@ -1410,7 +1410,7 @@
     "languages_cta_primary": "Save Languages & Continue",
     "languages_required_alert_title": "Language Required",
     "languages_required_alert_body": "Please select at least one language.",
-    "interests_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "interests_section_badge": "Phase 1 of 4  Â·  Profile Setup",
     "interests_headline": "Interests & Personality",
     "interests_subheadline": "Add tags that describe your personality and interests. These help customers find companions who match their activity preferences.",
     "interests_comm_title": "Communication Style",
@@ -1438,14 +1438,14 @@
     "interests_tag_history_heritage": "History & Heritage",
     "interests_tag_photography": "Photography",
     "interests_tag_music_concerts": "Music & Concerts",
-    "city_service_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "city_service_section_badge": "Phase 1 of 4  Â·  Profile Setup",
     "city_service_headline": "City & Service Area",
     "city_service_subheadline": "Share which city and broad areas you are available to meet customers. Your exact residential location is never shown to customers.",
     "city_service_city_label": "Your City",
     "city_service_city_placeholder": "Select your city",
     "city_service_area_label": "Broad Service Areas",
     "city_service_area_sublabel": "Select the neighbourhoods or districts where you are comfortable meeting customers.",
-    "city_service_area_hint": "At least 1 area required. Maximum 8 areas. Broad areas only — not your exact address.",
+    "city_service_area_hint": "At least 1 area required. Maximum 8 areas. Broad areas only â€” not your exact address.",
     "city_service_area_count_label": "{count} / {max} areas selected",
     "city_service_privacy_note": "Only your selected city and broad service areas are used for matching. Your exact residential location is never shown to customers.",
     "city_service_travel_label": "Willing to travel within city?",
@@ -1453,7 +1453,7 @@
     "city_service_travel_opt_no": "Prefer my local areas only",
     "city_service_cta_primary": "Save & Continue",
     "city_service_disabled_tip_area": "Select at least 1 broad service area.",
-    "bank_verification_section_badge": "Phase 3 of 4  ·  Financial Setup",
+    "bank_verification_section_badge": "Phase 3 of 4  Â·  Financial Setup",
     "bank_verification_headline": "Bank Verification In Progress",
     "bank_verification_subheadline": "CoBuddy is verifying your payout bank account before enabling secure earnings transfers.",
     "bank_verification_step_submitted": "Bank details submitted",
@@ -1465,7 +1465,7 @@
     "bank_verification_security_warning": "Do not share OTP, PIN, card details, or passwords. CoBuddy never asks for them.",
     "bank_verification_pending_status": "Verification pending",
     "bank_verification_cta_continue": "Continue Setup",
-    "category_cafe_conversation": "Café Conversation",
+    "category_cafe_conversation": "CafÃ© Conversation",
     "category_city_walk": "City Walk",
     "category_art_culture": "Art & Culture",
     "category_food_experience": "Food Experience",
@@ -1529,14 +1529,14 @@
       },
       "JourneyIntroContent": {
         "HEADLINE": "Your Companion Journey",
-        "SUBHEADLINE": "A verified companion application. Complete at your own pace — your progress is saved for this session.",
+        "SUBHEADLINE": "A verified companion application. Complete at your own pace â€” your progress is saved for this session.",
         "SECTION_TITLE": "Application Overview",
         "SECTION_BODY": "Your application has four phases. Each phase covers a different part of your profile. You can move back and forth freely and resume any saved progress.",
         "PRIVACY_NOTE": "Your information is encrypted and used only for verification. It is never shared with customers.",
         "SAVE_NOTE": "Progress is saved during your current session. Complete submission when you are ready.",
         "CTA_PRIMARY": "Begin Application",
         "CTA_SECONDARY": "Continue Saved Draft",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "PHASE_LABELS": [
           {
             "phase": "Profile Setup",
@@ -1561,9 +1561,9 @@
         "SUBHEADLINE": "Before you begin, please confirm you meet all requirements to apply as a CoBuddy Companion.",
         "SECTION_TITLE": "Eligibility Requirements",
         "SECTION_BODY": "All five confirmations are required to proceed. If you do not meet any requirement, you will not be able to complete the application at this time.",
-        "CTA_PRIMARY": "I Confirm — Continue",
+        "CTA_PRIMARY": "I Confirm â€” Continue",
         "CTA_DISABLED_TIP": "Please confirm all requirements to continue.",
-        "BADGE_LABEL": "Phase 1 of 4  ·  Profile Setup",
+        "BADGE_LABEL": "Phase 1 of 4  Â·  Profile Setup",
         "CONFIRMATIONS": [
           {
             "id": "age",
@@ -1581,7 +1581,7 @@
             "id": "conduct",
             "icon": "people",
             "label": "I will maintain professional, non-romantic conduct at all times.",
-            "note": "CoBuddy provides verified social experiences — not dating or romantic services."
+            "note": "CoBuddy provides verified social experiences â€” not dating or romantic services."
           },
           {
             "id": "in_app",
@@ -1623,7 +1623,7 @@
         ],
         "PRIVACY_NOTE": "Your legal name and date of birth are encrypted and used only for verification. They are never visible to customers.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "SECTION_IDENTITY_TITLE": "Identity Details",
         "SECTION_IDENTITY_SUB": "Used for verification only. Not visible to customers.",
         "SECTION_CONTACT_TITLE": "Contact & Date of Birth",
@@ -1643,12 +1643,12 @@
         "HEADLINE": "Write Your Professional Bio",
         "SUBHEADLINE": "Your bio is the first thing a customer reads about you. Keep it professional, genuine, and focused on your interests and experiences.",
         "BIO_LABEL": "Professional Introduction",
-        "BIO_PLACEHOLDER": "Tell customers about your interests, the activities you enjoy, and what makes you a great companion for public social experiences. For example: your favourite café activities, cultural interests, or city knowledge.",
+        "BIO_PLACEHOLDER": "Tell customers about your interests, the activities you enjoy, and what makes you a great companion for public social experiences. For example: your favourite cafÃ© activities, cultural interests, or city knowledge.",
         "CHAR_HINT": "{current} / {max} characters",
         "GUIDELINES_TITLE": "Writing Guidelines",
         "BLOCKED_NOTICE": "Your bio contains content that does not meet CoBuddy professional standards. Please keep your bio focused on public social activities.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "CHAR_MIN": 50,
         "CHAR_MAX": 500,
         "GUIDELINES": [
@@ -1662,7 +1662,7 @@
           },
           {
             "icon": "check_circle",
-            "text": "Use a warm, professional tone — as if introducing yourself to a new colleague."
+            "text": "Use a warm, professional tone â€” as if introducing yourself to a new colleague."
           },
           {
             "icon": "cancel",
@@ -1685,7 +1685,7 @@
         "SECTION_BODY": "This declaration ensures CoBuddy maintains a safe, professional platform for both companions and customers. All statements must be true and confirmed.",
         "LEGAL_NOTE": "This declaration is part of your verified companion agreement with CoBuddy.",
         "CTA_PRIMARY": "Confirm Declaration & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "DECLARATIONS": [
           {
             "id": "accurate_info",
@@ -1728,12 +1728,12 @@
         "SELECTION_COUNT_LABEL": "{count} selected",
         "APPROVED_NOTE": "All categories take place at approved public venues only.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "CATEGORIES": [
           {
             "id": "cafe",
             "icon": "local-cafe",
-            "label": "Café Conversations"
+            "label": "CafÃ© Conversations"
           },
           {
             "id": "city_walks",
@@ -1792,7 +1792,7 @@
         "SELECTION_COUNT_LABEL": "{count} / {max} selected",
         "SAFETY_NOTE": "Tags must reflect professional interests only. Romantic, appearance-based, or suggestive tags are not permitted.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "COMM_TAGS": [
           {
             "id": "great_listener",
@@ -1895,9 +1895,9 @@
         ],
         "TIME_TITLE": "Preferred Time Range",
         "FREQ_TITLE": "Weekly Session Frequency",
-        "VENUE_NOTE": "All sessions take place at approved public venues only. Work preferences help with scheduling — not service type.",
+        "VENUE_NOTE": "All sessions take place at approved public venues only. Work preferences help with scheduling â€” not service type.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "DURATION_OPTIONS": [
           {
             "id": "1h",
@@ -1920,27 +1920,27 @@
           {
             "id": "morning",
             "label": "Morning",
-            "sub": "8 AM – 12 PM"
+            "sub": "8 AM â€“ 12 PM"
           },
           {
             "id": "afternoon",
             "label": "Afternoon",
-            "sub": "12 PM – 5 PM"
+            "sub": "12 PM â€“ 5 PM"
           },
           {
             "id": "evening",
             "label": "Evening",
-            "sub": "5 PM – 9 PM"
+            "sub": "5 PM â€“ 9 PM"
           }
         ],
         "FREQ_OPTIONS": [
           {
             "id": "1-2",
-            "label": "1–2 sessions"
+            "label": "1â€“2 sessions"
           },
           {
             "id": "3-5",
-            "label": "3–5 sessions"
+            "label": "3â€“5 sessions"
           },
           {
             "id": "any",
@@ -2100,16 +2100,16 @@
         "CITY_PLACEHOLDER": "Select your city",
         "AREA_LABEL": "Broad Service Areas",
         "AREA_SUBLABEL": "Select the neighbourhoods or districts where you are comfortable meeting customers.",
-        "AREA_HINT": "At least 1 area required. Maximum 8 areas. Broad areas only — not your exact address.",
+        "AREA_HINT": "At least 1 area required. Maximum 8 areas. Broad areas only â€” not your exact address.",
         "AREA_COUNT_LABEL": "{count} / {max} areas selected",
         "PRIVACY_NOTE": "Only your selected city and broad service areas are used for matching. Your exact residential location is never shown to customers.",
         "TRAVEL_LABEL": "Willing to travel within city?",
         "TRAVEL_OPTIONS": [
-          "Yes — within the city",
+          "Yes â€” within the city",
           "Only my selected areas"
         ],
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "CITY_OPTIONS": null,
         "BROAD_AREA_MIN": 1,
         "BROAD_AREA_MAX": 8
@@ -2125,7 +2125,7 @@
         "ACCESSIBILITY_PLACEHOLDER": "E.g. prefer step-free venues, need quiet spaces (optional)",
         "PRIVACY_NOTE": "These preferences help with matching only. They do not change CoBuddy's safety or venue requirements.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "COMM_OPTIONS": [
           {
             "id": "chatty",
@@ -2134,7 +2134,7 @@
           },
           {
             "id": "balanced",
-            "label": "Balanced — talk & listen",
+            "label": "Balanced â€” talk & listen",
             "icon": "compare-arrows"
           },
           {
@@ -2167,7 +2167,7 @@
           },
           {
             "id": "small_group",
-            "label": "Small group (3–5 people)"
+            "label": "Small group (3â€“5 people)"
           },
           {
             "id": "any",
@@ -2183,12 +2183,12 @@
         "MIN_HINT": "Select at least 1 venue type to continue.",
         "APPROVED_NOTE": "All venues are verified and approved by CoBuddy. Customers can only book sessions at venues on the approved list.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "VENUES": [
           {
             "id": "cafe",
             "icon": "local-cafe",
-            "label": "Café"
+            "label": "CafÃ©"
           },
           {
             "id": "restaurant",
@@ -2260,10 +2260,10 @@
         "COMPANION_RIGHTS_SUBTITLE": "CoBuddy guarantees these protections for every verified companion.",
         "ACCEPTANCE_LABEL": "I have read and accept these boundaries and safety rules as a condition of my CoBuddy Companion application.",
         "LEGAL_NOTE": "This acknowledgement is recorded as part of your verified companion agreement.",
-        "SAFETY_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SAFETY_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "CTA_PRIMARY": "Accept & Continue",
         "CTA_DISABLED_TIP": "Please read and accept the boundaries and safety rules to continue.",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "PLATFORM_RULES": [
           {
             "icon": "store",
@@ -2272,7 +2272,7 @@
           },
           {
             "icon": "block",
-            "label": "No private meetings — homes, hotels, or isolated locations",
+            "label": "No private meetings â€” homes, hotels, or isolated locations",
             "locked": true
           },
           {
@@ -2315,14 +2315,14 @@
         ]
       },
       "CompanionPricingContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  Â·  Financial Setup",
         "HEADLINE": "Set Your Session Rate",
         "SUBHEADLINE": "Choose a fair hourly rate for verified public companion sessions. Rates are reviewed by CoBuddy before your profile goes live.",
-        "RATE_LABEL": "Hourly Rate (₹ INR)",
-        "RATE_PLACEHOLDER": "₹1,200",
+        "RATE_LABEL": "Hourly Rate (â‚¹ INR)",
+        "RATE_PLACEHOLDER": "â‚¹1,200",
         "DURATION_LABEL": "Default Session Duration",
-        "MIN_RATE_NOTE": "Minimum session rate: ₹800/hour",
-        "SUGGESTED_RANGE": "Suggested range: ₹800–₹2,000 based on similar companions in your city.",
+        "MIN_RATE_NOTE": "Minimum session rate: â‚¹200/hour",
+        "SUGGESTED_RANGE": "Suggested range: â‚¹200â€“â‚¹2,000 based on similar companions in your city.",
         "REVIEW_NOTE": "Your rate will be reviewed by CoBuddy before it goes live on your profile.",
         "FEE_NOTE": "CoBuddy deducts a small service fee per session. This is shown transparently in your earnings breakdown.",
         "EARNINGS_PREVIEW_TITLE": "Estimated Earnings Preview",
@@ -2356,21 +2356,21 @@
         ]
       },
       "NATIVE_SCRIPTS": {
-        "Hindi": "अ",
+        "Hindi": "à¤…",
         "English": "A",
-        "Hinglish": "A/अ",
-        "Marathi": "म",
-        "Gujarati": "અ",
-        "Punjabi": "ਅ",
-        "Bengali": "অ",
-        "Tamil": "அ",
-        "Telugu": "అ",
-        "Kannada": "ಅ",
-        "Malayalam": "അ",
-        "Urdu": "ا"
+        "Hinglish": "A/à¤…",
+        "Marathi": "à¤®",
+        "Gujarati": "àª…",
+        "Punjabi": "à¨…",
+        "Bengali": "à¦…",
+        "Tamil": "à®…",
+        "Telugu": "à°…",
+        "Kannada": "à²…",
+        "Malayalam": "à´…",
+        "Urdu": "Ø§"
       },
       "LanguagesSelectionContent": {
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "HEADLINE": "Select Your Spoken Languages",
         "SUBHEADLINE": "Choose the languages you're comfortable using during customer conversations and verified public experiences.",
         "LANGUAGES_TITLE": "Languages You Speak",
@@ -2386,7 +2386,7 @@
         "COMFORT_OPTIONS": null
       },
       "ProfilePhotoUploadContent": {
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  Â·  Profile Setup",
         "HEADLINE": "Upload Your Profile Photo",
         "SUBHEADLINE": "Add a clear, professional photo that helps customers recognise and trust your companion profile.",
         "PHOTO_STANDARDS_TITLE": "Photo Standards",
@@ -2403,7 +2403,7 @@
           },
           {
             "icon": "light-mode",
-            "text": "Good lighting — natural or well-lit environment."
+            "text": "Good lighting â€” natural or well-lit environment."
           },
           {
             "icon": "work",
@@ -2416,7 +2416,7 @@
         ]
       },
       "GovernmentIDTypeContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Choose Your Government ID",
         "SUBHEADLINE": "Select the identity document you want to use for companion verification.",
         "PROMPT_NOTE": "Make sure your selected ID is clear, valid, and matches your basic profile details.",
@@ -2429,7 +2429,7 @@
         "ID_OPTIONS": null
       },
       "GovernmentIDUploadContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Upload Your Government ID",
         "SUBHEADLINE": "Upload a clear image of your selected ID so CoBuddy can verify your identity safely.",
         "FRONT_LABEL": "Front side",
@@ -2444,7 +2444,7 @@
         "UPLOAD_GUIDELINES": null
       },
       "SelfieCaptureContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Capture Your Selfie",
         "SUBHEADLINE": "Take a clear selfie so CoBuddy can verify that your face matches your submitted identity details.",
         "SELFIE_GUIDELINES_TITLE": "Selfie Guidelines",
@@ -2475,7 +2475,7 @@
         ]
       },
       "LivenessDetectionContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Complete Live Face Check",
         "SUBHEADLINE": "Follow the on-screen instruction so CoBuddy can confirm your selfie is live and secure.",
         "INSTRUCTIONS_TITLE": "Live Check Instructions",
@@ -2501,11 +2501,11 @@
         ]
       },
       "AddressVerificationContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Verify Your Address",
         "SUBHEADLINE": "Add your current residential address so CoBuddy can complete trust, safety, and compliance checks.",
         "PRIVACY_BADGE": "Your address is never shared with customers",
-        "PRIVACY_NOTE": "We use your address only to verify your service area. Customers see only your city and general area — never your exact address.",
+        "PRIVACY_NOTE": "We use your address only to verify your service area. Customers see only your city and general area â€” never your exact address.",
         "PURPOSE_NOTE": "This is used for city and area matching during booking. It is reviewed only by CoBuddy's verification team.",
         "ADDRESS_TITLE": "Current Residential Address",
         "LINE1_LABEL": "Address Line 1",
@@ -2529,7 +2529,7 @@
         "TYPE_OPTIONS": null
       },
       "PANTaxDetailsContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  Â·  Identity & Documents",
         "HEADLINE": "Add PAN & Tax Details",
         "SUBHEADLINE": "Provide your PAN information so CoBuddy can support earnings, payout records, and compliance requirements.",
         "REQUIRED_FOR": "Required for payouts",
@@ -2542,7 +2542,7 @@
         "RESIDENCY_LABEL": "Tax Residency",
         "RESIDENCY_DEFAULT": "India",
         "GST_TOGGLE_LABEL": "I have GST registration",
-        "GST_HINT": "Optional for most companions. Required only if you earn above ₹20 lakh/year.",
+        "GST_HINT": "Optional for most companions. Required only if you earn above â‚¹20 lakh/year.",
         "GST_LABEL": "GST Number",
         "GST_PLACEHOLDER": "e.g. 22ABCDE1234F1Z5",
         "CONFIRMATION_LABEL": "I confirm that the PAN and tax details provided are accurate and belong to me.",
@@ -2552,7 +2552,7 @@
         "CTA_SAVE_LATER": "Save & Continue Later"
       },
       "AddBankAccountContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  Â·  Financial Setup",
         "HEADLINE": "Add Verified Bank Account",
         "SUBHEADLINE": "Add your bank account for receiving CoBuddy companion earnings securely.",
         "ACCOUNT_TITLE": "Bank Account Details",
@@ -2581,7 +2581,7 @@
         "TYPE_OPTIONS": null
       },
       "BankAccountVerificationContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  Â·  Financial Setup",
         "HEADLINE": "Bank Verification In Progress",
         "SUBHEADLINE": "CoBuddy is verifying your payout bank account before enabling secure earnings transfers.",
         "SLA_NOTE": "Usually completed within a few minutes to 24 hours.",
@@ -2592,7 +2592,7 @@
         "STEPS": null
       },
       "UPIDetailsContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  Â·  Financial Setup",
         "HEADLINE": "UPI for Payout Disbursement",
         "SUBHEADLINE": "Add a UPI ID where CoBuddy can send your verified companion earnings securely after payout approval.",
         "OPTIONAL_NOTE": "UPI is optional if you have already added a verified bank account.",
@@ -2627,7 +2627,7 @@
         "SECTION_BADGE": "Identity & Documents",
         "START_HINT": "Tap a step below to begin or resume. Completed steps are locked.",
         "PRIVACY_NOTE": "Your documents are encrypted and used only for verification. They are never shared with customers.",
-        "BOTTOM_NOTE": "Verification typically takes 1–3 business days after all steps are complete.",
+        "BOTTOM_NOTE": "Verification typically takes 1â€“3 business days after all steps are complete.",
         "CTA_START": "Begin Verification",
         "CTA_SAVE_LATER": "Save & Continue Later",
         "CTA_PRIMARY": "Continue",
@@ -2636,8 +2636,8 @@
       "ProfileSetupIntroContent": {
         "HEADLINE": "Build Your Companion Profile",
         "SUBHEADLINE": "Complete the following steps to create your companion profile.",
-        "SETUP_BADGE": "Phase 1 of 4 · Profile Setup",
-        "SECTION_BADGE": "Phase 1 of 4 · Profile Setup",
+        "SETUP_BADGE": "Phase 1 of 4 Â· Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4 Â· Profile Setup",
         "SETUP_JOURNEY_TITLE": "Your Profile Journey",
         "SETUP_JOURNEY_NOTE": "Complete each step to build a complete and professional companion profile.",
         "REVIEW_NOTE": "You can save your progress at any time and continue later.",
@@ -2672,14 +2672,14 @@
       "ProfileCompletionChecklistContent": {
         "HEADLINE": "Application Checklist",
         "SUBHEADLINE": "All items must be complete before you can submit.",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  Â·  Review & Submit",
         "CTA_PRIMARY": "Submit for Review",
         "CTA_SECONDARY": "Continue Editing"
       },
       "ApplicationSavedDraftContent": {
         "HEADLINE": "Progress Saved",
         "SUBHEADLINE": "Your application has been saved. You can return and continue any time.",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  Â·  Review & Submit",
         "SAVE_BADGE": "Draft Saved",
         "PROGRESS_TITLE": "Completed Steps",
         "NEXT_STEP_TITLE": "Next Step",
@@ -2695,8 +2695,8 @@
       "ApplicationProgressContent": {
         "HEADLINE": "Your Application",
         "SUBHEADLINE": "Track your progress across all application phases.",
-        "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "STEP_LABEL": "Phase 4 of 4  Â·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  Â·  Review & Submit",
         "PROGRESS_TITLE": "Application Progress",
         "NEXT_STEP_NOTE": "Complete all required sections before you can submit your profile for review.",
         "COMPLETED_TITLE": "Completed Sections",
@@ -2731,9 +2731,9 @@
       },
       "ApplicationReviewInfoContent": {
         "HEADLINE": "What Happens Next",
-        "SUBHEADLINE": "Your application will be reviewed by the CoBuddy team within 3–5 business days.",
-        "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SUBHEADLINE": "Your application will be reviewed by the CoBuddy team within 3â€“5 business days.",
+        "STEP_LABEL": "Phase 4 of 4  Â·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  Â·  Review & Submit",
         "REVIEW_TITLE": "Review Checklist",
         "PRIVACY_NOTE": "All submitted data is encrypted. Documents are used only for verification and never shared with clients.",
         "CTA_BEGIN": "Submit for Review",
@@ -2769,8 +2769,8 @@
       "SubmitProfileForApprovalContent": {
         "HEADLINE": "Submit Your Application",
         "SUBHEADLINE": "By submitting, you confirm that all information provided is accurate and complete.",
-        "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "STEP_LABEL": "Phase 4 of 4  Â·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  Â·  Review & Submit",
         "SUMMARY_TITLE": "Application Summary",
         "CHECKLIST_TITLE": "Pre-submission Checklist",
         "CHECKLIST_ITEMS": [
@@ -2809,12 +2809,12 @@
         "REQUIRED_ITEMS": [
           {
             "icon": "badge",
-            "label": "Government ID — Front",
+            "label": "Government ID â€” Front",
             "required": true
           },
           {
             "icon": "flip-camera-android",
-            "label": "Government ID — Back",
+            "label": "Government ID â€” Back",
             "required": true
           },
           {
@@ -2844,7 +2844,7 @@
       "VerificationPendingContent": {
         "STATUS_BADGE": "Under Review",
         "HEADLINE": "Verification In Progress",
-        "SUBHEADLINE": "Your documents have been submitted and are being reviewed. This typically takes 1–3 business days.",
+        "SUBHEADLINE": "Your documents have been submitted and are being reviewed. This typically takes 1â€“3 business days.",
         "SUBMITTED_TITLE": "Submitted Steps",
         "SUBMITTED_STEPS": [
           "Government ID uploaded",
@@ -3128,7 +3128,7 @@
         "PANEL_LABEL": "Companion",
         "TAGLINE": "Verified Social Experiences",
         "VERIFIED_PLATFORM": "Verified Companion Partner Platform",
-        "TRUST_LINE": "SAFE • VERIFIED • PROFESSIONAL"
+        "TRUST_LINE": "SAFE â€¢ VERIFIED â€¢ PROFESSIONAL"
       },
       "PhoneLoginContent": {
         "HEADLINE": "Welcome Back",
@@ -3136,7 +3136,7 @@
         "PHONE_LABEL": "Mobile Number",
         "PHONE_PLACEHOLDER": "98765 43210",
         "COUNTRY_CODE": "+91",
-        "COUNTRY_FLAG": "🇮🇳",
+        "COUNTRY_FLAG": "ðŸ‡®ðŸ‡³",
         "COUNTRY_NAME": "India",
         "CTA_PRIMARY": "Send OTP",
         "FOOTER_NOTE": "We'll send a 6-digit OTP to verify your number.",
@@ -3153,7 +3153,7 @@
       "OTPContent": {
         "HEADLINE": "Verify Your Number",
         "SUBHEADLINE": "We've sent a 6-digit OTP to",
-        "MASKED_EXAMPLE": "+91 ••••••7890",
+        "MASKED_EXAMPLE": "+91 â€¢â€¢â€¢â€¢â€¢â€¢7890",
         "RESEND_LABEL": "Resend OTP",
         "RESEND_TIMER": "Resend in {seconds}s",
         "CHANGE_NUMBER": "Change number",
@@ -3175,7 +3175,7 @@
         "LANGUAGES": [
           {
             "code": "hi",
-            "label": "हिंदी",
+            "label": "à¤¹à¤¿à¤‚à¤¦à¥€",
             "nativeLabel": "Hindi"
           },
           {
@@ -3185,37 +3185,37 @@
           },
           {
             "code": "mr",
-            "label": "मराठी",
+            "label": "à¤®à¤°à¤¾à¤ à¥€",
             "nativeLabel": "Marathi"
           },
           {
             "code": "gu",
-            "label": "ગુજરાતી",
+            "label": "àª—à«àªœàª°àª¾àª¤à«€",
             "nativeLabel": "Gujarati"
           },
           {
             "code": "pa",
-            "label": "ਪੰਜਾਬੀ",
+            "label": "à¨ªà©°à¨œà¨¾à¨¬à©€",
             "nativeLabel": "Punjabi"
           },
           {
             "code": "ta",
-            "label": "தமிழ்",
+            "label": "à®¤à®®à®¿à®´à¯",
             "nativeLabel": "Tamil"
           },
           {
             "code": "te",
-            "label": "తెలుగు",
+            "label": "à°¤à±†à°²à±à°—à±",
             "nativeLabel": "Telugu"
           },
           {
             "code": "kn",
-            "label": "ಕನ್ನಡ",
+            "label": "à²•à²¨à³à²¨à²¡",
             "nativeLabel": "Kannada"
           },
           {
             "code": "bn",
-            "label": "বাংলা",
+            "label": "à¦¬à¦¾à¦‚à¦²à¦¾",
             "nativeLabel": "Bengali"
           }
         ]
@@ -3281,7 +3281,7 @@
         "WHY_ENABLE": "WHY ENABLE BIOMETRIC ACCESS?",
         "STAYS_ON_DEVICE": "Your biometric data stays on your device",
         "BENEFIT_1_ICON": "fingerprint",
-        "BENEFIT_1": "Faster sign-in — no PIN needed every time",
+        "BENEFIT_1": "Faster sign-in â€” no PIN needed every time",
         "BENEFIT_2_ICON": "shield",
         "BENEFIT_2": "Your biometric data stays on your device",
         "BENEFIT_3_ICON": "security",
@@ -3301,7 +3301,7 @@
         "POINT_2_BODY": "Track your earnings, payouts, and session history in real time.",
         "POINT_3_ICON": "health-and-safety",
         "POINT_3_TITLE": "Safety Tools Built In",
-        "POINT_3_BODY": "SOS, safety timer, and trusted contacts — always accessible.",
+        "POINT_3_BODY": "SOS, safety timer, and trusted contacts â€” always accessible.",
         "CTA_PRIMARY": "Let's Begin"
       },
       "RoleConfirmContent": {
@@ -3328,7 +3328,7 @@
         "HEADLINE": "Terms & Community Standards",
         "SUBHEADLINE": "Please review and accept before continuing",
         "SECTION_1_TITLE": "What CoBuddy Is",
-        "SECTION_1_BODY": "CoBuddy is a platform for verified social experiences — trusted, public-only activity companionship. Every session takes place at a CoBuddy-approved public venue.",
+        "SECTION_1_BODY": "CoBuddy is a platform for verified social experiences â€” trusted, public-only activity companionship. Every session takes place at a CoBuddy-approved public venue.",
         "SECTION_2_TITLE": "What You Agree To",
         "SECTION_2_ITEMS": [
           "Conduct all sessions at approved public venues only",
@@ -3400,7 +3400,7 @@
           "06:00 PM"
         ],
         "repeating_weekly": "(repeating weekly)",
-        "repeating_weekly_1": "·  Repeating weekly"
+        "repeating_weekly_1": "Â·  Repeating weekly"
       },
       "AvailabilityCalendarScreen": {
         "40": "40%",
@@ -3475,7 +3475,7 @@
         "select_end_time": "Select End Time",
         "extended_leave_will_pause_all_incoming_r": "Extended leave will pause all incoming requests.",
         "your_availability_will_be_hidden_on_bloc": "Your availability will be hidden on blocked dates.",
-        "all_day_no_bookings_accepted": "All day — no bookings accepted",
+        "all_day_no_bookings_accepted": "All day â€” no bookings accepted",
         "block_a_specific_time_window": "Block a specific time window"
       },
       "EditAvailabilitySlotScreen": {
@@ -3545,8 +3545,8 @@
     },
     "dashboard": {
       "HomeDashboardScreen": {
-        "text": "₹",
-        "text_1": "•",
+        "text": "â‚¹",
+        "text_1": "â€¢",
         "safety_tools": "Safety tools",
         "live_location": "Live location",
         "cobuddy_support": "CoBuddy support",
@@ -3590,7 +3590,7 @@
             "tag": "Platform News",
             "tagColor": "#74B9FF",
             "title": "CoBuddy is now live in 5 new cities!",
-            "body": "We are expanding to Pune, Hyderabad, Chennai, Kolkata, and Ahmedabad. Refer a companion in these cities and earn ₹500 bonus.",
+            "body": "We are expanding to Pune, Hyderabad, Chennai, Kolkata, and Ahmedabad. Refer a companion in these cities and earn â‚¹500 bonus.",
             "date": "5 Jun",
             "url": "https://cobuddy.app/expansion"
           }
@@ -3650,13 +3650,13 @@
       },
       "TodayOverviewScreen": {
         "no_sessions_scheduled": "No sessions scheduled",
-        "no_sessions_today_update_availability_to": "No sessions today — update availability to get bookings!"
+        "no_sessions_today_update_availability_to": "No sessions today â€” update availability to get bookings!"
       },
       "NotificationCenterScreen": {}
     },
     "earnings": {
       "CompletedPayoutsScreen": {
-        "text": "₹"
+        "text": "â‚¹"
       },
       "DailyEarningsBreakdownScreen": {
         "date_labels": [
@@ -3670,7 +3670,7 @@
         ]
       },
       "EarningsDashboardScreen": {
-        "text": "₹",
+        "text": "â‚¹",
         "pending": "Pending",
         "history": "History",
         "tax_invoice": "Tax Invoice",
@@ -3695,10 +3695,10 @@
             "label": "Pending"
           }
         ],
-        "text": "₹"
+        "text": "â‚¹"
       },
       "PayoutRequestScreen": {
-        "text": "₹",
+        "text": "â‚¹",
         "max": "MAX",
         "transfer_fee": "Transfer Fee",
         "estimated_arrival": "Estimated Arrival",
@@ -3718,17 +3718,17 @@
           {
             "icon": "schedule",
             "label": "Est. Arrival",
-            "value": "Within 2–4 hours"
+            "value": "Within 2â€“4 hours"
           }
         ],
         "withdrawal_to_bank_account": "Withdrawal to Bank Account",
-        "processing": "Processing…"
+        "processing": "Processingâ€¦"
       },
       "PendingEarningsScreen": {
-        "text": "+₹"
+        "text": "+â‚¹"
       },
       "RefundPenaltyExplanationScreen": {
-        "150": "−₹150",
+        "150": "âˆ’â‚¹150",
         "rows": [
           {
             "label": "Session ID",
@@ -3748,7 +3748,7 @@
           },
           {
             "label": "Penalty Rate",
-            "value": "₹150 flat"
+            "value": "â‚¹150 flat"
           }
         ]
       },
@@ -3913,8 +3913,8 @@
         ]
       },
       "EditPricingScreen": {
-        "text": "₹",
-        "text_1": "−₹"
+        "text": "â‚¹",
+        "text_1": "âˆ’â‚¹"
       },
       "EditServiceAreasScreen": {
         "all_areas": [
@@ -3960,7 +3960,7 @@
         "no_changes": "No Changes"
       },
       "ReviewDetailScreen": {
-        "text": "•",
+        "text": "â€¢",
         "your_reply": "Your Reply",
         "reply_to_customer": "Reply to Customer",
         "report_submitted": "Report Submitted",
@@ -4010,7 +4010,7 @@
             }
           }
         ],
-        "completed": "Completed ✓"
+        "completed": "Completed âœ“"
       },
       "TrustScoreSummaryScreen": {
         "breakdown": [
@@ -4044,9 +4044,9 @@
         "shown_on_your_public_profile": "Shown on your public profile"
       },
       "EditBioScreen": {
-        "mention_2_3_specific_interests_e_g_love": "Mention 2–3 specific interests (e.g. \"love indie films and coffee\")",
+        "mention_2_3_specific_interests_e_g_love": "Mention 2â€“3 specific interests (e.g. \"love indie films and coffee\")",
         "state_what_kind_of_activities_you_enjoy": "State what kind of activities you enjoy with customers",
-        "keep_it_warm_and_personal_avoid_generic": "Keep it warm and personal — avoid generic phrases"
+        "keep_it_warm_and_personal_avoid_generic": "Keep it warm and personal â€” avoid generic phrases"
       },
       "EditPhotosScreen": {},
       "ProfilePreviewScreen": {
@@ -4068,9 +4068,9 @@
     },
     "requests": {
       "BookingAcceptConfirmationScreen": {
-        "text": "₹",
-        "text_1": "⭐",
-        "text_2": "·",
+        "text": "â‚¹",
+        "text_1": "â­",
+        "text_2": "Â·",
         "activity": "Activity",
         "date_time": "Date & Time",
         "location": "Location",
@@ -4091,7 +4091,7 @@
         "experience_categories": [
           {
             "id": "cafe_conversation",
-            "label": "Café Talk",
+            "label": "CafÃ© Talk",
             "icon": "local-cafe"
           },
           {
@@ -4130,15 +4130,15 @@
             "icon": "menu-book"
           }
         ],
-        "text": "₹",
+        "text": "â‚¹",
         "any": "Any",
         "apply_filters": "Apply Filters"
       },
       "BookingRequestsInboxScreen": {
         "m": "m",
-        "text": "₹",
-        "text_1": "⭐",
-        "text_2": "·",
+        "text": "â‚¹",
+        "text_1": "â­",
+        "text_2": "Â·",
         "today": "Today",
         "tomorrow": "Tomorrow"
       },
@@ -4163,8 +4163,8 @@
         ]
       },
       "NewBookingRequestDetailScreen": {
-        "text": "⭐",
-        "text_1": "·",
+        "text": "â­",
+        "text_1": "Â·",
         "text_2": "%"
       },
       "SuggestDifferentTimeScreen": {
@@ -4210,7 +4210,7 @@
     },
     "reviews": {
       "ReviewsDashboardScreen": {
-        "text": "✦"
+        "text": "âœ¦"
       }
     },
     "safety": {
@@ -4226,7 +4226,7 @@
         "98765_12345": "98765 12345"
       },
       "BlockCustomerScreen": {
-        "91": "+91 •••••• ••••",
+        "91": "+91 â€¢â€¢â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢",
         "block_reasons": [
           "Made me uncomfortable",
           "Inappropriate behavior",
@@ -4234,11 +4234,11 @@
           "Repeated cancellations",
           "Other"
         ],
-        "blocking": "Blocking…",
+        "blocking": "Blockingâ€¦",
         "block_customer": "Block Customer"
       },
       "CompanionSafetyHubScreen": {
-        "text": "·",
+        "text": "Â·",
         "your_location_is_shared_securely_with_ou": "Your location is shared securely with our support team during active sessions.",
         "we_will_prompt_you_to_confirm_you_re_saf": "We will prompt you to confirm you're safe if a session goes past its scheduled end time.",
         "get_a_fake_incoming_call_to_exit_an_unco": "Get a fake incoming call to exit an uncomfortable situation discreetly.",
@@ -4337,7 +4337,7 @@
             "label": "Other"
           }
         ],
-        "submitting": "Submitting…",
+        "submitting": "Submittingâ€¦",
         "submit_report": "Submit Report"
       },
       "SafetyGuidelinesScreen": {
@@ -4350,7 +4350,7 @@
         ],
         "during": [
           "Stay in public areas at all times",
-          "Trust your instincts — end session if uncomfortable",
+          "Trust your instincts â€” end session if uncomfortable",
           "Use in-app chat/call only (for your protection)",
           "Check in with CoBuddy if session feels unsafe"
         ]
@@ -4387,7 +4387,7 @@
       "IncidentEvidenceUploadScreen": {},
       "IncidentSubmittedScreen": {},
       "SOSConfirmationScreen": {
-        "emergency_services_112_calling": "Emergency Services (112) — Calling…"
+        "emergency_services_112_calling": "Emergency Services (112) â€” Callingâ€¦"
       },
       "SOSScreen": {
         "hold_for_3_seconds_to_send_sos": "Hold for 3 seconds to send SOS"
@@ -4396,7 +4396,7 @@
     },
     "sessions": {
       "ActiveSessionScreen": {
-        "text": "₹"
+        "text": "â‚¹"
       },
       "CancelSessionRequestScreen": {
         "reasons": [
@@ -4425,7 +4425,7 @@
             "label": "Safety Consent"
           }
         ],
-        "text": "⭐",
+        "text": "â­",
         "sessions_completed": "Sessions\nCompleted",
         "incidents_reported": "Incidents\nReported",
         "show_up_rate": "Show-up\nRate",
@@ -4455,11 +4455,11 @@
           "No-show risk"
         ],
         "session": "Session",
-        "submitting": "Submitting…",
+        "submitting": "Submittingâ€¦",
         "submit_rating": "Submit Rating"
       },
       "DigitalSessionPassScreen": {
-        "text": "·",
+        "text": "Â·",
         "today": "Today",
         "tomorrow": "Tomorrow"
       },
@@ -4489,28 +4489,28 @@
             "price": 2400
           }
         ],
-        "text": "₹"
+        "text": "â‚¹"
       },
       "LiveLocationSharingScreen": {
-        "text": "📡"
+        "text": "ðŸ“¡"
       },
       "NavigationToVenueScreen": {
         "modes": [
           {
             "key": "metro",
-            "emoji": "🚇",
+            "emoji": "ðŸš‡",
             "label": "Metro",
             "eta": "~20 min"
           },
           {
             "key": "cab",
-            "emoji": "🚗",
+            "emoji": "ðŸš—",
             "label": "Cab",
             "eta": "~15 min"
           },
           {
             "key": "walk",
-            "emoji": "🚶",
+            "emoji": "ðŸš¶",
             "label": "Walk",
             "eta": "~45 min"
           }
@@ -4519,11 +4519,11 @@
       },
       "PostSessionNotesScreen": {
         "moods": [
-          "😊",
-          "😐",
-          "😔",
-          "😤",
-          "🤩"
+          "ðŸ˜Š",
+          "ðŸ˜",
+          "ðŸ˜”",
+          "ðŸ˜¤",
+          "ðŸ¤©"
         ],
         "tags": [
           "Great customer",
@@ -4536,7 +4536,7 @@
         "activity": "Activity",
         "duration": "Duration",
         "earnings": "Earnings",
-        "saving": "Saving…",
+        "saving": "Savingâ€¦",
         "save_notes": "Save Notes"
       },
       "PreArrivalScreen": {
@@ -4556,15 +4556,15 @@
         ]
       },
       "SessionCompleteScreen": {
-        "text": "₹",
-        "text_1": "+₹",
-        "text_2": "-₹"
+        "text": "â‚¹",
+        "text_1": "+â‚¹",
+        "text_2": "-â‚¹"
       },
       "SessionDetailScreen": {
-        "text": "⭐",
-        "text_1": "·",
-        "text_2": "₹",
-        "text_3": "+₹",
+        "text": "â­",
+        "text_1": "Â·",
+        "text_2": "â‚¹",
+        "text_3": "+â‚¹",
         "activity": "Activity",
         "date_time": "Date & Time",
         "language": "Language",
@@ -4578,14 +4578,14 @@
             "id": "id_proof",
             "icon": "badge",
             "title": "Carry Valid ID Proof",
-            "detail": "Aadhaar / Driver's Licence — required for entry at age-restricted venues.",
+            "detail": "Aadhaar / Driver's Licence â€” required for entry at age-restricted venues.",
             "category": "safety"
           },
           {
             "id": "dress_code",
             "icon": "checkroom",
             "title": "Dress Code: Smart Casuals",
-            "detail": "As requested by the customer. Presentable and comfortable for a café setting.",
+            "detail": "As requested by the customer. Presentable and comfortable for a cafÃ© setting.",
             "category": "personal"
           },
           {
@@ -4625,14 +4625,14 @@
           }
         ],
         "text": "%",
-        "all_done_go_back": "All Done — Go Back",
+        "all_done_go_back": "All Done â€” Go Back",
         "got_it_go_back": "Got It, Go Back"
       },
       "UpcomingSessionsScreen": {
         "confirmed": "Confirmed",
         "pass": "Pass:",
         "estimated": "Estimated:",
-        "text": "₹",
+        "text": "â‚¹",
         "digital_pass": "Digital Pass",
         "session_details": "Session Details",
         "view_booking_requests": "View Booking Requests",
@@ -4662,7 +4662,7 @@
       },
       "ArrivalCheckInScreen": {},
       "CancellationReasonScreen": {
-        "submitting": "Submitting…",
+        "submitting": "Submittingâ€¦",
         "submit_cancellation": "Submit Cancellation"
       },
       "CancellationReviewPendingScreen": {},
@@ -4704,7 +4704,7 @@
     },
     "settings": {
       "AccessibilitySettingsScreen": {
-        "text": "★  |"
+        "text": "â˜…  |"
       },
       "AppLanguageSettingsScreen": {
         "languages": [
@@ -4715,22 +4715,22 @@
           },
           {
             "id": "hi",
-            "label": "हिन्दी",
+            "label": "à¤¹à¤¿à¤¨à¥à¤¦à¥€",
             "sub": "Hindi"
           },
           {
             "id": "mr",
-            "label": "मराठी",
+            "label": "à¤®à¤°à¤¾à¤ à¥€",
             "sub": "Marathi"
           },
           {
             "id": "gu",
-            "label": "ગુજરાતી",
+            "label": "àª—à«àªœàª°àª¾àª¤à«€",
             "sub": "Gujarati"
           },
           {
             "id": "ta",
-            "label": "தமிழ்",
+            "label": "à®¤à®®à®¿à®´à¯",
             "sub": "Tamil"
           }
         ]
@@ -4863,14 +4863,14 @@
             "accentColor": "rgba(231,76,60,0.12)",
             "title": "Cancellation Policy",
             "badge": "Important",
-            "body": "Cancellations made within 2 hours of the session start time will incur a ₹150 platform penalty to compensate the customer.\n\nCancellations made more than 2 hours in advance carry no penalty. Repeated late cancellations may result in account review."
+            "body": "Cancellations made within 2 hours of the session start time will incur a â‚¹150 platform penalty to compensate the customer.\n\nCancellations made more than 2 hours in advance carry no penalty. Repeated late cancellations may result in account review."
           },
           {
             "id": "refund",
             "icon": "account-balance-wallet",
             "accentColor": "rgba(214,168,79,0.10)",
             "title": "Refund Policy",
-            "body": "Earnings from completed sessions are transferred to your pending balance and clear within 24–48 hours.\n\nIf a customer successfully disputes a session, funds may be temporarily held pending review. CoBuddy's Trust & Safety team will contact you within 48 hours if your earnings are affected."
+            "body": "Earnings from completed sessions are transferred to your pending balance and clear within 24â€“48 hours.\n\nIf a customer successfully disputes a session, funds may be temporarily held pending review. CoBuddy's Trust & Safety team will contact you within 48 hours if your earnings are affected."
           },
           {
             "id": "venue",
@@ -4969,7 +4969,7 @@
           "False review",
           "Other"
         ],
-        "submitting": "Submitting…",
+        "submitting": "Submittingâ€¦",
         "submit_dispute": "Submit Dispute"
       },
       "LiveSupportChatScreen": {
@@ -5002,7 +5002,7 @@
         "help_center": "Help Center"
       },
       "SupportTicketDetailScreen": {
-        "text": "·"
+        "text": "Â·"
       },
       "AppealDecisionScreen": {},
       "DisputeCenterScreen": {},
@@ -5014,7 +5014,7 @@
       "NetworkErrorScreen": {
         "server_unreachable": "Server unreachable",
         "no_internet": "No internet",
-        "checking": "Checking…",
+        "checking": "Checkingâ€¦",
         "retry_connection": "Retry Connection"
       }
     },
@@ -5026,10 +5026,10 @@
         "locked": "Locked",
         "all_required_modules_done_safety_badge_e": "All required modules done! Safety Badge earned.",
         "unlocked": "(Unlocked)",
-        "optional_complete_required_first": "(Optional — complete required first)"
+        "optional_complete_required_first": "(Optional â€” complete required first)"
       },
       "TrainingLessonScreen": {
-        "completed_view_certificate": "Completed — View Certificate",
+        "completed_view_certificate": "Completed â€” View Certificate",
         "mark_as_completed": "Mark as Completed"
       }
     },
@@ -5109,7 +5109,7 @@
         "i_will_not_share_personal_contact_inform": "I will not share personal contact information or engage with customers outside the CoBuddy platform.",
         "i_have_read_and_will_comply_with_cobuddy": "I have read and will comply with CoBuddy's safety policies, including the right to end any session that feels unsafe.",
         "i_understand_that_providing_false_inform": "I understand that providing false information may result in permanent removal from the platform.",
-        "caf_conversations": "Café Conversations",
+        "caf_conversations": "CafÃ© Conversations",
         "city_walks": "City Walks",
         "art_culture": "Art & Culture",
         "bookstores": "Bookstores",
@@ -5146,19 +5146,19 @@
         "morning": "Morning",
         "afternoon": "Afternoon",
         "evening": "Evening",
-        "1_2_sessions": "1–2 sessions",
-        "3_5_sessions": "3–5 sessions",
+        "1_2_sessions": "1â€“2 sessions",
+        "3_5_sessions": "3â€“5 sessions",
         "as_available": "As available",
         "chatty_talkative": "Chatty & talkative",
-        "balanced_talk_listen": "Balanced — talk & listen",
+        "balanced_talk_listen": "Balanced â€” talk & listen",
         "comfortable_with_quiet": "Comfortable with quiet",
         "relaxed_unhurried": "Relaxed & unhurried",
         "moderate_pace": "Moderate pace",
         "active_on_the_go": "Active & on-the-go",
         "one_on_one_only": "One-on-one only",
-        "small_group_3_5_people": "Small group (3–5 people)",
+        "small_group_3_5_people": "Small group (3â€“5 people)",
         "either_is_fine": "Either is fine",
-        "caf": "Café",
+        "caf": "CafÃ©",
         "restaurant": "Restaurant",
         "public_park": "Public Park",
         "gallery_or_museum": "Gallery or Museum",
@@ -5172,7 +5172,7 @@
         "isolated_location": "Isolated location",
         "vehicle_only_meetup": "Vehicle-only meetup",
         "all_sessions_at_approved_public_venues_o": "All sessions at approved public venues only",
-        "no_private_meetings_homes_hotels_or_isol": "No private meetings — homes, hotels, or isolated locations",
+        "no_private_meetings_homes_hotels_or_isol": "No private meetings â€” homes, hotels, or isolated locations",
         "no_off_app_contact_with_customers": "No off-app contact with customers",
         "no_direct_cash_or_off_platform_payments": "No direct cash or off-platform payments",
         "no_romantic_intimate_or_sexual_conduct": "No romantic, intimate, or sexual conduct",
@@ -5223,8 +5223,8 @@
         "bank_account_and_upi_are_verified_for_pa": "Bank account and UPI are verified for payout.",
         "pricing_confirmed": "Pricing Confirmed",
         "session_pricing_has_been_set_and_saved": "Session pricing has been set and saved.",
-        "government_id_front": "Government ID — Front",
-        "government_id_back": "Government ID — Back",
+        "government_id_front": "Government ID â€” Front",
+        "government_id_back": "Government ID â€” Back",
         "selfie_photo": "Selfie photo",
         "document_authenticity_check": "Document authenticity check",
         "liveness_selfie_match": "Liveness & selfie match",
@@ -5304,7 +5304,7 @@
         "text": "%"
       },
       "CompanionPricingScreen": {
-        "599": "599–",
+        "599": "599â€“",
         "transparent_pricing": "Transparent pricing",
         "platform_payments_only": "Platform payments only",
         "no_cash_requests": "No cash requests",
@@ -5334,7 +5334,7 @@
       },
       "AddBankAccountScreen": {},
       "AddressVerificationScreen": {
-        "proof_added_tap_to_change": "Proof added � tap to change"
+        "proof_added_tap_to_change": "Proof added ï¿½ tap to change"
       },
       "BackgroundDeclarationScreen": {},
       "BankAccountVerificationScreen": {},
@@ -5379,7 +5379,7 @@
         "professional_presentation": "Professional presentation",
         "no_inappropriate_content": "No inappropriate content",
         "choose_from_gallery": "Choose from Gallery",
-        "photo_added_tap_to_retake": "Photo added � tap to retake",
+        "photo_added_tap_to_retake": "Photo added ï¿½ tap to retake",
         "tap_to_upload_profile_photo": "Tap to upload profile photo"
       },
       "ProfileReviewPendingScreen": {
@@ -5427,7 +5427,7 @@
     },
     "onboarding": {
       "TermsConsentScreen": {
-        "text": "·"
+        "text": "Â·"
       },
       "CompanionWelcomeScreen": {},
       "RoleConfirmationScreen": {}
@@ -5435,18 +5435,18 @@
     "mock": {
       "mockNotifications": {
         "safety_timer_check_in_required": "Safety timer check-in required",
-        "new_booking_request_expiring_soon": "New booking request — expiring soon",
-        "session_reminder_starts_in_2_hours": "Session reminder — starts in 2 hours",
-        "payout_credited_18_600": "Payout credited — ₹18,600",
+        "new_booking_request_expiring_soon": "New booking request â€” expiring soon",
+        "session_reminder_starts_in_2_hours": "Session reminder â€” starts in 2 hours",
+        "payout_credited_18_600": "Payout credited â€” â‚¹18,600",
         "support_ticket_update": "Support ticket update",
-        "policy_update_public_venue_rules_v2_4": "Policy update — Public Venue Rules v2.4",
+        "policy_update_public_venue_rules_v2_4": "Policy update â€” Public Venue Rules v2.4",
         "new_training_module_available": "New training module available",
-        "scheduled_maintenance_friday_11_pm": "Scheduled maintenance — Friday 11 PM"
+        "scheduled_maintenance_friday_11_pm": "Scheduled maintenance â€” Friday 11 PM"
       }
     },
     "slices": {
       "earningsStore": {
-        "session_caf_conversation": "Session: Café Conversation",
+        "session_caf_conversation": "Session: CafÃ© Conversation",
         "withdrawal_to_bank_account": "Withdrawal to Bank Account",
         "session_city_walk": "Session: City Walk",
         "safety_bonus": "Safety Bonus",
@@ -5454,7 +5454,7 @@
       },
       "notificationStore": {
         "new_booking_request_from_p_m": "New Booking Request from P.M.",
-        "payout_of_3_500_successful": "Payout of ₹3,500 Successful",
+        "payout_of_3_500_successful": "Payout of â‚¹3,500 Successful",
         "welcome_to_cobuddy_companion": "Welcome to CoBuddy Companion!"
       },
       "supportStore": {
@@ -5576,7 +5576,7 @@
         "you_are_too_far_from_the_approved_venue": "You are too far from the approved venue to check in.",
         "this_session_is_no_longer_active": "This session is no longer active.",
         "the_customer_declined_the_extension_requ": "The customer declined the extension request.",
-        "minimum_payout_amount_is_500_please_adju": "Minimum payout amount is ₹500. Please adjust the amount.",
+        "minimum_payout_amount_is_500_please_adju": "Minimum payout amount is â‚¹500. Please adjust the amount.",
         "your_bank_account_needs_to_be_verified_b": "Your bank account needs to be verified before a payout can be processed.",
         "a_safety_hold_is_active_contact_support": "A safety hold is active. Contact support to resolve it.",
         "your_payout_could_not_be_processed_your": "Your payout could not be processed. Your balance has been restored.",
@@ -5808,8 +5808,8 @@
     "upi_details_saved": "UPI Details Saved",
     "your_upi_details_have_been_recorded_for": "Your UPI details have been recorded for payout disbursement. Verification happens before your first payout.",
     "continue": "Continue",
-    "slot_added": "Slot Added ✅",
-    "v0_v1_v2_v3": "{{v0}} · {{v1}} – {{v2}}{{v3}}",
+    "slot_added": "Slot Added âœ…",
+    "v0_v1_v2_v3": "{{v0}} Â· {{v1}} â€“ {{v2}}{{v3}}",
     "ok": "OK",
     "cancel_booking": "Cancel Booking",
     "are_you_sure_you_want_to_cancel_v0_this": "Are you sure you want to cancel \"{{v0}}\"? This cannot be undone.",
@@ -5821,17 +5821,17 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "choose_a_time": "Choose a time:",
-    "more": "More…",
+    "more": "Moreâ€¦",
     "more_times": "More times",
-    "dates_blocked": "Dates Blocked ✅",
+    "dates_blocked": "Dates Blocked âœ…",
     "your_v0_has_been_saved_you_won_t_receive": "Your {{v0}} has been saved. You won't receive bookings from {{v1}} to {{v2}}.",
     "done": "Done",
-    "slot_updated": "Slot Updated ✅",
-    "v0_v1_v2": "{{v0}} · {{v1}} – {{v2}}",
+    "slot_updated": "Slot Updated âœ…",
+    "v0_v1_v2": "{{v0}} Â· {{v1}} â€“ {{v2}}",
     "delete_slot": "Delete Slot",
     "are_you_sure_you_want_to_delete_this_slo": "Are you sure you want to delete this slot?",
     "delete": "Delete",
-    "settings_saved": "Settings Saved ✅",
+    "settings_saved": "Settings Saved âœ…",
     "current_v0": "Current: {{v0}}",
     "cannot_open_link": "Cannot Open Link",
     "please_visit_v0": "Please visit: {{v0}}",
@@ -5845,8 +5845,8 @@
     "to_change_your_registered_mobile_number": "To change your registered mobile number, please contact CoBuddy Support.",
     "add_photo": "Add Photo",
     "choose_an_option": "Choose an option:",
-    "take_photo": "📷 Take Photo",
-    "choose_from_gallery": "🖼  Choose from Gallery",
+    "take_photo": "ðŸ“· Take Photo",
+    "choose_from_gallery": "ðŸ–¼  Choose from Gallery",
     "gallery_updated": "Gallery Updated",
     "your_profile_gallery_has_been_saved": "Your profile gallery has been saved.",
     "reply_posted": "Reply Posted",
@@ -5859,7 +5859,7 @@
     "in_app_chat_is_not_available_for_expired": "In-app chat is not available for expired requests. Please contact support if you need assistance.",
     "request_not_found": "Request not found.",
     "suggestion_sent": "Suggestion Sent",
-    "your_suggested_time_v0_v1_v2_has_been_se": "Your suggested time ({{v0}}, {{v1}} – {{v2}}) has been sent to the customer.",
+    "your_suggested_time_v0_v1_v2_has_been_se": "Your suggested time ({{v0}}, {{v1}} â€“ {{v2}}) has been sent to the customer.",
     "they_will_no_longer_be_able_to_book_sess": "They will no longer be able to book sessions with you.",
     "yes_block": "Yes, Block",
     "remove_contact": "Remove Contact?",
@@ -5884,7 +5884,7 @@
     "are_you_sure_you_want_to_log_out_of_cobu": "Are you sure you want to log out of CoBuddy?",
     "delete_account": "Delete Account",
     "this_action_is_permanent_and_cannot_be_u": "This action is permanent and cannot be undone. All your data will be erased.",
-    "otp_sent": "OTP Sent! 📲",
+    "otp_sent": "OTP Sent! ðŸ“²",
     "please_verify_to_link_this_account_withd": "Please verify to link this account. Withdrawals will be paused for 24 hours after a change.",
     "incomplete": "Incomplete",
     "please_fill_in_all_fields": "Please fill in all fields.",
@@ -5900,9 +5900,9 @@
     "your_account_has_been_permanently_delete": "Your account has been permanently deleted.",
     "could_not_open": "Could not open",
     "unable_to_open_v0_please_visit_cobuddy_a": "Unable to open \"{{v0}}\". Please visit cobuddy.app directly.",
-    "redirecting": "Redirecting…",
+    "redirecting": "Redirectingâ€¦",
     "opening_app_store_google_play_store_to_u": "Opening App Store / Google Play Store to update CoBuddy Companion.",
-    "opening_browser": "Opening browser…",
+    "opening_browser": "Opening browserâ€¦",
     "redirecting_to_status_cobuddy_in": "Redirecting to status.cobuddy.in",
     "still_offline": "Still Offline",
     "could_not_reach_cobuddy_servers_please_c": "Could not reach CoBuddy servers. Please check your Wi-Fi or mobile data.",
@@ -5952,7 +5952,7 @@
     "pan_number_is_required": "PAN number is required.",
     "enter_a_valid_pan_number_e_g_abcde1234f": "Enter a valid PAN number (e.g. ABCDE1234F).",
     "bank_account_number_is_required": "Bank account number is required.",
-    "enter_a_valid_bank_account_number_8_18_d": "Enter a valid bank account number (8–18 digits).",
+    "enter_a_valid_bank_account_number_8_18_d": "Enter a valid bank account number (8â€“18 digits).",
     "ifsc_code_is_required": "IFSC code is required.",
     "enter_a_valid_ifsc_code_e_g_hdfc0001234": "Enter a valid IFSC code (e.g. HDFC0001234).",
     "upi_id_is_required": "UPI ID is required.",
@@ -5966,7 +5966,7 @@
     "note_must_be_500_characters_or_fewer": "Note must be 500 characters or fewer.",
     "please_enter_a_valid_hourly_rate": "Please enter a valid hourly rate.",
     "rate_must_be_a_whole_number_no_decimals": "Rate must be a whole number (no decimals).",
-    "minimum_session_rate_is_u20b9800_per_hou": "Minimum session rate is \\u20B9800 per hour.",
+    "minimum_session_rate_is_u20b9200_per_hou": "Minimum session rate is \\u20B9200 per hour.",
     "maximum_session_rate_is_u20b910_000_per_": "Maximum session rate is \\u20B910,000 per hour.",
     "pin_code_is_required": "PIN code is required.",
     "enter_a_valid_6_digit_pin_code": "Enter a valid 6-digit PIN code.",
