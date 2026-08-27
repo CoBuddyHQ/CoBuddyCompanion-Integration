@@ -281,15 +281,19 @@ export function validateSessionNote(value: string): string | null {
 
 // ─── Phase 4B — Financial & Address Validators ────────────────────────────────
 
+import { AdminConfig } from '../config/adminValues';
+
 /**
  * Validates a companion session rate (INR/hour).
- * Minimum: \u20B9800. Maximum: \u20B910,000. Must be a positive integer.
+ * Minimum and maximum are defined in AdminConfig. Must be a positive integer.
  */
 export function validateSessionRate(value: number): string | null {
   if (isNaN(value) || value <= 0) { return i18next.t('validation.please_enter_a_valid_hourly_rate'); }
   if (!Number.isInteger(value)) { return i18next.t('validation.rate_must_be_a_whole_number_no_decimals'); }
-  if (value < 800) { return i18next.t('validation.minimum_session_rate_is_u20b9800_per_hou'); }
-  if (value > 10000) { return i18next.t('validation.maximum_session_rate_is_u20b910_000_per_'); }
+  
+  const [min, max] = AdminConfig.pricing.baseHourlyRateLimit;
+  if (value < min) { return i18next.t('validation.rate_too_low', { min }); }
+  if (value > max) { return i18next.t('validation.rate_too_high', { max }); }
   return null;
 }
 
