@@ -291,7 +291,7 @@ export function validateSessionRate(value: number): string | null {
   if (isNaN(value) || value <= 0) { return i18next.t('validation.please_enter_a_valid_hourly_rate'); }
   if (!Number.isInteger(value)) { return i18next.t('validation.rate_must_be_a_whole_number_no_decimals'); }
   
-  const [min, max] = AdminConfig.pricing.baseHourlyRateLimit;
+  const { min, max } = AdminConfig.pricing.baseHourlyRateLimit;
   if (value < min) { return i18next.t('validation.rate_too_low', { min }); }
   if (value > max) { return i18next.t('validation.rate_too_high', { max }); }
   return null;
