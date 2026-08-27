@@ -14,6 +14,8 @@ import {spacing} from '../../theme/spacing';
 import {radius} from '../../theme/radius';
 import {Routes} from '../../navigation/routes';
 import {useSafetyStore} from '../../store/slices/safetyStore';
+import { SafetyService } from '../../services/api/services';
+import { pickMedia } from '../../utils/mediaPicker';
 import { useTranslation } from "react-i18next";
 
 const INCIDENT_TYPES = [
@@ -39,16 +41,59 @@ export function IncidentReportScreen(): React.JSX.Element {
   const [sessionId,    setSessionId]    = useState(prefillSession);
   const [description,  setDescription]  = useState('');
   const [when,         setWhen]         = useState('');
+  const [evidenceFiles, setEvidenceFiles] = useState<any[]>([]);
+
+  const handleAddEvidence = async () => {
+    Alert.alert(
+      t('safety.add_evidence'),
+      t('alerts.choose_how_you_want_to_upload'),
+      [
+        {
+          text: t('alerts.camera'),
+          onPress: async () => {
+            const result = await pickMedia('camera', { mediaType: 'photo' });
+            if (result) setEvidenceFiles(prev => [...prev, result]);
+          },
+        },
+        {
+          text: t('alerts.gallery'),
+          onPress: async () => {
+            const result = await pickMedia('gallery', { mediaType: 'photo' });
+            if (result) setEvidenceFiles(prev => [...prev, result]);
+          },
+        },
+        { text: t('common.cancel'), style: 'cancel' }
+      ]
+    );
+  };
 
   const fileIncident = useSafetyStore(s => s.fileIncident);
 
   const canSubmit = incidentType.length > 0 && description.trim().length > 10;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!canSubmit) {return;}
-    fileIncident(sessionId.trim() || null, incidentType, description.trim())
-      .then(() => navigation.navigate(Routes.INCIDENT_SUBMITTED, {type: 'incident'}))
-      .catch((e: Error) => Alert.alert('Error', e.message));
+    try {
+      const reportId = await fileIncident(sessionId.trim() || null, incidentType, description.trim());
+      if (reportId && evidenceFiles.length > 0) {
+        const formData = new FormData();
+        evidenceFiles.forEach((file) => {
+          formData.append('evidence', {
+            uri: file.uri,
+            type: file.type || 'image/jpeg',
+            name: file.name || `evidence_${Date.now()}.jpg`,
+          } as any);
+        });
+        try {
+          await SafetyService.addIncidentEvidence(reportId, formData);
+        } catch (evidenceError) {
+          console.warn('Failed to upload evidence, but incident was submitted', evidenceError);
+        }
+      }
+      navigation.navigate(Routes.INCIDENT_SUBMITTED, {type: 'incident'});
+    } catch (e: any) {
+      Alert.alert('Error', e.message);
+    }
   };
 
   return (
@@ -108,10 +153,10 @@ export function IncidentReportScreen(): React.JSX.Element {
 
         {/* Attach evidence */}
         <TouchableOpacity accessibilityRole="button" style={s.attachRow}
-          onPress={() => navigation.navigate(Routes.INCIDENT_EVIDENCE_UPLOAD, {incidentId: `draft-${Math.random().toString(36).substring(2, 9)}`})}
+          onPress={handleAddEvidence}
           activeOpacity={0.75}>
           <Icon name="attach-file" size={18} color={colors.gold} />
-          <Text style={s.attachText}> {t('safety.attach_evidence')} </Text>
+          <Text style={s.attachText}> {t('safety.attach_evidence')} {evidenceFiles.length > 0 ? `(${evidenceFiles.length})` : ''} </Text>
           <Icon name="chevron-right" size={18} color={colors.textMuted} />
         </TouchableOpacity>
 

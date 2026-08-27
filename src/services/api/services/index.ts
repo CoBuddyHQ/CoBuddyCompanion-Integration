@@ -85,7 +85,8 @@ export const SafetyService = {
   reportCustomer: (customerId: string, dto: { reason: string; details?: string }) =>
     apiPost(buildPath(Endpoints.SAFETY.REPORT_CUSTOMER, { customerId }), dto),
 
-  fileIncident: (dto: IncidentReportDto) =>
+  fileIncident: (dto: IncidentReportDto): Promise<{ reportId: string }> =>
+    // TODO: confirm exact response shape with backend team — assuming { reportId: string } for now
     apiPost(Endpoints.SAFETY.INCIDENT_REPORT, dto),
 
   addIncidentEvidence: (reportId: string, formData: FormData) =>

@@ -81,7 +81,7 @@ interface SafetyState {
   setTimerStatus: (status: SafetyTimerStatus) => void;
 
   // Incidents
-  fileIncident: (sessionId: string | null, category: string, description: string) => Promise<void>;
+  fileIncident: (sessionId: string | null, category: string, description: string) => Promise<string | undefined>;
 
   // Block Customer
   blockCustomer: (customerId: string, reason: string) => Promise<void>;
@@ -268,12 +268,14 @@ export const useSafetyStore = create<SafetyState>((set, get) => ({
 
   fileIncident: async (sessionId, category, description) => {
     try {
-      await SafetyService.fileIncident({
+      // TODO: confirm exact response shape with backend team — assuming { reportId: string } for now
+      const res = await SafetyService.fileIncident({
         sessionId: sessionId ?? undefined,
         category,
         description
       });
       // Optionally fetch incidents list again or push optimistically
+      return res?.reportId;
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to file incident' });
       throw e;
