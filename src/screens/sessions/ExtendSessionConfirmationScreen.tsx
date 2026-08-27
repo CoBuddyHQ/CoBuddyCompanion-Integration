@@ -13,6 +13,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { useSessionStore } from '../../store/slices/sessionStore';
 
 export function ExtendSessionConfirmationScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -22,7 +23,10 @@ export function ExtendSessionConfirmationScreen(): React.JSX.Element {
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
   const minutes: number = route.params?.extendedMinutes ?? 60;
+  const isReceiving: boolean = route.params?.isReceiving ?? false;
   const label = minutes === 30 ? t("content.sessions.ExtendSessionConfirmationScreen.30_minutes") : minutes === 60 ? t("content.sessions.ExtendSessionConfirmationScreen.1_hour") : t("content.sessions.ExtendSessionConfirmationScreen.2_hours");
+  
+  const confirmExtension = useSessionStore(s => s.confirmExtension);
 
   // Amber pulsing dot
   const pulse = useRef(new Animated.Value(1)).current;
@@ -44,9 +48,11 @@ export function ExtendSessionConfirmationScreen(): React.JSX.Element {
         </View>
 
         {/* Title */}
-        <Text style={s.title}> {t('sessions.extension_request_sent')} </Text>
+        <Text style={s.title}> {isReceiving ? t('sessions.extension_request_received') : t('sessions.extension_request_sent')} </Text>
         <Text style={s.subtitle}>
-           {t('sessions.waiting_for_your_customer_to_confirm_the')} {' '}
+          {isReceiving 
+             ? t('sessions.customer_wants_to_extend_by') 
+             : t('sessions.waiting_for_your_customer_to_confirm_the')} {' '}
           <Text style={s.subtitleBold}>+{label}  {t('sessions.extension')} </Text>.
         </Text>
 
@@ -54,8 +60,8 @@ export function ExtendSessionConfirmationScreen(): React.JSX.Element {
         <View style={s.statusCard}>
           <Animated.View style={[s.pendingDot, { opacity: pulse }]} />
           <View style={s.statusMid}>
-            <Text style={s.statusTitle}> {t('sessions.pending_customer_approval')} </Text>
-            <Text style={s.statusSub}> {t('sessions.you_ll_be_notified_when_they_respond')} </Text>
+            <Text style={s.statusTitle}> {isReceiving ? t('sessions.pending_your_approval') : t('sessions.pending_customer_approval')} </Text>
+            <Text style={s.statusSub}> {isReceiving ? t('sessions.please_confirm_to_extend') : t('sessions.you_ll_be_notified_when_they_respond')} </Text>
           </View>
         </View>
 
@@ -69,16 +75,34 @@ export function ExtendSessionConfirmationScreen(): React.JSX.Element {
 
       {/* Sticky button */}
       <View style={s.bar}>
-        <TouchableOpacity accessibilityRole="button" style={s.btn}
-        onPress={() => {
-          // Pop back to ActiveSession
-          navigation.navigate(Routes.ACTIVE_SESSION, { sessionId });
-        }}
-        activeOpacity={0.85}
-        accessibilityLabel={t("accessibility.back_to_session")}>
-          <Icon name="arrow-back" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
-          <Text style={s.btnText}> {t('sessions.back_to_session')} </Text>
-        </TouchableOpacity>
+        {isReceiving ? (
+          <View style={{ flexDirection: 'row', gap: spacing.md }}>
+            <TouchableOpacity style={[s.btn, { flex: 1, backgroundColor: colors.cardSurface, borderWidth: 1, borderColor: colors.border }]}
+              onPress={() => navigation.navigate(Routes.ACTIVE_SESSION, { sessionId })}>
+              <Text style={[s.btnText, { color: colors.textPrimary }]}> {t('alerts.cancel')} </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[s.btn, { flex: 1 }]}
+              onPress={async () => {
+                try {
+                  await confirmExtension(sessionId, minutes);
+                  navigation.navigate(Routes.ACTIVE_SESSION, { sessionId });
+                } catch(e) { console.error(e); }
+              }}>
+              <Text style={s.btnText}> {t('alerts.confirm')} </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity accessibilityRole="button" style={s.btn}
+          onPress={() => {
+            // Pop back to ActiveSession
+            navigation.navigate(Routes.ACTIVE_SESSION, { sessionId });
+          }}
+          activeOpacity={0.85}
+          accessibilityLabel={t("accessibility.back_to_session")}>
+            <Icon name="arrow-back" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
+            <Text style={s.btnText}> {t('sessions.back_to_session')} </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>);
 

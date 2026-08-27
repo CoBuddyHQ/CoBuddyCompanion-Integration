@@ -10,6 +10,7 @@ export * from './requests.service';
 export * from './earnings.service';
 export * from './uploads.service';
 export * from './availability.service';
+export * from './admin.service';
 
 import { apiGet, apiPost, apiPut, apiPatch, apiDelete } from '../client';
 import { Endpoints, buildPath } from '../endpoints';

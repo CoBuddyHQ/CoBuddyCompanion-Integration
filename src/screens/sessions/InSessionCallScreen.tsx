@@ -16,6 +16,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { useSessionStore } from '../../store/slices/sessionStore';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const fmt = (s: number) => `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
@@ -38,6 +39,7 @@ export function InSessionCallScreen(): React.JSX.Element {
   const ring1 = useRef(new Animated.Value(1)).current;
   const ring2 = useRef(new Animated.Value(1)).current;
   const ring3 = useRef(new Animated.Value(1)).current;
+  const getCallToken = useSessionStore((s) => s.getCallToken);
 
   const makeLoop = (val: Animated.Value, delay: number) =>
   Animated.loop(Animated.sequence([
@@ -50,6 +52,10 @@ export function InSessionCallScreen(): React.JSX.Element {
     makeLoop(ring1, 0).start();
     makeLoop(ring2, 300).start();
     makeLoop(ring3, 600).start();
+    
+    if (sessionId) {
+      getCallToken(sessionId).catch(e => console.error('Failed to get call token', e));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

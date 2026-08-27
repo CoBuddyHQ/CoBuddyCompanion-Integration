@@ -5,21 +5,18 @@
  */
 
 import { Platform } from 'react-native';
-
-declare const process: {
-  env: {
-    API_BASE_URL?: string;
-    SOCKET_URL?: string;
-    APP_ENV?: string;
-    GOOGLE_MAPS_API_KEY?: string;
-    RAZORPAY_KEY_ID?: string;
-    FCM_SENDER_ID?: string;
-    FIREBASE_APP_ID?: string;
-    ENABLE_LOGGING?: string;
-    DEFAULT_LANGUAGE?: string;
-    REQUEST_TIMEOUT_MS?: string;
-  };
-};
+import {
+  API_BASE_URL as configuredApiUrl,
+  SOCKET_URL as configuredSocketUrl,
+  APP_ENV as configuredAppEnv,
+  GOOGLE_MAPS_API_KEY as configuredMapsKey,
+  RAZORPAY_KEY_ID as configuredRazorpayKey,
+  FCM_SENDER_ID as configuredFcmSenderId,
+  FIREBASE_APP_ID as configuredFirebaseAppId,
+  ENABLE_LOGGING as configuredLogging,
+  DEFAULT_LANGUAGE as configuredLanguage,
+  REQUEST_TIMEOUT_MS as configuredTimeout,
+} from '@env';
 
 const resolveUrl = (rawUrl: string): string => {
   if (Platform.OS === 'android' && rawUrl.includes('localhost')) {
@@ -28,8 +25,8 @@ const resolveUrl = (rawUrl: string): string => {
   return rawUrl;
 };
 
-const rawApiUrl = process.env.API_BASE_URL || 'http://localhost:4001/api/v1';
-const rawSocketUrl = process.env.SOCKET_URL || 'http://localhost:4001';
+const rawApiUrl = configuredApiUrl || 'http://localhost:4001/api/v1';
+const rawSocketUrl = configuredSocketUrl || 'http://localhost:4001';
 
 export const ENV = {
   // 1. API & Backend Services (Auto-resolved for Android / iOS)
@@ -37,19 +34,19 @@ export const ENV = {
   SOCKET_URL: resolveUrl(rawSocketUrl),
   
   // 2. App Mode
-  APP_ENV: process.env.APP_ENV || 'development',
-  IS_DEV: (process.env.APP_ENV || 'development') === 'development',
+  APP_ENV: configuredAppEnv || 'development',
+  IS_DEV: (configuredAppEnv || 'development') === 'development',
 
   // 3. Integrations
-  GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || '',
-  RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
+  GOOGLE_MAPS_API_KEY: configuredMapsKey || '',
+  RAZORPAY_KEY_ID: configuredRazorpayKey || '',
 
   // 4. Push Notifications (FCM)
-  FCM_SENDER_ID: process.env.FCM_SENDER_ID || '',
-  FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+  FCM_SENDER_ID: configuredFcmSenderId || '',
+  FIREBASE_APP_ID: configuredFirebaseAppId || '',
 
   // 5. Config Defaults
-  ENABLE_LOGGING: process.env.ENABLE_LOGGING === 'true',
-  DEFAULT_LANGUAGE: process.env.DEFAULT_LANGUAGE || 'en',
-  REQUEST_TIMEOUT_MS: parseInt(process.env.REQUEST_TIMEOUT_MS || '15000', 10),
+  ENABLE_LOGGING: configuredLogging === 'true',
+  DEFAULT_LANGUAGE: configuredLanguage || 'en',
+  REQUEST_TIMEOUT_MS: parseInt(configuredTimeout || '15000', 10),
 } as const;

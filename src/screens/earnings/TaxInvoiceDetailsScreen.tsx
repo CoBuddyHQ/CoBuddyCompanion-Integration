@@ -12,15 +12,17 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
 export function TaxInvoiceDetailsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
+  const invoiceId: string = route.params?.invoiceId ?? 'INV-UNKNOWN';
 
   // Derive all amounts from the session base amount passed via params
   const baseAmount: number = route.params?.amount ?? 1000;
-  const platformFee = Math.round(baseAmount * 0.20);
+  const platformFee = Math.round(baseAmount * (AdminConfig.commission.platformFeePercentage / 100));
   const gst = Math.round(platformFee * 0.18);
   const netPayout = baseAmount - platformFee - gst;
   const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;

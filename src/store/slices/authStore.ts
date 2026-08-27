@@ -32,6 +32,7 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
     const { onboardingStatus } = res;
     
     // Check authoritative terms acceptance from backend
+    // TODO: confirm exact field names with backend team; these are currently speculative guesses.
     const termsAccepted = !!(
       onboardingStatus.termsAccepted ||
       (profile as any)?.boundariesAccepted ||

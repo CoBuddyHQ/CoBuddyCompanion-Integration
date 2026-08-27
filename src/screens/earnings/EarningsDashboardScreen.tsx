@@ -318,13 +318,14 @@ const styles = StyleSheet.create({
   },
   pendingRow: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
-    marginBottom: spacing.lg
+    marginBottom: spacing.lg, flexWrap: 'wrap'
   },
   pendingText: {
-    fontFamily: fontFamily.interRegular, fontSize: 12, color: colors.textMuted
+    fontFamily: fontFamily.interRegular, fontSize: 12, color: colors.textMuted,
+    flexShrink: 1
   },
   pendingHighlight: {
-    fontFamily: fontFamily.interSemiBold, color: colors.textSecondary
+    fontFamily: fontFamily.interSemiBold, color: colors.gold
   },
   withdrawBtn: {
     height: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',

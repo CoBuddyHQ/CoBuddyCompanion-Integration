@@ -20,6 +20,7 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.SESSION_COMPLETE>;
 
@@ -92,9 +93,9 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
 
           {/* Platform fee deduction */}
           <View style={styles.earningsRow}>
-            <Text style={styles.earningsLabel}> {t('sessions.platform_fee_20')} </Text>
+            <Text style={styles.earningsLabel}> {t('sessions.platform_fee')} ({AdminConfig.commission.platformFeePercentage}%) </Text>
             <Text style={[styles.earningsValue, { color: 'rgba(255,100,100,0.80)' }]}>{t("content.sessions.SessionCompleteScreen.text_2")}
-              {Math.round((session?.estimatedTotal ?? 0) * 0.20).toLocaleString('en-IN')}
+              {Math.round((session?.estimatedTotal ?? 0) * (AdminConfig.commission.platformFeePercentage / 100)).toLocaleString('en-IN')}
             </Text>
           </View>
 

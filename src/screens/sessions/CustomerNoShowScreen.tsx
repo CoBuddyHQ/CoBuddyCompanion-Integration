@@ -23,7 +23,7 @@ export function CustomerNoShowScreen(): React.JSX.Element {
 
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
-  const updateSessionStatus = useSessionStore((s) => s.updateSessionStatus);
+  const markNoShow = useSessionStore((s) => s.markNoShow);
 
   const handleReportNoShow = () => {
     Alert.alert(t("alerts.confirm_no_show"), t("alerts.you_will_receive_full_session_payment_as"),
@@ -33,9 +33,15 @@ export function CustomerNoShowScreen(): React.JSX.Element {
     { text: t("alerts.cancel"), style: 'cancel' },
     {
       text: t("alerts.report_no_show"), style: 'destructive',
-      onPress: () => {
-        if (sessionId) {updateSessionStatus(sessionId, 'no_show' as any);}
-        navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+      onPress: async () => {
+        if (sessionId) {
+          try {
+            await markNoShow(sessionId);
+            navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+          } catch (e) {
+            console.error(e);
+          }
+        }
       }
     }]
 

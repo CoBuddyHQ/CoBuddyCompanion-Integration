@@ -12,8 +12,8 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useTranslation } from "react-i18next";
-
-const FEE = 0.20;
+import { AdminConfig } from '../../config/adminValues';
+import { RUPEE } from '../../utils/currency';
 
 export function EditPricingScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export function EditPricingScreen(): React.JSX.Element {
   const [focused, setFocused] = useState(false);
 
   const rate = parseFloat(rateText) || 0;
-  const fee = Math.round(rate * FEE);
+  const fee = Math.round(rate * (AdminConfig.commission.platformFeePercentage / 100));
   const earnings = rate - fee;
 
   const handleSave = () => {
@@ -74,14 +74,31 @@ export function EditPricingScreen(): React.JSX.Element {
           </View>
           <Text style={s.secLabel}> {t('profile.earnings_breakdown')} </Text>
           <View style={s.card}>
-            <View style={s.row}><Text style={s.key}> {t('profile.you_charge')} </Text><Text style={s.val}>{t("content.profile.EditPricingScreen.text")}{rate.toLocaleString('en-IN')} {t('profile.hr')} </Text></View>
-            <View style={s.row}><Text style={s.key}> {t('profile.platform_fee_20')} </Text><Text style={[s.val, { color: '#E74C3C' }]}>{t("content.profile.EditPricingScreen.text_1")}{fee.toLocaleString('en-IN')}</Text></View>
+            <View style={s.row}><Text style={s.key}> {t('profile.you_charge')} </Text><Text style={s.val}>{RUPEE}{rate.toLocaleString('en-IN')} {t('profile.hr')} </Text></View>
+            <View style={s.row}><Text style={s.key}> {t('profile.platform_fee')} ({AdminConfig.commission.platformFeePercentage}%) </Text><Text style={[s.val, { color: '#E74C3C' }]}>-{RUPEE}{fee.toLocaleString('en-IN')}</Text></View>
             <View style={s.divider} />
             <View style={s.row}>
               <Text style={[s.key, { fontFamily: fontFamily.interBold, color: colors.textPrimary }]}> {t('profile.you_earn')} </Text>
-              <Text style={[s.val, { color: colors.safetyGreen, fontSize: 18 }]}>{t("content.profile.EditPricingScreen.text")}{earnings.toLocaleString('en-IN')} {t('profile.hr')} </Text>
+              <Text style={[s.val, { color: colors.safetyGreen, fontSize: 18 }]}>{RUPEE}{earnings.toLocaleString('en-IN')} {t('profile.hr')} </Text>
             </View>
           </View>
+
+          <Text style={[s.secLabel, { marginTop: spacing.lg }]}> {t('profile.category_rates') || "CATEGORY RATES (PER HOUR)"} </Text>
+          <View style={s.card}>
+            {Object.entries(AdminConfig.categoryPriceMultipliers).map(([category, multiplier], idx, arr) => {
+              const categoryRate = Math.round(rate * multiplier);
+              return (
+                <View key={category}>
+                  <View style={s.row}>
+                    <Text style={[s.key, { textTransform: 'capitalize' }]}>{category.replace('_', ' ')}</Text>
+                    <Text style={s.val}>{RUPEE}{categoryRate.toLocaleString('en-IN')}</Text>
+                  </View>
+                  {idx < arr.length - 1 && <View style={s.divider} />}
+                </View>
+              );
+            })}
+          </View>
+
           <View style={{ height: 40 }} />
         </ScrollView>
       </KeyboardAvoidingView>

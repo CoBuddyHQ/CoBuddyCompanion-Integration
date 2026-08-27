@@ -38,7 +38,7 @@ export const Endpoints = {
     UPDATE_PHOTOS:             '/companion/profile/photos',          // PUT (gallery)
     UPDATE_WORK_PREF:          '/companion/profile/work-preference', // PUT
     UPDATE_COMM_ACTIVITY:      '/companion/profile/comm-activity',   // PUT
-    UPDATE_INTERESTS:          '/companion/profile/interests',       // PUT
+    UPDATE_INTERESTS:          '/companion/profile/interests',       // PUT (// TODO: confirm exact endpoint with backend team)
     UPDATE_VENUES:             '/companion/profile/venues',          // PUT
     UPDATE_BOUNDARIES:         '/companion/profile/boundaries',      // PUT
     SETUP_BULK:                '/companion/profile/setup-bulk',      // POST (onboarding bulk save)
@@ -76,7 +76,7 @@ export const Endpoints = {
     SAVE_DECLARATION:       '/companion/kyc/declaration',         // POST
     SUBMIT:                 '/companion/kyc/submit',              // POST
     RESUBMIT:               '/companion/kyc/resubmit',            // POST
-    ACCEPT_TERMS:           '/companion/onboarding/terms/accept', // POST
+    ACCEPT_TERMS:           '/companion/onboarding/terms/accept', // POST (// TODO: confirm exact endpoint with backend team)
   },
 
   // ═══════════════════════════════════════════════════════════════════
@@ -286,6 +286,19 @@ export const Endpoints = {
   // ═══════════════════════════════════════════════════════════════════
   DASHBOARD: {
     GET: '/companion/dashboard', // GET — returns summary stats for home screen
+  },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // MASTER_DATA & CONFIG — @Controller('companion/master-data') / ('companion/config')
+  // ═══════════════════════════════════════════════════════════════════
+  MASTER_DATA: {
+    LANGUAGES:    '/companion/master-data/languages',   // GET
+    CITIES:       '/companion/master-data/cities',      // GET
+    CATEGORIES:   '/companion/master-data/categories',  // GET
+    INTERESTS:    '/companion/master-data/interests',   // GET
+  },
+  CONFIG: {
+    GET_ALL:      '/companion/config',                  // GET
   },
 
 } as const;

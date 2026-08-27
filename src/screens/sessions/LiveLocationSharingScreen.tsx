@@ -40,6 +40,8 @@ export function LiveLocationSharingScreen(): React.JSX.Element {
   })();
 
   const [shareContacts, setShareContacts] = useState(false);
+  const updateLocation = useSessionStore((s) => s.updateLocation);
+  const stopLocationSharing = useSessionStore((s) => s.stopLocationSharing);
 
   // Pulsing gold dot animation
   const dotOpacity = useRef(new Animated.Value(1)).current;
@@ -48,7 +50,16 @@ export function LiveLocationSharingScreen(): React.JSX.Element {
     Animated.timing(dotOpacity, { toValue: 0.15, duration: 800, useNativeDriver: true }),
     Animated.timing(dotOpacity, { toValue: 1, duration: 800, useNativeDriver: true })]
     )).start();
-  }, [dotOpacity]);
+
+    // Mock location updates since we don't have location SDK yet
+    if (sessionId) {
+      updateLocation(sessionId, 19.0760, 72.8777, 10).catch(() => {});
+      const interval = setInterval(() => {
+        updateLocation(sessionId, 19.0760, 72.8777, 10).catch(() => {});
+      }, 15000);
+      return () => clearInterval(interval);
+    }
+  }, [dotOpacity, sessionId, updateLocation]);
 
   const handleStopSharing = () => {
     Alert.alert(t("alerts.stop_location_sharing"), t("alerts.your_location_will_no_longer_be_visible"),
@@ -57,7 +68,16 @@ export function LiveLocationSharingScreen(): React.JSX.Element {
     [
     { text: t("alerts.cancel"), style: 'cancel' },
     { text: t("alerts.stop_sharing"), style: 'destructive',
-      onPress: () => navigation.canGoBack() ? navigation.goBack() : undefined }]
+      onPress: async () => {
+        if (sessionId) {
+          try {
+            await stopLocationSharing(sessionId);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        if (navigation.canGoBack()) navigation.goBack();
+      } }]
 
     );
   };

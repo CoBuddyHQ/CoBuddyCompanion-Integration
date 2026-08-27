@@ -38,12 +38,13 @@ import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
 import { RUPEE } from '../../utils/currency';
+import { AdminConfig } from '../../config/adminValues';
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.COMPANION_PRICING>;
-const MIN_RATE = 399;
-const MAX_RATE = 1499;
+const MIN_RATE = AdminConfig.pricing.baseHourlyRateLimit.min;
+const MAX_RATE = AdminConfig.pricing.baseHourlyRateLimit.max;
 const DEFAULT_RATE = 749;
-const PLATFORM_FEE = 149;
-const DURATIONS = [60, 90, 120] as const;
+const PLATFORM_FEE_PERCENT = AdminConfig.commission.platformFeePercentage;
+const DURATIONS = AdminConfig.sessionDurations;
 export function CompanionPricingScreen({
   navigation
 }: Props): React.JSX.Element {
@@ -63,8 +64,9 @@ export function CompanionPricingScreen({
   } = useApplicationStore();
   const [rate, setRate] = useState(DEFAULT_RATE);
   const [customInput, setCustomInput] = useState(String(DEFAULT_RATE));
-  const [duration, setDuration] = useState<60 | 90 | 120>(90);
-  const estimatedEarning = Math.max(0, rate - PLATFORM_FEE);
+  const [duration, setDuration] = useState<number>(90);
+  const platformFee = Math.round(rate * (PLATFORM_FEE_PERCENT / 100));
+  const estimatedEarning = Math.max(0, rate - platformFee);
   const handleCustomInput = useCallback((val: string) => {
     const cleaned = val.replace(/[^0-9]/g, '');
     setCustomInput(cleaned);
@@ -142,13 +144,13 @@ export function CompanionPricingScreen({
 
         {/* ── Base Pricing Card ── */}
         <GlassCard style={styles.card}>
-          <Text style={styles.cardTitle}>{t("application.base_session_price")}</Text>
+          <Text style={styles.cardTitle}>{t("application.base_hourly_price") || "BASE HOURLY PRICE"}</Text>
           <Text style={styles.cardBody}>{t("application.set_your_standard_price_for_a_verified_p")}</Text>
 
           {/* Price display */}
           <View style={styles.priceDisplay}>
             <Text style={styles.priceValue}>{RUPEE}{rate.toLocaleString('en-IN')}</Text>
-            <Text style={styles.priceUnit}>{t("application.per_session")}</Text>
+            <Text style={styles.priceUnit}>{t("application.per_hour") || "per hour"}</Text>
           </View>
 
           {/* Stepper row */}
@@ -178,7 +180,7 @@ export function CompanionPricingScreen({
           <View style={styles.suggestionRow}>
             <Icon name="tips-and-updates" size={18} color={colors.gold} />
             <View style={styles.suggestionContent}>
-              <Text style={styles.suggestionPrimary}>{t("application.suggested_range")}{RUPEE}{t("content.application.CompanionPricingScreen.599")}{RUPEE}999</Text>
+              <Text style={styles.suggestionPrimary}>{t("application.suggested_range")}{RUPEE}500{RUPEE}900</Text>
               <Text style={styles.suggestionSecondary}>{t("application.based_on_similar_verified_companions_in")}
 
               </Text>
@@ -187,12 +189,30 @@ export function CompanionPricingScreen({
 
           {/* Custom input */}
           <View style={styles.inputBlock}>
-            <Text style={styles.inputLabel}>{t("application.custom_session_price")}</Text>
+            <Text style={styles.inputLabel}>{t("application.custom_hourly_price") || "Custom hourly price"}</Text>
             <View style={styles.inputWrap}>
               <Text style={styles.currencySymbol}>{RUPEE}</Text>
               <TextInput style={styles.input} value={customInput} onChangeText={handleCustomInput} keyboardType="number-pad" placeholder="0" placeholderTextColor={colors.textMuted} accessibilityLabel={t("accessibility.custom_session_price")} />
               
             </View>
+          </View>
+          
+          {/* Category-wise Price Breakdown */}
+          <View style={{ marginTop: spacing.md }}>
+            <Text style={[styles.cardTitle, { marginBottom: spacing.sm }]}>{t("application.category_rates") || "CATEGORY RATES (PER HOUR)"}</Text>
+            {Object.entries(AdminConfig.categoryPriceMultipliers).map(([category, multiplier]) => {
+              const categoryRate = Math.round(rate * multiplier);
+              return (
+                <View key={category} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: spacing.xs, borderBottomWidth: 1, borderBottomColor: colors.borderSurface }}>
+                  <Text style={[textStyles.bodySm, { color: colors.textSecondary, textTransform: 'capitalize' }]}>
+                    {category.replace('_', ' ')}
+                  </Text>
+                  <Text style={[textStyles.bodySm, { color: colors.textPrimary }]}>
+                    {RUPEE}{categoryRate.toLocaleString('en-IN')}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </GlassCard>
 
@@ -242,7 +262,7 @@ export function CompanionPricingScreen({
           }]}>{t("application.platform_fee")}</Text>
             <Text style={[textStyles.bodyMd, {
             color: colors.textMuted
-          }]}>-{RUPEE}{PLATFORM_FEE}</Text>
+          }]}>-{RUPEE}{platformFee}</Text>
           </View>
           <View style={styles.earningDivider} />
           <View style={styles.earningRow}>
