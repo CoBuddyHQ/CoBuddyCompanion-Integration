@@ -518,8 +518,8 @@ export const CompanionPricingContent = {
   { label: i18next.t("content.content.applicationKycContent.120_minutes"), value: 120 }] as
   const,
   DURATION_DEFAULT: 90,
-  MIN_RATE_NOTE: 'Minimum session rate: \u20B9800/hour',
-  SUGGESTED_RANGE: 'Suggested range: \u20B9800–\u20B92,000 based on similar companions in your city.',
+  MIN_RATE_NOTE: 'Minimum session rate: \u20B9200/hour',
+  SUGGESTED_RANGE: 'Suggested range: \u20B9200–\u20B92,000 based on similar companions in your city.',
   REVIEW_NOTE: 'Your rate will be reviewed by CoBuddy before it goes live on your profile.',
   FEE_NOTE: 'CoBuddy deducts a small service fee per session. This is shown transparently in your earnings breakdown.',
   EARNINGS_PREVIEW_TITLE: 'Estimated Earnings Preview',

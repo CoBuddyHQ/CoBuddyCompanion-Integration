@@ -196,7 +196,7 @@ export const SCREEN_FIXES: ScreenFix[] = [
       RATE_PLACEHOLDER: 'e.g. \u20B91,200',
       REVIEW_NOTE: 'Your rate will be reviewed by CoBuddy before it goes live on your profile.',
       FEE_NOTE: 'CoBuddy deducts a small service fee per session. This is shown in your earnings breakdown.',
-      MIN_RATE_NOTE: 'Minimum session rate: \u20B9800/hour',
+      MIN_RATE_NOTE: 'Minimum session rate: \u20B9200/hour',
     },
     bannedCopy: ['Platinum rate', 'Vantage pricing', 'premium tier', 'concierge rate', 'luxury rate'],
   },
