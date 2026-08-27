@@ -35,7 +35,7 @@ export function BlockCustomerScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
 
   const route = useRoute<any>();
-  const { customerName = 'Customer' } = route.params ?? {};
+  const { customerName = 'Customer', customerId = 'CUST_PLACEHOLDER' } = route.params ?? {};
 
   const blockCustomer = useSafetyStore((s) => s.blockCustomer);
 
@@ -57,7 +57,7 @@ export function BlockCustomerScreen(): React.JSX.Element {
         text: t("alerts.yes_block"), style: 'destructive',
         onPress: () => {
           setBlocking(true);
-          blockCustomer(customerName, reason === 'Other' ? otherText : reason);
+          blockCustomer(customerId, reason === 'Other' ? otherText : reason);
           navigation.canGoBack() ? navigation.goBack() : undefined;
         }
       }]

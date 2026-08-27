@@ -302,13 +302,13 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
           <NavRow
             icon="flag"
             label={i18next.t('sessions.report_customer')}
-            onPress={() => (navigation as any).navigate(Routes.REPORT_CUSTOMER, { customerName: customer.displayInitials ?? 'Customer' })} />
+            onPress={() => (navigation as any).navigate(Routes.REPORT_CUSTOMER, { customerName: customer.displayInitials ?? 'Customer', customerId: customer.customerId })} />
           
           <View style={styles.navDivider} />
           <NavRow
             icon="block"
             label={i18next.t('sessions.block_customer')}
-            onPress={() => (navigation as any).navigate(Routes.BLOCK_CUSTOMER, { customerName: customer.displayInitials ?? 'Customer' })} />
+            onPress={() => (navigation as any).navigate(Routes.BLOCK_CUSTOMER, { customerName: customer.displayInitials ?? 'Customer', customerId: customer.customerId })} />
           
           <View style={styles.navDivider} />
           <NavRow

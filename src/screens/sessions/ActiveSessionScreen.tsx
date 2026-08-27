@@ -20,6 +20,7 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
 import { useTranslation } from "react-i18next";
+import { SafetyService } from '../../services/api/services/index';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.ACTIVE_SESSION>;
 
@@ -244,6 +245,27 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
           
         </View>
 
+        {/* Safety Check In Button */}
+        <TouchableOpacity accessibilityRole="button"
+          style={styles.checkInBtn}
+          onPress={async () => {
+            try {
+              await SafetyService.checkinTimer();
+            } catch (e) {
+              console.warn('Check-in failed', e);
+            }
+          }}
+          activeOpacity={0.8}
+          accessibilityLabel="Safety Check-in">
+          <Icon name="check-circle-outline" size={26} color={colors.safetyGreen} style={{ marginRight: 14 }} />
+          <View>
+            <Text style={styles.checkInBtnTitle}>I'm OK</Text>
+            <Text style={styles.checkInBtnSub}>Verify your safety status</Text>
+          </View>
+          <View style={{ flex: 1 }} />
+          <Icon name="chevron-right" size={22} color="rgba(255,255,255,0.4)" />
+        </TouchableOpacity>
+
         {/* ── SOS Breathing Button ── */}
         <Animated.View style={[styles.sosWrap, { transform: [{ scale: sosPulse }] }]}>
           <TouchableOpacity accessibilityRole="button"
@@ -419,6 +441,20 @@ const styles = StyleSheet.create({
   actionLabel: {
     fontFamily: fontFamily.interSemiBold, fontSize: 12,
     color: 'rgba(255,255,255,0.80)', letterSpacing: 0.3
+  },
+
+  // Safety Check-In Button
+  checkInBtn: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: colors.cardSurface,
+    borderRadius: radius.xl, padding: spacing.lg,
+    borderWidth: 1.5, borderColor: 'rgba(109,214,165,0.45)',
+    marginTop: spacing.md, marginBottom: spacing.md,
+  },
+  checkInBtnTitle: { fontFamily: fontFamily.interBold, fontSize: 16, color: colors.safetyGreen },
+  checkInBtnSub: {
+    fontFamily: fontFamily.interRegular, fontSize: 12,
+    color: colors.textMuted, marginTop: 3
   },
 
   // ── SOS Button ──────────────────────────────────────────────────────────────
