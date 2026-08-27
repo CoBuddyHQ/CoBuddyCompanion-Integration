@@ -13,6 +13,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
+import { SafetyService } from '../../services/api/services/index';
 
 interface Question {q: string;options: string[];correct: number;}
 
@@ -58,18 +59,30 @@ export function SafetyQuizScreen(): React.JSX.Element {
   const q = QUESTIONS[index];
   const progress = (index + 1) / QUESTIONS.length;
 
-  const handleSelect = (i: number) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSelect = (idx: number) => {
     if (selected !== null) {return;}
-    setSelected(i);
-    if (i === q.correct) {setScore((s) => s + 1);}
+    setSelected(idx);
+    if (idx === QUESTIONS[index].correct) {
+      setScore((s) => s + 1);
+    }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (index < QUESTIONS.length - 1) {
       setIndex((i) => i + 1);
       setSelected(null);
     } else {
-      setFinished(true);
+      setSubmitting(true);
+      try {
+        await SafetyService.completeQuiz({ score });
+      } catch (e) {
+        console.warn('Quiz completion log failed', e);
+      } finally {
+        setSubmitting(false);
+        setFinished(true);
+      }
     }
   };
 

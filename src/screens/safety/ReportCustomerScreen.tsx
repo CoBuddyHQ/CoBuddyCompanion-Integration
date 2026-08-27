@@ -14,6 +14,7 @@ import {spacing} from '../../theme/spacing';
 import {radius} from '../../theme/radius';
 import {Routes} from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { SafetyService } from '../../services/api/services/index';
 
 const CATEGORIES = [
   {icon: 'report',         label: 'Inappropriate Requests'},
@@ -30,8 +31,8 @@ export function ReportCustomerScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
    
   const route = useRoute<any>();
-  const rawCustomerName = route.params?.customerName;
-  const customerName = typeof rawCustomerName === 'string' ? rawCustomerName : 'Customer';
+  const customerName = typeof route.params?.customerName === 'string' ? route.params.customerName : 'Customer';
+  const customerId = typeof route.params?.customerId === 'string' ? route.params.customerId : 'CUST_PLACEHOLDER';
 
   const [category,    setCategory]    = useState('');
   const [description, setDescription] = useState('');
@@ -42,13 +43,23 @@ export function ReportCustomerScreen(): React.JSX.Element {
   const canSubmit = category.length > 0 && description.trim().length > 10;
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!canSubmit || submitting) {return;}
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      await SafetyService.reportCustomer(customerId, {
+        reason: category,
+        details: description
+      });
+      if (alsoBlock) {
+        await SafetyService.blockCustomer(customerId, { reason: category });
+      }
       setSubmitting(false);
       navigation.navigate(Routes.INCIDENT_SUBMITTED, {type: 'report'});
-    }, 1000);
+    } catch (e) {
+      console.warn('Report failed:', e);
+      setSubmitting(false);
+    }
   };
 
   return (
