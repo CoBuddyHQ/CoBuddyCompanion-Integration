@@ -118,7 +118,7 @@ export type DashboardStackParamList = {
   [Routes.EDIT_AVAILABILITY_SLOT]: {slotId: string};
   [Routes.WEEKLY_RECURRING_AVAILABILITY]: undefined;
   [Routes.BLOCK_TIME_DAY_OFF]: undefined;
-  [Routes.AVAILABILITY_CONFLICT]: {conflictId: string};
+  [Routes.AVAILABILITY_CONFLICT]: { sessionId?: string; sessionTitle?: string; sessionTime?: string; sessionVenue?: string };
   [Routes.LIVE_AVAILABILITY_TOGGLE]: undefined;
   [Routes.VACATION_MODE]: undefined;
 };
@@ -129,7 +129,7 @@ export type AvailabilityStackParamList = {
   [Routes.EDIT_AVAILABILITY_SLOT]: {slotId: string};
   [Routes.WEEKLY_RECURRING_AVAILABILITY]: undefined;
   [Routes.BLOCK_TIME_DAY_OFF]: undefined;
-  [Routes.AVAILABILITY_CONFLICT]: {conflictId: string};
+  [Routes.AVAILABILITY_CONFLICT]: { sessionId?: string; sessionTitle?: string; sessionTime?: string; sessionVenue?: string };
   [Routes.LIVE_AVAILABILITY_TOGGLE]: undefined;
   [Routes.VACATION_MODE]: undefined;
 };
@@ -386,7 +386,7 @@ export type RootStackParamList = {
   // Availability sub-screens (reachable globally from Calendar modal)
   [Routes.ADD_AVAILABILITY_SLOT]: undefined;
   [Routes.EDIT_AVAILABILITY_SLOT]: {slotId?: string};
-  [Routes.AVAILABILITY_CONFLICT]: {conflictId?: string};
+  [Routes.AVAILABILITY_CONFLICT]: { sessionId?: string; sessionTitle?: string; sessionTime?: string; sessionVenue?: string };
   [Routes.LIVE_AVAILABILITY_TOGGLE]: undefined;
   // Booking Request sub-screens (globally accessible)
   [Routes.CUSTOMER_TRUST_SNAPSHOT]: {customerId?: string};

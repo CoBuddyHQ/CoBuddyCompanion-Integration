@@ -21,6 +21,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
+import { useSessionStore } from '../../store/slices/sessionStore';
 import type { RequestsStackParamList } from '../../types/navigation.types';
 import { RequestsService } from '../../services/api/services/requests.service';
 
@@ -92,8 +93,33 @@ export function BookingAcceptConfirmationScreen({ route, navigation }: Props): R
   const [loading, setLoading] = useState(false);
   const canConfirm = check1 && check2 && !loading;
 
+  const upcomingSessions = useSessionStore(s => s.upcomingSessions);
+
   const handleConfirm = async () => {
     if (!canConfirm) {return;}
+    
+    // Double-booking check
+    if (request?.proposedStart && request?.proposedEnd) {
+      const newStart = new Date(request.proposedStart).getTime();
+      const newEnd = new Date(request.proposedEnd).getTime();
+      
+      const conflict = upcomingSessions.find(s => {
+        const existStart = new Date(s.scheduledStart).getTime();
+        const existEnd = new Date(s.scheduledEnd).getTime();
+        return newStart < existEnd && newEnd > existStart;
+      });
+
+      if (conflict) {
+        (navigation as any).navigate(Routes.AVAILABILITY_CONFLICT, {
+          sessionId: conflict.sessionId,
+          sessionTitle: conflict.customer?.displayInitials ?? categoryLabel(conflict.category),
+          sessionTime: formatDateTime(conflict.scheduledStart, conflict.scheduledEnd),
+          sessionVenue: `${conflict.venue?.name ?? ''}, ${conflict.venue?.area ?? ''}`.replace(/^, | , $/g, ''),
+        });
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       await RequestsService.acceptRequest(requestId);
