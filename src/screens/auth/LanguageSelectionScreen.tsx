@@ -42,14 +42,14 @@ type Props = StackScreenProps<AuthStackParamList, typeof Routes.LANGUAGE_SELECTI
 
 const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const [selectedCodes, setSelectedCodes] = useState<string[]>([]);
+  const [selectedCode, setSelectedCode] = useState<string>('hi');
 
   const handleContinue = () => {
     navigation.navigate(Routes.NOTIFICATION_PERMISSION);
   };
 
   const handleEnglishFallback = () => {
-    setSelectedCodes(['en']);
+    setSelectedCode('en');
     navigation.navigate(Routes.NOTIFICATION_PERMISSION);
   };
 
@@ -79,7 +79,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
         <GlassCard goldLeftBar style={styles.languageCard}>
           <Text style={styles.sectionLabel}>{t("content.auth_onboarding.LanguageContent.APP_INTERFACE_CAPS")}</Text>
           {((Array.isArray(t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true })) ? (t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true }) as any[]) : [])).map((lang, idx) => {
-            const isSelected = selectedCodes.includes(lang.code);
+            const isSelected = selectedCode === lang.code;
             return (
               <TouchableOpacity accessibilityRole="button"
                 key={`ui-opt-${idx}-${lang.code}`}
@@ -88,18 +88,16 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
                 idx < ((Array.isArray(t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true })) ? (t("content.auth_onboarding.LanguageContent.LANGUAGES", { returnObjects: true }) as any[]) : [])).length - 1 && styles.langRowBorder,
                 isSelected && styles.langRowSelected]
                 }
-                onPress={() => setSelectedCodes(s => s.includes(lang.code) ? s.filter(x => x !== lang.code) : [...s, lang.code])}
+                onPress={() => setSelectedCode(lang.code)}
                 activeOpacity={0.75}
                 
                 accessibilityState={{ selected: isSelected }}
                 accessibilityLabel={t('accessibility.language_selection', { native: lang.nativeLabel, en: lang.label })}>
 
-                {/* Checkbox icon */}
-                <Icon 
-                  name={isSelected ? 'check-circle' : 'radio-button-unchecked'} 
-                  size={22} 
-                  color={isSelected ? colors.gold : 'rgba(184, 192, 204, 0.30)'} 
-                />
+                {/* Radio circle */}
+                <View style={[styles.radioOuter, isSelected && styles.radioOuterSelected]}>
+                  {isSelected && <View style={styles.radioInner} />}
+                </View>
                 <View style={styles.langTextGroup}>
                   <Text style={[styles.langNative, isSelected && styles.langNativeSelected]}>
                     {t(lang.label)}
@@ -108,6 +106,11 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
                   <Text style={styles.langEnglish}>{lang.nativeLabel}</Text>
                   }
                 </View>
+
+                {/* Check circle when selected */}
+                {isSelected &&
+                <Icon name="check-circle" size={20} color={colors.gold} />
+                }
               </TouchableOpacity>);
 
           })}
@@ -125,7 +128,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
           <ActionButton
             label={t("content.auth_onboarding.LanguageContent.CTA_PRIMARY")}
             onPress={handleContinue}
-            disabled={selectedCodes.length === 0}
+            disabled={!selectedCode}
             accessibilityLabel={t("accessibility.continue_with_selected_language")} />
           
           <TouchableOpacity accessibilityRole="button"
