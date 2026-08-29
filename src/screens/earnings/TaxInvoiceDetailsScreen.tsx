@@ -19,23 +19,31 @@ export function TaxInvoiceDetailsScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const invoiceId: string = route.params?.invoiceId ?? 'INV-UNKNOWN';
+  const [fetchedInvoice, setFetchedInvoice] = React.useState<any>(null);
   
   React.useEffect(() => {
     if (invoiceId !== 'INV-UNKNOWN') {
       import('../../services/api/services/earnings.service')
         .then(m => m.EarningsService.getInvoiceDetail(invoiceId))
+        .then(res => {
+          if (res) setFetchedInvoice(res);
+        })
         .catch(console.warn);
     }
   }, [invoiceId]);
 
   // Derive all amounts from the session base amount passed via params
-  const baseAmount: number = route.params?.amount ?? 1000;
-  const platformFee = Math.round(baseAmount * (AdminConfig.commission.platformFeePercentage / 100));
-  const gst = Math.round(platformFee * 0.18);
-  const netPayout = baseAmount - platformFee - gst;
-  const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+  const baseAmount: number = fetchedInvoice?.baseAmount ?? route.params?.amount ?? 1000;
+  const platformFee = fetchedInvoice?.platformFee ?? Math.round(baseAmount * (AdminConfig.commission.platformFeePercentage / 100));
+  const gst = fetchedInvoice?.gstAmount ?? Math.round(platformFee * 0.18);
+  const netPayout = fetchedInvoice?.netPayout ?? (baseAmount - platformFee - gst);
+  const fmt = (n: number) => `\u20B9${n.toLocaleString('en-IN')}`;
 
-  const LINE_ITEMS = [{ label: "content.earnings.TaxInvoiceDetailsScreen.line_items.0.label", sign: "content.earnings.TaxInvoiceDetailsScreen.line_items.0.sign" }, { label: "content.earnings.TaxInvoiceDetailsScreen.line_items.1.label" }, { label: "content.earnings.TaxInvoiceDetailsScreen.line_items.2.label" }] as any[];
+  const LINE_ITEMS = [
+    { label: "earnings.session_amount", sign: 1, value: fmt(baseAmount) },
+    { label: "earnings.platform_fee_15", sign: -1, value: `-${fmt(platformFee)}` },
+    { label: "earnings.gst_on_fee_18", sign: -1, value: `-${fmt(gst)}` }
+  ];
 
 
 

@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * EditLanguagesScreen (CPN-139)
 */
 import React, { useState, useMemo } from 'react';
@@ -13,7 +13,7 @@ import { radius } from '../../theme/radius';
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useTranslation } from "react-i18next";
 
-const ALL_LANGUAGES = ["English", "Hindi", "Marathi", "Gujarati", "Tamil", "Telugu", "Kannada", "Malayalam", "Bengali", "Punjabi", "Urdu", "Odia", "Assamese", "Sanskrit", "Sindhi"] as any[];
+const ALL_LANGUAGES = ["English", "Hindi", "Hinglish", "Bengali", "Marathi", "Telugu", "Tamil", "Gujarati", "Urdu", "Kannada", "Odia", "Malayalam", "Punjabi", "French", "Spanish"] as any[];
 
 
 

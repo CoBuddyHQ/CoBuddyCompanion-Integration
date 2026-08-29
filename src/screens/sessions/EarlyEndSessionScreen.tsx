@@ -19,13 +19,7 @@ import { useTranslation } from "react-i18next";
 import { AdminConfig } from '../../config/adminValues';
 
 const REASONS = AdminConfig.sessionReasons
-  .filter(r => r.appliesTo.includes('EARLY_END'))
-  .map(r => r.label);
-
-
-
-
-
+  .filter(r => r.appliesTo.includes('EARLY_END'));
 
 export function EarlyEndSessionScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -43,8 +37,8 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
   const scheduledMins = session?.durationMinutes ?? 0;
   const scheduledEarn = session?.baseEarning ?? 0;
   const scheduledLabel = scheduledMins >= 60 ?
-    `${Math.floor(scheduledMins / 60)} hr${Math.floor(scheduledMins / 60) > 1 ? 's' : ''} = ₹${scheduledEarn.toLocaleString('en-IN')}` :
-    `${scheduledMins} min = ₹${scheduledEarn.toLocaleString('en-IN')}`;
+    `${Math.floor(scheduledMins / 60)} hr${Math.floor(scheduledMins / 60) > 1 ? 's' : ''} = \u20B9${scheduledEarn.toLocaleString('en-IN')}` :
+    `${scheduledMins} min = \u20B9${scheduledEarn.toLocaleString('en-IN')}`;
 
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +63,6 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
       onBackPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} />
 
       <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-
         {/* Warning card */}
         <View style={s.warnCard}>
           <Icon name="warning-amber" size={20} color={colors.softWarning} />
@@ -81,14 +74,14 @@ export function EarlyEndSessionScreen(): React.JSX.Element {
         <Text style={s.sectionTitle}> {t('sessions.select_reason')} </Text>
         {REASONS.map((r) =>
         <TouchableOpacity accessibilityRole="button"
-          key={r}
-          style={[s.reasonPill, selected === r && s.reasonPillActive]}
-          onPress={() => setSelected(r)}
+          key={r.code}
+          style={[s.reasonPill, selected === r.code && s.reasonPillActive]}
+          onPress={() => setSelected(r.code)}
           activeOpacity={0.75}>
-            <View style={[s.reasonRadio, selected === r && s.reasonRadioActive]}>
-              {selected === r && <View style={s.reasonRadioInner} />}
+            <View style={[s.reasonRadio, selected === r.code && s.reasonRadioActive]}>
+              {selected === r.code && <View style={s.reasonRadioInner} />}
             </View>
-            <Text style={[s.reasonLabel, selected === r && s.reasonLabelActive]}>{r}</Text>
+            <Text style={[s.reasonLabel, selected === r.code && s.reasonLabelActive]}>{r.label}</Text>
           </TouchableOpacity>
         )}
 

@@ -18,8 +18,7 @@ import { useTranslation } from "react-i18next";
 import { AdminConfig } from '../../config/adminValues';
 
 const REASONS = AdminConfig.sessionReasons
-  .filter(r => r.appliesTo.includes('CANCEL'))
-  .map(r => r.label);
+  .filter(r => r.appliesTo.includes('CANCEL'));
 
 export function CancelSessionRequestScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -30,8 +29,8 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
   const sessionId: string = route.params?.sessionId ?? '';
   const [selected, setSelected] = useState<string | null>(null);
   const [otherText, setOtherText] = useState('');
-  const isValid = !!selected && (selected !== 'Other' || otherText.trim().length > 0);
-  const effectiveReason = selected === 'Other' ? otherText.trim() : selected ?? '';
+  const isValid = !!selected && (selected !== 'OTHER' || otherText.trim().length > 0);
+  const effectiveReason = selected === 'OTHER' ? otherText.trim() : selected ?? '';
 
   return (
     <SafeAreaView style={s.root} edges={['top']}>
@@ -58,16 +57,16 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
         </View>
         <Text style={s.sectionTitle}> {t('sessions.select_reason_required')} </Text>
         {REASONS.map((r) =>
-        <TouchableOpacity accessibilityRole="button" key={r}
-        style={[s.pill, selected === r && s.pillActive]}
-        onPress={() => setSelected(r)} activeOpacity={0.75}>
-            <View style={[s.radio, selected === r && s.radioActive]}>
-              {selected === r && <View style={s.radioInner} />}
+        <TouchableOpacity accessibilityRole="button" key={r.code}
+        style={[s.pill, selected === r.code && s.pillActive]}
+        onPress={() => setSelected(r.code)} activeOpacity={0.75}>
+            <View style={[s.radio, selected === r.code && s.radioActive]}>
+              {selected === r.code && <View style={s.radioInner} />}
             </View>
-            <Text style={[s.pillLabel, selected === r && s.pillLabelActive]}>{r}</Text>
+            <Text style={[s.pillLabel, selected === r.code && s.pillLabelActive]}>{r.label}</Text>
           </TouchableOpacity>
         )}
-        {selected === 'Other' &&
+        {selected === 'OTHER' &&
         <TextInput style={s.otherInput} value={otherText} onChangeText={setOtherText}
         placeholder={t('sessions.describe_your_reason')} placeholderTextColor={colors.textMuted}
         multiline maxLength={300} selectionColor={colors.gold} textAlignVertical="top" />

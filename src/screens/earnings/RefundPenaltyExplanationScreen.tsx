@@ -22,20 +22,28 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
   const route = require('@react-navigation/native').useRoute();
   const txId = route.params?.transactionId || 'UNKNOWN';
   
+  const [fetchedTx, setFetchedTx] = React.useState<any>(null);
+
   React.useEffect(() => {
     if (txId !== 'UNKNOWN') {
       import('../../services/api/services/earnings.service')
         .then(m => m.EarningsService.getTransactionDetail(txId))
+        .then(res => {
+          if (res) setFetchedTx(res);
+        })
         .catch(console.warn);
     }
   }, [txId]);
 
-  const rows = [{ label: "content.earnings.RefundPenaltyExplanationScreen.rows.0.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.0.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.1.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.1.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.2.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.2.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.3.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.3.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.4.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.4.value" }] as any[];
+  const penaltyAmount = fetchedTx?.amount ?? -150;
+  const penaltyReason = fetchedTx?.description ?? t('earnings.late_cancellation_of_session_ses_8821_as_per_policy_cancellations_within_2_hours_of_the_session_start_time_incur_a_penalty_of_150');
 
-
-
-
-
+  const rows = fetchedTx?.breakdown ?? [
+    { label: "earnings.session_value", value: "\u20B9500" },
+    { label: "earnings.cancellation_time", value: "1.5 hours before start" },
+    { label: "earnings.applicable_penalty_tier", value: "30% (within 2 hours)" },
+    { label: "earnings.penalty_amount", value: "-\u20B9150" }
+  ];
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -49,20 +57,19 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
         </View>
         <View style={s.amountCard}>
           <Text style={s.amountLabel}> {t('earnings.penalty_deduction')} </Text>
-          <Text style={s.amountValue}>{t("content.earnings.RefundPenaltyExplanationScreen.150")}</Text>
+          <Text style={s.amountValue}>{`-\u20B9${Math.abs(penaltyAmount)}`}</Text>
         </View>
         <Text style={s.sectionLabel}> {t('earnings.reason')} </Text>
         <View style={s.reasonCard}>
-          <Text style={s.reasonText}>
-             {t('earnings.late_cancellation_of_session_ses_8821_as_per_policy_cancellations_within_2_hours_of_the_session_start_time_incur_a_penalty_of_150')} </Text>
+          <Text style={s.reasonText}>{penaltyReason}</Text>
         </View>
         <Text style={s.sectionLabel}> {t('earnings.breakdown')} </Text>
         <View style={s.tableCard}>
-          {rows.map((r, i) =>
+          {rows.map((r: any, i: number) =>
           <View key={t(r.label)}>
               <View style={s.tableRow}>
                 <Text style={s.tableKey}>{t(r.label)}</Text>
-                <Text style={s.tableVal}>{t(r.value)}</Text>
+                <Text style={s.tableVal}>{r.value.includes?.('earnings.') ? t(r.value) : r.value}</Text>
               </View>
               {i < rows.length - 1 && <View style={s.divider} />}
             </View>
