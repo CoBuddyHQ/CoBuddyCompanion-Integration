@@ -51,8 +51,6 @@ export const Endpoints = {
     REORDER_PHOTOS:            '/companion/profile/photos/reorder',  // PUT
     UPDATE_AVAILABILITY_TOGGLE:'/companion/profile/availability',    // PUT {isAvailable: bool}
     SUBMIT_FOR_REVIEW:         '/companion/profile/submit',          // POST
-    PREVIEW:                   '/companion/profile/preview',         // GET
-    GET_TRUST:                 '/companion/profile/trust',           // GET
     COMPLETE_TRUST_TASK:       '/companion/profile/trust/task',      // POST
   },
 
@@ -64,7 +62,6 @@ export const Endpoints = {
     BASIC_DETAILS:          '/companion/kyc/basic-details',       // POST
     STATUS:                 '/companion/kyc/status',              // GET
     SAVE_DRAFT:             '/companion/application/draft',       // POST
-    SET_GOVERNMENT_ID_TYPE: '/companion/kyc/government-id-type',  // POST
     UPLOAD_GOVERNMENT_ID:   '/companion/kyc/government-id',       // POST
     UPLOAD_SELFIE:          '/companion/kyc/selfie',              // POST
     SAVE_ADDRESS:           '/companion/kyc/address',             // POST

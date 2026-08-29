@@ -29,6 +29,9 @@ function iconForCategory(cat: AppNotification['category']): {name: string;color:
     case 'support':return { name: 'headset-mic', color: '#A29BFE', bg: 'rgba(162,155,254,0.10)' };
     case 'policy':return { name: 'gavel', color: '#FD79A8', bg: 'rgba(253,121,168,0.10)' };
     case 'training':return { name: 'school', color: '#55EFC4', bg: 'rgba(85,239,196,0.10)' };
+    case 'wallet':return { name: 'account-balance-wallet', color: colors.gold, bg: 'rgba(214,168,79,0.10)' };
+    case 'promotion':return { name: 'local-offer', color: '#FF9FF3', bg: 'rgba(255,159,243,0.10)' };
+    case 'reminder':return { name: 'access-alarm', color: '#00CEC9', bg: 'rgba(0,206,201,0.10)' };
     default:return { name: 'notifications', color: colors.textMuted, bg: 'rgba(255,255,255,0.06)' };
   }
 }

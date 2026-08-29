@@ -34,11 +34,8 @@ export const KycService = {
     return res;
   },
   
-  updateGovernmentIdType: (data: { documentType: string }) => 
-    apiPost(Endpoints.KYC.SET_GOVERNMENT_ID_TYPE, data),
-    
-  submitGovernmentId: (data: { documentType: string; frontUrl: string; backUrl?: string }) => 
-    apiPost(Endpoints.KYC.UPLOAD_GOVERNMENT_ID, data),
+    submitGovernmentId: (data: { documentType: string; frontUrl: string; backUrl?: string }) => 
+      apiPost(Endpoints.KYC.UPLOAD_GOVERNMENT_ID, data),
     
   submitSelfie: (data: { imageUrl: string; videoUrl?: string }) => 
     apiPost(Endpoints.KYC.UPLOAD_SELFIE, data),

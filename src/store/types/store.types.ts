@@ -247,7 +247,10 @@ export type NotificationCategory =
   | 'support'
   | 'policy'
   | 'training'
-  | 'system';
+  | 'system'
+  | 'wallet'
+  | 'promotion'
+  | 'reminder';
 
 export type NotificationPriority = 'critical' | 'high' | 'normal' | 'low';
 

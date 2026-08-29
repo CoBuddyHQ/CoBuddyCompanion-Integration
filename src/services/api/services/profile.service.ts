@@ -174,17 +174,5 @@ export const ProfileService = {
     queryClient.invalidateQueries(['companion', 'profile']);
     queryClient.invalidateQueries(['companion', 'kyc_status']);
     return res;
-  },
-
-  /** GET /companion/profile/preview */
-  getPreview: () =>
-    apiGet(Endpoints.PROFILE.PREVIEW),
-
-  /** GET /companion/profile/trust */
-  getTrust: () =>
-    queryClient.fetchQuery(
-      ['companion', 'trust'],
-      () => apiGet(Endpoints.PROFILE.GET_TRUST),
-      { staleTime: 300_000, cacheTime: 1_800_000, persist: true }
-    ),
+  }
 };
