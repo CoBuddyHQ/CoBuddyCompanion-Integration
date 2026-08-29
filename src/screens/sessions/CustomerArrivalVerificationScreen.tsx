@@ -5,7 +5,7 @@
 import React, { useRef, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  TextInput, StyleSheet, StatusBar, ActivityIndicator, Alert } from
+  TextInput, StyleSheet, StatusBar, Alert } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -18,7 +18,6 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
-import { SessionsService } from '../../services/api/services/sessions.service';
 
 const CODE_LEN = 4;
 

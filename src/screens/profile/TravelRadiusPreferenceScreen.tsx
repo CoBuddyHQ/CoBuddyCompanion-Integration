@@ -11,25 +11,26 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
+import { useProfileStore } from '../../store/slices/profileStore';
 
 // Note: travelRadius is not currently in CompanionProfile type.
 // Save is a no-op until backend / store type is extended.
 
-const QUICK = [{ label: "content.profile.TravelRadiusPreferenceScreen.quick.0.label", v: "content.profile.TravelRadiusPreferenceScreen.quick.0.v" }, { label: "content.profile.TravelRadiusPreferenceScreen.quick.1.label", v: "content.profile.TravelRadiusPreferenceScreen.quick.1.v" }, { label: "content.profile.TravelRadiusPreferenceScreen.quick.2.label", v: "content.profile.TravelRadiusPreferenceScreen.quick.2.v" }] as any[];
+const QUICK = [{ label: "content.profile.TravelRadiusPreferenceScreen.quick.0.label", v: 5 }, { label: "content.profile.TravelRadiusPreferenceScreen.quick.1.label", v: 10 }, { label: "content.profile.TravelRadiusPreferenceScreen.quick.2.label", v: 25 }] as any[];
 
 export function TravelRadiusPreferenceScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
-  const [km, setKm] = useState(10);
+  const profile = useProfileStore(s => s.profile);
+  const updateProfile = useProfileStore(s => s.updateProfile);
+  const [km, setKm] = useState(profile?.travelRadius || 10);
 
-  // travelRadius not yet in CompanionProfile type — API-ready stub
   const handleSave = () => {
-    // TODO: updateProfile({travelRadius: km}) once type is extended
+    updateProfile({ travelRadius: km });
     navigation.canGoBack() ? navigation.goBack() : undefined;
   };
 
   const pct = (km - 1) / 24;
-  const boost = km >= 20 ? '40%' : km >= 10 ? '20%' : '10%';
 
   return (
     <SafeAreaView style={s.root} edges={['top', 'bottom']}>
@@ -52,7 +53,7 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
           <Icon name="info-outline" size={16} color={colors.gold} style={{ flexShrink: 0 }} />
           <Text style={s.bannerText}>
              {t('profile.a_larger_radius_means')} {' '}
-            <Text style={s.bannerBold}>{boost}  {t('profile.more_bookings')} </Text>
+            <Text style={s.bannerBold}>{t('profile.more_bookings')}</Text>
             {', '} {t('profile.but_requires_more_travel_time')} </Text>
         </View>
 

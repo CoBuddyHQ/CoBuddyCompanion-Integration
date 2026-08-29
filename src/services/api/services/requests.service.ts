@@ -28,6 +28,7 @@ export interface DeclineRequestDto {
 export interface CounterProposeDto {
   newStart: string;           // ISO datetime
   newEnd: string;             // ISO datetime
+  newRate?: number;           // Optional new rate
 }
 
 // ─── Response DTOs ────────────────────────────────────────────────────────────

@@ -112,8 +112,6 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
     if (error) {setError(null);}
   };
 
-  const [comingSoonOpen, setComingSoonOpen] = useState(false);
-
   const handleContinue = useCallback(async () => {
     Keyboard.dismiss();
     const validationError = validatePhone(phone);
@@ -291,38 +289,6 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
               } />
           </View>
-        </TouchableOpacity>
-      </Modal>
-
-      {/* Coming Soon Modal */}
-      <Modal
-        visible={comingSoonOpen}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setComingSoonOpen(false)}>
-        <TouchableOpacity
-          accessibilityRole="button"
-          style={styles.comingSoonOverlay}
-          activeOpacity={1}
-          onPress={() => setComingSoonOpen(false)}>
-          <GlassCard style={styles.comingSoonCard}>
-            <View style={styles.comingSoonIconWrap}>
-              <Icon name="access-time" size={32} color={colors.gold} />
-            </View>
-            <Text style={styles.comingSoonTitle}>OTP Service Coming Soon</Text>
-            <Text style={styles.comingSoonBody}>
-              Phone number verification for public users is not available yet.{'\n\n'}
-              The application is currently in Development / Beta Testing.{'\n\n'}
-              Please use an authorized testing account or try again after the public release.
-            </Text>
-            <TouchableOpacity
-              accessibilityRole="button"
-              style={styles.comingSoonBtn}
-              onPress={() => setComingSoonOpen(false)}
-              activeOpacity={0.85}>
-              <Text style={styles.comingSoonBtnText}>Got It</Text>
-            </TouchableOpacity>
-          </GlassCard>
         </TouchableOpacity>
       </Modal>
     </SafeAreaView>);

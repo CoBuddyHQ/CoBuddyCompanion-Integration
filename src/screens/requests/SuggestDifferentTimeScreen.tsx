@@ -115,6 +115,7 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
   const [newDate, setNewDate] = useState(DATES[0] ?? '');
   const [start, setStart] = useState(STARTS[2]); // 10:00 AM
   const [end, setEnd] = useState(ENDS[4]); // 02:00 PM
+  const [rate, setRate] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -129,7 +130,11 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
       const newStart = new Date(`${newDate} ${start}`).toISOString();
       const newEnd = new Date(`${newDate} ${end}`).toISOString();
       
-      await RequestsService.counterPropose(requestId, { newStart, newEnd });
+      const payload: any = { newStart, newEnd };
+      if (rate) {
+        payload.newRate = Number(rate);
+      }
+      await RequestsService.counterPropose(requestId, payload);
       
       // Persist counter-proposal to store (moves request from pending → reviewed as counter_proposed)
       updateRequestStatus(requestId, 'counter_proposed');
@@ -185,13 +190,22 @@ export function SuggestDifferentTimeScreen(): React.JSX.Element {const { t } = u
             value={end} options={ENDS} onChange={setEnd} flex={1} />
           </View>
 
+          <Text style={s.secLabel}>{i18next.t("application.proposed_rate")}</Text>
+          <View style={s.rateCard}>
+            <Text style={s.currencyPrefix}>₹</Text>
+            <TextInput style={s.rateInput} value={rate} onChangeText={setRate}
+            keyboardType="numeric" placeholder="250" placeholderTextColor={colors.textMuted}
+            selectionColor={colors.gold} />
+          </View>
+
           {/* ── Preview pill ── */}
           <View style={s.previewCard}>
             <Icon name="event-available" size={15} color={colors.safetyGreen} />
             <Text style={s.previewText}>
-              <Text style={s.bold}>{newDate}</Text>{' · '}
+              <Text style={s.bold}>{newDate}</Text>{' | '}
               <Text style={s.bold}>{start}</Text>{' to '}
               <Text style={s.bold}>{end}</Text>
+              {rate ? <Text style={s.bold}> | \u20B9{rate}</Text> : null}
             </Text>
           </View>
 
@@ -238,6 +252,12 @@ const s = StyleSheet.create({
     paddingHorizontal: 8, paddingVertical: 4 },
   pendingText: { fontFamily: fontFamily.interSemiBold, fontSize: 11, color: colors.softWarning },
   timeRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.sm },
+  rateCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.cardSurface,
+    borderRadius: radius.xl, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
+    paddingHorizontal: spacing.md, marginTop: spacing.xs },
+  currencyPrefix: { fontFamily: fontFamily.interBold, fontSize: 16, color: colors.textSecondary },
+  rateInput: { flex: 1, fontFamily: fontFamily.interRegular, fontSize: 16, color: colors.textPrimary,
+    paddingVertical: spacing.md, paddingHorizontal: spacing.sm },
   previewCard: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm,
     backgroundColor: 'rgba(109,214,165,0.07)', borderRadius: radius.lg,
     borderWidth: 1, borderColor: 'rgba(109,214,165,0.22)',

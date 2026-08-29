@@ -36,6 +36,7 @@ export interface CompanionProfile {
   bio: string;
   hourlyRate: number;            // INR
   sessionDurations?: number[];   // e.g. [60, 90, 120]
+  travelRadius?: number;         // e.g. 10 (km)
   profileStatus: ProfileStatus;
   verificationStatus: VerificationStatus;
   trustScore: number;            // 0–100
