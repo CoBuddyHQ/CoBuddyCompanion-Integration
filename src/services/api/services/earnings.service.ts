@@ -43,8 +43,8 @@ export const EarningsService = {
   getWeeklyEarnings: () =>
     apiGet(Endpoints.EARNINGS.WEEKLY),
 
-  getDailyEarnings: () =>
-    apiGet(Endpoints.EARNINGS.DAILY),
+  getDailyEarnings: (dateStr?: string) =>
+    apiGet(dateStr ? `${Endpoints.EARNINGS.DAILY}?date=${dateStr}` : Endpoints.EARNINGS.DAILY),
 
   getPendingEarnings: () =>
     apiGet(Endpoints.EARNINGS.PENDING),

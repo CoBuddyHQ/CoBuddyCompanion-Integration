@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * CancelSessionRequestScreen (CPN-114)
 * Companion cancels with penalty warning + reason selection.
 */
@@ -15,7 +15,11 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 
-const REASONS = ["Personal emergency", "Health issue", "Transport problem", "Other"] as any[];
+import { AdminConfig } from '../../config/adminValues';
+
+const REASONS = AdminConfig.sessionReasons
+  .filter(r => r.appliesTo.includes('CANCEL'))
+  .map(r => r.label);
 
 export function CancelSessionRequestScreen(): React.JSX.Element {
   const { t } = useTranslation();

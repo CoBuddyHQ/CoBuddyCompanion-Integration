@@ -15,9 +15,9 @@ import { radius } from '../../theme/radius';
 import { useSafetyStore } from '../../store/slices/safetyStore';
 import { useTranslation } from "react-i18next";
 
-const BLOCK_REASONS = ["Made me uncomfortable", "Inappropriate behavior", "Harassment", "Repeated cancellations", "Other"] as any[];
+import { AdminConfig } from '../../config/adminValues';
 
-
+const BLOCK_REASONS = AdminConfig.blockReasons;
 
 
 

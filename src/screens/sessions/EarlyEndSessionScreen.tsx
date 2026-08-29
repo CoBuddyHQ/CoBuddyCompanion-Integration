@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * EarlyEndSessionScreen (CPN-113)
 * Companion ends session before scheduled time with reason selection and earnings impact.
 */
@@ -16,7 +16,11 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 
-const REASONS = ["Customer request", "Emergency", "Safety concern", "Mutual agreement"] as any[];
+import { AdminConfig } from '../../config/adminValues';
+
+const REASONS = AdminConfig.sessionReasons
+  .filter(r => r.appliesTo.includes('EARLY_END'))
+  .map(r => r.label);
 
 
 

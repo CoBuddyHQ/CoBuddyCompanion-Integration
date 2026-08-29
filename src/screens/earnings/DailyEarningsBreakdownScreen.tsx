@@ -1,6 +1,6 @@
-import i18next from "i18next"; /**
+/**
 * DailyEarningsBreakdownScreen (CPN-101)
-* Shows per-day session credits & deductions, driven from earningsStore.recentTransactions.
+* Shows per-day session credits & deductions, driven from getDailyEarnings.
 */
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
@@ -13,7 +13,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
-import { useEarningsStore } from '../../store/slices/earningsStore';
+import { EarningsService } from '../../services/api/services/earnings.service';
 import { useTranslation } from "react-i18next";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -31,31 +31,26 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const [dateIdx, setDateIdx] = useState(6); // default: "Today"
+  const [dayTxns, setDayTxns] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // ── Store ────────────────────────────────────────────────────────────────────
-  const recentTransactions = useEarningsStore((s) => s.recentTransactions);
-  const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
-  const isLoading = useEarningsStore((s) => s.isLoading);
-
-  useEffect(() => {
-    fetchTransactions();
-  }, [fetchTransactions]);
-
-  const isToday = dateIdx === 6;
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() - (6 - dateIdx));
   const targetDateStr = targetDate.toISOString().slice(0, 10);
 
-  const dayTxns = recentTransactions.filter((tx) => {
-    if (tx.status === 'pending_review') return false;
-    const rawDate = (tx as any).date || tx.createdAt;
-    const txDateStr = rawDate ? new Date(rawDate).toISOString().slice(0, 10) : '';
-    return txDateStr === targetDateStr || (isToday && (!txDateStr || txDateStr === new Date().toISOString().slice(0, 10)));
-  });
+  useEffect(() => {
+    setIsLoading(true);
+    EarningsService.getDailyEarnings(targetDateStr)
+      .then((res: any) => {
+        const txs = Array.isArray(res) ? res : res?.transactions || [];
+        setDayTxns(txs.filter((tx: any) => tx.status !== 'pending_review'));
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  }, [targetDateStr]);
 
   // Compute net for the displayed day: sum of amounts (negatives are deductions)
   const netAmount = dayTxns.reduce((sum, tx) => sum + tx.amount, 0);
-  const netStr = netAmount >= 0 ? `+${fmtINR(netAmount)}` : `-${fmtINR(netAmount)}`;
   const netColor = netAmount >= 0 ? colors.safetyGreen : colors.softWarning;
 
   return (

@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * CustomerRatingFeedbackScreen (CPN-120)
 * Interactive star rating with dynamic praise/concern tags — no back gesture.
 */
@@ -18,6 +18,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
 const CAT_MAP: Record<string, string> = {
   cafe_conversation: 'Café Conversation', city_walk: 'City Walk',
@@ -28,8 +29,8 @@ const CAT_MAP: Record<string, string> = {
 };
 
 const STAR_LABELS = ["", "Very Poor", "Poor", "Okay", "Good", "Excellent!"] as any[];
-const PRAISE_TAGS = ["Punctual", "Friendly", "Respectful", "Good Communicator", "Fun"] as any[];
-const CONCERN_TAGS = ["Late arrival", "Rude", "Made me uncomfortable", "No-show risk"] as any[];
+const PRAISE_TAGS = AdminConfig.feedbackTags.praise;
+const CONCERN_TAGS = AdminConfig.feedbackTags.concern;
 
 export function CustomerRatingFeedbackScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -134,13 +135,13 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
         <>
             <Text style={s.sectionTitle}> {t('sessions.what_went_well')} </Text>
             <View style={s.tagsRow}>
-              {PRAISE_TAGS.map((t) =>
-            <TouchableOpacity accessibilityRole="button" key={t}
-            style={[s.tag, tags.includes(t) && s.tagActiveGold]}
-            onPress={() => toggleTag(t)} activeOpacity={0.75}>
-                  <Text style={[s.tagText, tags.includes(t) && s.tagTextGold]}>{t}</Text>
-                </TouchableOpacity>
-            )}
+              {PRAISE_TAGS.map((t) => (
+              <TouchableOpacity accessibilityRole="button" key={t.code}
+              style={[s.tag, tags.includes(t.code) && s.tagActiveGold]}
+              onPress={() => toggleTag(t.code)} activeOpacity={0.75}>
+                    <Text style={[s.tagText, tags.includes(t.code) && s.tagTextGold]}>{t.label}</Text>
+                  </TouchableOpacity>
+              ))}
             </View>
           </>
         }
@@ -150,13 +151,13 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
         <>
             <Text style={s.sectionTitle}> {t('sessions.any_concerns')} </Text>
             <View style={s.tagsRow}>
-              {CONCERN_TAGS.map((t) =>
-            <TouchableOpacity accessibilityRole="button" key={t}
-            style={[s.tag, tags.includes(t) && s.tagActiveRed]}
-            onPress={() => toggleTag(t)} activeOpacity={0.75}>
-                  <Text style={[s.tagText, tags.includes(t) && s.tagTextRed]}>{t}</Text>
-                </TouchableOpacity>
-            )}
+              {CONCERN_TAGS.map((t) => (
+              <TouchableOpacity accessibilityRole="button" key={t.code}
+              style={[s.tag, tags.includes(t.code) && s.tagActiveRed]}
+              onPress={() => toggleTag(t.code)} activeOpacity={0.75}>
+                    <Text style={[s.tagText, tags.includes(t.code) && s.tagTextRed]}>{t.label}</Text>
+                  </TouchableOpacity>
+              ))}
             </View>
           </>
         }

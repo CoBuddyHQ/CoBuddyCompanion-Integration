@@ -19,6 +19,17 @@ const ERR = '#E74C3C';
 export function RefundPenaltyExplanationScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
+  const route = require('@react-navigation/native').useRoute();
+  const txId = route.params?.transactionId || 'UNKNOWN';
+  
+  React.useEffect(() => {
+    if (txId !== 'UNKNOWN') {
+      import('../../services/api/services/earnings.service')
+        .then(m => m.EarningsService.getTransactionDetail(txId))
+        .catch(console.warn);
+    }
+  }, [txId]);
+
   const rows = [{ label: "content.earnings.RefundPenaltyExplanationScreen.rows.0.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.0.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.1.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.1.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.2.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.2.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.3.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.3.value" }, { label: "content.earnings.RefundPenaltyExplanationScreen.rows.4.label", value: "content.earnings.RefundPenaltyExplanationScreen.rows.4.value" }] as any[];
 
 

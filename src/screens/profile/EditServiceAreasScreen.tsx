@@ -1,8 +1,8 @@
-import i18next from "i18next"; /**
+ /**
 * EditServiceAreasScreen (CPN-181)
 */
 import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, StatusBar, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -41,8 +41,16 @@ export function EditServiceAreasScreen(): React.JSX.Element {
   [query]
   );
 
-  const toggle = (area: string) =>
-  setSelected((s) => s.includes(area) ? s.filter((x) => x !== area) : [...s, area]);
+  const toggle = (area: string) => {
+    setSelected((s) => {
+      if (s.includes(area)) return s.filter((x) => x !== area);
+      if (s.length >= 8) {
+        Alert.alert(t('validation.maximum_limit_reached') || 'Maximum Limit Reached', t('validation.you_can_select_up_to_8_areas') || 'You can select up to 8 areas.');
+        return s;
+      }
+      return [...s, area];
+    });
+  };
 
   const handleSave = () => {
     updateProfile({ serviceAreas: selected });

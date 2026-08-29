@@ -19,6 +19,14 @@ export function TaxInvoiceDetailsScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const invoiceId: string = route.params?.invoiceId ?? 'INV-UNKNOWN';
+  
+  React.useEffect(() => {
+    if (invoiceId !== 'INV-UNKNOWN') {
+      import('../../services/api/services/earnings.service')
+        .then(m => m.EarningsService.getInvoiceDetail(invoiceId))
+        .catch(console.warn);
+    }
+  }, [invoiceId]);
 
   // Derive all amounts from the session base amount passed via params
   const baseAmount: number = route.params?.amount ?? 1000;
@@ -74,12 +82,12 @@ export function TaxInvoiceDetailsScreen(): React.JSX.Element {
 
           {/* Line items */}
           <Text style={s.lineItemsTitle}> {t('earnings.line_items')} </Text>
-          {LINE_ITEMS.map((item, i) =>
+          {LINE_ITEMS.map((item, _i) => (
           <View key={t(item.label)} style={s.lineItem}>
               <Text style={s.lineItemLabel}>{t(item.label)}</Text>
               <Text style={[s.lineItemValue, item.sign < 0 && s.lineItemNeg]}>{item.value}</Text>
             </View>
-          )}
+          ))}
 
           <View style={s.totalRow}>
             <Text style={s.totalLabel}> {t('earnings.total_net_payout')} </Text>
