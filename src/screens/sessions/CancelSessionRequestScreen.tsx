@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { AdminConfig } from '../../config/adminValues';
 
 const REASONS = AdminConfig.sessionReasons
-  .filter(r => r.appliesTo.includes('CANCEL'));
+  .filter(r => r.appliesTo.includes('COMPANION_CANCEL') || r.appliesTo.includes('ANY'));
 
 export function CancelSessionRequestScreen(): React.JSX.Element {
   const { t } = useTranslation();

@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import { AdminConfig } from '../../config/adminValues';
 
 const REASONS = AdminConfig.sessionReasons
-  .filter(r => r.appliesTo.includes('EARLY_END'));
+  .filter(r => r.appliesTo.includes('COMPANION_EARLY_END') || r.appliesTo.includes('ANY'));
 
 export function EarlyEndSessionScreen(): React.JSX.Element {
   const { t } = useTranslation();

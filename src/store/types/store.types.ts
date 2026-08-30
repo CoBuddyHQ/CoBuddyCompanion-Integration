@@ -75,16 +75,19 @@ export type SessionStatus =
   | 'disputed';
 
 export type ExperienceCategory =
-  | 'cafe_conversation'
-  | 'city_walk'
-  | 'art_culture'
-  | 'food_experience'
-  | 'shopping_assistance'
-  | 'events'
-  | 'business_networking'
-  | 'bookstore'
-  | 'wellness_walk'
-  | 'movies';
+  | 'INT-1'  // Italian Cuisine
+  | 'INT-2'  // Museums
+  | 'INT-3'  // Cafe Hopping
+  | 'INT-4'  // Movies
+  | 'INT-5'  // Concerts
+  | 'INT-6'  // Parks
+  | 'INT-7'  // Sightseeing
+  | 'INT-8'  // Clubbing
+  | 'INT-9'  // Art Galleries
+  | 'INT-10' // Hiking
+  | 'INT-11' // Board Games
+  | 'INT-12' // Karaoke
+  | 'INT-13'; // Gaming
 
 export interface CustomerSummary {
   customerId: string;
