@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { useSessionStore } from '../../store/slices/sessionStore';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -37,14 +38,7 @@ function fmtTimer(secs: number): string {
 }
 
 function categoryLabel(cat: string): string {
-  const map: Record<string, string> = {
-    cafe_conversation: 'Café Conversation', city_walk: 'City Walk',
-    art_culture: 'Art & Culture', food_experience: 'Food Experience',
-    shopping_assistance: 'Shopping Assistance', events: 'Public Event',
-    business_networking: 'Networking', bookstore: 'Bookstore Visit',
-    wellness_walk: 'Wellness Walk', movies: 'Cinema'
-  };
-  return map[cat] ?? cat.replace(/_/g, ' ');
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 // ─── Glassmorphic Action Tile ─────────────────────────────────────────────────
