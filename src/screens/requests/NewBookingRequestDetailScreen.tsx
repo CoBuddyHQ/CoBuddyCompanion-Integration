@@ -20,6 +20,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import AppHeader from '../../components/layout/AppHeader';
 import GlassCard from '../../components/cards/GlassCard';
 import { useRequestStore } from '../../store/slices/requestStore';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -32,20 +33,8 @@ type Props = StackScreenProps<RequestsStackParamList, typeof Routes.NEW_BOOKING_
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function categoryLabel(cat: string, t: any): string {
-  const map: Record<string, string> = {
-    cafe_conversation: t('application.category_cafe_conversation'),
-    city_walk: t('application.category_city_walk'),
-    art_culture: t('application.category_art_culture'),
-    food_experience: t('application.category_food_experience'),
-    shopping_assistance: t('application.category_shopping_assistance'),
-    events: t('application.category_public_event'),
-    business_networking: t('application.category_networking'),
-    bookstore: t('application.category_bookstore_visit'),
-    wellness_walk: t('application.category_wellness_walk'),
-    movies: t('application.category_cinema')
-  };
-  return map[cat] ?? cat.replace(/_/g, ' ');
+function categoryLabel(cat: string): string {
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 function formatDateRange(isoStart: string, isoEnd: string, durationMinutes: number, t: any): string {
@@ -209,7 +198,7 @@ export function NewBookingRequestDetailScreen({ route, navigation }: Props): Rea
            ══════════════════════════════════════════ */}
         <GlassCard style={styles.card}>
           <SectionHeader title={t("application.booking_details")} />
-          <DetailRow icon="local-activity" label={t("application.activity")} value={categoryLabel(category, t)} />
+          <DetailRow icon="local-activity" label={t("application.activity")} value={categoryLabel(category)} />
           <View style={styles.rowDivider} />
           <DetailRow
             icon="schedule"

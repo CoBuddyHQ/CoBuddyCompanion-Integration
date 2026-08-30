@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useRequestStore } from '../../store/slices/requestStore';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -32,19 +33,7 @@ function formatExpiredAt(isoStr: string): string {
 }
 
 function categoryLabel(cat: string): string {
-  const map: Record<string, string> = {
-    cafe_conversation: 'Café Conversation',
-    city_walk: 'City Walk',
-    art_culture: 'Art & Culture',
-    food_experience: 'Food Experience',
-    shopping_assistance: 'Shopping',
-    events: 'Public Event',
-    business_networking: 'Networking',
-    bookstore: 'Bookstore Visit',
-    wellness_walk: 'Wellness Walk',
-    movies: 'Cinema'
-  };
-  return map[cat] ?? cat.replace(/_/g, ' ');
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 // ─── Screen ───────────────────────────────────────────────────────────────────

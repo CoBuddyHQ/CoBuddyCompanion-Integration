@@ -15,6 +15,7 @@ import type { BookingRequest as BR } from '../../store/types/store.types';
 import AppHeader from '../../components/layout/AppHeader';
 import { useRequestStore, DEFAULT_FILTER } from '../../store/slices/requestStore';
 import type { BookingRequest } from '../../store/types/store.types';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -54,19 +55,7 @@ function formatSchedule(isoStart: string, durationMinutes: number): string {
 
 /** Map ExperienceCategory enum to a readable label. */
 function categoryLabel(cat: string): string {
-  const map: Record<string, string> = {
-    cafe_conversation: 'Café Conversation',
-    city_walk: 'City Walk',
-    art_culture: 'Art & Culture',
-    food_experience: 'Food Experience',
-    shopping_assistance: 'Shopping Assistance',
-    events: 'Public Event',
-    business_networking: 'Networking',
-    bookstore: 'Bookstore Visit',
-    wellness_walk: 'Wellness Walk',
-    movies: 'Cinema'
-  };
-  return map[cat] ?? cat.replace(/_/g, ' ');
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 // ─── Request Card ─────────────────────────────────────────────────────────────

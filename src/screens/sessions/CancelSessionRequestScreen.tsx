@@ -3,7 +3,7 @@
 * Companion cancels with penalty warning + reason selection.
 */
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -28,9 +28,8 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
   const route = useRoute<any>();
   const sessionId: string = route.params?.sessionId ?? '';
   const [selected, setSelected] = useState<string | null>(null);
-  const [otherText, setOtherText] = useState('');
-  const isValid = !!selected && (selected !== 'OTHER' || otherText.trim().length > 0);
-  const effectiveReason = selected === 'OTHER' ? otherText.trim() : selected ?? '';
+  const isValid = !!selected;
+  const effectiveReason = selected ?? '';
 
   return (
     <SafeAreaView style={s.root} edges={['top']}>
@@ -66,11 +65,6 @@ export function CancelSessionRequestScreen(): React.JSX.Element {
             <Text style={[s.pillLabel, selected === r.code && s.pillLabelActive]}>{r.label}</Text>
           </TouchableOpacity>
         )}
-        {selected === 'OTHER' &&
-        <TextInput style={s.otherInput} value={otherText} onChangeText={setOtherText}
-        placeholder={t('sessions.describe_your_reason')} placeholderTextColor={colors.textMuted}
-        multiline maxLength={300} selectionColor={colors.gold} textAlignVertical="top" />
-        }
         <View style={{ height: 120 }} />
       </ScrollView>
       <View style={s.bar}>
