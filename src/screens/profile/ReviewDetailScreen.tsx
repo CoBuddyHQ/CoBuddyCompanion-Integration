@@ -1,6 +1,7 @@
 /**
  * ReviewDetailScreen (CPN-157)
  */
+import { AdminConfig } from '../../config/adminValues';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, StyleSheet, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,12 +16,7 @@ import { useReviewsStore } from '../../store/slices/reviewsStore';
 import { useTranslation } from "react-i18next";
 
 function categoryLabel(cat: string): string {
-  const map: Record<string, string> = {
-    cafe_conversation: 'Café Conversation',
-    city_walk: 'City Walk',
-    events: 'Events'
-  };
-  return map[cat] ?? cat.replace(/_/g, ' ');
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 export function ReviewDetailScreen(): React.JSX.Element {

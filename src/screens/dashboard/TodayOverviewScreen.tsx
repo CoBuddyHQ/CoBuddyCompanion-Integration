@@ -2,6 +2,7 @@
  * TodayOverviewScreen (CPN-062)
  * Timeline is now driven by useSessionStore.upcomingSessions.
  */
+import { AdminConfig } from '../../config/adminValues';
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

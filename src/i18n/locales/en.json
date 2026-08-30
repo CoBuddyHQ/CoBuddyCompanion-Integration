@@ -1465,16 +1465,6 @@
     "bank_verification_security_warning": "Do not share OTP, PIN, card details, or passwords. CoBuddy never asks for them.",
     "bank_verification_pending_status": "Verification pending",
     "bank_verification_cta_continue": "Continue Setup",
-    "category_cafe_conversation": "Café Conversation",
-    "category_city_walk": "City Walk",
-    "category_art_culture": "Art & Culture",
-    "category_food_experience": "Food Experience",
-    "category_shopping_assistance": "Shopping Assistance",
-    "category_public_event": "Public Event",
-    "category_networking": "Networking",
-    "category_bookstore_visit": "Bookstore Visit",
-    "category_wellness_walk": "Wellness Walk",
-    "category_cinema": "Cinema",
     "date_today": "Today",
     "date_tomorrow": "Tomorrow",
     "time_duration_h_m": "{hrs}h {mins}m",
@@ -4088,48 +4078,6 @@
         ]
       },
       "BookingRequestsFilterScreen": {
-        "experience_categories": [
-          {
-            "id": "cafe_conversation",
-            "label": "Café Talk",
-            "icon": "local-cafe"
-          },
-          {
-            "id": "city_walk",
-            "label": "City Walk",
-            "icon": "directions-walk"
-          },
-          {
-            "id": "art_culture",
-            "label": "Art & Culture",
-            "icon": "palette"
-          },
-          {
-            "id": "food_experience",
-            "label": "Food Exp.",
-            "icon": "restaurant"
-          },
-          {
-            "id": "business_networking",
-            "label": "Networking",
-            "icon": "business-center"
-          },
-          {
-            "id": "movies",
-            "label": "Cinema",
-            "icon": "movie"
-          },
-          {
-            "id": "wellness_walk",
-            "label": "Wellness",
-            "icon": "self-improvement"
-          },
-          {
-            "id": "bookstore",
-            "label": "Bookstore",
-            "icon": "menu-book"
-          }
-        ],
         "text": "₹",
         "any": "Any",
         "apply_filters": "Apply Filters"

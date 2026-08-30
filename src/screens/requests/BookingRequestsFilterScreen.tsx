@@ -1,4 +1,5 @@
-import i18next from "i18next";import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { AdminConfig } from '../../config/adminValues';
 import React, { useState } from 'react';
 import {
   View,
@@ -17,11 +18,13 @@ import { useShallow } from 'zustand/react/shallow';
 import AppHeader from '../../components/layout/AppHeader';
 import { useRequestStore, FilterState, DEFAULT_FILTER } from '../../store/slices/requestStore';
 import { colors } from '../../theme/colors';
-import { spacing } from '../../theme/spacing';
-import { radius } from '../../theme/radius';
 import { fontFamily } from '../../theme/typography';
 
-const EXPERIENCE_CATEGORIES = [{ id: "cafe_conversation", label: "content.requests.BookingRequestsFilterScreen.experience_categories.0.label", icon: "local-cafe" }, { id: "city_walk", label: "content.requests.BookingRequestsFilterScreen.experience_categories.1.label", icon: "directions-walk" }, { id: "art_culture", label: "content.requests.BookingRequestsFilterScreen.experience_categories.2.label", icon: "palette" }, { id: "food_experience", label: "content.requests.BookingRequestsFilterScreen.experience_categories.3.label", icon: "restaurant" }, { id: "business_networking", label: "content.requests.BookingRequestsFilterScreen.experience_categories.4.label", icon: "business-center" }, { id: "movies", label: "content.requests.BookingRequestsFilterScreen.experience_categories.5.label", icon: "movie" }, { id: "wellness_walk", label: "content.requests.BookingRequestsFilterScreen.experience_categories.6.label", icon: "self-improvement" }, { id: "bookstore", label: "content.requests.BookingRequestsFilterScreen.experience_categories.7.label", icon: "menu-book" }] as any[];
+const EXPERIENCE_CATEGORIES = Object.entries(AdminConfig.categoryDetails).map(([id, details]) => ({
+  id,
+  label: details.label,
+  icon: details.icon
+}));
 
 
 
@@ -186,7 +189,7 @@ export function BookingRequestsFilterScreen() {const { t } = useTranslation();
                   color={isSelected ? colors.gold : colors.textMuted} />
                 
                 <Text style={[styles.cardText, isSelected && styles.cardTextSelected]}>
-                  {t(cat.label)}
+                  {cat.label}
                 </Text>
               </TouchableOpacity>);
 

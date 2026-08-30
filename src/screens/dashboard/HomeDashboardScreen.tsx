@@ -3,6 +3,7 @@ import i18next from "i18next";
  * CPN-061 — Home Dashboard Screen
  * First screen companions see after login. All 6 sections per design spec.
  */
+import { AdminConfig } from '../../config/adminValues';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
