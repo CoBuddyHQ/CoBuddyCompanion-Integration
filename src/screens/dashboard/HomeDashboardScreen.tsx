@@ -52,14 +52,7 @@ function fmtINR(val: number): string {
 // ─── Category label helper ───────────────────────────────────────────────────
 
 function catLabel(cat: string): string {
-  const m: Record<string, string> = {
-    cafe_conversation: 'Café Conversation', city_walk: 'City Walk',
-    food_experience: 'Food Experience', art_culture: 'Art & Culture',
-    shopping_assistance: 'Shopping', events: 'Events',
-    business_networking: 'Networking', bookstore: 'Bookstore',
-    wellness_walk: 'Wellness', movies: 'Cinema'
-  };
-  return m[cat] ?? cat.replace(/_/g, ' ');
+  return AdminConfig.categoryDetails[cat]?.label ?? cat;
 }
 
 function fmtDate(iso: string): string {
