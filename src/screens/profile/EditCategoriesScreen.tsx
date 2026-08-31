@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * EditCategoriesScreen (CPN-138)
 */
 import React, { useState } from 'react';
@@ -12,11 +12,12 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
-const MAX_SELECT = 3;
+const MAX_SELECT = AdminConfig.companionCategorySelectionLimits?.max ?? 3;
 
 interface Category {id: string;label: string;icon: string;}
-const CATEGORIES: Category[] = [{ id: "movies", label: "content.profile.EditCategoriesScreen.categories.0.label", icon: "local-movies" }, { id: "dining", label: "content.profile.EditCategoriesScreen.categories.1.label", icon: "restaurant" }, { id: "coffee", label: "content.profile.EditCategoriesScreen.categories.2.label", icon: "local-cafe" }, { id: "events", label: "content.profile.EditCategoriesScreen.categories.3.label", icon: "event" }, { id: "travel", label: "content.profile.EditCategoriesScreen.categories.4.label", icon: "flight" }, { id: "sports", label: "content.profile.EditCategoriesScreen.categories.5.label", icon: "sports-soccer" }, { id: "shopping", label: "content.profile.EditCategoriesScreen.categories.6.label", icon: "shopping-bag" }, { id: "gaming", label: "content.profile.EditCategoriesScreen.categories.7.label", icon: "sports-esports" }, { id: "music", label: "content.profile.EditCategoriesScreen.categories.8.label", icon: "music-note" }, { id: "fitness", label: "content.profile.EditCategoriesScreen.categories.9.label", icon: "fitness-center" }, { id: "art", label: "content.profile.EditCategoriesScreen.categories.10.label", icon: "palette" }, { id: "books", label: "content.profile.EditCategoriesScreen.categories.11.label", icon: "menu-book" }] as any[];
+const CATEGORIES: Category[] = Object.entries(AdminConfig.categoryDetails).map(([id, d]) => ({ id, icon: d.icon, label: d.label }));
 
 
 
@@ -95,7 +96,7 @@ export function EditCategoriesScreen(): React.JSX.Element {
                 <Icon name={cat.icon as any} size={16}
                 color={isActive ? colors.gold : isDisabled ? colors.textMuted : colors.textSecondary} />
                 <Text style={[s.pillText, isActive && s.pillTextActive, isDisabled && s.pillTextDisabled]}>
-                  {t(cat.label)}
+                  {cat.label}
                 </Text>
                 {isActive && <Icon name="check" size={14} color={colors.gold} />}
               </TouchableOpacity>);
