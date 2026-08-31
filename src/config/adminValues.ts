@@ -6,6 +6,8 @@
  */
 
 export const AdminConfig = {
+  companionCategorySelectionLimits: { min: 1, max: 3 },
+
   commission: {
     platformFeePercentage: 15, // %
   },

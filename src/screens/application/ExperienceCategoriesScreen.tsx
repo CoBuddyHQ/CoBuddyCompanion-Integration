@@ -30,6 +30,8 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
+import { ExperienceCategoriesContent } from '../../content/applicationKycContent';
+import { AdminConfig } from '../../config/adminValues';
 import { ProfileService } from '../../services/api/services/profile.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.EXPERIENCE_CATEGORIES>;
@@ -41,8 +43,9 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
     missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix
   } = useApplicationStore();
 
+  const MAX_SELECT = AdminConfig.companionCategorySelectionLimits?.max ?? 3;
   const count = experienceCategories.length;
-  const canContinue = count >= 1;
+  const canContinue = count >= 1 && count <= MAX_SELECT;
 
   const handleContinue = async () => {
     if (!canContinue) {return;}
@@ -50,7 +53,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
 
     try {
       await ProfileService.updateCategories({ categories: experienceCategories });
-    } catch (e) {
+    } catch {
       // ApiClient logs request & response
     }
 
@@ -99,9 +102,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
             size={14}
             color={count > 0 ? colors.safetyGreen : colors.textMuted} />
           
-          <Text style={[styles.selectionPillText, count > 0 && styles.selectionPillTextActive]}>
-            {t("content.application_kyc.ExperienceCategoriesContent.SELECTION_COUNT_LABEL").replace('{count}', String(count))}
-          </Text>
+          <Text style={[styles.selectionPillText, count > 0 && styles.selectionPillTextActive]}>{count}/{MAX_SELECT} selected</Text>
         </View>
 
         {/* Grid */}
@@ -110,13 +111,16 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
           <Text style={styles.cardBody}>{t("content.application_kyc.ExperienceCategoriesContent.SECTION_BODY")}</Text>
 
           <View style={styles.grid}>
-            {((Array.isArray(t("content.application_kyc.ExperienceCategoriesContent.CATEGORIES", { returnObjects: true })) ? (t("content.application_kyc.ExperienceCategoriesContent.CATEGORIES", { returnObjects: true }) as any[]) : [])).map((cat, index) => {
+            {ExperienceCategoriesContent.CATEGORIES.map((cat, index) => {
               const selected = experienceCategories.includes(cat.id);
               return (
                 <TouchableOpacity accessibilityRole="button"
                   key={`ui-opt-${index}-${cat.id}`}
-                  style={[styles.tile, selected && styles.tileSelected]}
-                  onPress={() => toggleExperienceCategory(cat.id)}
+                  style={[styles.tile, selected && styles.tileSelected, (!selected && count >= MAX_SELECT) && {opacity: 0.5}]}
+                  onPress={() => {
+                    if (!selected && count >= MAX_SELECT) return;
+                    toggleExperienceCategory(cat.id);
+                  }}
                   activeOpacity={0.75}
                   
                   accessibilityState={{ checked: selected }}

@@ -1,4 +1,5 @@
-import i18next from "i18next"; /**
+import i18next from "i18next";
+import { AdminConfig } from "../config/adminValues"; /**
  * CoBuddy Companion App — Application & KYC Screen Content
  * Approved copy for CPN-021 through CPN-050.
  *
@@ -232,17 +233,8 @@ export const ExperienceCategoriesContent = {
   SUBHEADLINE: 'Select the types of public social experiences you are comfortable supporting. These will be shown on your companion profile.',
   SECTION_TITLE: 'Available Categories',
   SECTION_BODY: 'Choose at least one category. You can update these after your profile is approved.',
-  CATEGORIES: [
-  { id: 'cafe', icon: 'local-cafe', label: i18next.t("content.content.applicationKycContent.caf_conversations") },
-  { id: 'city_walks', icon: 'directions-walk', label: i18next.t("content.content.applicationKycContent.city_walks") },
-  { id: 'art_culture', icon: 'palette', label: i18next.t("content.content.applicationKycContent.art_culture") },
-  { id: 'bookstores', icon: 'menu-book', label: i18next.t("content.content.applicationKycContent.bookstores") },
-  { id: 'food', icon: 'restaurant', label: i18next.t("content.content.applicationKycContent.food_exploration") },
-  { id: 'shopping', icon: 'shopping-bag', label: i18next.t("content.content.applicationKycContent.shopping_assistance") },
-  { id: 'events', icon: 'event', label: i18next.t("content.content.applicationKycContent.public_events") },
-  { id: 'networking', icon: 'groups', label: i18next.t("content.content.applicationKycContent.networking") },
-  { id: 'movies', icon: 'movie', label: i18next.t("content.content.applicationKycContent.movies_at_public_cinemas") },
-  { id: 'wellness', icon: 'self-improvement', label: i18next.t("content.content.applicationKycContent.approved_wellness_activities") }],
+  CATEGORIES: Object.entries(AdminConfig.categoryDetails).map(([id, d]) => ({ id, icon: d.icon, label: d.label })),
+
 
   MIN_SELECTION: 1,
   MIN_HINT: 'Select at least 1 category to continue.',
