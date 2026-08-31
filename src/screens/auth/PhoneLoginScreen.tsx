@@ -129,7 +129,8 @@ const PhoneLoginScreen: React.FC<Props> = ({ navigation }) => {
       // Pass full E.164 number to OTP screen
       navigation.navigate(Routes.OTP_VERIFICATION, { phoneNumber: fullPhone });
     } catch (e: any) {
-      setError('OTP service is temporarily unavailable. Please try again later.');
+      const errorMessage = e?.message || 'OTP service is temporarily unavailable. Please try again later.';
+      setError(errorMessage);
       shake();
     } finally {
       setLoading(false);
