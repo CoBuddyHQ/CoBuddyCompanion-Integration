@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * CPN-175 — Companion Profile Screen
 * Root tab screen for the Profile stack.
 * Shows the companion's public-facing profile, stats, gallery, and reviews.
@@ -22,6 +22,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -69,16 +70,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
   const allReviews = useReviewsStore((s) => s.reviews ?? []);
   const topReviews = allReviews.slice(0, 2);
 
-  function catLabel(c: string) {
-    const m: Record<string, string> = {
-      cafe_conversation: 'Café Conversation', city_walk: 'City Walk',
-      food_experience: 'Food Experience', art_culture: 'Art & Culture',
-      shopping_assistance: 'Shopping', events: 'Events',
-      business_networking: 'Networking', bookstore: 'Bookstore',
-      wellness_walk: 'Wellness', movies: 'Cinema'
-    };
-    return m[c] ?? c.replace(/_/g, ' ');
-  }
+  function catLabel(c: string) { return AdminConfig.categoryDetails[c]?.label ?? c; }
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>

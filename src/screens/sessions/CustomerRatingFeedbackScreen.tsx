@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  TextInput, StyleSheet, StatusBar, Alert } from
+  TextInput, StyleSheet, StatusBar } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,14 +19,6 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 import { AdminConfig } from '../../config/adminValues';
-
-const CAT_MAP: Record<string, string> = {
-  cafe_conversation: 'Café Conversation', city_walk: 'City Walk',
-  art_culture: 'Art & Culture', food_experience: 'Food Experience',
-  shopping_assistance: 'Shopping Assistance', events: 'Public Event',
-  business_networking: 'Networking', bookstore: 'Bookstore Visit',
-  wellness_walk: 'Wellness Walk', movies: 'Cinema'
-};
 
 const STAR_LABELS = ["", "Very Poor", "Poor", "Okay", "Good", "Excellent!"] as any[];
 const PRAISE_TAGS = AdminConfig.feedbackTags.praise;
@@ -45,7 +37,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
   const customerInitials = (session?.customer?.displayInitials ?? 'C').slice(0, 2);
   const customerName = session?.customer?.displayInitials ?? 'Customer';
   const activityLabel = session?.category ?
-  CAT_MAP[session.category] ?? session.category.replace(/_/g, ' ') : t("content.sessions.CustomerRatingFeedbackScreen.session");
+  AdminConfig.categoryDetails[session.category]?.label ?? session.category : t("content.sessions.CustomerRatingFeedbackScreen.session");
 
 
   const [rating, setRating] = useState(0);
@@ -67,7 +59,7 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
         isPublic: false,
       });
       navigation.navigate(Routes.POST_SESSION_NOTES, { sessionId });
-    } catch (e: any) {
+    } catch {
       // Navigate anyway — rating is non-blocking
       navigation.navigate(Routes.POST_SESSION_NOTES, { sessionId });
     } finally {

@@ -30,7 +30,7 @@ export function ReviewDetailScreen(): React.JSX.Element {
   const reviewerName = params.reviewerName as string ?? 'Customer';
   const reviewDate = params.reviewDate as string ?? '';
   const reviewRating = params.reviewRating as number ?? 0;
-  const sessionCategory = params.sessionCategory as string ?? 'cafe_conversation';
+  const sessionCategory = params.sessionCategory as string ?? 'INT-1';
   const durationMinutes = params.durationMinutes as number ?? 120;
 
   // Derive initial values from the store if they exist
