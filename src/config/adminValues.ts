@@ -6,6 +6,12 @@
  */
 
 export const AdminConfig = {
+  serviceHours: { start: '06:00', end: '23:00' },
+  refundTiers: [
+    { code: 'tier_48h', label: '48+ hrs notice', refundPercent: 100 },
+    { code: 'tier_24_48h', label: '24-48 hrs notice', refundPercent: 50 },
+    { code: 'tier_lt_24h', label: 'Less than 24 hrs notice', refundPercent: 0 },
+  ],
   communicationStyles: [
     { code: 'chatty', label: 'Chatty', icon: 'chat' },
     { code: 'balanced', label: 'Balanced', icon: 'compare-arrows' },

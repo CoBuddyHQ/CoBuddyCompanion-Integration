@@ -14,7 +14,8 @@ import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { generateTimeOptions } from '../../utils/timeSlots';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -36,9 +37,7 @@ const FULL_DAY_MAP: Record<string, string> = {
 };
 
 // Pre-defined time slots for the picker Alert
-const TIME_OPTIONS = ["06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM"] as
-
-any[];
+const TIME_OPTIONS = generateTimeOptions();
 
 // ─── Time picker (Alert-based, no native library) ─────────────────────────────
 

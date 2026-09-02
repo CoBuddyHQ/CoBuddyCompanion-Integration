@@ -13,6 +13,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from '../../config/adminValues';
 
 const ERR = '#E74C3C';
 
@@ -38,10 +39,15 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
   const penaltyAmount = fetchedTx?.amount ?? -150;
   const penaltyReason = fetchedTx?.description ?? t('earnings.late_cancellation_of_session_ses_8821_as_per_policy_cancellations_within_2_hours_of_the_session_start_time_incur_a_penalty_of_150');
 
+  
+  const penaltyTierFallback = AdminConfig.refundTiers
+    .map((tier: any) => `${100 - tier.refundPercent}% penalty (${tier.label})`)
+    .join(', ');
+
   const rows = fetchedTx?.breakdown ?? [
     { label: "earnings.session_value", value: "\u20B9500" },
     { label: "earnings.cancellation_time", value: "1.5 hours before start" },
-    { label: "earnings.applicable_penalty_tier", value: "30% (within 2 hours)" },
+    { label: "earnings.applicable_penalty_tier", value: penaltyTierFallback },
     { label: "earnings.penalty_amount", value: "-\u20B9150" }
   ];
 
