@@ -1,4 +1,5 @@
-import i18next from "i18next";import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { AdminConfig } from '../../config/adminValues';
 /**
  * CPN-086 — Booking Reject Reason Screen
  * Companion selects a reason before declining a booking request.
@@ -24,7 +25,7 @@ import { RequestsService } from '../../services/api/services/requests.service';
 
 type Props = StackScreenProps<RequestsStackParamList, typeof Routes.BOOKING_REJECT_REASON>;
 
-const REASONS = ["Schedule conflict / Unavailable", "Location is too far", "Not comfortable with activity type", "Customer profile seems incomplete", "Other"] as any[];
+const REASONS = AdminConfig.sessionReasons.filter(r => r.appliesTo.includes('COMPANION_REJECT'));
 
 
 
@@ -49,7 +50,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
   const handleDecline = async () => {
     if (!canDecline) {return;}
     
-    const effectiveReason = selected === 'Other' ? otherText.trim() : selected!;
+    const effectiveReason = selected === 'other' ? otherText.trim() : selected!;
     
     setLoading(true);
     try {
@@ -96,17 +97,17 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
         {/* ── Reason options ── */}
         <View style={styles.optionsList}>
           {REASONS.map((reason) => {
-            const isSelected = selected === reason;
+            const isSelected = selected === reason.code;
             return (
               <TouchableOpacity accessibilityRole="button"
-                key={reason}
+                key={reason.code}
                 style={[styles.optionRow, isSelected && styles.optionRowSelected]}
-                onPress={() => setSelected(reason)}
+                onPress={() => setSelected(reason.code)}
                 activeOpacity={0.75}
                 
                 accessibilityState={{ selected: isSelected }}>
                 <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
-                  {reason}
+                  {reason.label}
                 </Text>
                 <View style={[styles.radioOuter, isSelected && styles.radioOuterSelected]}>
                   {isSelected && <View style={styles.radioInner} />}
@@ -117,7 +118,7 @@ export function BookingRejectReasonScreen({ route, navigation }: Props): React.J
         </View>
 
         {/* ── Other text input ── */}
-        {selected === 'Other' &&
+        {selected === 'other' &&
         <View style={styles.otherWrap}>
             <Text style={styles.otherLabel}>{t("application.additional_details_required")}</Text>
             <TextInput

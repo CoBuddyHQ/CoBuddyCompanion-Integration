@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+ /**
 * CreateSupportTicketScreen (CPN-168)
 * Submit a new support ticket.
 */
@@ -35,7 +35,7 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('Normal');
   const createTicket = useSupportStore((s) => s.createTicket);
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting] = useState(false);
 
   const canSubmit = category.length > 0 && subject.trim().length > 0 && description.trim().length > 0;
 
@@ -56,11 +56,11 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
           <Text style={s.sectionLabel}> {t('support.category')} </Text>
           {CATEGORIES.map((cat) =>
           <TouchableOpacity accessibilityRole="button" key={t(cat.label)}
-          style={[s.catCard, category === cat.label && s.catCardActive]}
-          onPress={() => setCategory(cat.label)} activeOpacity={0.75}>
-              <Icon name={cat.icon as any} size={22} color={category === cat.label ? colors.gold : colors.textMuted} />
-              <Text style={[s.catText, category === cat.label && s.catTextActive]}>{t(cat.label)}</Text>
-              {category === cat.label && <Icon name="check-circle" size={18} color={colors.gold} />}
+          style={[s.catCard, category === cat.code && s.catCardActive]}
+          onPress={() => setCategory(cat.code)} activeOpacity={0.75}>
+              <Icon name={((cat as any).icon ?? "help-outline") as any} size={22} color={category === cat.code ? colors.gold : colors.textMuted} />
+              <Text style={[s.catText, category === cat.code && s.catTextActive]}>{t(cat.label)}</Text>
+              {category === cat.code && <Icon name="check-circle" size={18} color={colors.gold} />}
             </TouchableOpacity>
           )}
 

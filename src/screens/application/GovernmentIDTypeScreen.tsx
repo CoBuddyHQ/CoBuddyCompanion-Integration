@@ -1,5 +1,5 @@
-import i18next from "i18next";
 import { useTranslation } from 'react-i18next';
+import { AdminConfig } from '../../config/adminValues';
 /**
 * CPN-036 — Government ID Type Selection Screen
 * Phase 4B Visual Consistency Polish
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 *
 * BUSINESS LOGIC PRESERVED (unchanged):
 *   - setSelectedIdType(idType) from applicationStore
-*   - navigation.navigate(GOVERNMENT_ID_UPLOAD, {idType: option.label})
+*   - navigation.navigate(GOVERNMENT_ID_UPLOAD, {idType: option.code})
 *   - Aadhaar default selected, Recommended badge retained
 *   - navigation CPN-036 → CPN-037
 */
@@ -40,32 +40,8 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.GOVERNMENT_ID_TYPE>;
-const ID_OPTIONS = [{
-  id: 'aadhaar',
-  icon: 'badge',
-  label: i18next.t("content.application.GovernmentIDTypeScreen.aadhaar_card"),
-  description: i18next.t("content.application.GovernmentIDTypeScreen.use_aadhaar_as_your_primary_identity_doc"),
-  recommended: true
-}, {
-  id: 'driving',
-  icon: 'directions-car',
-  label: i18next.t("content.application.GovernmentIDTypeScreen.driving_licence"),
-  description: i18next.t("content.application.GovernmentIDTypeScreen.use_a_valid_indian_driving_licence"),
-  recommended: false
-}, {
-  id: 'voter',
-  icon: 'how-to-vote',
-  label: i18next.t("content.application.GovernmentIDTypeScreen.voter_id"),
-  description: i18next.t("content.application.GovernmentIDTypeScreen.use_your_election_commission_voter_ident"),
-  recommended: false
-}, {
-  id: 'passport',
-  icon: 'flight',
-  label: i18next.t("content.application.GovernmentIDTypeScreen.passport"),
-  description: i18next.t("content.application.GovernmentIDTypeScreen.use_a_valid_passport_for_identity_verifi"),
-  recommended: false
-}] as const;
-type IDOptionId = typeof ID_OPTIONS[number]['id'];
+
+type IDOptionId = string;
 export function GovernmentIDTypeScreen({
   navigation
 }: Props): React.JSX.Element {
@@ -77,13 +53,13 @@ export function GovernmentIDTypeScreen({
   } = useApplicationStore();
   const [selectedId, setSelectedId] = useState<IDOptionId>('aadhaar');
   const handleContinue = useCallback(() => {
-    const option = ID_OPTIONS.find((o) => o.id === selectedId);
+    const option = AdminConfig.kycDocumentTypes.find((o) => o.code === selectedId);
     if (!option) {
       return;
     }
     setSelectedIdType(selectedId);
     navigation.navigate(Routes.GOVERNMENT_ID_UPLOAD, {
-      idType: option.label
+      idType: option.code
     });
   }, [selectedId, setSelectedIdType, navigation]);
   return <SafeAreaView style={styles.root} edges={['top']}>
@@ -117,9 +93,9 @@ export function GovernmentIDTypeScreen({
           <Text style={styles.cardTitle}>{t("content.application_kyc.GovernmentIDTypeContent.SELECT_TITLE").toUpperCase()}</Text>
           <Text style={styles.cardBody}>{t("content.application_kyc.GovernmentIDTypeContent.SELECT_SUBTITLE")}</Text>
           <View style={styles.radioGroup} accessibilityRole="radiogroup">
-            {ID_OPTIONS.map((option) => {
-            const isSelected = selectedId === option.id;
-            return <TouchableOpacity  key={option.id} style={[styles.radioRow, isSelected && styles.radioRowSelected]} onPress={() => setSelectedId(option.id)} accessibilityRole="radio" accessibilityState={{
+            {AdminConfig.kycDocumentTypes.map((option) => {
+            const isSelected = selectedId === option.code;
+            return <TouchableOpacity  key={option.code} style={[styles.radioRow, isSelected && styles.radioRowSelected]} onPress={() => setSelectedId(option.code)} accessibilityRole="radio" accessibilityState={{
               selected: isSelected
             }}>
                   {/* Radio indicator */}
@@ -137,13 +113,13 @@ export function GovernmentIDTypeScreen({
                   <View style={styles.radioContent}>
                     <View style={styles.radioLabelRow}>
                       <Text style={[styles.radioLabel, isSelected && styles.radioLabelSelected]}>
-                        {t(option.label)}
+                        {option.label}
                       </Text>
                       {option.recommended && <View style={styles.recommendedBadge}>
                           <Text style={styles.recommendedText}>{t("application.recommended")}</Text>
                         </View>}
                     </View>
-                    <Text style={styles.radioDescription}>{t(option.description)}</Text>
+                    
                   </View>
                 </TouchableOpacity>;
           })}

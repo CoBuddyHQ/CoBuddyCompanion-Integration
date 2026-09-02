@@ -17,15 +17,9 @@ import {useSafetyStore} from '../../store/slices/safetyStore';
 import { SafetyService } from '../../services/api/services';
 import { pickMedia } from '../../utils/mediaPicker';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from "../../config/adminValues";
 
-const INCIDENT_TYPES = [
-  {icon: 'warning',       label: 'I felt unsafe'},
-  {icon: 'person',        label: 'Verbal abuse'},
-  {icon: 'location-on',   label: 'Wrong location'},
-  {icon: 'money-off',     label: 'Payment dispute'},
-  {icon: 'block',         label: 'Policy violation'},
-  {icon: 'more-horiz',    label: 'Other'},
-];
+
 
 const WHEN_OPTS = ['During session', 'After session'];
 
@@ -109,13 +103,13 @@ export function IncidentReportScreen(): React.JSX.Element {
         {/* Incident type grid */}
         <Text style={s.sectionLabel}> {t('safety.incident_type')} </Text>
         <View style={s.typeGrid}>
-          {INCIDENT_TYPES.map(item => (
-            <TouchableOpacity accessibilityRole="button" key={item.label}
-              style={[s.typeCard, incidentType === item.label && s.typeCardActive]}
-              onPress={() => setIncidentType(item.label)} activeOpacity={0.75}>
-              <Icon name={item.icon as any} size={22}
-                color={incidentType === item.label ? colors.gold : colors.textMuted} />
-              <Text style={[s.typeLabel, incidentType === item.label && s.typeLabelActive]}>
+          {AdminConfig.incidentTypes.map(item => (
+            <TouchableOpacity accessibilityRole="button" key={item.code}
+              style={[s.typeCard, incidentType === item.code && s.typeCardActive]}
+              onPress={() => setIncidentType(item.code)} activeOpacity={0.75}>
+              <Icon name={((item as any).icon ?? "warning") as any} size={22}
+                color={incidentType === item.code ? colors.gold : colors.textMuted} />
+              <Text style={[s.typeLabel, incidentType === item.code && s.typeLabelActive]}>
                 {item.label}
               </Text>
             </TouchableOpacity>

@@ -15,15 +15,9 @@ import {radius} from '../../theme/radius';
 import {Routes} from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 import { SafetyService } from '../../services/api/services/index';
+import { AdminConfig } from '../../config/adminValues';
 
-const CATEGORIES = [
-  {icon: 'report',         label: 'Inappropriate Requests'},
-  {icon: 'security',       label: 'Threatening Behavior'},
-  {icon: 'currency-rupee', label: 'Payment Fraud'},
-  {icon: 'videocam-off',   label: 'Unauthorized Recording'},
-  {icon: 'lock',           label: 'Privacy Violation'},
-  {icon: 'more-horiz',     label: 'Other'},
-];
+
 
 export function ReportCustomerScreen(): React.JSX.Element {
     const { t } = useTranslation();
@@ -78,16 +72,16 @@ export function ReportCustomerScreen(): React.JSX.Element {
 
         {/* Report categories */}
         <Text style={s.sectionLabel}> {t('safety.report_category')} </Text>
-        {CATEGORIES.map(cat => (
-          <TouchableOpacity accessibilityRole="button" key={cat.label}
-            style={[s.categoryCard, category === cat.label && s.categoryCardActive]}
-            onPress={() => setCategory(cat.label)} activeOpacity={0.75}>
-            <Icon name={cat.icon as any} size={22}
-              color={category === cat.label ? colors.gold : colors.textMuted} />
-            <Text style={[s.categoryText, category === cat.label && s.categoryTextActive]}>
+        {AdminConfig.incidentTypes.map(cat => (
+          <TouchableOpacity accessibilityRole="button" key={cat.code}
+            style={[s.categoryCard, category === cat.code && s.categoryCardActive]}
+            onPress={() => setCategory(cat.code)} activeOpacity={0.75}>
+            <Icon name={((cat as any).icon ?? "report") as any} size={22}
+              color={category === cat.code ? colors.gold : colors.textMuted} />
+            <Text style={[s.categoryText, category === cat.code && s.categoryTextActive]}>
               {cat.label}
             </Text>
-            {category === cat.label &&
+            {category === cat.code &&
               <Icon name="radio-button-on" size={18} color={colors.gold} />}
           </TouchableOpacity>
         ))}

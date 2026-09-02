@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { AdminConfig } from '../../config/adminValues';
 /**
 * CPN-037 � Government ID Upload Screen
 * Phase 4B Visual Consistency Polish
@@ -61,6 +62,7 @@ const;
 export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JSX.Element {
   const { t } = useTranslation();
   const idType = (route.params as {idType?: string;})?.idType ?? 'Government ID';
+  const displayIdType = AdminConfig.kycDocumentTypes.find(x => x.code === idType)?.label || idType;
 
   const {
     setIdSubmitted, setCurrentStage, setApplicationResumeTarget, setDraftSaved,
@@ -194,7 +196,7 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
                 <Icon name="badge" size={spacing.iconMd} color={colors.gold} />
               </View>
               <View style={styles.selectedDocInfo}>
-                <Text style={styles.selectedDocType}>{idType}</Text>
+                <Text style={styles.selectedDocType}>{displayIdType}</Text>
                 <Text style={styles.selectedDocRequired}>{t("content.application_kyc.CommonKycContent.REQUIRED")}</Text>
               </View>
             </View>

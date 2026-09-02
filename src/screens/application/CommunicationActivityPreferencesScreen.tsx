@@ -56,7 +56,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
 
     try {
       await ProfileService.updateCommActivity(commActivityPrefs as unknown as Record<string, unknown>);
-    } catch (e) {
+    } catch {
       // ApiClient logs request & response
     }
 
@@ -69,17 +69,17 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
   };
 
   const renderOptionRow = (
-  options: ReadonlyArray<{id: string;label: string;icon: string;}>,
+  options: ReadonlyArray<{code: string;label: string;icon: string;}>,
   field: 'commStyle' | 'activityPace') =>
 
   <View style={styles.optionList}>
       {options.map((o, index) => {
-      const selected = commActivityPrefs[field] === o.id;
+      const selected = commActivityPrefs[field] === o.code;
       return (
         <TouchableOpacity accessibilityRole="button"
-          key={`ui-opt-${index}-${o.id}`}
+          key={`ui-opt-${index}-${o.code}`}
           style={[styles.optionRow, selected && styles.optionRowSelected]}
-          onPress={() => updateCommActivityPrefs({ [field]: selected ? '' : o.id })}
+          onPress={() => updateCommActivityPrefs({ [field]: selected ? '' : o.code })}
           activeOpacity={0.75}
           
           accessibilityState={{ selected }}>
