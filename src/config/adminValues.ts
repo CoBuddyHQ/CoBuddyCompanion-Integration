@@ -79,7 +79,8 @@ export const AdminConfig = {
   },
   sessionDurations: [60, 90, 120, 180, 240, 300, 360, 480, 720, 1440], // minutes
   sessionReasons: [
-    { code: 'schedule_conflict', label: 'Schedule conflict / Unavailable', appliesTo: ['COMPANION_REJECT'] },
+      { code: 'other', label: 'Other', appliesTo: ['COMPANION_REJECT'] },
+{ code: 'schedule_conflict', label: 'Schedule conflict / Unavailable', appliesTo: ['COMPANION_REJECT'] },
     { code: 'location_too_far', label: 'Location is too far', appliesTo: ['COMPANION_REJECT'] },
     { code: 'not_comfortable_activity', label: 'Not comfortable with activity type', appliesTo: ['COMPANION_REJECT'] },
     { code: 'incomplete_profile', label: 'Customer profile seems incomplete', appliesTo: ['COMPANION_REJECT'] },

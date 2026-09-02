@@ -15,8 +15,9 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useSupportStore } from '../../store/slices/supportStore';
 import { useTranslation } from "react-i18next";
+import { AdminConfig } from "../../config/adminValues";
 
-const CATEGORIES = [{ icon: "payment", label: "content.support.CreateSupportTicketScreen.categories.0.label" }, { icon: "event-busy", label: "content.support.CreateSupportTicketScreen.categories.1.label" }, { icon: "security", label: "content.support.CreateSupportTicketScreen.categories.2.label" }, { icon: "account-balance", label: "content.support.CreateSupportTicketScreen.categories.3.label" }, { icon: "help-outline", label: "content.support.CreateSupportTicketScreen.categories.4.label" }] as any[];
+const CATEGORIES = AdminConfig.ticketCategories as any[];
 
 
 
@@ -55,11 +56,11 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
 
           <Text style={s.sectionLabel}> {t('support.category')} </Text>
           {CATEGORIES.map((cat) =>
-          <TouchableOpacity accessibilityRole="button" key={t(cat.label)}
+          <TouchableOpacity accessibilityRole="button" key={cat.code}
           style={[s.catCard, category === cat.code && s.catCardActive]}
           onPress={() => setCategory(cat.code)} activeOpacity={0.75}>
               <Icon name={((cat as any).icon ?? "help-outline") as any} size={22} color={category === cat.code ? colors.gold : colors.textMuted} />
-              <Text style={[s.catText, category === cat.code && s.catTextActive]}>{t(cat.label)}</Text>
+              <Text style={[s.catText, category === cat.code && s.catTextActive]}>{cat.label}</Text>
               {category === cat.code && <Icon name="check-circle" size={18} color={colors.gold} />}
             </TouchableOpacity>
           )}

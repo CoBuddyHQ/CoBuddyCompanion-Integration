@@ -2116,40 +2116,6 @@
         "PRIVACY_NOTE": "These preferences help with matching only. They do not change CoBuddy's safety or venue requirements.",
         "CTA_PRIMARY": "Save & Continue",
         "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
-        "COMM_OPTIONS": [
-          {
-            "id": "chatty",
-            "label": "Chatty & talkative",
-            "icon": "chat"
-          },
-          {
-            "id": "balanced",
-            "label": "Balanced — talk & listen",
-            "icon": "compare-arrows"
-          },
-          {
-            "id": "quiet",
-            "label": "Comfortable with quiet",
-            "icon": "volume-off"
-          }
-        ],
-        "PACE_OPTIONS": [
-          {
-            "id": "relaxed",
-            "label": "Relaxed & unhurried",
-            "icon": "wb-sunny"
-          },
-          {
-            "id": "moderate",
-            "label": "Moderate pace",
-            "icon": "directions-walk"
-          },
-          {
-            "id": "active",
-            "label": "Active & on-the-go",
-            "icon": "directions-run"
-          }
-        ],
         "GROUP_OPTIONS": [
           {
             "id": "one_on_one",
@@ -4882,28 +4848,6 @@
     },
     "support": {
       "CreateSupportTicketScreen": {
-        "categories": [
-          {
-            "icon": "payment",
-            "label": "Payment Issue"
-          },
-          {
-            "icon": "event-busy",
-            "label": "Booking Problem"
-          },
-          {
-            "icon": "security",
-            "label": "Safety Concern"
-          },
-          {
-            "icon": "account-balance",
-            "label": "Account Issue"
-          },
-          {
-            "icon": "help-outline",
-            "label": "General Query"
-          }
-        ],
         "priorities": [
           "Normal",
           "High",

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { AdminConfig } from '../../config/adminValues';
 /**
  * CPN-030 — CommunicationActivityPreferencesScreen
  * Stitch ref: service_style_preferences_screen_fixed_theme/code.html
@@ -126,13 +127,13 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
           {/* Communication style */}
           <GlassCard style={styles.card}>
             <Text style={styles.cardTitle}>{t("content.application_kyc.CommActivityPreferencesContent.COMM_TITLE")}</Text>
-            {renderOptionRow((Array.isArray(t("content.application_kyc.CommActivityPreferencesContent.COMM_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.CommActivityPreferencesContent.COMM_OPTIONS", { returnObjects: true }) as any[]) : []), 'commStyle')}
+            {renderOptionRow(AdminConfig.communicationStyles as any, 'commStyle')}
           </GlassCard>
 
           {/* Activity pace */}
           <GlassCard style={styles.card}>
             <Text style={styles.cardTitle}>{t("content.application_kyc.CommActivityPreferencesContent.PACE_TITLE")}</Text>
-            {renderOptionRow((Array.isArray(t("content.application_kyc.CommActivityPreferencesContent.PACE_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.CommActivityPreferencesContent.PACE_OPTIONS", { returnObjects: true }) as any[]) : []), 'activityPace')}
+            {renderOptionRow(AdminConfig.activityPaces as any, 'activityPace')}
           </GlassCard>
 
           {/* Group preference */}
