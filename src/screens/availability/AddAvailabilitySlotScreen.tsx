@@ -74,6 +74,18 @@ export function AddAvailabilitySlotScreen(): React.JSX.Element {
 
   // ── Save — writes to store ───────────────────────────────────────────────────
   const handleSave = () => {
+    const parseTime = (str: string) => {
+      const [t, p] = str.split(' ');
+      let [h, m] = t.split(':').map(Number);
+      if (p === 'PM' && h !== 12) h += 12;
+      if (p === 'AM' && h === 12) h = 0;
+      return h * 60 + m;
+    };
+    if (parseTime(end) <= parseTime(start)) {
+      Alert.alert('Invalid Time', 'End time must be after start time');
+      return;
+    }
+  
     addSlot({ date, startTime: start, endTime: end, repeat });
     Alert.alert(t("alerts.slot_added"), t("alerts.v0_v1_v2_v3", { v0:
 

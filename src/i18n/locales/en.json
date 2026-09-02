@@ -2109,27 +2109,12 @@
         "SUBHEADLINE": "Help customers understand how you prefer to interact and what kind of activities you enjoy most during sessions.",
         "COMM_TITLE": "Communication Style",
         "PACE_TITLE": "Activity Pace",
-        "GROUP_TITLE": "Group Sessions",
         "ACCESSIBILITY_TITLE": "Accessibility Considerations",
         "ACCESSIBILITY_HINT": "Let us know if you have any mobility or accessibility preferences that should be considered when selecting approved public venues for sessions.",
         "ACCESSIBILITY_PLACEHOLDER": "E.g. prefer step-free venues, need quiet spaces (optional)",
         "PRIVACY_NOTE": "These preferences help with matching only. They do not change CoBuddy's safety or venue requirements.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
-        "GROUP_OPTIONS": [
-          {
-            "id": "one_on_one",
-            "label": "One-on-one only"
-          },
-          {
-            "id": "small_group",
-            "label": "Small group (3–5 people)"
-          },
-          {
-            "id": "any",
-            "label": "Either is fine"
-          }
-        ]
+        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup"
       },
       "PublicVenuePreferenceContent": {
         "HEADLINE": "Public Venue Preferences",
@@ -3130,49 +3115,9 @@
         "USE_ENGLISH": "Use English for Now",
         "LANGUAGES": [
           {
-            "code": "hi",
-            "label": "हिंदी",
-            "nativeLabel": "Hindi"
-          },
-          {
             "code": "en",
             "label": "English",
             "nativeLabel": "English"
-          },
-          {
-            "code": "mr",
-            "label": "मराठी",
-            "nativeLabel": "Marathi"
-          },
-          {
-            "code": "gu",
-            "label": "ગુજરાતી",
-            "nativeLabel": "Gujarati"
-          },
-          {
-            "code": "pa",
-            "label": "ਪੰਜਾਬੀ",
-            "nativeLabel": "Punjabi"
-          },
-          {
-            "code": "ta",
-            "label": "தமிழ்",
-            "nativeLabel": "Tamil"
-          },
-          {
-            "code": "te",
-            "label": "తెలుగు",
-            "nativeLabel": "Telugu"
-          },
-          {
-            "code": "kn",
-            "label": "ಕನ್ನಡ",
-            "nativeLabel": "Kannada"
-          },
-          {
-            "code": "bn",
-            "label": "বাংলা",
-            "nativeLabel": "Bengali"
           }
         ]
       },

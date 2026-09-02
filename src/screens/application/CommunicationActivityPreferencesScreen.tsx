@@ -48,8 +48,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
 
   const canContinue =
   !!commActivityPrefs.commStyle &&
-  !!commActivityPrefs.activityPace &&
-  !!commActivityPrefs.groupPreference;
+  !!commActivityPrefs.activityPace;
 
   const handleContinue = async () => {
     if (!canContinue) {return;}
@@ -136,27 +135,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
             {renderOptionRow(AdminConfig.activityPaces as any, 'activityPace')}
           </GlassCard>
 
-          {/* Group preference */}
-          <GlassCard style={styles.card}>
-            <Text style={styles.cardTitle}>{t("content.application_kyc.CommActivityPreferencesContent.GROUP_TITLE")}</Text>
-            <View style={styles.groupOptions}>
-              {((Array.isArray(t("content.application_kyc.CommActivityPreferencesContent.GROUP_OPTIONS", { returnObjects: true })) ? (t("content.application_kyc.CommActivityPreferencesContent.GROUP_OPTIONS", { returnObjects: true }) as any[]) : [])).map((g, index) => {
-                const selected = commActivityPrefs.groupPreference === g.id;
-                return (
-                  <TouchableOpacity accessibilityRole="button"
-                    key={`ui-opt-${index}-${g.id}`}
-                    style={[styles.groupChip, selected && styles.groupChipSelected]}
-                    onPress={() => updateCommActivityPrefs({ groupPreference: selected ? '' : g.id })}
-                    activeOpacity={0.75}
-                    
-                    accessibilityState={{ selected }}>
-                    {selected && <Icon name="check" size={14} color={colors.gold} />}
-                    <Text style={[styles.groupChipText, selected && styles.groupChipTextSelected]}>{t(g.label)}</Text>
-                  </TouchableOpacity>);
-
-              })}
-            </View>
-          </GlassCard>
+          
 
           {/* Accessibility (optional) */}
           <GlassCard style={styles.card}>

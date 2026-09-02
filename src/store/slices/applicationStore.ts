@@ -799,7 +799,7 @@ function calcCompletion(state: Omit<ApplicationState, keyof Pick<ApplicationStat
 
   // Comm & activity prefs
   const cap = state.commActivityPrefs;
-  if (cap.commStyle && cap.activityPace && cap.groupPreference) { done++; }
+  if (cap.commStyle && cap.activityPace ) { done++; }
 
   // Venue preferences: at least 1
   if (state.venuePreferences.length > 0) { done++; }

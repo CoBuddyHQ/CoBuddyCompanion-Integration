@@ -14,7 +14,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { useTranslation } from "react-i18next";
 
-const LANGUAGES: {id: AppLanguage;label: string;sub: string;}[] = [{ id: "en", label: "content.settings.AppLanguageSettingsScreen.languages.0.label", sub: "content.settings.AppLanguageSettingsScreen.languages.0.sub" }, { id: "hi", label: "content.settings.AppLanguageSettingsScreen.languages.1.label", sub: "content.settings.AppLanguageSettingsScreen.languages.1.sub" }, { id: "mr", label: "content.settings.AppLanguageSettingsScreen.languages.2.label", sub: "content.settings.AppLanguageSettingsScreen.languages.2.sub" }, { id: "gu", label: "content.settings.AppLanguageSettingsScreen.languages.3.label", sub: "content.settings.AppLanguageSettingsScreen.languages.3.sub" }, { id: "ta", label: "content.settings.AppLanguageSettingsScreen.languages.4.label", sub: "content.settings.AppLanguageSettingsScreen.languages.4.sub" }] as any[];
+const LANGUAGES: {id: any; label: string; sub: string;}[] = [{ id: "en", label: "English", sub: "English" }];
 
 
 

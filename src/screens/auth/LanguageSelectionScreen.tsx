@@ -42,7 +42,7 @@ type Props = StackScreenProps<AuthStackParamList, typeof Routes.LANGUAGE_SELECTI
 
 const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const [selectedCode, setSelectedCode] = useState<string>('hi');
+  const [selectedCode, setSelectedCode] = useState<string>('en');
 
   const handleContinue = () => {
     navigation.navigate(Routes.NOTIFICATION_PERMISSION);
