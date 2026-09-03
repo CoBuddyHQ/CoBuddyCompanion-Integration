@@ -284,27 +284,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   optionLabelSelected: { color: colors.textPrimary },
-  groupOptions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  groupChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.full,
-    backgroundColor: colors.elevatedSurface,
-    borderWidth: 1,
-    borderColor: colors.border
-  },
-  groupChipSelected: {
-    backgroundColor: `${colors.gold}14`,
-    borderColor: colors.gold
-  },
-  groupChipText: {
-    ...textStyles.labelSm,
-    color: colors.textSecondary
-  },
-  groupChipTextSelected: { color: colors.gold },
+  
   accessibilityInputWrap: {
     borderWidth: 1,
     borderColor: colors.border,

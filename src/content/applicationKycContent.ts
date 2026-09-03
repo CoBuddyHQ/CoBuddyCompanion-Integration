@@ -414,12 +414,6 @@ export const CommActivityPreferencesContent = {
   { id: 'moderate', label: i18next.t("content.content.applicationKycContent.moderate_pace"), icon: 'directions-walk' },
   { id: 'active', label: i18next.t("content.content.applicationKycContent.active_on_the_go"), icon: 'directions-run' }],
 
-  GROUP_TITLE: 'Group Sessions',
-  GROUP_OPTIONS: [
-  { id: 'one_on_one', label: i18next.t("content.content.applicationKycContent.one_on_one_only") },
-  { id: 'small_group', label: i18next.t("content.content.applicationKycContent.small_group_3_5_people") },
-  { id: 'any', label: i18next.t("content.content.applicationKycContent.either_is_fine") }],
-
   ACCESSIBILITY_TITLE: 'Accessibility Considerations',
   ACCESSIBILITY_HINT: 'Let us know if you have any mobility or accessibility preferences that should be considered when selecting approved public venues for sessions.',
   ACCESSIBILITY_PLACEHOLDER: 'E.g. prefer step-free venues, need quiet spaces (optional)',
