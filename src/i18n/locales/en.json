@@ -13,7 +13,11 @@
     "required": "Required",
     "error": "Error",
     "success": "Success",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "submitting": "Submitting...",
+    "retry": "Retry",
+    "ok": "OK"
   },
   "dashboard": {
     "announcements": "Announcements",
@@ -333,7 +337,9 @@
     "sign_in": "Sign In",
     "verification_details_are_used_only_for_trust_safety_compliance_and_platform_operations": "Verification details are used only for trust, safety, compliance, and platform operations.",
     "your_identity_and_profile_details_will_be_verified_before_your_profile_goes_live": "Your identity and profile details will be verified before your profile goes live.",
-    "your_information_is_protected": "Your information is protected"
+    "your_information_is_protected": "Your information is protected",
+    "unable_to_save_confirmation": "Unable to save confirmation",
+    "confirmation_failed": "Confirmation failed"
   },
   "profile": {
     "10_km": "10 km",
@@ -463,7 +469,11 @@
     "your_profile_photo_must_comply_with_cobuddy_guidelines": "Your profile photo must comply with CoBuddy guidelines.",
     "your_public_display_name": "Your public display name",
     "your_public_identity": "Your public identity",
-    "your_score_is_in_the_top": "Your score is in the top"
+    "your_score_is_in_the_top": "Your score is in the top",
+    "platform_fee": "Platform fee",
+    "category_rates": "CATEGORY RATES (PER HOUR)",
+    "no_photos": "No photos uploaded yet",
+    "done": "Done"
   },
   "requests": {
     "2_hours": "2 hours",
@@ -700,7 +710,11 @@
     "what_happens_when_you_block": "What happens when you block",
     "when_did_it_happen": "When did it happen?",
     "you_are_protected": "You are protected.",
-    "you_can_add_up_to_3_emergency_contacts": "You can add up to 3 emergency contacts."
+    "you_can_add_up_to_3_emergency_contacts": "You can add up to 3 emergency contacts.",
+    "save_contact": "Save Contact",
+    "save_changes": "Save Changes",
+    "timer_running": "Timer Running",
+    "start_timer": "Start Timer"
   },
   "sessions": {
     "15_minutes_before": "15 minutes before",
@@ -949,7 +963,14 @@
     "your_trusted_contacts_can_see_your_location": "Your trusted contacts can see your location",
     "cancellation_customer_notified": "Customer will be notified immediately",
     "cancellation_penalty": "₹200 penalty deducted from next payout",
-    "cancellation_rate_updated": "Your cancellation rate will be updated"
+    "cancellation_rate_updated": "Your cancellation rate will be updated",
+    "platform_fee": "Platform fee",
+    "extension_request_received": "Extension Request Received",
+    "customer_wants_to_extend_by": "Customer wants to extend by",
+    "pending_your_approval": "Pending your approval",
+    "please_confirm_to_extend": "Please confirm to extend",
+    "qr_scanner_not_yet_available": "QR Scanner not yet available on Companion App",
+    "scan_customer_qr_code": "Scan Customer QR Code"
   },
   "settings": {
     "24_hours": "24 hours",
@@ -1107,7 +1128,9 @@
     "updated": "Updated",
     "was_this_helpful": "Was this helpful?",
     "you_can_only_appeal_once_per_dispute_make_sure_to_provide_strong_reasoning": "You can only appeal once per dispute. Make sure to provide strong reasoning.",
-    "submit_dispute": "Submit Dispute"
+    "submit_dispute": "Submit Dispute",
+    "submit_appeal": "Submit Appeal",
+    "submit_ticket": "Submit Ticket"
   },
   "system": {
     "01_jul_2026_02_00_04_00_am_ist": "01 Jul 2026 · 02:00 – 04:00 AM IST",
@@ -1475,7 +1498,17 @@
     "accessibility_decline_request": "Decline request",
     "accessibility_suggest_time": "Suggest a different time",
     "accessibility_view_customer_profile": "View customer profile",
-    "city_service_disabled_tip_city": "Select a city to continue."
+    "city_service_disabled_tip_city": "Select a city to continue.",
+    "base_hourly_price": "BASE HOURLY PRICE",
+    "per_hour": "per hour",
+    "custom_hourly_price": "Custom hourly price",
+    "category_rates": "CATEGORY RATES (PER HOUR)",
+    "proposed_rate": "Proposed Rate",
+    "continue_to_verification": "Continue to Verification",
+    "continue": "Continue",
+    "bank_verification_cta_primary": "Save & Continue",
+    "submit": "Submit",
+    "save_continue": "Save & Continue"
   },
   "auth": {
     "cobuddy_does_not_store_your_fingerprint_or_face_data_your_device_handles_biometric_verification_securely": "CoBuddy does not store your fingerprint or face data. Your device handles biometric verification securely.",
@@ -5622,7 +5655,14 @@
     "verify_and_save_bank_account": "Verify and save bank account",
     "save_notification_preferences": "Save notification preferences",
     "save_privacy_settings": "Save privacy settings",
-    "fix_missing": "Fix missing: {{item}}"
+    "fix_missing": "Fix missing: {{item}}",
+    "save_and_verify_bank_account": "Save and verify bank account",
+    "save_address_and_continue": "Save address and continue",
+    "continue_to_next_step": "Continue to next step",
+    "submit_uploaded_documents": "Submit uploaded documents",
+    "save_pan_details": "Save PAN details",
+    "submit_profile_for_review": "Submit profile for review",
+    "rate_stars": "Rate {{stars}} stars"
   },
   "alerts": {
     "linkedInLinked": {
@@ -5744,7 +5784,13 @@
     "still_offline": "Still Offline",
     "could_not_reach_cobuddy_servers_please_c": "Could not reach CoBuddy servers. Please check your Wi-Fi or mobile data.",
     "locked": "Locked",
-    "complete_required_modules_first": "Complete required modules first."
+    "complete_required_modules_first": "Complete required modules first.",
+    "confirm": "Confirm",
+    "processing": "Processing...",
+    "photo_deleted": "Photo deleted successfully",
+    "photo_uploaded": "Photo uploaded successfully",
+    "failed_to_update": "Failed to update",
+    "coming_soon": "Coming Soon"
   },
   "datetime": {
     "just_now": "Just now",
@@ -5756,7 +5802,10 @@
     "days_ago_one": "{{count}} day ago",
     "days_ago_other": "{{count}} days ago",
     "expired": "Expired",
-    "remaining": "{{duration}} remaining"
+    "remaining": "{{duration}} remaining",
+    "min_ago": "{{v0}}m ago",
+    "hours_ago": "{{v0}}h ago",
+    "days_ago": "{{v0}}d ago"
   },
   "validation": {
     "mobile_number_is_required": "Mobile number is required.",
@@ -5813,6 +5862,8 @@
     "var_is_required": "{{fieldName}} is required.",
     "var_is_too_short": "{{fieldName}} is too short.",
     "var_must_be_100_characters_or_fewer": "{{fieldName}} must be 100 characters or fewer.",
-    "var_contains_invalid_characters": "{{fieldName}} contains invalid characters."
+    "var_contains_invalid_characters": "{{fieldName}} contains invalid characters.",
+    "maximum_limit_reached": "Maximum Limit Reached",
+    "you_can_select_up_to_8_areas": "You can select up to 8 areas."
   }
 }
