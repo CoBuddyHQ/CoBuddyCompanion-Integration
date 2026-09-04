@@ -17,6 +17,8 @@ i18n
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
+    parseMissingKeyHandler: () => '',
+    returnEmptyString: false,
   });
 
 export default i18n;
