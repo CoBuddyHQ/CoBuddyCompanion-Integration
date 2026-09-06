@@ -144,11 +144,11 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { value: String(sessionsCount), label: t("content.profile.CompanionProfileScreen.sessions") },
             { value: '100%', label: t("content.profile.CompanionProfileScreen.response") }].
             map((stat, i) =>
-            <React.Fragment key={t(stat.label)}>
+            <React.Fragment key={stat.label}>
                 {i > 0 && <View style={styles.statsDivider} />}
                 <View style={styles.statCell}>
                   <Text style={styles.statValue}>{stat.value}</Text>
-                  <Text style={styles.statLabel}>{t(stat.label)}</Text>
+                  <Text style={styles.statLabel}>{stat.label}</Text>
                 </View>
               </React.Fragment>
             )}
@@ -319,12 +319,12 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'my-location', label: t("content.profile.CompanionProfileScreen.travel_radius"), route: Routes.TRAVEL_RADIUS_PREFERENCE },
             { icon: 'photo-library', label: t("content.profile.CompanionProfileScreen.manage_photos"), route: Routes.GALLERY_PHOTO_MANAGER }].
             map((item) =>
-            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.menuRow}
+            <TouchableOpacity accessibilityRole="button" key={item.label} style={styles.menuRow}
             onPress={() => (navigation as any).navigate(item.route  )} activeOpacity={0.7}>
                 <View style={styles.menuIconWrap}>
                   <Icon name={item.icon as any} size={18} color={colors.gold} />
                 </View>
-                <Text style={styles.menuLabel}>{t(item.label)}</Text>
+                <Text style={styles.menuLabel}>{item.label}</Text>
                 <Icon name="chevron-right" size={18} color={colors.textMuted} />
               </TouchableOpacity>
             )}
@@ -342,12 +342,12 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'help-center', label: t("content.profile.CompanionProfileScreen.help_support"), route: Routes.SUPPORT_CENTER },
             { icon: 'policy', label: t("content.profile.CompanionProfileScreen.policy_center"), route: Routes.POLICY_CENTER }].
             map((item) =>
-            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.menuRow}
+            <TouchableOpacity accessibilityRole="button" key={item.label} style={styles.menuRow}
             onPress={() => (navigation as any).navigate(item.route  )} activeOpacity={0.7}>
                 <View style={styles.menuIconWrap}>
                   <Icon name={item.icon as any} size={18} color={colors.gold} />
                 </View>
-                <Text style={styles.menuLabel}>{t(item.label)}</Text>
+                <Text style={styles.menuLabel}>{item.label}</Text>
                 <Icon name="chevron-right" size={18} color={colors.textMuted} />
               </TouchableOpacity>
             )}
@@ -398,12 +398,12 @@ export function CompanionProfileScreen(): React.JSX.Element {
             { icon: 'system-update', label: t("content.profile.CompanionProfileScreen.force_update"), route: Routes.FORCE_UPDATE },
             { icon: 'call', label: t("content.profile.CompanionProfileScreen.incoming_call_test"), route: Routes.INCOMING_CALL }].
             map((item) =>
-            <TouchableOpacity accessibilityRole="button" key={t(item.label)} style={styles.devMenuRow}
+            <TouchableOpacity accessibilityRole="button" key={item.label} style={styles.devMenuRow}
             onPress={() => (navigation as any).navigate(item.route)} activeOpacity={0.7}>
                   <View style={styles.devMenuIcon}>
                     <Icon name={item.icon as any} size={16} color={colors.textMuted} />
                   </View>
-                  <Text style={styles.devMenuLabel}>{t(item.label)}</Text>
+                  <Text style={styles.devMenuLabel}>{item.label}</Text>
                   <Icon name="chevron-right" size={16} color={colors.textMuted} />
                 </TouchableOpacity>
             )}
