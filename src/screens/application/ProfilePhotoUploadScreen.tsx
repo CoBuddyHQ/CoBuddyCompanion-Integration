@@ -355,7 +355,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
           <Text style={styles.cardTitle}>{t("content.application_kyc.ProfilePhotoUploadContent.PHOTO_STANDARDS_TITLE").toUpperCase()}</Text>
           <View style={styles.standardsList}>
             {PHOTO_STANDARDS.map((item) =>
-            <View key={t(item.label)} style={styles.standardRow}>
+            <View key={item.label} style={styles.standardRow}>
                 <View style={[styles.standardIconWrap, item.isError && styles.standardIconError]}>
                   <Icon
                   name={item.icon}
@@ -364,7 +364,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
                 
                 </View>
                 <View style={styles.standardText}>
-                  <Text style={styles.standardLabel}>{t(item.label)}</Text>
+                  <Text style={styles.standardLabel}>{item.label}</Text>
                   <Text style={styles.standardBody}>{item.body}</Text>
                 </View>
               </View>

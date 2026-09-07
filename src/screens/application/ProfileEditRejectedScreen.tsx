@@ -86,7 +86,7 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
                   <View style={styles.summaryIconWrap}>
                     <Icon name={item.icon as any} size={18} color={c} />
                   </View>
-                  <Text style={styles.summaryLabel}>{t(item.label)}</Text>
+                  <Text style={styles.summaryLabel}>{item.label}</Text>
                   <View style={[styles.summaryStatusBadge, { borderColor: `${c}30`, backgroundColor: `${c}12` }]}>
                     <Text style={[styles.summaryStatusText, { color: c }]}>{item.status}</Text>
                   </View>
@@ -108,12 +108,12 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
                 </View>
                 <View style={styles.updateContent}>
                   <View style={styles.updateLabelRow}>
-                    <Text style={styles.updateLabel}>{t(item.label)}</Text>
+                    <Text style={styles.updateLabel}>{item.label}</Text>
                     <View style={styles.requiredTag}>
                       <Text style={styles.requiredTagText}>{t("content.application_kyc.CommonKycContent.REQUIRED")}</Text>
                     </View>
                   </View>
-                  <Text style={styles.updateDesc}>{t(item.description)}</Text>
+                  <Text style={styles.updateDesc}>{item.description}</Text>
                 </View>
               </View>
             )}
@@ -128,7 +128,7 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
             {((Array.isArray(t("content.application_kyc.ProfileEditRejectedContent.STATUS_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ProfileEditRejectedContent.STATUS_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
             <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.currentStatusRow}>
                 <Icon name={item.icon as any} size={18} color={colors.safetyGreen} />
-                <Text style={styles.currentStatusLabel}>{t(item.label)}</Text>
+                <Text style={styles.currentStatusLabel}>{item.label}</Text>
               </View>
             )}
           </View>

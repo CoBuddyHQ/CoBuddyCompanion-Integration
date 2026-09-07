@@ -326,7 +326,7 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
             <View style={styles.itemList}>
               {PROFILE_SETUP_ITEMS.map((item) =>
               <ChecklistRow
-                key={t(item.label)}
+                key={item.label}
                 icon={item.icon}
                 label={t(item.label)}
                 description={t(item.description)}
@@ -439,7 +439,7 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
             {correctionItems.length > 0 ?
             correctionItems.map((item) =>
             <CorrectionRow
-              key={t(item.label)}
+              key={item.label}
               icon={item.icon}
               label={t(item.label)}
               description={t(item.description)}
