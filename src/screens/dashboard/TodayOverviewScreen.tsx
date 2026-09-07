@@ -136,7 +136,7 @@ export function TodayOverviewScreen(): React.JSX.Element {
                     </Text>
                   </View>
                 </View>
-                {item.sub && <Text style={s.timelineSub}>{t(item.sub)}</Text>}
+                {item.sub && <Text style={s.timelineSub}>{item.sub}</Text>}
               </TouchableOpacity>
             </View>
           )}

@@ -466,11 +466,11 @@ export function HomeDashboardScreen(): React.JSX.Element {
           { icon: 'headset-mic', label: i18next.t("content.dashboard.HomeDashboardScreen.cobuddy_support"), chip: 'Available', green: true },
           { icon: 'lock', label: i18next.t("content.dashboard.HomeDashboardScreen.public_venue_policy"), chip: 'Locked', green: false }].
           map((row, i, arr) =>
-          <View key={t(row.label)}>
+          <View key={row.label}>
               <View style={styles.safetyRow}>
                 <View style={styles.safetyLeft}>
                   <Icon name={row.icon as any} size={18} color={colors.textSecondary} />
-                  <Text style={styles.safetyLabel}>{t(row.label)}</Text>
+                  <Text style={styles.safetyLabel}>{row.label}</Text>
                 </View>
                 <StatusChip
                 label={t(row.chip)}
@@ -490,10 +490,10 @@ export function HomeDashboardScreen(): React.JSX.Element {
           { icon: 'campaign', label: i18next.t("content.dashboard.HomeDashboardScreen.news"), route: Routes.IMPORTANT_ANNOUNCEMENTS },
           { icon: 'flash-on', label: i18next.t("content.dashboard.HomeDashboardScreen.quick_actions"), route: Routes.QUICK_ACTIONS }].
           map((q) =>
-          <TouchableOpacity accessibilityRole="button" key={t(q.label)} style={styles.quickLinkBtn}
+          <TouchableOpacity accessibilityRole="button" key={q.label} style={styles.quickLinkBtn}
           onPress={() => navigation.navigate(q.route)} activeOpacity={0.75}>
               <Icon name={q.icon as any} size={18} color={colors.gold} />
-              <Text style={styles.quickLinkText}>{t(q.label)}</Text>
+              <Text style={styles.quickLinkText}>{q.label}</Text>
             </TouchableOpacity>
           )}
         </View>

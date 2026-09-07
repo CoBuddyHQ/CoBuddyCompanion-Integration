@@ -151,14 +151,14 @@ export function ImportantAnnouncementsScreen(): React.JSX.Element {
                 <Icon name={item.icon as any} size={22} color={item.iconColor} />
               </View>
               <View style={[s.tagPill, { borderColor: item.tagColor + '50' }]}>
-                <Text style={[s.tagText, { color: item.tagColor }]}>{t(item.tag)}</Text>
+                <Text style={[s.tagText, { color: item.tagColor }]}>{item.tag}</Text>
               </View>
-              <Text style={s.dateText}>{t(item.date)}</Text>
+              <Text style={s.dateText}>{item.date}</Text>
             </View>
 
             {/* Content */}
-            <Text style={s.cardTitle}>{t(item.title)}</Text>
-            <Text style={s.cardBody}>{t(item.body)}</Text>
+            <Text style={s.cardTitle}>{item.title}</Text>
+            <Text style={s.cardBody}>{item.body}</Text>
 
             {/* Read more — real URL */}
             <TouchableOpacity accessibilityRole="button" style={s.readMore}

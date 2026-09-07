@@ -211,14 +211,14 @@ export function EarningsDashboardScreen(): React.JSX.Element {
           { icon: 'bar-chart', label: t("content.earnings.EarningsDashboardScreen.weekly"), route: Routes.WEEKLY_MONTHLY_EARNINGS }].
           map((link) =>
           <TouchableOpacity accessibilityRole="button"
-            key={t(link.label)}
+            key={link.label}
             style={styles.quickLinkTile}
             onPress={() => navigation.navigate(link.route)}
             activeOpacity={0.75}>
               <View style={styles.quickLinkIconWrap}>
                 <Icon name={link.icon as any} size={20} color={colors.gold} />
               </View>
-              <Text style={styles.quickLinkLabel}>{t(link.label)}</Text>
+              <Text style={styles.quickLinkLabel}>{link.label}</Text>
             </TouchableOpacity>
           )}
         </View>
