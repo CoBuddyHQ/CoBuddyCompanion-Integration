@@ -139,14 +139,14 @@ const NotifRow: React.FC<NotifRowProps> = ({ item, value, onToggle, last }) =>
 <View style={[rowStyles.row, last && rowStyles.rowLast]}>
     <View style={rowStyles.mid}>
       <View style={rowStyles.labelRow}>
-        <Text style={rowStyles.label}>{i18next.t(item.label)}</Text>
+        <Text style={rowStyles.label}>{item.label}</Text>
         <ChannelBadge channel={item.channel} />
         {item.locked &&
       <Icon name="lock" size={12} color={colors.textMuted} />
       }
       </View>
       {item.subtitle &&
-    <Text style={rowStyles.subtitle}>{i18next.t(item.subtitle)}</Text>
+    <Text style={rowStyles.subtitle}>{item.subtitle}</Text>
     }
     </View>
     <Switch

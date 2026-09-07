@@ -98,7 +98,7 @@ const CompanionWelcomeScreen: React.FC<Props> = ({ navigation }) => {
                   <Icon name={card.icon} size={22} color={colors.gold} />
                 </View>
                 <View style={styles.cardContent}>
-                  <Text style={styles.cardTitle}>{t(card.title)}</Text>
+                  <Text style={styles.cardTitle}>{card.title}</Text>
                   <Text style={styles.cardBody}>{card.body}</Text>
                 </View>
               </View>

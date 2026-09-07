@@ -54,8 +54,8 @@ export function PrivacyControlsScreen(): React.JSX.Element {
               {i > 0 && <View style={s.sep} />}
               <View style={s.row}>
                 <View style={s.rowText}>
-                  <Text style={s.rowLabel}>{t(toggleItem.label)}</Text>
-                  <Text style={s.rowSub}>{t(toggleItem.sub)}</Text>
+                  <Text style={s.rowLabel}>{toggleItem.label}</Text>
+                  <Text style={s.rowSub}>{toggleItem.sub}</Text>
                 </View>
                 <Switch value={values[toggleItem.key]} onValueChange={() => toggle(toggleItem.key)}
                   trackColor={{false: colors.elevatedSurface, true: 'rgba(214,168,79,0.45)'}}

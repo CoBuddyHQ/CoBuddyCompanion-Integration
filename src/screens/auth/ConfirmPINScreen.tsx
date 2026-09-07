@@ -182,7 +182,7 @@ const ConfirmPINScreen: React.FC<Props> = ({ navigation, route }) => {
                 <Icon name={card.icon} size={22} color={colors.gold} />
               </View>
               <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>{t(card.title)}</Text>
+                <Text style={styles.infoTitle}>{card.title}</Text>
                 <Text style={styles.infoBody}>{card.body}</Text>
               </View>
             </View>

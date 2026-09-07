@@ -83,7 +83,7 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
           {QUICK.map((o) =>
           <TouchableOpacity accessibilityRole="button" key={o.v} style={[s.pill, km === o.v && s.pillOn]}
           onPress={() => setKm(o.v)} activeOpacity={0.75}>
-              <Text style={[s.pillTxt, km === o.v && s.pillTxtOn]}>{t(o.label)}</Text>
+              <Text style={[s.pillTxt, km === o.v && s.pillTxtOn]}>{o.label}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -94,11 +94,11 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
           { icon: 'directions-walk', label: t("content.profile.TravelRadiusPreferenceScreen.approx_travel_time"), value: `~${Math.round(km * 4)} mins` },
           { icon: 'people', label: t("content.profile.TravelRadiusPreferenceScreen.customers_who_see_you"), value: `${km * 12}+ nearby` }].
           map((r) =>
-          <View key={t(r.label)} style={s.cardRow}>
+          <View key={r.label} style={s.cardRow}>
               <View style={s.cardIcon}>
                 <Icon name={r.icon as any} size={16} color={colors.gold} />
               </View>
-              <Text style={s.cardLabel}>{t(r.label)}</Text>
+              <Text style={s.cardLabel}>{r.label}</Text>
               <Text style={s.cardVal}>{r.value}</Text>
             </View>
           )}

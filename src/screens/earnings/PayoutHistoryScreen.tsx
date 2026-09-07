@@ -71,7 +71,7 @@ const TransactionRow: React.FC<{tx: Transaction;last: boolean;}> = ({ tx, last }
       <Icon name={TX_ICONS[iconType] as any} size={18} color={TX_ICON_COLORS[iconType]} />
     </View>
     <View style={styles.txMid}>
-      <Text style={styles.txTitle} numberOfLines={1}>{t(tx.description)}</Text>
+      <Text style={styles.txTitle} numberOfLines={1}>{tx.description}</Text>
       <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString()}</Text>
     </View>
     <View style={styles.txRight}>

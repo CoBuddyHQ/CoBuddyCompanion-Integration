@@ -96,8 +96,8 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
           
           accessibilityState={{ checked: selected }}>
             {selected && <Icon name="check" size={13} color={colors.gold} />}
-            <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(o.label)}</Text>
-            {o.sub && <Text style={styles.chipSub}>{t(o.sub)}</Text>}
+            <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{o.label}</Text>
+            {o.sub && <Text style={styles.chipSub}>{o.sub}</Text>}
           </TouchableOpacity>);
 
     })}
@@ -179,7 +179,7 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
                   
                   accessibilityState={{ selected }}>
                   {selected && <Icon name="check" size={13} color={colors.gold} />}
-                  <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(f.label)}</Text>
+                  <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{f.label}</Text>
                 </TouchableOpacity>);
 
             })}

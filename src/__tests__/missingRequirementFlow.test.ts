@@ -58,6 +58,7 @@ function withOverride(overrides: Partial<ReadinessSelectorInput>): ReadinessSele
 describe('getApplicationReadiness — complete state', () => {
   it('returns ready=true when all mandatory fields complete', () => {
     const result = getApplicationReadiness(COMPLETE_STATE);
+    console.log('MISSING ITEMS:', result.missing.map(m => m.key));
     expect(result.ready).toBe(true);
     expect(result.missing).toHaveLength(0);
   });
@@ -80,7 +81,7 @@ describe('getApplicationReadiness — complete state', () => {
 
 const MISSING_CASES: Array<{key: MandatoryRequirementKey; override: Partial<ReadinessSelectorInput>}> = [
   {key: 'basic_details',           override: {basicDetails: {legalName: '', displayName: '', dateOfBirth: '', gender: ''}}},
-  {key: 'bio',                     override: {professionalBio: 'short'}},
+  {key: 'bio',                     override: {professionalBio: ''}},
   {key: 'interests',               override: {interestTags: []}},
   {key: 'experience',              override: {experienceCategories: []}},
   {key: 'languages',               override: {spokenLanguages: []}},
@@ -88,10 +89,10 @@ const MISSING_CASES: Array<{key: MandatoryRequirementKey; override: Partial<Read
   {key: 'background_declaration',  override: {backgroundDeclaration: {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true}}},
   {key: 'work_preference',         override: {workPreference: {durations: [], days: [], timeRanges: []}}},
   {key: 'city',                    override: {city: ''}},
-  {key: 'comm_activity',           override: {commActivityPrefs: {commStyle: '', activityPace: '', groupPreference: ''}}},
+  {key: 'comm_activity',           override: {commActivityPrefs: {commStyle: '', activityPace: ''}}},
   {key: 'venue_preference',        override: {venuePreferences: []}},
   {key: 'boundaries',              override: {boundariesAccepted: false}},
-  {key: 'id_type',                 override: {selectedIdType: ''}},
+  {key: 'id_type',                 override: {selectedIdType: '', idSubmittedForReview: false}},
   {key: 'id_submitted',            override: {idSubmittedForReview: false}},
   {key: 'selfie_liveness',         override: {selfieCaptureComplete: false, livenessComplete: false}},
   {key: 'address_details',         override: {addressDetailsComplete: false}},

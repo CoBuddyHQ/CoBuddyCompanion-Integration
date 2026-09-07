@@ -75,14 +75,14 @@ export function TrainingHubScreen(): React.JSX.Element {
         </View>
         <View style={s.lessonMid}>
           <Text style={[s.lessonTitle, status === 'locked' && s.lessonTitleLocked]}>
-            {t(lesson.title)}
+            {lesson.title}
           </Text>
           <View style={s.lessonMeta}>
             <Icon name="schedule" size={12} color={colors.textMuted} />
             <Text style={s.lessonDuration}>{lesson.duration}</Text>
           </View>
         </View>
-        <Text style={[s.lessonStatus, { color: cfg.color }]}>{t(cfg.label)}</Text>
+        <Text style={[s.lessonStatus, { color: cfg.color }]}>{cfg.label}</Text>
         {status !== 'locked' &&
         <Icon name="chevron-right" size={18} color={colors.textMuted} />
         }

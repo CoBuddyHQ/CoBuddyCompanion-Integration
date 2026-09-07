@@ -49,7 +49,6 @@ const MiniCalendar: React.FC<{
   bookedDays: Set<number>;
   offDays: Set<number>;
 }> = ({ year, month, bookedDays, offDays }) => {
-  const { t } = useTranslation();
   const grid = buildCalendarGrid(year, month);
   const today = new Date().getDate();
   const isCurrentMonth =
@@ -101,9 +100,9 @@ const MiniCalendar: React.FC<{
         { color: colors.softWarning, label: i18next.t("content.availability.AvailabilityCalendarScreen.unavailable") },
         { color: colors.safetyGreen, label: i18next.t("content.availability.AvailabilityCalendarScreen.today") }].
         map((l) =>
-        <View key={t(l.label)} style={calStyles.legendItem}>
+        <View key={l.label} style={calStyles.legendItem}>
             <View style={[calStyles.legendDot, { backgroundColor: l.color }]} />
-            <Text style={calStyles.legendText}>{t(l.label)}</Text>
+            <Text style={calStyles.legendText}>{l.label}</Text>
           </View>
         )}
       </View>
@@ -313,7 +312,7 @@ export function AvailabilityCalendarScreen(): React.JSX.Element {
                 <Icon name="event-busy" size={16} color={colors.softWarning} style={{ marginRight: 8 }} />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.overrideDate}>{o.startDate}{o.startDate !== o.endDate ? ` → ${o.endDate}` : ''}</Text>
-                  <Text style={styles.overrideLabel}>{t(o.reason)}{o.note ? ` · ${o.note}` : ''}</Text>
+                  <Text style={styles.overrideLabel}>{o.reason}{o.note ? ` · ${o.note}` : ''}</Text>
                 </View>
                 <TouchableOpacity accessibilityRole="button" onPress={() => useAvailabilityStore.getState().removeOverride(o.id)}>
                   <Icon name="close" size={18} color={colors.textMuted} />

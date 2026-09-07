@@ -140,7 +140,7 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
                 <View style={styles.featureIconCircle}>
                   <Icon name={f.icon} size={22} color={colors.textSecondary} />
                 </View>
-                <Text style={styles.featureText}>{t(f.text)}</Text>
+                <Text style={styles.featureText}>{f.text}</Text>
               </View>
             )}
           </View>

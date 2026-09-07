@@ -75,7 +75,7 @@ export function RefundPenaltyExplanationScreen(): React.JSX.Element {
           <View key={t(r.label)}>
               <View style={s.tableRow}>
                 <Text style={s.tableKey}>{t(r.label)}</Text>
-                <Text style={s.tableVal}>{r.value.includes?.('earnings.') ? t(r.value) : r.value}</Text>
+                <Text style={s.tableVal}>{r.value.includes?.('earnings.') ? r.value : r.value}</Text>
               </View>
               {i < rows.length - 1 && <View style={s.divider} />}
             </View>

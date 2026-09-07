@@ -140,7 +140,7 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
                 <Text style={styles.nextNumText}>{i + 1}</Text>
               </View>
               <Icon name={step.icon as any} size={16} color={colors.gold} style={{ marginHorizontal: 8, flexShrink: 0 }} />
-              <Text style={styles.nextText}>{t(step.text)}</Text>
+              <Text style={styles.nextText}>{step.text}</Text>
             </View>
           )}
         </View>

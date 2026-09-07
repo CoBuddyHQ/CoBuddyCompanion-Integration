@@ -79,12 +79,12 @@ export function SessionReminderScreen(): React.JSX.Element {
           { icon: 'place', label: t("content.sessions.SessionReminderScreen.venue"), value: sessionData.venue },
           { icon: 'schedule', label: t("content.sessions.SessionReminderScreen.time"), value: sessionData.time }].
           map((row, i, arr) =>
-          <View key={t(row.label)} style={[styles.detailRow, i === arr.length - 1 && styles.detailRowLast]}>
+          <View key={row.label} style={[styles.detailRow, i === arr.length - 1 && styles.detailRowLast]}>
               <View style={styles.detailIconWrap}>
                 <Icon name={row.icon as any} size={16} color={colors.gold} />
               </View>
               <View style={styles.detailMid}>
-                <Text style={styles.detailLabel}>{t(row.label)}</Text>
+                <Text style={styles.detailLabel}>{row.label}</Text>
                 <Text style={styles.detailValue}>{row.value}</Text>
               </View>
             </View>
@@ -100,14 +100,14 @@ export function SessionReminderScreen(): React.JSX.Element {
           { icon: 'checklist', label: t("content.sessions.SessionReminderScreen.view_prep_checklist"), route: Routes.SESSION_PREP_CHECKLIST, color: colors.safetyGreen }].
           map((action, i, arr) =>
           <TouchableOpacity accessibilityRole="button"
-            key={t(action.label)}
+            key={action.label}
             style={[styles.actionRow, i === arr.length - 1 && styles.actionRowLast]}
             onPress={() => navigation.navigate(action.route, { sessionId: sessionData.sessionId })}
             activeOpacity={0.75}>
               <View style={[styles.actionIconWrap, { backgroundColor: `${action.color}18` }]}>
                 <Icon name={action.icon as any} size={19} color={action.color} />
               </View>
-              <Text style={styles.actionLabel}>{t(action.label)}</Text>
+              <Text style={styles.actionLabel}>{action.label}</Text>
               <Icon name="chevron-right" size={18} color={colors.textMuted} />
             </TouchableOpacity>
           )}

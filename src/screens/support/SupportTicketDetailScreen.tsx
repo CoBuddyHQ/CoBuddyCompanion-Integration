@@ -47,7 +47,7 @@ export function SupportTicketDetailScreen(): React.JSX.Element {
           </View>
         }
         <View style={[s.bubble, isMe ? s.bubbleMe : s.bubbleAgent]}>
-          <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{t(item.text)}</Text>
+          <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{item.text}</Text>
           <Text style={[s.bubbleTime, isMe && s.bubbleTimeMe]}>{item.time}</Text>
         </View>
       </View>);

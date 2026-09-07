@@ -43,9 +43,9 @@ export function BookingRequestEmptyStateScreen(): React.JSX.Element {const { t }
           { icon: 'event-available', label: t("content.requests.BookingRequestEmptyStateScreen.update_your_availability_calendar"), color: colors.gold },
           { icon: 'star-rate', label: t("content.requests.BookingRequestEmptyStateScreen.check_your_reviews_and_ratings"), color: colors.gold }].
           map((row) =>
-          <View key={t(row.label)} style={s.suggestRow}>
+          <View key={row.label} style={s.suggestRow}>
               <Icon name={row.icon as any} size={16} color={row.color} />
-              <Text style={s.suggestText}>{t(row.label)}</Text>
+              <Text style={s.suggestText}>{row.label}</Text>
             </View>
           )}
         </View>

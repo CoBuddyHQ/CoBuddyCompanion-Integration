@@ -55,9 +55,9 @@ export function MaintenanceModeScreen(): React.JSX.Element {
           { icon: 'security', text: 'Trust & Safety infrastructure upgrades' },
           { icon: 'payments', text: 'Payout engine reliability enhancements' }].
           map((row) =>
-          <View key={t(row.text)} style={s.workRow}>
+          <View key={row.text} style={s.workRow}>
               <Icon name={row.icon as any} size={14} color={colors.safetyGreen} />
-              <Text style={s.workText}>{t(row.text)}</Text>
+              <Text style={s.workText}>{row.text}</Text>
             </View>
           )}
         </View>

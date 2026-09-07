@@ -51,9 +51,9 @@ export function NetworkErrorScreen(): React.JSX.Element {
           { icon: 'cloud-off', label: t("content.system.NetworkErrorScreen.server_unreachable") },
           { icon: 'signal-wifi-off', label: t("content.system.NetworkErrorScreen.no_internet") }].
           map((chip) =>
-          <View key={t(chip.label)} style={s.chip}>
+          <View key={chip.label} style={s.chip}>
               <Icon name={chip.icon as any} size={14} color={colors.softWarning} />
-              <Text style={s.chipText}>{t(chip.label)}</Text>
+              <Text style={s.chipText}>{chip.label}</Text>
             </View>
           )}
         </View>

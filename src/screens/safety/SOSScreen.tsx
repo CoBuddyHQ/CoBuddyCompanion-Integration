@@ -107,9 +107,9 @@ export function SOSScreen(): React.JSX.Element {
       {/* Info rows */}
       <View style={s.infoSection}>
         {INFO_ROWS.map((r) =>
-        <View key={t(r.text)} style={s.infoRow}>
+        <View key={r.text} style={s.infoRow}>
             <Text style={s.infoEmoji}>{r.emoji}</Text>
-            <Text style={s.infoText}>{t(r.text)}</Text>
+            <Text style={s.infoText}>{r.text}</Text>
           </View>
         )}
       </View>

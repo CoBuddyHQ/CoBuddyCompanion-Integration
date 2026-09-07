@@ -207,12 +207,12 @@ export function PayoutRequestScreen(): React.JSX.Element {
             { icon: 'currency-rupee', label: t("content.earnings.PayoutRequestScreen.amount_you_receive"),
               value: numericAmount > 0 ? fmtINR(numericAmount) : '—', highlight: true }].
             map((row, i, arr) =>
-            <View key={t(row.label)} style={[
+            <View key={row.label} style={[
             styles.feeRow, i < arr.length - 1 && styles.feeRowDivider]
             }>
                 <View style={styles.feeLeft}>
                   <Icon name={row.icon as any} size={14} color={colors.textMuted} />
-                  <Text style={styles.feeLabel}>{t(row.label)}</Text>
+                  <Text style={styles.feeLabel}>{row.label}</Text>
                 </View>
                 <Text style={[styles.feeValue, row.highlight && styles.feeValueHighlight]}>
                   {row.value}

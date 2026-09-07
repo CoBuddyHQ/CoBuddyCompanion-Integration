@@ -28,7 +28,6 @@ import { useSafetyStore } from '../../store/slices/safetyStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { Routes } from '../../navigation/routes';
-import { useTranslation } from "react-i18next";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -136,7 +135,6 @@ const StatCard: React.FC<{
 
 
 export function HomeDashboardScreen(): React.JSX.Element {
-  const { t } = useTranslation();
   // useNavigation typed as any — this screen is a cross-stack hub; strict
   // CompositeNavigationProp would require threading every reachable stack.
 
@@ -473,7 +471,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
                   <Text style={styles.safetyLabel}>{row.label}</Text>
                 </View>
                 <StatusChip
-                label={t(row.chip)}
+                label={row.chip}
                 color={row.green ? colors.safetyGreen : colors.gold}
                 bg={row.green ? colors.safetyGreenSubtle : colors.goldSubtle} />
               

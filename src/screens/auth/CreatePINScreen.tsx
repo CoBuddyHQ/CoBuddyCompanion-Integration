@@ -134,7 +134,7 @@ const CreatePINScreen: React.FC<Props> = ({
                 <Icon name={g.icon} size={22} color={colors.gold} />
               </View>
               <View style={styles.guidanceContent}>
-                <Text style={styles.guidanceTitle}>{t(g.title)}</Text>
+                <Text style={styles.guidanceTitle}>{g.title}</Text>
                 <Text style={styles.guidanceBody}>{g.body}</Text>
               </View>
             </View>)}

@@ -87,8 +87,8 @@ export function PostSessionNotesScreen(): React.JSX.Element {
             { label: t("content.sessions.PostSessionNotesScreen.duration"), value: durationLabel },
             { label: t("content.sessions.PostSessionNotesScreen.earnings"), value: earningsLabel }].
             map((row) =>
-            <View key={t(row.label)} style={s.summaryRow}>
-                <Text style={s.summaryLabel}>{t(row.label)}</Text>
+            <View key={row.label} style={s.summaryRow}>
+                <Text style={s.summaryLabel}>{row.label}</Text>
                 <Text style={s.summaryValue}>{row.value}</Text>
               </View>
             )}

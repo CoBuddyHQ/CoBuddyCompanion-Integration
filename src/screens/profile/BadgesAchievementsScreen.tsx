@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 /**
  * BadgesAchievementsScreen (CPN-161)
  */
@@ -44,7 +43,7 @@ const BadgeCard: React.FC<{badge: Badge;}> = ({ badge }) =>
     </View>
 
     <Text style={[bc.name, !badge.unlocked && bc.nameLocked]}>{badge.name}</Text>
-    <Text style={bc.sub}>{i18next.t(badge.sub)}</Text>
+    <Text style={bc.sub}>{badge.sub}</Text>
 
     {/* Locked overlay badge */}
     {!badge.unlocked &&

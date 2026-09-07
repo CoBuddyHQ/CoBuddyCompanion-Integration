@@ -265,7 +265,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
                     color={colors.gold} />
                   
                   </View>
-                  <Text style={styles.ruleText}>{t(rule.text)}</Text>
+                  <Text style={styles.ruleText}>{rule.text}</Text>
                 </View>
               )}
             </View>

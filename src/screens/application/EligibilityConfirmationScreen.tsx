@@ -129,7 +129,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
                   activeOpacity={0.75}
                   
                   accessibilityState={{ checked }}
-                  accessibilityLabel={t(item.label)}>
+                  accessibilityLabel={item.label}>
                   {/* Icon */}
                   <View style={[styles.confirmIcon, checked && styles.confirmIconChecked]}>
                     <Icon
@@ -141,7 +141,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
                   {/* Text */}
                   <View style={styles.confirmText}>
                     <Text style={[styles.confirmLabel, checked && styles.confirmLabelChecked]}>
-                      {t(item.label)}
+                      {item.label}
                     </Text>
                     {item.note ?
                     <Text style={styles.confirmNote}>{item.note}</Text> :

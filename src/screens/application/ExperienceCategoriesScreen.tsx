@@ -124,7 +124,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
                   activeOpacity={0.75}
                   
                   accessibilityState={{ checked: selected }}
-                  accessibilityLabel={t(cat.label)}>
+                  accessibilityLabel={cat.label}>
                   {selected &&
                   <View style={styles.tileCheck}>
                       <Icon name="check-circle" size={16} color={colors.gold} />
@@ -138,7 +138,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
                     
                   </View>
                   <Text style={[styles.tileLabel, selected && styles.tileLabelSelected]}>
-                    {t(cat.label)}
+                    {cat.label}
                   </Text>
                 </TouchableOpacity>);
 

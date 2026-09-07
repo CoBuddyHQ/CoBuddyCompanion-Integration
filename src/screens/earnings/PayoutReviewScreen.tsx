@@ -88,7 +88,7 @@ export function PayoutReviewScreen(): React.JSX.Element {
                   <Icon name={row.icon as any} size={18} color={colors.gold} />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={s.detailLabel}>{t(row.label)}</Text>
+                  <Text style={s.detailLabel}>{row.label}</Text>
                   <Text style={s.detailValue}>{row.value}</Text>
                 </View>
               </View>

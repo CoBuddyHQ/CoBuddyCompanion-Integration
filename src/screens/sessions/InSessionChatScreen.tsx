@@ -33,7 +33,7 @@ const Bubble: React.FC<{msg: Message;}> = ({ msg }) => {
     <View style={[s.bubbleWrap, isMe && s.bubbleWrapRight]}>
       {!isMe && <View style={s.customerDot} />}
       <View style={[s.bubble, isMe ? s.bubbleMe : s.bubbleThem]}>
-        <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{i18next.t(msg.text)}</Text>
+        <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{msg.text}</Text>
         <View style={s.bubbleMeta}>
           <Text style={[s.bubbleTime, isMe && s.bubbleTimeMe]}>{msg.time}</Text>
           {isMe &&

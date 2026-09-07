@@ -43,7 +43,7 @@ export function PendingEarningsScreen(): React.JSX.Element {
   <View style={s.row}>
       <Icon name="schedule" size={20} color={colors.softWarning} style={{ flexShrink: 0 }} />
       <View style={{ flex: 1, marginLeft: spacing.sm }}>
-        <Text style={s.rowSession}>{t(item.description)}</Text>
+        <Text style={s.rowSession}>{item.description}</Text>
         <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
       <View style={{ alignItems: 'flex-end', gap: 4 }}>

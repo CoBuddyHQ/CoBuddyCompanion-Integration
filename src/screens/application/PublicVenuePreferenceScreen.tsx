@@ -124,14 +124,14 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
                   activeOpacity={0.75}
                   
                   accessibilityState={{ checked: selected }}
-                  accessibilityLabel={t(v.label)}>
+                  accessibilityLabel={v.label}>
                   {selected &&
                   <View style={styles.tileCheck}>
                       <Icon name="check-circle" size={16} color={colors.gold} />
                     </View>
                   }
                   <Icon name={v.icon} size={24} color={selected ? colors.gold : colors.textSecondary} />
-                  <Text style={[styles.tileLabel, selected && styles.tileLabelSelected]}>{t(v.label)}</Text>
+                  <Text style={[styles.tileLabel, selected && styles.tileLabelSelected]}>{v.label}</Text>
                 </TouchableOpacity>);
 
             })}
@@ -143,10 +143,10 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
           <Text style={styles.neverTitle}>{t("content.application_kyc.PublicVenuePreferenceContent.NEVER_ALLOWED_TITLE")}</Text>
           <View style={styles.neverList}>
             {((Array.isArray(t("content.application_kyc.PublicVenuePreferenceContent.NEVER_ALLOWED", { returnObjects: true })) ? (t("content.application_kyc.PublicVenuePreferenceContent.NEVER_ALLOWED", { returnObjects: true }) as any[]) : [])).map((n, index) =>
-            <View key={`ui-opt-${index}-${t(n.label)}`} style={styles.neverRow}>
+            <View key={`ui-opt-${index}-${n.label}`} style={styles.neverRow}>
                 <Icon name="block" size={16} color={colors.softWarning} />
                 <Icon name={n.icon} size={16} color={colors.textMuted} />
-                <Text style={styles.neverText}>{t(n.label)}</Text>
+                <Text style={styles.neverText}>{n.label}</Text>
               </View>
             )}
           </View>

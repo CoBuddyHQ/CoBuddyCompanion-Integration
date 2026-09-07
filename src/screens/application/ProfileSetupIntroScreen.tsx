@@ -73,13 +73,13 @@ export function ProfileSetupIntroScreen({ navigation }: Props): React.JSX.Elemen
           <Text style={styles.cardNote}>{t("content.application_kyc.ProfileSetupIntroContent.SETUP_JOURNEY_NOTE")}</Text>
           <View style={styles.stepList}>
             {((Array.isArray(t("content.application_kyc.ProfileSetupIntroContent.SETUP_STEPS", { returnObjects: true })) ? (t("content.application_kyc.ProfileSetupIntroContent.SETUP_STEPS", { returnObjects: true }) as any[]) : [])).map((step, i) =>
-            <View key={`ui-opt-${i}-${t(step.label)}`} style={styles.stepRow}>
+            <View key={`ui-opt-${i}-${step.label}`} style={styles.stepRow}>
                 <View style={styles.stepIconWrap}>
                   <Icon name={step.icon as any} size={22} color={colors.gold} />
                 </View>
                 <View style={styles.stepContent}>
-                  <Text style={styles.stepLabel}>{t(step.label)}</Text>
-                  <Text style={styles.stepDesc}>{t(step.description)}</Text>
+                  <Text style={styles.stepLabel}>{step.label}</Text>
+                  <Text style={styles.stepDesc}>{step.description}</Text>
                 </View>
               </View>
             )}

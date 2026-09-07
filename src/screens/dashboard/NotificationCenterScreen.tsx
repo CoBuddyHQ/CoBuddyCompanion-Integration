@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 /**
  * NotificationCenterScreen (CPN-065)
  * Connected to useNotificationStore — badge on HomeDashboard stays in sync.
@@ -58,7 +57,7 @@ const NotifCard: React.FC<{item: AppNotification;onPress: () => void;}> = ({ ite
         <Icon name={name as any} size={20} color={color} />
       </View>
       <View style={s.cardText}>
-        <Text style={[s.cardTitle, !item.isRead && s.cardTitleUnread]}>{i18next.t(item.title)}</Text>
+        <Text style={[s.cardTitle, !item.isRead && s.cardTitleUnread]}>{item.title}</Text>
         <Text style={s.cardSub} numberOfLines={2}>{item.body}</Text>
       </View>
       <Text style={s.cardTime}>{relativeTime(item.createdAt)}</Text>

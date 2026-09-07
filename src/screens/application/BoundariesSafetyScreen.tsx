@@ -104,11 +104,11 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
           </View>
           <View style={styles.ruleList}>
             {((Array.isArray(t("content.application_kyc.BoundariesSafetyContent.PLATFORM_RULES", { returnObjects: true })) ? (t("content.application_kyc.BoundariesSafetyContent.PLATFORM_RULES", { returnObjects: true }) as any[]) : [])).map((rule, index) =>
-            <View key={`ui-opt-${index}-${t(rule.label)}`} style={styles.ruleRow}>
+            <View key={`ui-opt-${index}-${rule.label}`} style={styles.ruleRow}>
                 <View style={styles.ruleIconWrap}>
                   <Icon name={rule.icon} size={18} color={colors.textMuted} />
                 </View>
-                <Text style={styles.ruleText}>{t(rule.label)}</Text>
+                <Text style={styles.ruleText}>{rule.label}</Text>
                 {/* Locked toggle indicator */}
                 <View style={styles.lockedToggle}>
                   <Icon name="lock" size={12} color={colors.gold} />
@@ -124,11 +124,11 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
           <Text style={styles.cardSubtitle}>{t("content.application_kyc.BoundariesSafetyContent.COMPANION_RIGHTS_SUBTITLE")}</Text>
           <View style={styles.rightsList}>
             {((Array.isArray(t("content.application_kyc.BoundariesSafetyContent.COMPANION_RIGHTS", { returnObjects: true })) ? (t("content.application_kyc.BoundariesSafetyContent.COMPANION_RIGHTS", { returnObjects: true }) as any[]) : [])).map((right, index) =>
-            <View key={`ui-opt-${index}-${t(right.label)}`} style={styles.rightRow}>
+            <View key={`ui-opt-${index}-${right.label}`} style={styles.rightRow}>
                 <View style={styles.rightIconWrap}>
                   <Icon name={right.icon} size={18} color={colors.safetyGreen} />
                 </View>
-                <Text style={styles.rightText}>{t(right.label)}</Text>
+                <Text style={styles.rightText}>{right.label}</Text>
               </View>
             )}
           </View>

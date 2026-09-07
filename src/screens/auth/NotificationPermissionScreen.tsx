@@ -96,7 +96,7 @@ const NotificationPermissionScreen: React.FC<Props> = ({ navigation }) => {
               <View style={styles.benefitIconCircle}>
                 <Icon name={b.icon} size={18} color={colors.gold} />
               </View>
-              <Text style={styles.benefitText}>{t(b.text)}</Text>
+              <Text style={styles.benefitText}>{b.text}</Text>
             </View>
           )}
         </GlassCard>

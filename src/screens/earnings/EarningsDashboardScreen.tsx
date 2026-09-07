@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 /**
  * CPN-137 — Earnings Dashboard Screen
  * Root tab screen for the Earnings stack.
@@ -61,7 +60,7 @@ const TransactionRow: React.FC<{tx: Transaction;onPress: () => void;}> = ({ tx, 
         <Icon name={TX_ICONS[iconType] as any} size={18} color={iconColor} />
       </View>
       <View style={styles.txMid}>
-        <Text style={styles.txTitle} numberOfLines={1}>{i18next.t(tx.description)}</Text>
+        <Text style={styles.txTitle} numberOfLines={1}>{tx.description}</Text>
         <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString()}</Text>
       </View>
       <Text style={[

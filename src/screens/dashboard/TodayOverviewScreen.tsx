@@ -128,7 +128,7 @@ export function TodayOverviewScreen(): React.JSX.Element {
               }>
                 <View style={s.timelineCardTop}>
                   <Text style={[s.timelineTitle, item.status === 'empty' && s.timelineTitleMuted]}>
-                    {t(item.title)}
+                    {item.title}
                   </Text>
                   <View style={[s.statusPill, { borderColor: DOT_COLOR[item.status] }]}>
                     <Text style={[s.statusPillText, { color: DOT_COLOR[item.status] }]}>

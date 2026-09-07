@@ -55,13 +55,13 @@ export function IncidentSubmittedScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('safety.what_happens_next')} </Text>
         <View style={s.stepsCard}>
           {NEXT_STEPS.map((step, i) =>
-          <View key={t(step.text)}>
+          <View key={step.text}>
               <View style={s.stepRow}>
                 <View style={s.stepNum}>
                   <Text style={s.stepNumText}>{i + 1}</Text>
                 </View>
                 <Icon name={step.icon as any} size={18} color={colors.textMuted} />
-                <Text style={s.stepText}>{t(step.text)}</Text>
+                <Text style={s.stepText}>{step.text}</Text>
               </View>
               {i < NEXT_STEPS.length - 1 && <View style={s.divider} />}
             </View>

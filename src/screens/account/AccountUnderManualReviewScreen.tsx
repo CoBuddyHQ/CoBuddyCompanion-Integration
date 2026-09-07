@@ -43,7 +43,7 @@ export function AccountUnderManualReviewScreen(): React.JSX.Element {
           { icon: 'pending', label: t('account.team_review_in_progress') as string, done: false, active: true },
           { icon: 'radio-button-unchecked', label: t('account.verification_complete') as string, done: false }].
           map((step, i, arr) =>
-          <View key={t(step.label)} style={s.stepWrap}>
+          <View key={step.label} style={s.stepWrap}>
               <View style={s.stepLeft}>
                 <Icon
                 name={step.icon as any}
@@ -55,7 +55,7 @@ export function AccountUnderManualReviewScreen(): React.JSX.Element {
               }
               </View>
               <Text style={[s.stepLabel, step.done && s.stepDone, step.active && s.stepActive]}>
-                {t(step.label)}
+                {step.label}
               </Text>
             </View>
           )}

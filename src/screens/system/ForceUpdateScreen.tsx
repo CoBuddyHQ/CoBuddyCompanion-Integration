@@ -54,11 +54,11 @@ export function ForceUpdateScreen(): React.JSX.Element {
             <Text style={s.featuresTitle}> {t('system.what_s_new_in_v2_5_0')} </Text>
           </View>
           {NEW_FEATURES.map((feat) =>
-          <View key={t(feat.text)} style={s.featureRow}>
+          <View key={feat.text} style={s.featureRow}>
               <View style={s.featureIconWrap}>
                 <Icon name={feat.icon as any} size={14} color={colors.safetyGreen} />
               </View>
-              <Text style={s.featureText}>{t(feat.text)}</Text>
+              <Text style={s.featureText}>{feat.text}</Text>
             </View>
           )}
         </View>

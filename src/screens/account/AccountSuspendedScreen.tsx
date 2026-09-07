@@ -49,10 +49,10 @@ export function AccountSuspendedScreen(): React.JSX.Element {
           { icon: 'event', label: t('account.review_deadline') as string, value: '12 Jul 2026' },
           { icon: 'hourglass-empty', label: t('account.auto_lift_if_no_action') as string, value: '28 Jul 2026' }].
           map((row, i, arr) =>
-          <View key={t(row.label)}>
+          <View key={row.label}>
               <View style={s.timelineRow}>
                 <Icon name={row.icon as any} size={15} color={colors.textMuted} />
-                <Text style={s.timelineLabel}>{t(row.label)}</Text>
+                <Text style={s.timelineLabel}>{row.label}</Text>
                 <Text style={s.timelineValue}>{row.value}</Text>
               </View>
               {i < arr.length - 1 && <View style={s.sep} />}

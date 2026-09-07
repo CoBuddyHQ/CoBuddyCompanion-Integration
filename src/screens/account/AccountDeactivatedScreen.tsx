@@ -35,9 +35,9 @@ export function AccountDeactivatedScreen(): React.JSX.Element {
           { icon: 'payments', text: t('account.pending_payouts_queued_for_next_cycle') as string, done: false },
           { icon: 'chat-bubble-outline', text: t('account.chat_history_preserved_for_90_days') as string, done: true }].
           map((row) =>
-          <View key={t(row.text)} style={s.statusRow}>
+          <View key={row.text} style={s.statusRow}>
               <Icon name={row.icon as any} size={16} color={row.done ? colors.safetyGreen : colors.softWarning} />
-              <Text style={s.statusText}>{t(row.text)}</Text>
+              <Text style={s.statusText}>{row.text}</Text>
               <Icon name={row.done ? 'check-circle' : 'hourglass-empty'} size={15}
             color={row.done ? colors.safetyGreen : colors.softWarning} />
             </View>

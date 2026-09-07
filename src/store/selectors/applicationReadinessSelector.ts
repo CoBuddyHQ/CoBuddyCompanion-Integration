@@ -82,7 +82,7 @@ export interface ReadinessSelectorInput {
   workPreference: {durations: string[];days: string[];timeRanges: string[];};
   city: string;
   broadAreas: string[];
-  commActivityPrefs: {commStyle: string;activityPace: string;groupPreference: string;};
+  commActivityPrefs: {commStyle: string;activityPace: string;};
   venuePreferences: string[];
   boundariesAccepted: boolean;
   selectedIdType: string;
@@ -220,6 +220,7 @@ export function getApplicationReadiness(s: ReadinessSelectorInput): ApplicationR
   {
     key: 'upi', label: i18next.t("content.selectors.applicationReadinessSelector.upi_payout_details"), route: Routes.UPI_DETAILS,
     done: isDone('upi', s.upiVerified),
+    optional: true
   }];
 
 

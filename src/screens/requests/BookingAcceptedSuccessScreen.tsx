@@ -103,7 +103,7 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
                 <Text style={styles.nextStepNumText}>{i + 1}</Text>
               </View>
               <Icon name={step.icon as any} size={18} color={colors.gold} style={{ marginHorizontal: spacing.sm, flexShrink: 0 }} />
-              <Text style={styles.nextStepText}>{t(step.text)}</Text>
+              <Text style={styles.nextStepText}>{step.text}</Text>
             </View>
           )}
         </View>

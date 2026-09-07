@@ -297,14 +297,14 @@ export function CompanionPricingScreen({
             icon: 'gavel',
             label: t("content.application.CompanionPricingScreen.reviewed_before_publishing"),
             body: 'Unusual rates require additional verification.'
-          }].map((rule) => <View key={t(rule.label)} style={styles.ruleRow}>
+          }].map((rule) => <View key={rule.label} style={styles.ruleRow}>
                 <View style={styles.ruleIconWrap}>
                   <Icon name={rule.icon as any} size={spacing.iconMd} color={colors.gold} />
                 </View>
                 <View style={styles.ruleText}>
                   <Text style={[textStyles.labelMd, {
                 color: colors.textPrimary
-              }]}>{t(rule.label)}</Text>
+              }]}>{rule.label}</Text>
                   <Text style={[textStyles.bodySm, {
                 color: colors.textSecondary
               }]}>{rule.body}</Text>

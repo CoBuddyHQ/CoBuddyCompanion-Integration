@@ -105,7 +105,7 @@ export function DailyEarningsBreakdownScreen(): React.JSX.Element {
                     <View style={s.breakdownLeft}>
                       <Icon name={isDebit ? 'arrow-downward' : 'arrow-upward'}
                     size={16} color={rowColor} style={{ marginRight: 6 }} />
-                      <Text style={s.breakdownLabel} numberOfLines={1}>{t(tx.description)}</Text>
+                      <Text style={s.breakdownLabel} numberOfLines={1}>{tx.description}</Text>
                     </View>
                     <Text style={[s.breakdownAmount, { color: rowColor }]}>
                       {sign}{fmtINR(tx.amount)}

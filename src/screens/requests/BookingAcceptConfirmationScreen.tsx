@@ -166,9 +166,9 @@ export function BookingAcceptConfirmationScreen({ route, navigation }: Props): R
           { icon: 'place', label: i18next.t("content.requests.BookingAcceptConfirmationScreen.location"), value: `${venue.area}, ${venue.city}` },
           { icon: 'storefront', label: i18next.t("content.requests.BookingAcceptConfirmationScreen.venue"), value: venue.name }].
           map((row) =>
-          <View key={t(row.label)} style={styles.summaryRow}>
+          <View key={row.label} style={styles.summaryRow}>
               <Icon name={row.icon as any} size={15} color={colors.textMuted} />
-              <Text style={styles.summaryLabel}>{t(row.label)}</Text>
+              <Text style={styles.summaryLabel}>{row.label}</Text>
               <Text style={styles.summaryValue}>{row.value}</Text>
             </View>
           )}

@@ -98,10 +98,10 @@ export function LiveAvailabilityToggleScreen(): React.JSX.Element {
           { icon: 'people', label: t("content.availability.LiveAvailabilityToggleScreen.nearby_customers"), value: '—' },
           { icon: 'flash-on', label: t("content.availability.LiveAvailabilityToggleScreen.avg_response"), value: '—' }].
           map((st) =>
-          <View key={t(st.label)} style={s.statCard}>
+          <View key={st.label} style={s.statCard}>
                 <Icon name={st.icon as any} size={18} color={colors.gold} />
                 <Text style={s.statValue}>{st.value}</Text>
-                <Text style={s.statLabel}>{t(st.label)}</Text>
+                <Text style={s.statLabel}>{st.label}</Text>
               </View>
           )}
           </View>

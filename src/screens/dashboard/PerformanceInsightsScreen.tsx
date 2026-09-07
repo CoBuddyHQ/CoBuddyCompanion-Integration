@@ -105,13 +105,13 @@ export function PerformanceInsightsScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('dashboard.key_metrics')} </Text>
         <View style={s.card}>
           {rows.map((row, i) =>
-          <View key={t(row.label)}>
+          <View key={row.label}>
               {i > 0 && <View style={s.sep} />}
               <View style={s.infoRow}>
                 <View style={s.infoIconWrap}>
                   <Icon name={row.icon as any} size={16} color={colors.gold} />
                 </View>
-                <Text style={s.infoLabel}>{t(row.label)}</Text>
+                <Text style={s.infoLabel}>{row.label}</Text>
                 <Text style={s.infoValue}>{row.value}</Text>
               </View>
             </View>

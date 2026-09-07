@@ -100,7 +100,7 @@ const LanguageSelectionScreen: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <View style={styles.langTextGroup}>
                   <Text style={[styles.langNative, isSelected && styles.langNativeSelected]}>
-                    {t(lang.label)}
+                    {lang.label}
                   </Text>
                   {lang.nativeLabel !== lang.label &&
                   <Text style={styles.langEnglish}>{lang.nativeLabel}</Text>

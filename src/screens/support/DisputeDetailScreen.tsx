@@ -119,7 +119,7 @@ export function DisputeDetailScreen(): React.JSX.Element {
               <View style={s.timelineDot} />
               <View style={{flex: 1}}>
                 <Text style={s.timelineDate}>{timelineEvent.date}</Text>
-                <Text style={s.timelineDesc}>{t(timelineEvent.desc)}</Text>
+                <Text style={s.timelineDesc}>{timelineEvent.desc}</Text>
               </View>
             </View>
           ))}

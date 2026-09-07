@@ -167,12 +167,12 @@ export function SelfieCaptureScreen({ navigation }: Props): React.JSX.Element {c
           <Text style={styles.cardTitle}>{t("content.application_kyc.SelfieCaptureContent.SELFIE_GUIDELINES_TITLE").toUpperCase()}</Text>
           <View style={styles.guideList}>
             {SELFIE_GUIDELINES.map((g) =>
-            <View key={t(g.label)} style={styles.guideRow}>
+            <View key={g.label} style={styles.guideRow}>
                 <View style={styles.guideIconWrap}>
                   <Icon name={g.icon as any} size={spacing.iconMd} color={colors.gold} />
                 </View>
                 <View style={styles.guideContent}>
-                  <Text style={styles.guideLabel}>{t(g.label)}</Text>
+                  <Text style={styles.guideLabel}>{g.label}</Text>
                   <Text style={styles.guideBody}>{g.body}</Text>
                 </View>
               </View>

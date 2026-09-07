@@ -1,4 +1,4 @@
-import i18next from "i18next";import { useTranslation } from "react-i18next"; /**
+import i18next from "i18next"; /**
  * CoBuddy Companion App — Error Handler
  * Wraps API and runtime errors into typed CoBuddy error shapes.
  * Never logs sensitive data. Never exposes raw server errors to UI.
@@ -113,8 +113,9 @@ function httpStatusToCode(status: number, serverCode?: string): CoBuddyErrorCode
 export function handleError(error: unknown, context?: string): CoBuddyError {
   const errMsg = (error as any)?.response?.data?.message || (error as any)?.message || String(error);
   const errUrl = (error as any)?.config?.url || '';
+  const baseURL = (error as any)?.config?.baseURL || '';
   const errStatus = (error as any)?.response?.status || '';
-  logger.error(`[${context ?? 'Error'}] ${errStatus ? `(${errStatus}) ` : ''}${errUrl}`, errMsg);
+  logger.error(`[${context ?? 'Error'}] ${errStatus ? `(${errStatus}) ` : ''} ${baseURL}${errUrl}`, errMsg);
 
   // Axios-shaped error
   if (typeof error === 'object' && error !== null && 'response' in error) {

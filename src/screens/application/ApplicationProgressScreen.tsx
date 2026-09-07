@@ -172,7 +172,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
                       <View key={`ui-opt-${index}-${item.key}`} style={styles.stepRow}>
                         <Icon name="check-circle" size={16} color={colors.safetyGreen} />
                         <Text style={[styles.stepLabel, styles.stepLabelDone]}>
-                          {t(item.label)}{item.optional ? t("content.application.ApplicationProgressScreen.optional") : ''}
+                          {item.label}{item.optional ? t("content.application.ApplicationProgressScreen.optional") : ''}
                         </Text>
                       </View>);
 
@@ -191,10 +191,10 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
                         navigateToRequirementFixScreen(navigation, item.route);
                       }}
                       
-                      accessibilityLabel={t("accessibility.fix_missing", { item: t(item.label) })}>
+                      accessibilityLabel={t("accessibility.fix_missing", { item: item.label })}>
                       <Icon name="radio-button-unchecked" size={16} color={colors.warningAmber} />
                       <Text style={[styles.stepLabel, styles.stepLabelMissing]}>
-                        {t(item.label)}{item.optional ? t("content.application.ApplicationProgressScreen.optional") : ''}
+                        {item.label}{item.optional ? t("content.application.ApplicationProgressScreen.optional") : ''}
                       </Text>
                       <Icon name="chevron-right" size={16} color={colors.textMuted} />
                     </TouchableOpacity>);

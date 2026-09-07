@@ -22,7 +22,6 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
-import { useTranslation } from "react-i18next";
 import { SessionsService } from '../../services/api/services/sessions.service';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.SESSION_DETAIL>;
@@ -73,7 +72,6 @@ const NavRow: React.FC<{icon: string;label: string;onPress: () => void;}> = ({ i
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Element {
-  const { t } = useTranslation();
   const sessionId = route.params?.sessionId ?? '';
 
   const session = useSessionStore((s) =>
@@ -186,9 +184,9 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
           { icon: 'language', label: i18next.t("content.sessions.SessionDetailScreen.language"), value: session.language },
           { icon: 'timer', label: i18next.t("content.sessions.SessionDetailScreen.duration"), value: `${durationMinutes} minutes` }].
           map((row) =>
-          <View key={t(row.label)} style={styles.detailRow}>
+          <View key={row.label} style={styles.detailRow}>
               <Icon name={row.icon as any} size={15} color={colors.textMuted} />
-              <Text style={styles.detailLabel}>{t(row.label)}</Text>
+              <Text style={styles.detailLabel}>{row.label}</Text>
               <Text style={styles.detailValue}>{row.value}</Text>
             </View>
           )}

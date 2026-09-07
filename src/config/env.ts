@@ -19,8 +19,9 @@ import {
 } from '@env';
 
 const resolveUrl = (rawUrl: string): string => {
-  if (Platform.OS === 'android' && rawUrl.includes('localhost')) {
-    return rawUrl.replace('localhost', '10.0.2.2');
+  if (Platform.OS === 'android') {
+    if (rawUrl.includes('localhost')) return rawUrl.replace('localhost', '10.0.2.2');
+    if (rawUrl.includes('127.0.0.1')) return rawUrl.replace('127.0.0.1', '10.0.2.2');
   }
   return rawUrl;
 };

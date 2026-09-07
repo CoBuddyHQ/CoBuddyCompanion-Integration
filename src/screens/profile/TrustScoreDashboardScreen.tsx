@@ -64,11 +64,11 @@ export function TrustScoreDashboardScreen(): React.JSX.Element {
           { label: t("content.profile.TrustScoreDashboardScreen.reviews"), value: profile?.rating ? `${profile.rating.toFixed(1)}★` : '—' },
           { label: t("content.profile.TrustScoreDashboardScreen.response"), value: `${responseRate}%` }].
           map((st, i) =>
-          <React.Fragment key={t(st.label)}>
+          <React.Fragment key={st.label}>
               {i > 0 && <View style={s.statsDivider} />}
               <View style={s.statCell}>
                 <Text style={s.statValue}>{st.value}</Text>
-                <Text style={s.statLabel}>{t(st.label)}</Text>
+                <Text style={s.statLabel}>{st.label}</Text>
               </View>
             </React.Fragment>
           )}

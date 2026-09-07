@@ -72,9 +72,9 @@ export function SOSConfirmationScreen(): React.JSX.Element {
         {/* Status cards */}
         <View style={s.statusCard}>
           {STATUS_ITEMS.map((item, i) =>
-          <View key={t(item.text)} style={[s.statusRow, i === STATUS_ITEMS.length - 1 && s.statusRowLast]}>
+          <View key={item.text} style={[s.statusRow, i === STATUS_ITEMS.length - 1 && s.statusRowLast]}>
               <Icon name={item.icon as any} size={18} color={colors.safetyGreen} />
-              <Text style={s.statusText}>{t(item.text)}</Text>
+              <Text style={s.statusText}>{item.text}</Text>
             </View>
           )}
         </View>

@@ -46,7 +46,7 @@ export function CompletedPayoutsScreen(): React.JSX.Element {
         <Icon name="check-circle" size={20} color={colors.safetyGreen} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={s.rowLabel}>{t(item.description)}</Text>
+        <Text style={s.rowLabel}>{item.description}</Text>
         <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
       <Text style={s.rowAmount}>{t("content.earnings.CompletedPayoutsScreen.text")}{Math.abs(item.amount).toLocaleString('en-IN')}</Text>

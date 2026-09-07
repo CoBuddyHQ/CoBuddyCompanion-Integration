@@ -188,12 +188,12 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
             <Text style={styles.cardTitle}>{t("content.application_kyc.LivenessDetectionContent.INSTRUCTIONS_TITLE").toUpperCase()}</Text>
             <View style={styles.instrList}>
               {LIVENESS_INSTRUCTIONS.map((inst) =>
-            <View key={t(inst.label)} style={styles.instrRow}>
+            <View key={inst.label} style={styles.instrRow}>
                   <View style={styles.instrIconWrap}>
                     <Icon name={inst.icon as any} size={spacing.iconMd} color={colors.gold} />
                   </View>
                   <View style={styles.instrContent}>
-                    <Text style={styles.instrLabel}>{t(inst.label)}</Text>
+                    <Text style={styles.instrLabel}>{inst.label}</Text>
                     <Text style={styles.instrBody}>{inst.body}</Text>
                   </View>
                 </View>

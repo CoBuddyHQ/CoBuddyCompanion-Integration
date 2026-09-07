@@ -121,7 +121,7 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
                   activeOpacity={0.75}
                   
                   accessibilityState={{ checked }}
-                  accessibilityLabel={t(item.label)}>
+                  accessibilityLabel={item.label}>
                   <View style={[styles.declIcon, checked && styles.declIconChecked]}>
                     <Icon
                       name={checked ? 'check' : item.icon}
@@ -130,7 +130,7 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
                     
                   </View>
                   <Text style={[styles.declLabel, checked && styles.declLabelChecked]}>
-                    {t(item.label)}
+                    {item.label}
                   </Text>
                 </TouchableOpacity>);
 

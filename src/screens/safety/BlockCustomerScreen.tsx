@@ -121,10 +121,10 @@ export function BlockCustomerScreen(): React.JSX.Element {
         <Text style={[s.sectionLabel, { marginTop: spacing.md }]}> {t('safety.what_happens_when_you_block')} </Text>
         <View style={s.impactCard}>
           {IMPACT_ROWS.map((row, i) =>
-          <View key={t(row.text)}>
+          <View key={row.text}>
               <View style={s.impactRow}>
                 <Icon name={row.icon as any} size={18} color={colors.textMuted} />
-                <Text style={s.impactText}>{t(row.text)}</Text>
+                <Text style={s.impactText}>{row.text}</Text>
               </View>
               {i < IMPACT_ROWS.length - 1 && <View style={s.impactDivider} />}
             </View>

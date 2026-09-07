@@ -86,7 +86,7 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
             <View style={[styles.optionIcon, selected && styles.optionIconSelected]}>
               <Icon name={o.icon} size={20} color={selected ? colors.rootBg : colors.gold} />
             </View>
-            <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{t(o.label)}</Text>
+            <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{o.label}</Text>
             {selected && <Icon name="check-circle" size={18} color={colors.gold} />}
           </TouchableOpacity>);
 

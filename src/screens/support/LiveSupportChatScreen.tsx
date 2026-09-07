@@ -1,4 +1,4 @@
-import i18next from "i18next"; /**
+/**
 * LiveSupportChatScreen (CPN-170)
 * Real-time chat with a CoBuddy support agent.
 */
@@ -53,7 +53,7 @@ export function LiveSupportChatScreen(): React.JSX.Element {
       <View style={[s.msgRow, isMe && s.msgRowMe]}>
         {!isMe && <View style={s.agentAvatar}><Icon name="headset-mic" size={16} color={colors.gold} /></View>}
         <View style={[s.bubble, isMe ? s.bubbleMe : s.bubbleAgent]}>
-          <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{t(item.text)}</Text>
+          <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{item.text}</Text>
           <Text style={[s.bubbleTime, isMe && s.bubbleTimeMe]}>{item.time}</Text>
         </View>
       </View>);

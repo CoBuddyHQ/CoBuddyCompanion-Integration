@@ -327,13 +327,13 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
                 addressType === opt.value && styles.typeChipSelected]
                 }
                 onPress={() => setAddressType(opt.value as AddressType)}
-                accessibilityLabel={t(opt.label)}
+                accessibilityLabel={opt.label}
                 accessibilityState={{ selected: addressType === opt.value }}>
                   <Text style={[
                 styles.typeChipText,
                 addressType === opt.value && styles.typeChipTextSelected]
                 }>
-                    {t(opt.label)}
+                    {opt.label}
                   </Text>
                 </TouchableOpacity>
               )}

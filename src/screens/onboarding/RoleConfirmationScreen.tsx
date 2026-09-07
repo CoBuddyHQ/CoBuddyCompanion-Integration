@@ -91,7 +91,7 @@ const RoleConfirmationScreen: React.FC<Props> = ({ navigation }) => {
             {COMMITMENTS.map((c, idx) =>
             <View key={idx} style={styles.commitRow}>
                 <Icon name={c.icon} size={20} color={colors.textMuted} />
-                <Text style={styles.commitText}>{t(c.text)}</Text>
+                <Text style={styles.commitText}>{c.text}</Text>
               </View>
             )}
           </View>

@@ -171,7 +171,7 @@ export function BankAccountVerificationScreen({ navigation }: Props): React.JSX.
                 styles.stepLabel,
                 step.status === 'done' && styles.stepLabelDone]
                 }>
-                    {t(step.label)}
+                    {step.label}
                   </Text>
                 </View>
               </View>

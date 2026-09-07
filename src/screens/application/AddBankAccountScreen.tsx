@@ -270,10 +270,10 @@ export function AddBankAccountScreen({ navigation }: Props): React.JSX.Element {
                 key={`ui-opt-${index}-${opt.value}`}
                 style={[styles.typeChip, accountType === opt.value && styles.typeChipSelected]}
                 onPress={() => setAccountType(opt.value as BankAccountType)}
-                accessibilityLabel={t(opt.label)}
+                accessibilityLabel={opt.label}
                 accessibilityState={{ selected: accountType === opt.value }}>
                   <Text style={[styles.typeChipText, accountType === opt.value && styles.typeChipTextSelected]}>
-                    {t(opt.label)}
+                    {opt.label}
                   </Text>
                 </TouchableOpacity>
               )}

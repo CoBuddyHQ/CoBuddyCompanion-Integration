@@ -161,7 +161,7 @@ const BioIntroductionScreen: React.FC<Props> = ({ navigation }) => {const { t } 
                       size={18}
                       color={isDo ? colors.safetyGreen : colors.softWarning} />
                     
-                    <Text style={[styles.guideText, !isDo && styles.guideTextDont]}>{t(g.text)}</Text>
+                    <Text style={[styles.guideText, !isDo && styles.guideTextDont]}>{g.text}</Text>
                   </View>);
 
               })}

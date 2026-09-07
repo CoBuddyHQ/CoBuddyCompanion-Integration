@@ -66,8 +66,8 @@ export function AppLanguageSettingsScreen(): React.JSX.Element {
                 {i > 0 && <View style={s.sep} />}
                 <TouchableOpacity accessibilityRole="button" style={s.row} onPress={() => setLanguage(lang.id)} activeOpacity={0.75}>
                   <View style={s.rowText}>
-                    <Text style={[s.rowLabel, active && s.rowLabelActive]}>{t(lang.label)}</Text>
-                    <Text style={s.rowSub}>{t(lang.sub)}</Text>
+                    <Text style={[s.rowLabel, active && s.rowLabelActive]}>{lang.label}</Text>
+                    <Text style={s.rowSub}>{lang.sub}</Text>
                   </View>
                   <Icon name={active ? 'check-circle' : 'radio-button-unchecked'}
                   size={22} color={active ? colors.gold : colors.textMuted} />

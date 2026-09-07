@@ -2500,7 +2500,10 @@
         "PROOF_CTA": "Upload address proof",
         "CTA_PRIMARY": "Save Address Details",
         "CTA_SAVE_LATER": "Save & Continue Later",
-        "TYPE_OPTIONS": null
+        "TYPE_OPTIONS": [
+          { "value": "current_residence", "label": "Current Residence" },
+          { "value": "permanent_residence", "label": "Permanent Residence" }
+        ]
       },
       "PANTaxDetailsContent": {
         "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
@@ -2552,7 +2555,11 @@
         "CTA_EDIT": "Edit Details",
         "CTA_CANCEL": "Cancel",
         "PRIVACY_NOTE": "Bank details are encrypted and used only for payout disbursement.",
-        "TYPE_OPTIONS": null
+        "TYPE_OPTIONS": [
+          { "value": "savings", "label": "Savings" },
+          { "value": "current", "label": "Current" },
+          { "value": "salary", "label": "Salary" }
+        ]
       },
       "BankAccountVerificationContent": {
         "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
