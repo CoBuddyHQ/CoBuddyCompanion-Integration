@@ -82,7 +82,7 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
               const c = statusColors[item.status] ?? colors.textMuted;
               const ic = statusIcons[item.status] ?? 'radio-button-unchecked';
               return (
-                <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.summaryRow}>
+                <View key={`ui-opt-${index}-${item.label}`} style={styles.summaryRow}>
                   <View style={styles.summaryIconWrap}>
                     <Icon name={item.icon as any} size={18} color={c} />
                   </View>
@@ -102,7 +102,7 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
           <Text style={styles.requiredSubtitle}>{t("content.application_kyc.ProfileEditRejectedContent.REQUIRED_SUBTITLE")}</Text>
           <View style={styles.updateList}>
             {((Array.isArray(t("content.application_kyc.ProfileEditRejectedContent.REQUIRED_UPDATES", { returnObjects: true })) ? (t("content.application_kyc.ProfileEditRejectedContent.REQUIRED_UPDATES", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.updateRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.updateRow}>
                 <View style={styles.updateIconWrap}>
                   <Icon name={item.icon as any} size={22} color={colors.errorRed} />
                 </View>
@@ -126,7 +126,7 @@ export function ProfileEditRejectedScreen({ navigation }: Props): React.JSX.Elem
           <Text style={styles.currentStatusNote}>{t("content.application_kyc.ProfileEditRejectedContent.CURRENT_STATUS_NOTE")}</Text>
           <View style={styles.currentStatusList}>
             {((Array.isArray(t("content.application_kyc.ProfileEditRejectedContent.STATUS_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ProfileEditRejectedContent.STATUS_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.currentStatusRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.currentStatusRow}>
                 <Icon name={item.icon as any} size={18} color={colors.safetyGreen} />
                 <Text style={styles.currentStatusLabel}>{item.label}</Text>
               </View>

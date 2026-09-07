@@ -82,7 +82,7 @@ export function ResubmitVerificationScreen({ navigation }: Props): React.JSX.Ele
           <Text style={styles.cardTitle}>{t("content.application_kyc.ResubmitVerificationContent.REQUIRED_TITLE").toUpperCase()}</Text>
           <View style={styles.reqList}>
             {((Array.isArray(t("content.application_kyc.ResubmitVerificationContent.REQUIRED_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ResubmitVerificationContent.REQUIRED_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.reqRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.reqRow}>
                 <View style={styles.reqIconWrap}>
                   <Icon name={item.icon as any} size={20} color={colors.gold} />
                 </View>

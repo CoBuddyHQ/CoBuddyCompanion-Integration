@@ -73,7 +73,7 @@ export function ProfileApprovedPublishedScreen({ navigation }: Props): React.JSX
           <Text style={styles.cardTitle}>{t("content.application_kyc.ProfileApprovedPublishedContent.STATUS_TITLE").toUpperCase()}</Text>
           <View style={styles.statusGrid}>
             {((Array.isArray(t("content.application_kyc.ProfileApprovedPublishedContent.STATUS_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ProfileApprovedPublishedContent.STATUS_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.statusCell}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.statusCell}>
                 <View style={styles.statusCellIconWrap}>
                   <Icon name={item.icon as any} size={20} color={colors.safetyGreen} />
                 </View>
@@ -89,7 +89,7 @@ export function ProfileApprovedPublishedScreen({ navigation }: Props): React.JSX
           <Text style={styles.cardTitle}>{t("content.application_kyc.ProfileApprovedPublishedContent.NEXT_STEPS_TITLE").toUpperCase()}</Text>
           <View style={styles.nextList}>
             {((Array.isArray(t("content.application_kyc.ProfileApprovedPublishedContent.NEXT_STEPS", { returnObjects: true })) ? (t("content.application_kyc.ProfileApprovedPublishedContent.NEXT_STEPS", { returnObjects: true }) as any[]) : [])).map((step, index) =>
-            <View key={`ui-opt-${index}-${t(step.label)}`} style={styles.nextRow}>
+            <View key={`ui-opt-${index}-${step.label}`} style={styles.nextRow}>
                 <View style={styles.nextIconWrap}>
                   <Icon name={step.icon as any} size={22} color={colors.gold} />
                 </View>

@@ -74,7 +74,7 @@ export function VerificationRejectedScreen({ navigation }: Props): React.JSX.Ele
           <Text style={styles.cardTitle}>{t("content.application_kyc.VerificationRejectedContent.UPDATE_TITLE").toUpperCase()}</Text>
           <View style={styles.itemList}>
             {((Array.isArray(t("content.application_kyc.VerificationRejectedContent.REQUIRED_UPDATES", { returnObjects: true })) ? (t("content.application_kyc.VerificationRejectedContent.REQUIRED_UPDATES", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.itemRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.itemRow}>
                 <View style={StyleSheet.flatten([styles.itemIconWrap, styles.itemIconError])}>
                   <Icon name={item.icon as any} size={22} color={colors.errorRed} />
                 </View>

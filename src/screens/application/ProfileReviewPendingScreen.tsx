@@ -97,7 +97,7 @@ export function ProfileReviewPendingScreen({ navigation }: Props): React.JSX.Ele
             {((Array.isArray(t("content.application_kyc.ProfileReviewPendingContent.STATUS_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ProfileReviewPendingContent.STATUS_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) => {
               const s = item.status as keyof typeof STATUS_COLORS;
               return (
-                <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.statusItemRow}>
+                <View key={`ui-opt-${index}-${item.label}`} style={styles.statusItemRow}>
                   <Icon name={STATUS_ICONS[s] as any} size={18} color={STATUS_COLORS[s]} />
                   <Text style={[styles.statusItemLabel, { color: STATUS_COLORS[s] }]}>{item.label}</Text>
                   {'detail' in item && item.detail ?
@@ -114,7 +114,7 @@ export function ProfileReviewPendingScreen({ navigation }: Props): React.JSX.Ele
           <Text style={styles.cardTitle}>{t("content.application_kyc.ProfileReviewPendingContent.REVIEW_TITLE").toUpperCase()}</Text>
           <View style={styles.itemList}>
             {((Array.isArray(t("content.application_kyc.ProfileReviewPendingContent.REVIEW_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ProfileReviewPendingContent.REVIEW_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.itemRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.itemRow}>
                 <View style={styles.itemIconWrap}>
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>

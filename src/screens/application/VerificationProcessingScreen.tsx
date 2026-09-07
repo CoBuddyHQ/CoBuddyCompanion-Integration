@@ -82,7 +82,7 @@ export function VerificationProcessingScreen({ navigation }: Props): React.JSX.E
           <Text style={styles.cardTitle}>{t("content.application_kyc.CommonKycContent.REVIEW_STARTED")}</Text>
           <View style={styles.itemList}>
             {((Array.isArray(t("content.application_kyc.VerificationProcessingContent.CHECKING_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.VerificationProcessingContent.CHECKING_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.itemRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.itemRow}>
                 <View style={styles.itemIconWrap}>
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>
@@ -100,7 +100,7 @@ export function VerificationProcessingScreen({ navigation }: Props): React.JSX.E
           <Text style={styles.cardTitle}>{t("content.application_kyc.CommonKycContent.WHAT_HAPPENS_NEXT")}</Text>
           <View style={styles.nextList}>
             {((Array.isArray(t("content.application_kyc.VerificationProcessingContent.NEXT_STEPS", { returnObjects: true })) ? (t("content.application_kyc.VerificationProcessingContent.NEXT_STEPS", { returnObjects: true }) as any[]) : [])).map((step, i) =>
-            <View key={`ui-opt-${i}-${t(step.label)}`} style={styles.nextRow}>
+            <View key={`ui-opt-${i}-${step.label}`} style={styles.nextRow}>
                 <View style={styles.nextIconWrap}>
                   <Icon name={step.icon as any} size={20} color={colors.gold} />
                 </View>

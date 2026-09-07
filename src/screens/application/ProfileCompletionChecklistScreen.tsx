@@ -328,8 +328,8 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
               <ChecklistRow
                 key={item.label}
                 icon={item.icon}
-                label={t(item.label)}
-                description={t(item.description)}
+                label={item.label}
+                description={item.description}
                 isComplete={getIsComplete(item.storeKey)} />
 
               )}
@@ -441,8 +441,8 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
             <CorrectionRow
               key={item.label}
               icon={item.icon}
-              label={t(item.label)}
-              description={t(item.description)}
+              label={item.label}
+              description={item.description}
               status={item.status}
               onEdit={() => navigateToCorrectionEdit(
                 navigation,

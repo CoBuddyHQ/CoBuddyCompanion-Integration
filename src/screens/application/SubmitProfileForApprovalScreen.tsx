@@ -175,7 +175,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
           <Text style={styles.cardTitle}>{t("content.application_kyc.SubmitProfileForApprovalContent.SUMMARY_TITLE").toUpperCase()}</Text>
           <View style={styles.summaryList}>
             {Object.values(readiness.modules).map((mod, index) =>
-            <View key={`ui-opt-${index}-${t(mod.title)}`} style={styles.summaryRow}>
+            <View key={`ui-opt-${index}-${mod.title}`} style={styles.summaryRow}>
                 <Icon
                 name={mod.allDone ? 'check-circle' : 'radio-button-unchecked'}
                 size={18}
@@ -245,7 +245,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
               });
               navigateToRequirementFixScreen(navigation, item.route);
             }}
-            accessibilityLabel={t("accessibility.fix_item", { item: t(item.label) })}>
+            accessibilityLabel={t("accessibility.fix_item", { item: item.label })}>
                 <Icon name="cancel" size={14} color={colors.softWarning} />
                 <Text style={styles.missingText}>{item.label}</Text>
                 <Icon name="chevron-right" size={14} color={colors.textMuted} />

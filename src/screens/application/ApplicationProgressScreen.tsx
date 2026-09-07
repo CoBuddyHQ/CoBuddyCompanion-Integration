@@ -156,7 +156,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
         {moduleList.map((mod, index) => {
           const modComplete = mod.allDone;
           return (
-            <GlassCard key={`ui-opt-${index}-${t(mod.title)}`} style={styles.card}>
+            <GlassCard key={`ui-opt-${index}-${mod.title}`} style={styles.card}>
               <View style={styles.modHeader}>
                 <Icon name={mod.icon as any} size={18} color={modComplete ? colors.safetyGreen : colors.gold} />
                 <Text style={styles.cardTitle}>{mod.title}</Text>
@@ -210,7 +210,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
           <Text style={styles.cardTitle}>{t("content.application_kyc.ApplicationProgressContent.COMPLETED_TITLE").toUpperCase()}</Text>
           <View style={styles.stepList}>
             {((Array.isArray(t("content.application_kyc.ApplicationProgressContent.COMPLETED_STEPS", { returnObjects: true })) ? (t("content.application_kyc.ApplicationProgressContent.COMPLETED_STEPS", { returnObjects: true }) as any[]) : [])).map((step, index) =>
-            <View key={`ui-opt-${index}-${t(step.label)}`} style={styles.stepRow}>
+            <View key={`ui-opt-${index}-${step.label}`} style={styles.stepRow}>
                 <View style={styles.stepIconWrap}>
                   <Icon name={step.icon as any} size={22} color={colors.safetyGreen} />
                 </View>

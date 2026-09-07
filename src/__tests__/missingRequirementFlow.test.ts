@@ -89,7 +89,7 @@ const MISSING_CASES: Array<{key: MandatoryRequirementKey; override: Partial<Read
   {key: 'background_declaration',  override: {backgroundDeclaration: {accurate_info: false, public_venue_only: true, professional_conduct: true, no_private_contact: true, safety_policy: true, no_misrepresentation: true}}},
   {key: 'work_preference',         override: {workPreference: {durations: [], days: [], timeRanges: []}}},
   {key: 'city',                    override: {city: ''}},
-  {key: 'comm_activity',           override: {commActivityPrefs: {commStyle: '', activityPace: ''}}},
+  {key: 'comm_activity',           override: {commActivityPrefs: {commStyle: '', activityPace: '', groupPreference: ''}}},
   {key: 'venue_preference',        override: {venuePreferences: []}},
   {key: 'boundaries',              override: {boundariesAccepted: false}},
   {key: 'id_type',                 override: {selectedIdType: '', idSubmittedForReview: false}},

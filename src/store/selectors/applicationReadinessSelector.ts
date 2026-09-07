@@ -82,7 +82,7 @@ export interface ReadinessSelectorInput {
   workPreference: {durations: string[];days: string[];timeRanges: string[];};
   city: string;
   broadAreas: string[];
-  commActivityPrefs: {commStyle: string;activityPace: string;};
+  commActivityPrefs: {commStyle: string;activityPace: string;groupPreference: string;};
   venuePreferences: string[];
   boundariesAccepted: boolean;
   selectedIdType: string;

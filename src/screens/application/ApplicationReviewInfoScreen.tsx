@@ -169,7 +169,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
                 navigateToRequirementFixScreen(navigation, item.route);
               }}
               
-              accessibilityLabel={t("accessibility.complete_missing", { item: t(item.label) })}>
+              accessibilityLabel={t("accessibility.complete_missing", { item: item.label })}>
                   <View style={styles.incompleteIconWrap}>
                     <Icon name="radio-button-unchecked" size={18} color={colors.warningAmber} />
                   </View>
@@ -197,7 +197,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
           <Text style={styles.cardTitle}>{t("content.application_kyc.ApplicationReviewInfoContent.REVIEW_TITLE").toUpperCase()}</Text>
           <View style={styles.itemList}>
             {((Array.isArray(t("content.application_kyc.ApplicationReviewInfoContent.REVIEW_ITEMS", { returnObjects: true })) ? (t("content.application_kyc.ApplicationReviewInfoContent.REVIEW_ITEMS", { returnObjects: true }) as any[]) : [])).map((item, index) =>
-            <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.itemRow}>
+            <View key={`ui-opt-${index}-${item.label}`} style={styles.itemRow}>
                 <View style={styles.itemIconWrap}>
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>
