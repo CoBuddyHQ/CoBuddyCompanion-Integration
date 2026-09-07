@@ -124,7 +124,7 @@ const TermsConsentScreen: React.FC<Props> = ({ navigation }) => {
             <View key={`ui-opt-${idx}-${idx}`} style={styles.policyRow}>
                 <Icon name={item.icon} size={22} color={colors.gold} />
                 <View style={styles.policyContent}>
-                  <Text style={styles.policyTitle}>{t(item.title)}</Text>
+                  <Text style={styles.policyTitle}>{item.title}</Text>
                   <Text style={styles.policyBody}>{item.body}</Text>
                 </View>
               </View>

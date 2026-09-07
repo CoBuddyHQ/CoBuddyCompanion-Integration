@@ -80,12 +80,12 @@ export function VerificationRejectedScreen({ navigation }: Props): React.JSX.Ele
                 </View>
                 <View style={styles.itemContent}>
                   <View style={styles.itemLabelRow}>
-                    <Text style={styles.itemLabel}>{t(item.label)}</Text>
+                    <Text style={styles.itemLabel}>{item.label}</Text>
                     <View style={styles.actionTag}>
                       <Text style={styles.actionTagText}>{item.action}</Text>
                     </View>
                   </View>
-                  <Text style={styles.itemDesc}>{t(item.description)}</Text>
+                  <Text style={styles.itemDesc}>{item.description}</Text>
                 </View>
               </View>
             )}

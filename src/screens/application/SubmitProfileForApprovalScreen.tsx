@@ -181,7 +181,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
                 size={18}
                 color={mod.allDone ? colors.safetyGreen : colors.warningAmber} />
               
-                <Text style={styles.summaryLabel}>{t(mod.title)}</Text>
+                <Text style={styles.summaryLabel}>{mod.title}</Text>
                 <View style={[styles.readyBadge, !mod.allDone && styles.incompleteBadge]}>
                   <Text style={[styles.readyBadgeText, !mod.allDone && styles.incompleteBadgeText]}>
                     {mod.allDone ? `${mod.completedCount}/${mod.totalCount}` : `${mod.completedCount}/${mod.totalCount}`}
@@ -247,7 +247,7 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
             }}
             accessibilityLabel={t("accessibility.fix_item", { item: t(item.label) })}>
                 <Icon name="cancel" size={14} color={colors.softWarning} />
-                <Text style={styles.missingText}>{t(item.label)}</Text>
+                <Text style={styles.missingText}>{item.label}</Text>
                 <Icon name="chevron-right" size={14} color={colors.textMuted} />
               </TouchableOpacity>
           )}
