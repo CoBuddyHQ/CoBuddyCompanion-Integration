@@ -200,8 +200,8 @@ export function BankDetailsScreen(): React.JSX.Element {
             { label: t("content.settings.BankDetailsScreen.ifsc_code"), value: displayIfsc },
             { label: t("content.settings.BankDetailsScreen.added_on"), value: '12 May 2026' }].
             map((row) =>
-            <View key={t(row.label)} style={styles.detailRow}>
-                <Text style={styles.detailLabel}>{t(row.label)}</Text>
+            <View key={row.label} style={styles.detailRow}>
+                <Text style={styles.detailLabel}>{row.label}</Text>
                 <Text style={styles.detailValue}>{row.value}</Text>
               </View>
             )}
@@ -218,10 +218,10 @@ export function BankDetailsScreen(): React.JSX.Element {
             { icon: 'send', label: t("content.settings.BankDetailsScreen.total_withdrawn"), value: formattedLifetime },
             { icon: 'schedule', label: t("content.settings.BankDetailsScreen.last_payout"), value: '3 days ago' }].
             map((stat, i) =>
-            <View key={t(stat.label)} style={[styles.statCell, i === 0 && styles.statCellRight]}>
+            <View key={stat.label} style={[styles.statCell, i === 0 && styles.statCellRight]}>
                 <Icon name={stat.icon as any} size={16} color={colors.gold} />
                 <Text style={styles.statValue}>{stat.value}</Text>
-                <Text style={styles.statLabel}>{t(stat.label)}</Text>
+                <Text style={styles.statLabel}>{stat.label}</Text>
               </View>
             )}
           </View>

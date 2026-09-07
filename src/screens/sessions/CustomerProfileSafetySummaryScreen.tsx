@@ -90,12 +90,12 @@ export function CustomerProfileSafetySummaryScreen({ route, navigation }: Props)
         <GlassCard style={styles.card}>
           <Text style={styles.cardTitle}> {t('sessions.verification_status')} </Text>
           {VERIFICATIONS.map((v) =>
-          <View key={t(v.label)} style={styles.verifyRow}>
+          <View key={v.label} style={styles.verifyRow}>
               <View style={[styles.verifyIconWrap, v.done && styles.verifyIconDone]}>
                 <Icon name={v.icon as any} size={16}
               color={v.done ? colors.safetyGreen : colors.textMuted} />
               </View>
-              <Text style={styles.verifyLabel}>{t(v.label)}</Text>
+              <Text style={styles.verifyLabel}>{v.label}</Text>
               <View style={[styles.verifyStatus, v.done ? styles.verifyDone : styles.verifyPending]}>
                 <Icon name={v.done ? 'check' : 'close'} size={12}
               color={v.done ? colors.safetyGreen : colors.textMuted} />
@@ -117,9 +117,9 @@ export function CustomerProfileSafetySummaryScreen({ route, navigation }: Props)
             { value: String(incidents), label: t("content.sessions.CustomerProfileSafetySummaryScreen.incidents_reported") },
             { value: showUpRate, label: t("content.sessions.CustomerProfileSafetySummaryScreen.show_up_rate") }].
             map((stat) =>
-            <View key={t(stat.label)} style={styles.statCell}>
+            <View key={stat.label} style={styles.statCell}>
                 <Text style={styles.statValue}>{stat.value}</Text>
-                <Text style={styles.statLabel}>{t(stat.label)}</Text>
+                <Text style={styles.statLabel}>{stat.label}</Text>
               </View>
             )}
           </View>

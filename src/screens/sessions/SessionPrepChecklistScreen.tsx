@@ -167,7 +167,7 @@ export function SessionPrepChecklistScreen({ navigation }: Props): React.JSX.Ele
                 <Text style={[styles.itemTitle, isChecked && styles.itemTitleDone]}>
                   {t(item.title)}
                 </Text>
-                <Text style={styles.itemDetail}>{t(item.detail)}</Text>
+                <Text style={styles.itemDetail}>{item.detail}</Text>
               </View>
 
               {/* Checkbox */}

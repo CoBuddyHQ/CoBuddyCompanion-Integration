@@ -86,7 +86,7 @@ export function VerificationProcessingScreen({ navigation }: Props): React.JSX.E
                 <View style={styles.itemIconWrap}>
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>
-                <Text style={styles.itemLabel}>{t(item.label)}</Text>
+                <Text style={styles.itemLabel}>{item.label}</Text>
                 <View style={styles.checkingBadge}>
                   <Text style={styles.checkingBadgeText}>{item.status}</Text>
                 </View>
@@ -104,7 +104,7 @@ export function VerificationProcessingScreen({ navigation }: Props): React.JSX.E
                 <View style={styles.nextIconWrap}>
                   <Icon name={step.icon as any} size={20} color={colors.gold} />
                 </View>
-                <Text style={styles.nextLabel}>{t(step.label)}</Text>
+                <Text style={styles.nextLabel}>{step.label}</Text>
               </View>
             )}
           </View>
