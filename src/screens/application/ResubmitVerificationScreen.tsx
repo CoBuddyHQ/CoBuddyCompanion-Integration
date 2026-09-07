@@ -86,7 +86,7 @@ export function ResubmitVerificationScreen({ navigation }: Props): React.JSX.Ele
                 <View style={styles.reqIconWrap}>
                   <Icon name={item.icon as any} size={20} color={colors.gold} />
                 </View>
-                <Text style={styles.reqLabel}>{t(item.label)}</Text>
+                <Text style={styles.reqLabel}>{item.label}</Text>
                 {item.required &&
               <View style={styles.reqBadge}>
                     <Text style={styles.reqBadgeText}>{t("content.application_kyc.CommonKycContent.REQUIRED")}</Text>

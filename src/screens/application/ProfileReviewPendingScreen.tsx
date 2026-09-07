@@ -99,7 +99,7 @@ export function ProfileReviewPendingScreen({ navigation }: Props): React.JSX.Ele
               return (
                 <View key={`ui-opt-${index}-${t(item.label)}`} style={styles.statusItemRow}>
                   <Icon name={STATUS_ICONS[s] as any} size={18} color={STATUS_COLORS[s]} />
-                  <Text style={[styles.statusItemLabel, { color: STATUS_COLORS[s] }]}>{t(item.label)}</Text>
+                  <Text style={[styles.statusItemLabel, { color: STATUS_COLORS[s] }]}>{item.label}</Text>
                   {'detail' in item && item.detail ?
                   <Text style={styles.statusItemDetail}>{item.detail}</Text> :
                   null}
@@ -119,8 +119,8 @@ export function ProfileReviewPendingScreen({ navigation }: Props): React.JSX.Ele
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>
                 <View style={styles.itemContent}>
-                  <Text style={styles.itemLabel}>{t(item.label)}</Text>
-                  <Text style={styles.itemDesc}>{t(item.description)}</Text>
+                  <Text style={styles.itemLabel}>{item.label}</Text>
+                  <Text style={styles.itemDesc}>{item.description}</Text>
                 </View>
               </View>
             )}

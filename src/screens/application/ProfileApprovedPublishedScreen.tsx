@@ -77,7 +77,7 @@ export function ProfileApprovedPublishedScreen({ navigation }: Props): React.JSX
                 <View style={styles.statusCellIconWrap}>
                   <Icon name={item.icon as any} size={20} color={colors.safetyGreen} />
                 </View>
-                <Text style={styles.statusCellLabel}>{t(item.label)}</Text>
+                <Text style={styles.statusCellLabel}>{item.label}</Text>
                 <Text style={styles.statusCellStatus}>{item.status}</Text>
               </View>
             )}
@@ -94,8 +94,8 @@ export function ProfileApprovedPublishedScreen({ navigation }: Props): React.JSX
                   <Icon name={step.icon as any} size={22} color={colors.gold} />
                 </View>
                 <View style={styles.nextContent}>
-                  <Text style={styles.nextLabel}>{t(step.label)}</Text>
-                  <Text style={styles.nextDesc}>{t(step.description)}</Text>
+                  <Text style={styles.nextLabel}>{step.label}</Text>
+                  <Text style={styles.nextDesc}>{step.description}</Text>
                 </View>
                 <Icon name="chevron-right" size={20} color={colors.textMuted} />
               </View>

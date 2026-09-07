@@ -159,7 +159,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
             <GlassCard key={`ui-opt-${index}-${t(mod.title)}`} style={styles.card}>
               <View style={styles.modHeader}>
                 <Icon name={mod.icon as any} size={18} color={modComplete ? colors.safetyGreen : colors.gold} />
-                <Text style={styles.cardTitle}>{t(mod.title)}</Text>
+                <Text style={styles.cardTitle}>{mod.title}</Text>
                 <Text style={[styles.modCount, modComplete && styles.modCountDone]}>
                   {mod.completedCount}/{mod.totalCount}
                 </Text>
@@ -214,7 +214,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
                 <View style={styles.stepIconWrap}>
                   <Icon name={step.icon as any} size={22} color={colors.safetyGreen} />
                 </View>
-                <Text style={styles.stepLabel}>{t(step.label)}</Text>
+                <Text style={styles.stepLabel}>{step.label}</Text>
                 <Icon name="check-circle" size={18} color={colors.safetyGreen} />
               </View>
             )}

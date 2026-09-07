@@ -174,7 +174,7 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
                     <Icon name="radio-button-unchecked" size={18} color={colors.warningAmber} />
                   </View>
                   <View style={styles.incompleteContent}>
-                    <Text style={styles.incompleteLabel}>{t(item.label)}</Text>
+                    <Text style={styles.incompleteLabel}>{item.label}</Text>
                     <Text style={styles.incompleteSub}>{t("content.application_kyc.CommonKycContent.TAP_TO_COMPLETE")}</Text>
                   </View>
                   <Icon name="chevron-right" size={20} color={colors.textMuted} />
@@ -202,8 +202,8 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
                   <Icon name={item.icon as any} size={22} color={colors.gold} />
                 </View>
                 <View style={styles.itemContent}>
-                  <Text style={styles.itemLabel}>{t(item.label)}</Text>
-                  <Text style={styles.itemDesc}>{t(item.description)}</Text>
+                  <Text style={styles.itemLabel}>{item.label}</Text>
+                  <Text style={styles.itemDesc}>{item.description}</Text>
                 </View>
               </View>
             )}
