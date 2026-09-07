@@ -195,7 +195,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group, state, onToggle }) => {
         <View style={[groupStyles.iconWrap, { backgroundColor: `${group.iconColor}18` }]}>
           <Icon name={group.icon as any} size={17} color={group.iconColor} />
         </View>
-        <Text style={groupStyles.title}>{t(group.title)}</Text>
+        <Text style={groupStyles.title}>{group.title}</Text>
         <Text style={groupStyles.count}>
           {enabledCount}/{items.length}  {t('settings.on')} </Text>
       </View>
@@ -306,7 +306,7 @@ export function NotificationPreferencesScreen(): React.JSX.Element {
               ══════════════════════════════════════════ */}
         {GROUPS.map((group) =>
         <GroupCard
-          key={t(group.title)}
+          key={group.title}
           group={group}
           state={prefs}
           onToggle={toggle} />

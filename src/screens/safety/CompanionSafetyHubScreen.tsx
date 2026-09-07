@@ -249,14 +249,14 @@ export function CompanionSafetyHubScreen(): React.JSX.Element {
           { icon: 'person-add', label: t("content.safety.CompanionSafetyHubScreen.emergency_contact_setup"), route: Routes.EMERGENCY_CONTACT_SETUP, color: colors.safetyGreen }].
           map((item, i, arr) =>
           <TouchableOpacity accessibilityRole="button"
-            key={t(item.label)}
+            key={item.label}
             style={[styles.toolRow, i === arr.length - 1 && styles.toolRowLast]}
             onPress={() => navigation.navigate(item.route)}
             activeOpacity={0.75}>
               <View style={[styles.toolIconWrap, { backgroundColor: `${item.color}18` }]}>
                 <Icon name={item.icon as any} size={18} color={item.color} />
               </View>
-              <Text style={styles.toolLabel}>{t(item.label)}</Text>
+              <Text style={styles.toolLabel}>{item.label}</Text>
               <Icon name="chevron-right" size={18} color={colors.textMuted} />
             </TouchableOpacity>
           )}

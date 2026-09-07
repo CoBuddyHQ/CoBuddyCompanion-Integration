@@ -70,11 +70,11 @@ export function DataDownloadScreen(): React.JSX.Element {
           { icon: 'person', label: t("content.settings.DataDownloadScreen.profile_data_preferences") },
           { icon: 'star', label: t("content.settings.DataDownloadScreen.reviews_and_ratings_received") }].
           map((item, i) =>
-          <View key={t(item.label)}>
+          <View key={item.label}>
               {i > 0 && <View style={s.sep} />}
               <View style={s.row}>
                 <Icon name={item.icon as any} size={18} color={colors.gold} />
-                <Text style={s.rowLabel}>{t(item.label)}</Text>
+                <Text style={s.rowLabel}>{item.label}</Text>
               </View>
             </View>
           )}
