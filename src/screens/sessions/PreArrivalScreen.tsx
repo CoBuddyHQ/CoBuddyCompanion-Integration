@@ -89,11 +89,11 @@ export function PreArrivalScreen(): React.JSX.Element {
         <View style={s.card}>
           <Text style={s.cardTitle}> {t('sessions.pre_arrival_checklist')} </Text>
           {CHECKLIST.map((item) =>
-          <View key={item.label} style={s.checkRow}>
+          <View key={t(item.label)} style={s.checkRow}>
               <View style={s.checkIcon}>
                 <Icon name="check-circle" size={20} color={colors.safetyGreen} />
               </View>
-              <Text style={s.checkLabel}>{item.label}</Text>
+              <Text style={s.checkLabel}>{t(item.label)}</Text>
             </View>
           )}
         </View>

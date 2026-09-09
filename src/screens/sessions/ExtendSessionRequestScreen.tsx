@@ -44,6 +44,8 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
   const [selected, setSelected] = useState(0); // default first option
 
   const opt = OPTIONS[selected];
+  const optMinutes = Number(t(opt.minutes));
+  const optPrice = Number(t(opt.price));
 
   const requestExtension = useSessionStore((s) => s.requestExtension);
   const [loading, setLoading] = useState(false);
@@ -52,8 +54,8 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
     if (loading) return;
     setLoading(true);
     try {
-      await requestExtension(sessionId, Number(opt.minutes));
-      navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: opt.minutes });
+      await requestExtension(sessionId, optMinutes);
+      navigation.navigate(Routes.EXTEND_SESSION_CONFIRMATION, { sessionId, extendedMinutes: optMinutes });
     } catch (e: any) {
       Alert.alert(t('alerts.error'), e?.message || 'Failed to request extension');
     } finally {
@@ -83,7 +85,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
         <View style={s.optionsRow}>
           {OPTIONS.map((opt2, idx) =>
           <TouchableOpacity accessibilityRole="button"
-            key={opt2.minutes}
+            key={t(opt2.minutes)}
             style={[s.optPill, idx === selected && s.optPillActive]}
             onPress={() => setSelected(idx)}
             activeOpacity={0.75}>
@@ -91,7 +93,7 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
                 {t(opt2.label)}
               </Text>
               <Text style={[s.optPillPrice, idx === selected && s.optPillPriceActive]}>{t("content.sessions.ExtendSessionRequestScreen.text")}
-                {Number(opt2.price).toLocaleString('en-IN')}
+                {Number(t(opt2.price)).toLocaleString('en-IN')}
               </Text>
             </TouchableOpacity>
           )}
@@ -106,12 +108,12 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
           <View style={s.priceDivider} />
           <View style={s.priceRow}>
             <Text style={s.priceLabelBold}> {t('sessions.additional_cost')} </Text>
-            <Text style={s.priceValueGold}>{Number(opt.price).toLocaleString('en-IN')}</Text>
+            <Text style={s.priceValueGold}>{optPrice.toLocaleString('en-IN')}</Text>
           </View>
           <View style={s.priceRow}>
             <Text style={s.priceLabel}> {t('sessions.new_end_time')} </Text>
             <Text style={s.priceValue}>
-                {fmtTime(session?.scheduledEnd, Number(opt.minutes))}
+                {fmtTime(session?.scheduledEnd, optMinutes)}
             </Text>
           </View>
         </View>

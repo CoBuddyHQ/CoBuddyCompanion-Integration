@@ -205,7 +205,7 @@ export function CompanionPricingScreen({
               return (
                 <View key={category} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: spacing.xs, borderBottomWidth: 1, borderBottomColor: colors.borderSurface }}>
                   <Text style={[textStyles.bodySm, { color: colors.textSecondary, textTransform: 'capitalize' }]}>
-                    {category.replace('_', ' ')}
+                    {AdminConfig.categoryDetails[category as keyof typeof AdminConfig.categoryDetails]?.label ?? category.replace('_', ' ')}
                   </Text>
                   <Text style={[textStyles.bodySm, { color: colors.textPrimary }]}>
                     {RUPEE}{categoryRate.toLocaleString('en-IN')}

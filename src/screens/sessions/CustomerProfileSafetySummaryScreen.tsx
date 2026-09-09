@@ -90,12 +90,12 @@ export function CustomerProfileSafetySummaryScreen({ route, navigation }: Props)
         <GlassCard style={styles.card}>
           <Text style={styles.cardTitle}> {t('sessions.verification_status')} </Text>
           {VERIFICATIONS.map((v) =>
-          <View key={v.label} style={styles.verifyRow}>
+          <View key={t(v.label)} style={styles.verifyRow}>
               <View style={[styles.verifyIconWrap, v.done && styles.verifyIconDone]}>
                 <Icon name={v.icon as any} size={16}
               color={v.done ? colors.safetyGreen : colors.textMuted} />
               </View>
-              <Text style={styles.verifyLabel}>{v.label}</Text>
+              <Text style={styles.verifyLabel}>{t(v.label)}</Text>
               <View style={[styles.verifyStatus, v.done ? styles.verifyDone : styles.verifyPending]}>
                 <Icon name={v.done ? 'check' : 'close'} size={12}
               color={v.done ? colors.safetyGreen : colors.textMuted} />

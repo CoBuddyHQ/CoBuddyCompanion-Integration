@@ -91,8 +91,8 @@ export function TaxInvoiceDetailsScreen(): React.JSX.Element {
           {/* Line items */}
           <Text style={s.lineItemsTitle}> {t('earnings.line_items')} </Text>
           {LINE_ITEMS.map((item, _i) => (
-          <View key={item.label} style={s.lineItem}>
-              <Text style={s.lineItemLabel}>{item.label}</Text>
+          <View key={t(item.label)} style={s.lineItem}>
+              <Text style={s.lineItemLabel}>{t(item.label)}</Text>
               <Text style={[s.lineItemValue, item.sign < 0 && s.lineItemNeg]}>{item.value}</Text>
             </View>
           ))}

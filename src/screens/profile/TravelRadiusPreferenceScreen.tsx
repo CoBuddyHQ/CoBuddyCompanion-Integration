@@ -83,7 +83,7 @@ export function TravelRadiusPreferenceScreen(): React.JSX.Element {
           {QUICK.map((o) =>
           <TouchableOpacity accessibilityRole="button" key={o.v} style={[s.pill, km === o.v && s.pillOn]}
           onPress={() => setKm(o.v)} activeOpacity={0.75}>
-              <Text style={[s.pillTxt, km === o.v && s.pillTxtOn]}>{o.label}</Text>
+              <Text style={[s.pillTxt, km === o.v && s.pillTxtOn]}>{t(o.label)}</Text>
             </TouchableOpacity>
           )}
         </View>

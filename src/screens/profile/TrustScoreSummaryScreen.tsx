@@ -61,14 +61,14 @@ export function TrustScoreSummaryScreen(): React.JSX.Element {
         <Text style={s.sectionLabel}> {t('profile.score_breakdown')} </Text>
         <View style={s.card}>
           {BREAKDOWN.map((item, i) =>
-          <View key={item.label}>
+          <View key={t(item.label)}>
               {i > 0 && <View style={s.sep} />}
               <View style={s.row}>
                 <View style={[s.iconWrap, item.positive ? s.iconWrapPos : s.iconWrapNeg]}>
                   <Icon name={item.icon as any} size={18}
                 color={item.positive ? colors.safetyGreen : '#E74C3C'} />
                 </View>
-                <Text style={s.rowLabel}>{item.label}</Text>
+                <Text style={s.rowLabel}>{t(item.label)}</Text>
                 <Text style={[s.pts, item.positive ? s.ptsPos : s.ptsNeg]}>
                   {item.pts}  {t('profile.pts')} </Text>
               </View>
