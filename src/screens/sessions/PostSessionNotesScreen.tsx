@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useSessionStore } from '../../store/slices/sessionStore';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -33,7 +34,7 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   find((ses) => ses.sessionId === sessionId) ?? null);
   const saveNotes = useSessionStore((s) => s.saveNotes);
   const customerName = session?.customer?.displayInitials ?? '—';
-  const activityLabel = session?.category ? session.category.replace(/_/g, ' ') : '—';
+  const activityLabel = session?.category ? (AdminConfig.categoryDetails[session.category as keyof typeof AdminConfig.categoryDetails]?.label ?? session.category.replace(/_/g, ' ')) : '—';
   const durationLabel = session?.durationMinutes ? `${session.durationMinutes} min` : '—';
   const earningsLabel = session?.estimatedTotal != null ?
   `₹${session.estimatedTotal.toLocaleString('en-IN')}` : '—';

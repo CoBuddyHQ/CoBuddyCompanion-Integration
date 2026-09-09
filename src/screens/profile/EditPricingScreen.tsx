@@ -90,7 +90,7 @@ export function EditPricingScreen(): React.JSX.Element {
               return (
                 <View key={category}>
                   <View style={s.row}>
-                    <Text style={[s.key, { textTransform: 'capitalize' }]}>{category.replace('_', ' ')}</Text>
+                    <Text style={[s.key, { textTransform: 'capitalize' }]}>{AdminConfig.categoryDetails[category as keyof typeof AdminConfig.categoryDetails]?.label ?? category.replace('_', ' ')}</Text>
                     <Text style={s.val}>{RUPEE}{categoryRate.toLocaleString('en-IN')}</Text>
                   </View>
                   {idx < arr.length - 1 && <View style={s.divider} />}

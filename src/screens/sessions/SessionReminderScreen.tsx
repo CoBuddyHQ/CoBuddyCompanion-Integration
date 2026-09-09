@@ -13,6 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useSessionStore } from '../../store/slices/sessionStore';
+import { AdminConfig } from '../../config/adminValues';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -41,7 +42,7 @@ export function SessionReminderScreen(): React.JSX.Element {
   const sessionData = {
     countdown: '2h 30m',
     customer: session?.customer?.displayInitials ?? 'Customer',
-    activity: session?.category ? session.category.replace(/_/g, ' ') : t("content.sessions.SessionReminderScreen.session"),
+    activity: session?.category ? (AdminConfig.categoryDetails[session.category as keyof typeof AdminConfig.categoryDetails]?.label ?? session.category.replace(/_/g, ' ')) : t("content.sessions.SessionReminderScreen.session"),
     venue: session?.venue?.name ? `${session.venue.name}, ${session.venue.area}` : '—',
     time: session?.scheduledStart ?
     `Today, ${fmtTime(session.scheduledStart)} – ${fmtTime(session.scheduledEnd)}` :
