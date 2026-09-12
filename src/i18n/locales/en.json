@@ -5806,7 +5806,11 @@
     "photo_deleted": "Photo deleted successfully",
     "photo_uploaded": "Photo uploaded successfully",
     "failed_to_update": "Failed to update",
-    "coming_soon": "Coming Soon"
+    "coming_soon": "Coming Soon",
+    "session_expired": "Session Expired",
+    "are_you_sure_delete_account": "This will permanently delete your account and all associated data. This action cannot be undone.",
+    "delete_account_failed": "Failed to delete account. Please try again or contact support.",
+    "please_log_in_again_to_delete_account": "Your session has expired. Please log in again and try deleting your account."
   },
   "datetime": {
     "just_now": "Just now",

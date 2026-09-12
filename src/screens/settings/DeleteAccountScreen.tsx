@@ -31,27 +31,52 @@ export function DeleteAccountScreen(): React.JSX.Element {
   const clearProfile = useProfileStore((s) => s.clearProfile);
   const [input, setInput] = useState('');
   const canDelete = input.trim() === 'DELETE';
+  const [deleting, setDeleting] = React.useState(false);
+
 
   const handleDelete = () => {
-    if (!canDelete) {return;}
+    if (!canDelete || deleting) {return;}
+    // Step 1: Ask confirmation (don't claim account is deleted yet)
     Alert.alert(
-      t("alerts.account_deleted"),
-      t("alerts.your_account_has_been_permanently_delete"),
-      [{
-        text: t("alerts.ok"),
-        onPress: async () => {
-          try {
-            await SettingsService.deleteAccount();
-          } catch (_) {
-            // Ignore API error if account was already deleted/offline
-          } finally {
-            clearProfile(); // Wipe all profile data locally
-            await logout(); // Clear auth state & stores → RootNavigator auto-shows AuthNavigator
-          }
-        }
-      }]
+      t('settings.delete_account'),
+      t('alerts.are_you_sure_delete_account') || 'This will permanently delete your account and all associated data. This action cannot be undone.',
+      [
+        { text: t('common.cancel') || 'Cancel', style: 'cancel' },
+        {
+          text: t('settings.delete_my_account') || 'Delete My Account',
+          style: 'destructive',
+          onPress: async () => {
+            setDeleting(true);
+            try {
+              // Step 2: Call backend FIRST — only clear local state if it succeeds
+              await SettingsService.deleteAccount();
+              // Step 3: Backend confirmed deletion — now clear local state
+              clearProfile();
+              await logout();
+            } catch (e: any) {
+              setDeleting(false);
+              // 401 = session expired (not deleted). Show real error.
+              const status = e?.status || e?.response?.status;
+              if (status === 401) {
+                Alert.alert(
+                  t('alerts.session_expired') || 'Session Expired',
+                  t('alerts.please_log_in_again_to_delete_account') || 'Your session has expired. Please log in again and try deleting your account.',
+                  [{ text: t('common.ok') || 'OK' }],
+                );
+              } else {
+                Alert.alert(
+                  t('alerts.error') || 'Error',
+                  e?.message || t('alerts.delete_account_failed') || 'Failed to delete account. Please try again or contact support.',
+                  [{ text: t('common.ok') || 'OK' }],
+                );
+              }
+            }
+          },
+        },
+      ],
     );
   };
+
 
 
   return (
@@ -98,9 +123,9 @@ export function DeleteAccountScreen(): React.JSX.Element {
 
           {/* Delete button */}
           <TouchableOpacity accessibilityRole="button"
-            style={[s.deleteBtn, !canDelete && s.deleteBtnDisabled]}
-            onPress={handleDelete} disabled={!canDelete} activeOpacity={0.85}>
-            <Icon name="delete-forever" size={20} color={canDelete ? '#fff' : colors.textMuted}
+            style={[s.deleteBtn, (!canDelete || deleting) && s.deleteBtnDisabled]}
+            onPress={handleDelete} disabled={!canDelete || deleting} activeOpacity={0.85}>
+            <Icon name="delete-forever" size={20} color={(canDelete && !deleting) ? '#fff' : colors.textMuted}
             style={{ marginRight: 8 }} />
             <Text style={[s.deleteBtnText, !canDelete && s.deleteBtnTextDisabled]}>
                {t('settings.delete_my_account')} </Text>
