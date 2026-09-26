@@ -120,6 +120,7 @@ export interface Session {
   scheduledStart: string;        // ISO datetime
   scheduledEnd: string;          // ISO datetime
   durationMinutes: number;
+  extensionMinutes?: number;
   language: string;
   baseEarning: number;           // INR
   bonusEarning: number;          // INR — safety bonus etc.

@@ -231,10 +231,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       const calculatedStatus = await syncProgressWithBackend();
 
-      // Finally update the auth status to trigger navigation
-      set({
-        authStatus: calculatedStatus,
-      });
+      // Only update authStatus to trigger RootNavigator switch if user is an existing companion with PIN set
+      // For new companions or missing PIN, keep in AuthNavigator until PIN & onboarding step 1 finish
+      if (!res.isNewCompanion && res.hasPIN) {
+        set({
+          authStatus: calculatedStatus,
+        });
+      }
 
       return {
         isNewCompanion: res.isNewCompanion,

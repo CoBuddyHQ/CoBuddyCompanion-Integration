@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  StatusBar, Animated, Dimensions, ScrollView } from
+  StatusBar, Animated, Dimensions, ScrollView, Alert } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -62,6 +62,7 @@ const ActionTile: React.FC<TileProps> = ({ icon, label, onPress, accent }) => {
 export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Element {
   const { t } = useTranslation();
   const sessionId: string = route.params?.sessionId ?? '';
+  const endSession = useSessionStore((s) => s.endSession);
 
   const session = useSessionStore((s) =>
   s.activeSession?.sessionId === sessionId ? s.activeSession :
@@ -112,15 +113,25 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
     )).start();
   }, [glowScale]);
 
-  // ── Time remaining ─────────────────────────────────────────────────────────
-  const totalSecs = (session?.durationMinutes ?? 0) * 60;
+  // ── Time remaining & Overdue ───────────────────────────────────────────────
+  const totalSecs = ((session?.durationMinutes ?? 0) + (session?.extensionMinutes ?? 0)) * 60;
   const remaining = Math.max(0, totalSecs - elapsed);
   const remH = Math.floor(remaining / 3600);
   const remM = Math.floor(remaining % 3600 / 60);
   const remLabel = remH > 0 ? `${remH}h ${remM}m remaining` : `${remM}m remaining`;
-  const isOverdue = remaining === 0 && totalSecs > 0;
+  const isOverdue = totalSecs > 0 && elapsed >= totalSecs;
+  const overdueSecs = Math.max(0, elapsed - totalSecs);
 
   const handleEndSession = () => navigation.navigate(Routes.EARLY_END_SESSION, { sessionId });
+
+  const handleCompleteSession = async () => {
+    try {
+      await endSession(sessionId);
+      navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+    } catch (e: any) {
+      Alert.alert(t('alerts.error', 'Error'), e?.message || 'Failed to complete session');
+    }
+  };
 
   const customer = session?.customer;
   const category = session ? categoryLabel(session.category) : '—';
@@ -167,22 +178,57 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
 
           <View style={styles.timerCard}>
             {/* Elapsed time — massive monospace */}
-            <Text style={styles.timerText}>{fmtTimer(elapsed)}</Text>
+            <Text style={[styles.timerText, isOverdue && { color: colors.softWarning }]}>{fmtTimer(elapsed)}</Text>
 
             {/* Remaining label */}
-            {!isOverdue ?
-            <Text style={styles.timerSub}>{remLabel}</Text> :
-
-            <Text style={styles.timerOverdue}> {t('sessions.session_time_reached')} </Text>
-            }
+            {!isOverdue ? (
+              <Text style={styles.timerSub}>{remLabel}</Text>
+            ) : (
+              <Text style={styles.timerOverdue}>
+                {t('sessions.session_time_reached')} (+{fmtTimer(overdueSecs)})
+              </Text>
+            )}
 
             {/* Progress bar */}
             <View style={styles.progressTrack}>
               <View style={[
-              styles.progressFill,
-              { width: (totalSecs > 0 ? `${Math.min(100, elapsed / totalSecs * 100).toFixed(1)}%` : '0%') as any }]
-              } />
+                styles.progressFill,
+                { width: (totalSecs > 0 ? `${Math.min(100, elapsed / totalSecs * 100).toFixed(1)}%` : '0%') as any },
+                isOverdue && { backgroundColor: colors.softWarning }
+              ]} />
             </View>
+
+            {/* Overdue Quick Action Banner */}
+            {isOverdue && (
+              <View style={styles.overdueBanner}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                  <Icon name="alarm" size={16} color={colors.softWarning} />
+                  <Text style={styles.overdueBannerTitle}>
+                    {t('sessions.overdue_notice', 'Meetup time ended (+')}{fmtTimer(overdueSecs)})
+                  </Text>
+                </View>
+                <View style={styles.overdueActionsRow}>
+                  <TouchableOpacity
+                    style={styles.overdueBtnPrimary}
+                    onPress={() => navigation.navigate(Routes.EXTEND_SESSION_REQUEST, { sessionId })}
+                    accessibilityRole="button"
+                    accessibilityLabel="Request Extension"
+                  >
+                    <Icon name="timer" size={16} color={colors.rootBg} />
+                    <Text style={styles.overdueBtnPrimaryText}>{t('sessions.extend', 'Extend')}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.overdueBtnSecondary}
+                    onPress={handleCompleteSession}
+                    accessibilityRole="button"
+                    accessibilityLabel="Complete Session"
+                  >
+                    <Icon name="check-circle" size={16} color={colors.gold} />
+                    <Text style={styles.overdueBtnSecondaryText}>{t('sessions.complete', 'Complete')}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </View>
 
@@ -279,16 +325,29 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
 
       </ScrollView>
 
-      {/* ── Sticky Footer — End Session ── */}
+      {/* ── Sticky Footer — End / Complete Session ── */}
       <View style={styles.footer}>
-        <TouchableOpacity accessibilityRole="button"
-          style={styles.btnEnd}
-          onPress={handleEndSession}
-          activeOpacity={0.85}
-          accessibilityLabel={t("accessibility.end_session_early")}>
-          <Icon name="stop-circle" size={20} color="rgba(255,255,255,0.9)" style={{ marginRight: 8 }} />
-          <Text style={styles.btnEndText}> {t('sessions.end_session_early')} </Text>
-        </TouchableOpacity>
+        {isOverdue ? (
+          <TouchableOpacity accessibilityRole="button"
+            style={[styles.btnEnd, { backgroundColor: colors.gold, borderColor: colors.gold }]}
+            onPress={handleCompleteSession}
+            activeOpacity={0.85}
+            accessibilityLabel={t("accessibility.complete_session", "Complete Session")}>
+            <Icon name="check-circle" size={20} color={colors.rootBg} style={{ marginRight: 8 }} />
+            <Text style={[styles.btnEndText, { color: colors.rootBg, fontFamily: fontFamily.interBold }]}>
+              {t('sessions.complete_session', 'Complete Session')}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity accessibilityRole="button"
+            style={styles.btnEnd}
+            onPress={handleEndSession}
+            activeOpacity={0.85}
+            accessibilityLabel={t("accessibility.end_session_early")}>
+            <Icon name="stop-circle" size={20} color="rgba(255,255,255,0.9)" style={{ marginRight: 8 }} />
+            <Text style={styles.btnEndText}> {t('sessions.end_session_early')} </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>);
 
@@ -481,5 +540,38 @@ const styles = StyleSheet.create({
     shadowColor: colors.softWarning, shadowOpacity: 0.25,
     shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 4
   },
-  btnEndText: { fontFamily: fontFamily.interBold, fontSize: 15, color: colors.softWarning }
+  btnEndText: { fontFamily: fontFamily.interBold, fontSize: 15, color: colors.softWarning },
+
+  // ── Overdue Banner & Actions ────────────────────────────────────────────────
+  overdueBanner: {
+    width: '100%',
+    backgroundColor: 'rgba(245, 158, 11, 0.12)',
+    borderRadius: radius.lg,
+    borderWidth: 1, borderColor: 'rgba(245, 158, 11, 0.35)',
+    padding: spacing.md,
+    marginTop: spacing.md,
+    alignItems: 'center'
+  },
+  overdueBannerTitle: {
+    fontFamily: fontFamily.interSemiBold, fontSize: 13,
+    color: colors.softWarning, textAlign: 'center'
+  },
+  overdueActionsRow: {
+    flexDirection: 'row', gap: 10, width: '100%', marginTop: 10
+  },
+  overdueBtnPrimary: {
+    flex: 1, height: 38, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    backgroundColor: colors.gold, borderRadius: radius.md, gap: 5
+  },
+  overdueBtnPrimaryText: {
+    fontFamily: fontFamily.interBold, fontSize: 12, color: colors.rootBg
+  },
+  overdueBtnSecondary: {
+    flex: 1, height: 38, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: radius.md,
+    borderWidth: 1, borderColor: colors.gold, gap: 5
+  },
+  overdueBtnSecondaryText: {
+    fontFamily: fontFamily.interBold, fontSize: 12, color: colors.gold
+  }
 });

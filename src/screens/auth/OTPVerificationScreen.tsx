@@ -114,19 +114,15 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
       const { isNewCompanion, hasPIN } = await useAuthStore.getState().verifyOtp(phoneNumber, otpValue);
 
       if (isNewCompanion) {
-        navigation.navigate(Routes.LANGUAGE_SELECTION);
-      } else {
-        // AuthGuard in App.tsx or RootNavigator usually takes over if token is present and status is active.
-        // But if we need to explicitly navigate for pin flow:
-        if (!hasPIN) {
-           navigation.navigate(Routes.CREATE_PIN);
-        } else {
-           // We could navigate to CONFIRM_PIN if we require PIN on every app launch, 
-           // but for initial login, the token is set and the navigator will switch.
-        }
+        navigation.navigate(Routes.LANGUAGE_SELECTION as any);
+      } else if (!hasPIN) {
+        navigation.navigate(Routes.CREATE_PIN as any);
       }
     } catch (e: any) {
       const rawMsg = e?.message || '';
+      if (rawMsg.includes('NAVIGATE') || rawMsg.includes('not handled')) {
+        return;
+      }
       if (rawMsg.includes('Expired') || rawMsg.includes('expired')) {
         setError('Verification code has expired. Please request a new code.');
       } else {
