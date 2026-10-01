@@ -73,8 +73,7 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       return 'applying';
     }
 
-    // 5. Still applying — check saved active screen from FlowTracker first so reload stays on exact same screen!
-    const activeRoute = await FlowTracker.getActiveScreen();
+    // 5. Still applying — use backend resume route or default to JOURNEY_INTRO
     const VALID_APP_ROUTES = [
       Routes.JOURNEY_INTRO,
       Routes.ELIGIBILITY_CONFIRMATION,
@@ -107,9 +106,7 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
       Routes.SUBMIT_PROFILE_FOR_APPROVAL,
       Routes.APPLICATION_SAVED_DRAFT,
     ];
-    if (activeRoute && VALID_APP_ROUTES.includes(activeRoute as any)) {
-      appStore.setApplicationEntryRoute(activeRoute as any);
-    } else if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute && VALID_APP_ROUTES.includes(onboardingStatus.resumeRoute as any)) {
+    if (onboardingStatus.hasStarted && onboardingStatus.resumeRoute && VALID_APP_ROUTES.includes(onboardingStatus.resumeRoute as any)) {
       appStore.setApplicationEntryRoute(onboardingStatus.resumeRoute as any);
     } else {
       appStore.setApplicationEntryRoute(Routes.JOURNEY_INTRO as any);
@@ -333,6 +330,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     await AsyncStorage.removeItem(K.REFRESH);
     await AsyncStorage.removeItem(K.COMPANION_ID);
     await AsyncStorage.removeItem(K.AUTH_STATUS);
+    await FlowTracker.clearActiveScreen();
     
     useApplicationStore.getState().setApplicationEntryRoute(Routes.JOURNEY_INTRO as any);
     

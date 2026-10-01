@@ -404,7 +404,8 @@ interface ApplicationState {
   // Default: Routes.JOURNEY_INTRO (fresh application start).
   applicationEntryRoute: ApplicationEntryRoute;
 
-  // ─── Saved draft resume target ────────────────────────────────────────────
+  // ─── Saved draft resume target ────────────────
+  // ────────────────────────────
   // Set by any "Save & Exit" CTA before navigating to APPLICATION_SAVED_DRAFT.
   // Carries the route + any required params.
   // CPN-050 Continue CTA reads this, navigates, then resets to DEFAULT_RESUME_TARGET.

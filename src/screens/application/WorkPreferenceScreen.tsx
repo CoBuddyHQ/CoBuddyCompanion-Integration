@@ -12,7 +12,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity } from
+  TouchableOpacity,
+  Alert } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -50,13 +51,30 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
     updateWorkPreference({ [field]: next });
   };
 
+  // Auto-select defaults if empty on mount
+  React.useEffect(() => {
+    if (workPreference.durations.length === 0 || workPreference.days.length === 0 || workPreference.timeRanges.length === 0) {
+      updateWorkPreference({
+        durations: workPreference.durations.length > 0 ? workPreference.durations : ['2_hours'],
+        days: workPreference.days.length > 0 ? workPreference.days : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        timeRanges: workPreference.timeRanges.length > 0 ? workPreference.timeRanges : ['afternoon'],
+      });
+    }
+  }, []);
+
   const canContinue =
   workPreference.durations.length > 0 &&
   workPreference.days.length > 0 &&
   workPreference.timeRanges.length > 0;
 
   const handleContinue = async () => {
-    if (!canContinue) {return;}
+    if (!canContinue) {
+      Alert.alert(
+        t('common.selection_required', 'Selection Required'),
+        t('onboarding.select_work_preference_hint', 'Please select at least one session duration, available day, and preferred time range.')
+      );
+      return;
+    }
     setCurrentStage('work_preference');
 
     try {
