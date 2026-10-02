@@ -9,6 +9,7 @@ import {Routes} from './routes';
 import {defaultStackScreenOptions} from './navigatorOptions';
 
 import SplashScreen               from '../screens/auth/SplashScreen';
+import CompanionWelcomeScreen      from '../screens/onboarding/CompanionWelcomeScreen';
 import PhoneLoginScreen           from '../screens/auth/PhoneLoginScreen';
 import OTPVerificationScreen      from '../screens/auth/OTPVerificationScreen';
 import LanguageSelectionScreen    from '../screens/auth/LanguageSelectionScreen';
@@ -26,6 +27,11 @@ const AuthNavigator: React.FC = () => (
       name={Routes.SPLASH}
       component={SplashScreen}
       options={{animation: 'none', headerShown: false}}
+    />
+    <Stack.Screen
+      name={Routes.COMPANION_WELCOME}
+      component={CompanionWelcomeScreen as any}
+      options={{headerShown: false}}
     />
     <Stack.Screen
       name={Routes.PHONE_LOGIN}

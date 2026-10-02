@@ -9,6 +9,7 @@ import {Routes} from '../navigation/routes';
 // ─── Auth Navigator ──────────────────────────────────────────────────────────
 export type AuthStackParamList = {
   [Routes.SPLASH]: undefined;
+  [Routes.COMPANION_WELCOME]: undefined;
   [Routes.PHONE_LOGIN]: undefined;
   [Routes.OTP_VERIFICATION]: {phoneNumber: string};
   [Routes.LANGUAGE_SELECTION]: undefined;

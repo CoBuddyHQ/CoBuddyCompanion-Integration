@@ -77,7 +77,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     ).start();
 
     const timer = setTimeout(() => {
-      navigation.replace(Routes.PHONE_LOGIN);
+      navigation.replace(Routes.COMPANION_WELCOME);
     }, 2400);
 
     return () => clearTimeout(timer);

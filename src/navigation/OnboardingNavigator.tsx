@@ -15,12 +15,7 @@ import TermsConsentScreen      from '../screens/onboarding/TermsConsentScreen';
 const Stack = createStackNavigator<OnboardingStackParamList>();
 
 const OnboardingNavigator: React.FC = () => (
-  <Stack.Navigator screenOptions={defaultStackScreenOptions}>
-    <Stack.Screen
-      name={Routes.COMPANION_WELCOME}
-      component={CompanionWelcomeScreen}
-      options={{headerShown: false}}
-    />
+  <Stack.Navigator screenOptions={defaultStackScreenOptions} initialRouteName={Routes.ROLE_CONFIRMATION}>
     <Stack.Screen
       name={Routes.ROLE_CONFIRMATION}
       component={RoleConfirmationScreen}
@@ -29,6 +24,11 @@ const OnboardingNavigator: React.FC = () => (
     <Stack.Screen
       name={Routes.TERMS_CONSENT}
       component={TermsConsentScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name={Routes.COMPANION_WELCOME}
+      component={CompanionWelcomeScreen}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

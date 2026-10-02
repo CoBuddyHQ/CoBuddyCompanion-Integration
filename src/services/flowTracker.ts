@@ -72,6 +72,17 @@ export const FlowTracker = {
   },
 
   /**
+   * Clear active screen key from storage
+   */
+  async clearActiveScreen(): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(ACTIVE_SCREEN_KEY);
+    } catch {
+      // Non-critical
+    }
+  },
+
+  /**
    * Level 2 Local Persistence: Save cached flow state per companion ID
    */
   async saveFlowState(companionId: string, flowState: FlowState): Promise<void> {

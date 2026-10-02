@@ -39,8 +39,9 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from '../../store/slices/authStore';
 
-type Props = StackScreenProps<OnboardingStackParamList, typeof Routes.COMPANION_WELCOME>;
+type Props = StackScreenProps<any, any>;
 
 const VALUE_CARDS = [
 {
@@ -62,9 +63,14 @@ const VALUE_CARDS = [
 
 const CompanionWelcomeScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
+  const { authStatus } = useAuthStore();
 
   const handleContinue = () => {
-    navigation.navigate(Routes.ROLE_CONFIRMATION);
+    if (authStatus === 'onboarding') {
+      navigation.navigate(Routes.ROLE_CONFIRMATION);
+    } else {
+      navigation.navigate(Routes.PHONE_LOGIN);
+    }
   };
 
   return (
