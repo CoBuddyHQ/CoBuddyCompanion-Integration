@@ -14,8 +14,6 @@ To start the Metro dev server, run the following command from the root of your R
 npm start
 
 
-
-
 # OR using Yarn
 yarn start
 ```
