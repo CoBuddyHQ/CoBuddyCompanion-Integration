@@ -34,6 +34,7 @@ export interface UpdateAreasDto {
 
 export interface UpdatePricingDto {
   hourlyRate: number;
+  sessionDuration?: number;
   sessionDurations?: number[];  // minutes e.g. [60, 90, 120]
 }
 

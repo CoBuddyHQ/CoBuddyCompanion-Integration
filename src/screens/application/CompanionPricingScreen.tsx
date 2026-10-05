@@ -94,6 +94,7 @@ export function CompanionPricingScreen({
     try {
       await ProfileService.updatePricing({
         hourlyRate: rate,
+        sessionDuration: duration,
         sessionDurations: [duration],
       });
     } catch (e) {

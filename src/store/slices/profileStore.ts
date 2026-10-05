@@ -188,10 +188,12 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       if (updates.serviceAreas !== undefined) {
         await ProfileService.updateAreas({ serviceAreas: updates.serviceAreas });
       }
-      if (updates.hourlyRate !== undefined || updates.sessionDurations !== undefined) {
+      if (updates.hourlyRate !== undefined || updates.sessionDurations !== undefined || (updates as any).sessionDuration !== undefined) {
+        const d = (updates as any).sessionDuration ?? updates.sessionDurations?.[0] ?? get().profile?.sessionDuration;
         await ProfileService.updatePricing({
           hourlyRate: updates.hourlyRate ?? get().profile?.hourlyRate ?? 0,
-          sessionDurations: updates.sessionDurations ?? get().profile?.sessionDurations ?? [],
+          sessionDuration: d,
+          sessionDurations: updates.sessionDurations ?? (d ? [d] : undefined),
         });
       }
 
