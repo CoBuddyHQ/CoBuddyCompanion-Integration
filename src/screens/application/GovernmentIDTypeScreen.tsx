@@ -51,7 +51,7 @@ export function GovernmentIDTypeScreen({
   const {
     setSelectedIdType
   } = useApplicationStore();
-  const [selectedId, setSelectedId] = useState<IDOptionId>('aadhaar');
+  const [selectedId, setSelectedId] = useState<IDOptionId>('AADHAAR');
   const handleContinue = useCallback(() => {
     const option = AdminConfig.kycDocumentTypes.find((o) => o.code === selectedId);
     if (!option) {
