@@ -113,7 +113,7 @@ export const AuthService = {
    * Screen: CreatePINScreen (CPN-007)
    */
   setPin: (dto: SetPinDto): Promise<{ message: string }> =>
-    apiPost<{ message: string }>(Endpoints.AUTH.SET_PIN, dto),
+    apiPost<{ message: string }>(Endpoints.AUTH.SET_PIN, { pin: dto.pin }),
 
   /**
    * POST /auth/companion/pin/verify
