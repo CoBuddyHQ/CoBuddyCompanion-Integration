@@ -12,6 +12,7 @@ LogBox.ignoreLogs([
   '[react-native-gesture-handler] Seems like you\'re using an old API',
   'Gesture handler is already enabled',
 ]);
+LogBox.ignoreAllLogs(true);
 
 const appNames = Array.from(new Set([appName, 'CoBuddyCompanion', 'cobuddyCustomer']));
 
