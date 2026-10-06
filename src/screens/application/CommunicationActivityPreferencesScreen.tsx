@@ -30,6 +30,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -60,12 +61,9 @@ const CommunicationActivityPreferencesScreen: React.FC<Props> = ({ navigation })
       // ApiClient logs request & response
     }
 
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('comm_activity');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.PUBLIC_VENUE_PREFERENCE);
+    navigateToNextApplicationStep(navigation, Routes.SERVICE_STYLE_PREFERENCES, {
+      missingRequirementKey: 'comm_activity',
+    });
   };
 
   const renderOptionRow = (

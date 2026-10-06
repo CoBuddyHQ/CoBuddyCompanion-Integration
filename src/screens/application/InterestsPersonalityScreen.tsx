@@ -48,6 +48,7 @@ import {
   navigateToMissingRequirementReturn,
   cancelMissingRequirementFixAndReturn } from
 '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.INTERESTS_PERSONALITY>;
 
@@ -114,46 +115,27 @@ export function InterestsPersonalityScreen({ navigation }: Props): React.JSX.Ele
         hydrateOnboardingStatus(res.onboardingStatus);
       }
       
-      if (profileCorrectionContext.isActive) {
-        completeProfileCorrection('interests');
-        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-        return;
-      }
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('interests');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
+      navigateToNextApplicationStep(navigation, Routes.INTERESTS_PERSONALITY, {
+        correctionSection: 'interests',
+        missingRequirementKey: 'interests',
+      });
     } catch (e: any) {
       // ApiClient logs request & response
-      // Continue locally if offline fallback needed
-      if (profileCorrectionContext.isActive) {
-        completeProfileCorrection('interests');
-        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-        return;
-      }
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('interests');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.EXPERIENCE_CATEGORIES);
+      navigateToNextApplicationStep(navigation, Routes.INTERESTS_PERSONALITY, {
+        correctionSection: 'interests',
+        missingRequirementKey: 'interests',
+      });
     } finally {
       setIsSubmitting(false);
     }
   }, [
-  canContinue,
-  isSubmitting,
-  interestTags,
-  setCurrentStage,
-  hydrateOnboardingStatus,
-  profileCorrectionContext,
-  completeProfileCorrection,
-  missingRequirementFixContext,
-  completeMissingRequirementFix,
-  navigation]
-  );
+    canContinue,
+    isSubmitting,
+    interestTags,
+    setCurrentStage,
+    hydrateOnboardingStatus,
+    navigation,
+  ]);
 
   type TagItem = {readonly id: string;readonly label: string;};
 

@@ -49,6 +49,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.GOVERNMENT_ID_UPLOAD>;
 
@@ -141,12 +142,9 @@ export function GovernmentIDUploadScreen({ navigation, route }: Props): React.JS
       setBackFile(null);
       setIdSubmitted(true);
       setCurrentStage('government_id_upload');
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('id_submitted');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.SELFIE_CAPTURE);
+      navigateToNextApplicationStep(navigation, Routes.GOVERNMENT_ID_UPLOAD, {
+        missingRequirementKey: 'id_submitted',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e?.message || 'Failed to upload Government ID');
     } finally {

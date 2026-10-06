@@ -50,6 +50,7 @@ import FormInput from '../../components/form/FormInput';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -540,20 +541,10 @@ const BasicDetailsScreen: React.FC<Props> = ({
       setCurrentStage('basic_details');
       useApplicationStore.getState().saveDraftToBackend();
       
-      if (profileCorrectionContext.isActive) {
-        completeProfileCorrection('basic_details');
-        navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, {
-          mode: 'correction'
-        });
-        return;
-      }
-      // Missing-requirement fix return: navigate back to source hub.
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('basic_details');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.BIO_INTRODUCTION);
+      navigateToNextApplicationStep(navigation, Routes.BASIC_DETAILS, {
+        correctionSection: 'basic_details',
+        missingRequirementKey: 'basic_details',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Failed to save basic details');
     } finally {

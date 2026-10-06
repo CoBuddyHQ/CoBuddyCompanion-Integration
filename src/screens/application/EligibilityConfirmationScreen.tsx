@@ -29,6 +29,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -47,7 +48,7 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
   // Auto-redirect if backend already completed eligibility
   useEffect(() => {
     if (onboardingStatus?.completedModules?.includes('eligibility')) {
-      navigation.replace(Routes.PROFILE_SETUP_INTRO);
+      navigateToNextApplicationStep(navigation, Routes.ELIGIBILITY_CONFIRMATION);
     }
   }, [onboardingStatus, navigation]);
 
@@ -71,11 +72,11 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
         hydrateOnboardingStatus((res as any).onboardingStatus);
       }
       setCurrentStage('eligibility');
-      navigation.navigate(Routes.PROFILE_SETUP_INTRO);
+      navigateToNextApplicationStep(navigation, Routes.ELIGIBILITY_CONFIRMATION);
     } catch (e: any) {
       console.warn('[EligibilityConfirmation] Save error:', e);
       setCurrentStage('eligibility');
-      navigation.navigate(Routes.PROFILE_SETUP_INTRO);
+      navigateToNextApplicationStep(navigation, Routes.ELIGIBILITY_CONFIRMATION);
     } finally {
       setIsSubmitting(false);
     }

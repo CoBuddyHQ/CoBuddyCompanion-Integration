@@ -52,6 +52,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.UPI_DETAILS>;
 
@@ -127,7 +128,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
       [
       {
         text: t("alerts.continue"),
-        onPress: () => navigation.navigate(Routes.APPLICATION_PROGRESS)
+        onPress: () => navigateToNextApplicationStep(navigation, Routes.UPI_DETAILS)
       }]);
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Failed to save UPI details');
@@ -317,7 +318,7 @@ export function UPIDetailsScreen({ navigation }: Props): React.JSX.Element {cons
                  Bank account must already be verified for this CTA to be available. */}
         <ActionButton
           label={t("application.skip_for_now")}
-          onPress={() => navigation.navigate(Routes.APPLICATION_PROGRESS)}
+          onPress={() => navigateToNextApplicationStep(navigation, Routes.UPI_DETAILS)}
           variant="ghost"
           style={styles.saveBtn}
           accessibilityLabel={t("accessibility.skip_upi_setup_and_continue_to_applicati")} />

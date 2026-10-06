@@ -27,6 +27,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -56,12 +57,9 @@ const PublicVenuePreferenceScreen: React.FC<Props> = ({ navigation }) => {const 
       // ApiClient logs request & response
     }
 
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('venue_preference');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.BOUNDARIES_SAFETY);
+    navigateToNextApplicationStep(navigation, Routes.PUBLIC_VENUE_PREFERENCE, {
+      missingRequirementKey: 'venue_preference',
+    });
   };
 
   return (

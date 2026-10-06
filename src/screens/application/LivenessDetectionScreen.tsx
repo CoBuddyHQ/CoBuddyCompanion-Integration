@@ -47,6 +47,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.LIVENESS_DETECTION>;
 
@@ -97,13 +98,10 @@ export function LivenessDetectionScreen({ navigation }: Props): React.JSX.Elemen
 
   const handleContinue = useCallback(() => {
     setCurrentStage('liveness_detection');
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('selfie_liveness');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.ADDRESS_VERIFICATION);
-  }, [setCurrentStage, missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]);
+    navigateToNextApplicationStep(navigation, Routes.LIVENESS_DETECTION, {
+      missingRequirementKey: 'selfie_liveness',
+    });
+  }, [setCurrentStage, navigation]);
 
   const handleRetakeSelfie = useCallback(() => {
     // Reset BOTH liveness AND selfie completion so that the user must

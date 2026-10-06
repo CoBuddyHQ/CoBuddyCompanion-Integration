@@ -50,6 +50,7 @@ import {
   navigateToMissingRequirementReturn,
   cancelMissingRequirementFixAndReturn } from
 '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.LANGUAGES_SELECTION>;
 
@@ -126,17 +127,10 @@ export function LanguagesSelectionScreen({ navigation }: Props): React.JSX.Eleme
       // ApiClient logs request & response
     }
 
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('languages');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-      return;
-    }
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('languages');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.PROFILE_PHOTO_UPLOAD);
+    navigateToNextApplicationStep(navigation, Routes.LANGUAGES_SELECTION, {
+      correctionSection: 'languages',
+      missingRequirementKey: 'languages',
+    });
   }, [
   selected,
   primaryLang,

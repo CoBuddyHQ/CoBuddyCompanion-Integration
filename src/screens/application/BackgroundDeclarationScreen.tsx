@@ -24,6 +24,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -65,13 +66,9 @@ const BackgroundDeclarationScreen: React.FC<Props> = ({ navigation }) => {const 
       });
 
       setCurrentStage('background_declaration');
-      // If opened from a hub screen for missing-requirement fix, return there instead.
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('background_declaration');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.WORK_PREFERENCE);
+      navigateToNextApplicationStep(navigation, Routes.BACKGROUND_DECLARATION, {
+        missingRequirementKey: 'background_declaration',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Failed to save declaration');
     } finally {

@@ -50,6 +50,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.PAN_TAX_DETAILS>;
 
@@ -124,20 +125,15 @@ export function PANTaxDetailsScreen({ navigation }: Props): React.JSX.Element {c
       setCurrentStage('pan_tax_details');
       setPANRaw(''); // clear raw PAN from component state
       
-      // If opened from a hub screen for missing-requirement fix, return there instead.
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('pan');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.ADD_BANK_ACCOUNT);
+      navigateToNextApplicationStep(navigation, Routes.PAN_TAX_DETAILS, {
+        missingRequirementKey: 'pan',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Failed to save PAN details');
     } finally {
       setIsSubmitting(false);
     }
-  }, [panRaw, panName, taxResidency, hasGST, gstNumber, confirmed, setPANDetails, setPANConfirmed, setCurrentStage,
-  missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t]);
+  }, [panRaw, panName, taxResidency, hasGST, gstNumber, confirmed, setPANDetails, setPANConfirmed, setCurrentStage, navigation, t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>

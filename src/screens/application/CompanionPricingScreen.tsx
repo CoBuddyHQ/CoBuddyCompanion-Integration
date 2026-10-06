@@ -37,6 +37,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { RUPEE } from '../../utils/currency';
 import { AdminConfig } from '../../config/adminValues';
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.COMPANION_PRICING>;
@@ -101,20 +102,11 @@ export function CompanionPricingScreen({
       // Backend call logs via apiClient
     }
 
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('pricing');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, {
-        mode: 'correction'
-      });
-      return;
-    }
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('pricing');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.PAN_TAX_DETAILS);
-  }, [rate, duration, setPricing, setCurrentStage, profileCorrectionContext, completeProfileCorrection, missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation]);
+    navigateToNextApplicationStep(navigation, Routes.COMPANION_PRICING, {
+      correctionSection: 'pricing',
+      missingRequirementKey: 'pricing',
+    });
+  }, [rate, duration, setPricing, setCurrentStage, navigation]);
   return <SafeAreaView style={styles.root} edges={['top']}>
       <ScreenTopBar title={t("application.cobuddy_companion")} onBack={() => cancelMissingRequirementFixAndReturn(navigation, missingRequirementFixContext.isActive, missingRequirementFixContext.returnRoute, clearMissingRequirementFix)} />
       

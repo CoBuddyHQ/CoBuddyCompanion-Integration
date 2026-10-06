@@ -30,6 +30,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -57,12 +58,9 @@ const BoundariesSafetyScreen: React.FC<Props> = ({ navigation }) => {const { t }
       // ApiClient logs request & response
     }
 
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('boundaries');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.GOVERNMENT_ID_TYPE);
+    navigateToNextApplicationStep(navigation, Routes.BOUNDARIES_SAFETY, {
+      missingRequirementKey: 'boundaries',
+    });
   };
 
   return (

@@ -820,7 +820,9 @@ export const useApplicationStore = create<ApplicationState>((set, get) => ({
     set((s) => {
       const completed = status?.completedModules || [];
 
-      const bgDone = completed.includes('declaration') || completed.includes('eligibility');
+      const eligibilityDone = completed.includes('eligibility');
+      const declarationDone = completed.includes('declaration');
+      const photoDone = completed.includes('photo');
       const selfieDone = completed.includes('selfie');
       const idDone = completed.includes('government_id');
       const addressDone = completed.includes('address');
@@ -837,6 +839,7 @@ export const useApplicationStore = create<ApplicationState>((set, get) => ({
         draftSavedAt: status.lastUpdated,
         applicationResumeTarget: { route: status.resumeRoute as any },
 
+        profilePhotoComplete: photoDone || s.profilePhotoComplete,
         idSubmittedForReview: idDone || s.idSubmittedForReview,
         panConfirmed: panDone || s.panConfirmed,
         bankVerified: bankDone || s.bankVerified,
@@ -846,7 +849,17 @@ export const useApplicationStore = create<ApplicationState>((set, get) => ({
         addressDetailsComplete: addressDone || s.addressDetailsComplete,
         boundariesAccepted: boundariesDone || s.boundariesAccepted,
 
-        backgroundDeclaration: bgDone
+        eligibilityConfirmed: eligibilityDone
+          ? {
+              age: true,
+              public_venues: true,
+              conduct: true,
+              in_app: true,
+              verification: true,
+            }
+          : s.eligibilityConfirmed,
+
+        backgroundDeclaration: declarationDone
           ? {
               accurate_info: true,
               public_venue_only: true,

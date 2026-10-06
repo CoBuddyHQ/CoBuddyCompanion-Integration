@@ -104,10 +104,13 @@ const JourneyIntroScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
     // Navigate directly to the backend's first incomplete step,
-    // resetting the stack so Back goes to dashboard, not this screen.
+    // keeping JourneyIntro at index 0 so Back navigation works cleanly.
     navigation.reset({
-      index: 0,
-      routes: [{ name: resumeRoute as any }],
+      index: 1,
+      routes: [
+        { name: Routes.JOURNEY_INTRO },
+        { name: resumeRoute as any },
+      ],
     });
   };
 

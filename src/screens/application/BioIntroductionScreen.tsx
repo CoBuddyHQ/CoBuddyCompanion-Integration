@@ -26,6 +26,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -63,17 +64,10 @@ const BioIntroductionScreen: React.FC<Props> = ({ navigation }) => {const { t } 
     useApplicationStore.getState().saveDraftToBackend();
 
     setCurrentStage('bio_intro');
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('bio');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-      return;
-    }
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('bio');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.INTERESTS_PERSONALITY);
+    navigateToNextApplicationStep(navigation, Routes.BIO_INTRODUCTION, {
+      correctionSection: 'bio',
+      missingRequirementKey: 'bio',
+    });
   };
 
   const charHint = t("content.application_kyc.BioIntroContent.CHAR_HINT").

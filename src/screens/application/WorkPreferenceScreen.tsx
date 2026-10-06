@@ -24,6 +24,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -90,12 +91,9 @@ const WorkPreferenceScreen: React.FC<Props> = ({ navigation }) => {const { t } =
     }
 
 
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('work_preference');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.CITY_SERVICE_AREA);
+    navigateToNextApplicationStep(navigation, Routes.WORK_PREFERENCE, {
+      missingRequirementKey: 'work_preference',
+    });
   };
 
   const renderChipGroup = (

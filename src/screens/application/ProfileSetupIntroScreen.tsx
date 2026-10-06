@@ -23,6 +23,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.PROFILE_SETUP_INTRO>;
 
@@ -32,7 +33,7 @@ export function ProfileSetupIntroScreen({ navigation }: Props): React.JSX.Elemen
   const handleStart = useCallback(() => {
     setProfileSetupStarted(true);
     setCurrentStage('profile_setup_intro');
-    navigation.navigate(Routes.BASIC_DETAILS);
+    navigateToNextApplicationStep(navigation, Routes.PROFILE_SETUP_INTRO);
   }, [setProfileSetupStarted, setCurrentStage, navigation]);
 
   const handleLater = useCallback(() => {

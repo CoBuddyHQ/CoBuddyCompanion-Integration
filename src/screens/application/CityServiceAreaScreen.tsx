@@ -34,6 +34,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -252,12 +253,9 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
 
     useApplicationStore.getState().saveDraftToBackend();
     
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('city');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.SERVICE_STYLE_PREFERENCES);
+    navigateToNextApplicationStep(navigation, Routes.CITY_SERVICE_AREA, {
+      missingRequirementKey: 'city',
+    });
   };
 
   const areaCountLabel = t('application.city_service_area_count_label').

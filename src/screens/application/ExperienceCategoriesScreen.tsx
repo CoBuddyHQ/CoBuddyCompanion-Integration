@@ -24,6 +24,7 @@ import ActionButton from '../../components/actions/ActionButton';
 import { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -57,17 +58,10 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
       // ApiClient logs request & response
     }
 
-    if (profileCorrectionContext.isActive) {
-      completeProfileCorrection('experience_categories');
-      navigation.navigate(Routes.PROFILE_COMPLETION_CHECKLIST, { mode: 'correction' });
-      return;
-    }
-    if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-      completeMissingRequirementFix('experience');
-      navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-      return;
-    }
-    navigation.navigate(Routes.LANGUAGES_SELECTION);
+    navigateToNextApplicationStep(navigation, Routes.EXPERIENCE_CATEGORIES, {
+      correctionSection: 'experience_categories',
+      missingRequirementKey: 'experience',
+    });
   };
 
   return (

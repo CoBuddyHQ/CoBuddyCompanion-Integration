@@ -52,6 +52,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn, cancelMissingRequirementFixAndReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.ADDRESS_VERIFICATION>;
 
@@ -117,12 +118,9 @@ export function AddressVerificationScreen({ navigation }: Props): React.JSX.Elem
       setAddressDetailsComplete(true);
       if (proofAdded) {setAddressProofSubmitted(true);}
       setCurrentStage('address_verification');
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('address_details');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.COMPANION_PRICING);
+      navigateToNextApplicationStep(navigation, Routes.ADDRESS_VERIFICATION, {
+        missingRequirementKey: 'address_details',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Failed to save address details');
     } finally {

@@ -33,6 +33,7 @@ import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.PROFILE_COMPLETION_CHECKLIST>;
 
@@ -356,7 +357,7 @@ export function ProfileCompletionChecklistScreen({ navigation, route }: Props): 
         <View style={styles.ctaWrap}>
           <ActionButton
             label={t("application.continue_to_safety")}
-            onPress={() => navigation.navigate(Routes.BACKGROUND_DECLARATION)}
+            onPress={() => navigateToNextApplicationStep(navigation, Routes.PROFILE_PHOTO_UPLOAD)}
             variant="primary"
             rightIcon={t("application.arrow_forward")}
             accessibilityLabel={t("accessibility.continue_to_background_declaration")} />

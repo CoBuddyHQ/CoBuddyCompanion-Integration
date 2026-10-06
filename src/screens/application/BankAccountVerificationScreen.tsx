@@ -41,6 +41,7 @@ import { Alert } from 'react-native';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToMissingRequirementReturn } from '../../navigation/missingRequirementNavigation';
+import { navigateToNextApplicationStep } from '../../navigation/applicationFlowResolver';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.BANK_ACCOUNT_VERIFICATION>;
 
@@ -76,18 +77,15 @@ export function BankAccountVerificationScreen({ navigation }: Props): React.JSX.
       await KycService.verifyBank({ bankId: `bank-${bankAccountLast4}` });
       setBankVerified(true);
       setCurrentStage('bank_verification');
-      if (missingRequirementFixContext.isActive && missingRequirementFixContext.returnRoute) {
-        completeMissingRequirementFix('bank');
-        navigateToMissingRequirementReturn(navigation, missingRequirementFixContext.returnRoute);
-        return;
-      }
-      navigation.navigate(Routes.UPI_DETAILS);
+      navigateToNextApplicationStep(navigation, Routes.BANK_ACCOUNT_VERIFICATION, {
+        missingRequirementKey: 'bank',
+      });
     } catch (e: any) {
       Alert.alert(t("alerts.error"), e.message || 'Verification failed');
     } finally {
       setIsSubmitting(false);
     }
-  }, [setBankVerified, setCurrentStage, missingRequirementFixContext, completeMissingRequirementFix, navigation, bankAccountLast4, t]);
+  }, [setBankVerified, setCurrentStage, navigation, bankAccountLast4, t]);
 
   const maskedAccount = bankAccountLast4 ?
   `•••• •••• ${bankAccountLast4}` :

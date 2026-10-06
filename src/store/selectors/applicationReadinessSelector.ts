@@ -155,7 +155,7 @@ export function getApplicationReadiness(s: ReadinessSelectorInput): ApplicationR
   const safetyItems: MandatoryItemResult[] = [
   {
     key: 'background_declaration', label: i18next.t("content.selectors.applicationReadinessSelector.background_declaration"),
-    route: Routes.BACKGROUND_DECLARATION, done: isDone('declaration', isDone('eligibility', bgDone))
+    route: Routes.BACKGROUND_DECLARATION, done: isDone('declaration', bgDone)
   },
   {
     key: 'work_preference', label: i18next.t("content.selectors.applicationReadinessSelector.work_preferences"), route: Routes.WORK_PREFERENCE,
