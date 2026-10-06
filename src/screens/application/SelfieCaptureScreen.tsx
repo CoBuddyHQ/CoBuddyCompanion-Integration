@@ -218,7 +218,7 @@ export function SelfieCaptureScreen({ navigation }: Props): React.JSX.Element {c
         }
         <ActionButton
           label={t("content.application_kyc.SelfieCaptureContent.CTA_SAVE_LATER")}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate(Routes.APPLICATION_SAVED_DRAFT)}
           variant="ghost"
           style={styles.saveBtn}
           accessibilityLabel={t("accessibility.save_and_continue_later")} />

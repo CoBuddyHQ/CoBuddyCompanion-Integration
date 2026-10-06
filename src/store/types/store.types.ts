@@ -35,6 +35,7 @@ export interface CompanionProfile {
   languages: string[];           // e.g. ["Hindi", "English"]
   bio: string;
   hourlyRate: number;            // INR
+  sessionDuration?: number;      // e.g. 90 (minutes)
   sessionDurations?: number[];   // e.g. [60, 90, 120]
   travelRadius?: number;         // e.g. 10 (km)
   profileStatus: ProfileStatus;

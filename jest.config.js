@@ -2,7 +2,7 @@ module.exports = {
   preset: '@react-native/jest-preset',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   moduleNameMapper: {
@@ -17,8 +17,8 @@ module.exports = {
     '^@/hooks(.*)$':      '<rootDir>/src/hooks$1',
     '^@/assets(.*)$':     '<rootDir>/src/assets$1',
   },
-  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js'],
+  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js', '<rootDir>/jest.setup.js'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-native-async-storage|react-native-reanimated|react-native-vector-icons|@react-navigation|react-native-safe-area-context|react-native-gesture-handler)/)',
+    'node_modules/(?!(react-native|@react-native|@react-native-async-storage|@react-navigation|react-native-.*|@react-native-community)/)',
   ],
 };

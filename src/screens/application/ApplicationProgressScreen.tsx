@@ -24,6 +24,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToRequirementFixScreen } from '../../navigation/missingRequirementNavigation';
+import { KycService } from '../../services/api/services/kyc.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.APPLICATION_PROGRESS>;
 
@@ -46,6 +47,7 @@ export function ApplicationProgressScreen({ navigation }: Props): React.JSX.Elem
   useFocusEffect(
     useCallback(() => {
       clearMissingRequirementFix();
+      KycService.getKycStatus().catch(() => null);
     }, [clearMissingRequirementFix])
   );
 

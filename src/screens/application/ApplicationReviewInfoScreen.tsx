@@ -26,6 +26,7 @@ import { radius } from '../../theme/radius';
 import type { ApplicationStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
 import { navigateToRequirementFixScreen } from '../../navigation/missingRequirementNavigation';
+import { KycService } from '../../services/api/services/kyc.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.APPLICATION_REVIEW_INFO>;
 
@@ -39,10 +40,11 @@ export function ApplicationReviewInfoScreen({ navigation }: Props): React.JSX.El
     }))
   );
 
-  // ── Clear stale fix context when returning via Back from a fix screen ──
+  // ── Clear stale fix context and refresh KYC status when screen gains focus ──
   useFocusEffect(
     useCallback(() => {
       clearMissingRequirementFix();
+      KycService.getKycStatus().catch(() => null);
     }, [clearMissingRequirementFix])
   );
 

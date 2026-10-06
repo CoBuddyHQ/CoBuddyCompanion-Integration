@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 * CPN-050 — Application Saved Draft Screen
 * Phase 4C — Shown when companion saves progress and exits the flow mid-way.
 */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,7 +15,7 @@ import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { useApplicationStore, DEFAULT_RESUME_TARGET } from '../../store/slices/applicationStore';
 import { getApplicationReadiness } from '../../store/selectors/applicationReadinessSelector';
-
+import { KycService } from '../../services/api/services/kyc.service';
 
 import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
@@ -47,6 +48,12 @@ target: ApplicationResumeTarget)
 export function ApplicationSavedDraftScreen({ navigation }: Props): React.JSX.Element {const { t } = useTranslation();
   const store = useApplicationStore();
   const { setDraftSaved, setCurrentStage, applicationResumeTarget, setApplicationResumeTarget } = store;
+
+  useFocusEffect(
+    useCallback(() => {
+      KycService.getKycStatus().catch(() => null);
+    }, [])
+  );
 
   // Single Source of Truth selector for completed & pending items from backend profile/kyc state
   const readiness = getApplicationReadiness(store);
