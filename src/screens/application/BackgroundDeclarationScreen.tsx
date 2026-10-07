@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
  *
  * Content: BackgroundDeclarationContent from applicationKycContent.ts
  */
-
 import React from 'react';
 import {
   View,
