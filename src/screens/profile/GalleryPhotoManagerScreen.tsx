@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useProfileStore } from '../../store/slices/profileStore';
+import { pickMedia } from '../../utils/mediaPicker';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -133,43 +134,52 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
   };
 
   const handleUpload = () => {
-
-    Alert.alert(t("alerts.add_photo"), t("alerts.choose_an_option"),
-
-
-    [
-    {
-      text: t("alerts.take_photo"),
-      onPress: async () => {
-        const newPhoto = `stub://camera_photo_${Date.now()}.jpg`;
-        setIsProcessing(true);
-        try {
-          await useProfileStore.getState().uploadGalleryPhoto(newPhoto);
-          Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
-        } catch (e: any) {
-          Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
-        } finally {
-          setIsProcessing(false);
-        }
-      }
-    },
-    {
-      text: t("alerts.choose_from_gallery"),
-      onPress: async () => {
-        const newPhoto = `stub://gallery_photo_${Date.now()}.jpg`;
-        setIsProcessing(true);
-        try {
-          await useProfileStore.getState().uploadGalleryPhoto(newPhoto);
-          Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
-        } catch (e: any) {
-          Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
-        } finally {
-          setIsProcessing(false);
-        }
-      }
-    },
-    { text: t("alerts.cancel"), style: 'cancel' }]
-
+    Alert.alert(
+      t("alerts.add_photo"),
+      t("alerts.choose_an_option"),
+      [
+        {
+          text: t("alerts.take_photo"),
+          onPress: async () => {
+            const media = await pickMedia('camera', { mediaType: 'photo' });
+            if (!media?.uri) return;
+            setIsProcessing(true);
+            try {
+              await useProfileStore.getState().uploadGalleryPhoto({
+                uri: media.uri,
+                type: media.type || 'image/jpeg',
+                name: media.name || `gallery_${Date.now()}.jpg`,
+              });
+              Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
+            } catch (e: any) {
+              Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
+            } finally {
+              setIsProcessing(false);
+            }
+          },
+        },
+        {
+          text: t("alerts.choose_from_gallery"),
+          onPress: async () => {
+            const media = await pickMedia('gallery', { mediaType: 'photo' });
+            if (!media?.uri) return;
+            setIsProcessing(true);
+            try {
+              await useProfileStore.getState().uploadGalleryPhoto({
+                uri: media.uri,
+                type: media.type || 'image/jpeg',
+                name: media.name || `gallery_${Date.now()}.jpg`,
+              });
+              Alert.alert(t("alerts.success"), t("alerts.photo_uploaded"));
+            } catch (e: any) {
+              Alert.alert(t("alerts.error"), e.message || 'Failed to upload photo');
+            } finally {
+              setIsProcessing(false);
+            }
+          },
+        },
+        { text: t("alerts.cancel"), style: 'cancel' },
+      ],
     );
   };
 

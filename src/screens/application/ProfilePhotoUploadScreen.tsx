@@ -218,7 +218,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
     setProfilePhotoComplete(true);
 
     try {
-      if (photoUri.startsWith('http') || photoUri.startsWith('stub://')) {
+      if (photoUri.startsWith('http')) {
         await ProfileService.updatePhotos({ photoUrls: [photoUri] });
       } else {
         // Prepare file object for FormData

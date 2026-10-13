@@ -1,7 +1,7 @@
 /**
  * WeeklyMonthlyEarningsScreen (CPN-102)
  */
-import React, {useState} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -15,42 +15,67 @@ import {useEarningsStore} from '../../store/slices/earningsStore';
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 
-// Mock bar heights as percentages (0–100)
-const WEEKLY_BARS = [
-  {day: 'M', pct: 60},
-  {day: 'T', pct: 80},
-  {day: 'W', pct: 40},
-  {day: 'T', pct: 90},
-  {day: 'F', pct: 70},
-  {day: 'S', pct: 30},
-  {day: 'S', pct: 20},
-];
-const MONTHLY_BARS = [
-  {day: 'W1', pct: 55},
-  {day: 'W2', pct: 75},
-  {day: 'W3', pct: 85},
-  {day: 'W4', pct: 65},
-];
-
 const BAR_MAX_HEIGHT = 120;
 
 export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation<any>();  
   const [tab, setTab] = useState<'weekly' | 'monthly'>('weekly');
 
-  const availableBalance = useEarningsStore(s => s.availableBalance);
-  const lifetimeEarnings = useEarningsStore(s => s.lifetimeEarnings);
-  const totalSessions    = useEarningsStore(s => s.totalSessions);
-  const activeHours      = useEarningsStore(s => s.activeHours);
-  const tipsEarned       = useEarningsStore(s => s.tipsEarned);
+  const availableBalance   = useEarningsStore(s => s.availableBalance);
+  const lifetimeEarnings   = useEarningsStore(s => s.lifetimeEarnings);
+  const totalSessions      = useEarningsStore(s => s.totalSessions);
+  const activeHours        = useEarningsStore(s => s.activeHours);
+  const tipsEarned         = useEarningsStore(s => s.tipsEarned);
+  const recentTransactions = useEarningsStore(s => s.recentTransactions);
+
+  useEffect(() => {
+    useEarningsStore.getState().fetchSummary();
+    useEarningsStore.getState().fetchTransactions(1, 50);
+  }, []);
+
+  // Compute real bar heights from actual transaction history
+  const bars = useMemo(() => {
+    if (tab === 'weekly') {
+      const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+      if (!recentTransactions || recentTransactions.length === 0) {
+        return days.map(day => ({ day, pct: 0 }));
+      }
+      const dayAmounts = [0, 0, 0, 0, 0, 0, 0];
+      recentTransactions.slice(0, 30).forEach(tx => {
+        const d = new Date(tx.createdAt || Date.now());
+        const dayIdx = (d.getDay() + 6) % 7; // Monday = 0
+        dayAmounts[dayIdx] += Math.max(0, Number(tx.amount) || 0);
+      });
+      const max = Math.max(...dayAmounts, 1);
+      return days.map((day, i) => ({
+        day,
+        pct: dayAmounts[i] > 0 ? Math.min(100, Math.round((dayAmounts[i] / max) * 100)) : 0,
+      }));
+    } else {
+      const weeks = ['W1', 'W2', 'W3', 'W4'];
+      if (!recentTransactions || recentTransactions.length === 0) {
+        return weeks.map(day => ({ day, pct: 0 }));
+      }
+      const weekAmounts = [0, 0, 0, 0];
+      recentTransactions.forEach(tx => {
+        const d = new Date(tx.createdAt || Date.now());
+        const weekIdx = Math.min(3, Math.floor((d.getDate() - 1) / 7));
+        weekAmounts[weekIdx] += Math.max(0, Number(tx.amount) || 0);
+      });
+      const max = Math.max(...weekAmounts, 1);
+      return weeks.map((day, i) => ({
+        day,
+        pct: weekAmounts[i] > 0 ? Math.min(100, Math.round((weekAmounts[i] / max) * 100)) : 0,
+      }));
+    }
+  }, [tab, recentTransactions]);
 
   // Weekly = available balance this cycle; Monthly = lifetime earnings for context
   const weeklyTotal  = `₹${availableBalance.toLocaleString('en-IN')}`;
   const monthlyTotal = `₹${lifetimeEarnings.toLocaleString('en-IN')}`;
 
   const displayTotal = tab === 'weekly' ? weeklyTotal : monthlyTotal;
-  const bars = tab === 'weekly' ? WEEKLY_BARS : MONTHLY_BARS;
   
   // Weekly derived data
   const sessionsVal = tab === 'weekly' ? String(Math.ceil(totalSessions / 4)) : String(totalSessions);

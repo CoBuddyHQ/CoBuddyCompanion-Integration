@@ -7,31 +7,24 @@ function extractUri(file: any): string {
   return '';
 }
 
-function isMockUri(uri: string): boolean {
+function isValidMediaUri(uri: string): boolean {
+  if (!uri || typeof uri !== 'string') return false;
   return (
-    uri.startsWith('stub://') ||
-    uri.startsWith('mock://')
+    uri.startsWith('content://') ||
+    uri.startsWith('file://') ||
+    uri.startsWith('http://') ||
+    uri.startsWith('https://') ||
+    uri.startsWith('data:')
   );
 }
-
-const MOCK_DOC_URL = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
-const MOCK_VIDEO_URL = 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4';
 
 export const UploadsService = {
   uploadProfilePhoto: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid image file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        key: 'mock_profile_photo',
-        size: 1024,
-        mimeType: 'image/jpeg',
-      };
-    }
+
     const formData = new FormData();
     formData.append('photo', {
       uri,
@@ -45,18 +38,10 @@ export const UploadsService = {
 
   uploadGalleryPhoto: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid image file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        key: 'mock_gallery_photo',
-        size: 1024,
-        mimeType: 'image/jpeg',
-      };
-    }
+
     const formData = new FormData();
     formData.append('photo', {
       uri,
@@ -76,18 +61,10 @@ export const UploadsService = {
 
   uploadKycIdentity: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid document file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        key: 'mock_kyc_identity',
-        size: 1024,
-        mimeType: 'image/jpeg',
-      };
-    }
+
     const formData = new FormData();
     formData.append('document', {
       uri,
@@ -101,19 +78,10 @@ export const UploadsService = {
 
   uploadKycSelfie: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid video/photo file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        videoUrl: MOCK_VIDEO_URL,
-        key: 'mock_kyc_selfie',
-        size: 1024,
-        mimeType: 'video/mp4',
-      };
-    }
+
     const formData = new FormData();
     formData.append('video', {
       uri,
@@ -127,18 +95,10 @@ export const UploadsService = {
 
   uploadKycAddress: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid address proof file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        key: 'mock_kyc_address',
-        size: 1024,
-        mimeType: 'image/jpeg',
-      };
-    }
+
     const formData = new FormData();
     formData.append('document', {
       uri,
@@ -152,18 +112,10 @@ export const UploadsService = {
 
   uploadEvidence: async (file: any) => {
     const uri = extractUri(file);
-    if (!uri) {
+    if (!isValidMediaUri(uri)) {
       throw new Error('No valid evidence file provided');
     }
-    if (isMockUri(uri)) {
-      return {
-        url: MOCK_DOC_URL,
-        photoUrl: MOCK_DOC_URL,
-        key: 'mock_evidence',
-        size: 1024,
-        mimeType: 'image/jpeg',
-      };
-    }
+
     const formData = new FormData();
     formData.append('document', {
       uri,

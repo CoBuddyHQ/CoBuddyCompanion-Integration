@@ -17,7 +17,7 @@ interface ProfileState {
   // ── API Actions ────────────────────────────────────────────────────────────
   fetchProfile: () => Promise<void>;
   toggleAvailability: (isAvailable: boolean) => Promise<void>;
-  uploadGalleryPhoto: (photoUri: string) => Promise<void>;
+  uploadGalleryPhoto: (photo: string | { uri: string; type?: string; name?: string }) => Promise<void>;
   deleteGalleryPhoto: (photoId: string) => Promise<void>;
   
   // ── Local / Partial Update Actions ─────────────────────────────────────────
@@ -68,12 +68,15 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     }
   },
 
-  uploadGalleryPhoto: async (photoUri: string) => {
+  uploadGalleryPhoto: async (photo: string | { uri: string; type?: string; name?: string }) => {
     try {
       const { UploadsService } = require('../../services/api/services/uploads.service');
       const { ProfileService } = require('../../services/api/services/profile.service');
-      const result = await UploadsService.uploadGalleryPhoto(photoUri);
-      const photoUrl = result.photoUrl || result.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2';
+      const result = await UploadsService.uploadGalleryPhoto(photo);
+      const photoUrl = result.photoUrl || result.url;
+      if (!photoUrl) {
+        throw new Error('Upload succeeded but server did not return a photo URL');
+      }
       const state = get();
       const currentGallery = state.profile?.galleryPhotos || [];
       const updatedGallery = [...currentGallery, photoUrl];
