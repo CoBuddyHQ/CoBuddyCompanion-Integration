@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 
 const BAR_MAX_HEIGHT = 120;
 
+
 export function WeeklyMonthlyEarningsScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();  
