@@ -1,0 +1,34 @@
+name: CoBuddy Companion Mobile CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Type-Check & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (v20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript Type-Check
+        run: npx tsc --noEmit
+
+      - name: Run Jest Tests
+        run: npm test -- --passWithNoTests

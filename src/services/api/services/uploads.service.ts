@@ -10,8 +10,7 @@ function extractUri(file: any): string {
 function isMockUri(uri: string): boolean {
   return (
     uri.startsWith('stub://') ||
-    uri.startsWith('mock://') ||
-    uri.startsWith('file:///data/user/0')
+    uri.startsWith('mock://')
   );
 }
 
