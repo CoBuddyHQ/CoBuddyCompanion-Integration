@@ -74,5 +74,18 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
-# Environment Variables
+# Environment Variables & Secrets
 .env
+.env.*
+*.env
+*.env.local
+azure-env*.json
+env*.json
+google-services.json
+GoogleService-Info.plist
+*.pem
+*.key
+*.cert
+release.keystore
+*.jks
+
