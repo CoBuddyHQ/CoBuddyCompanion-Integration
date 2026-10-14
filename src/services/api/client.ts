@@ -82,14 +82,9 @@ apiClient.interceptors.request.use(
     if (config.data instanceof FormData || (config.headers && config.headers['Content-Type'] === 'multipart/form-data')) {
       delete config.headers['Content-Type'];
     }
-    console.log(`\n========================================`);
-    console.log(`🚀 [API SEND] ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
-    if (config.data && !(config.data instanceof FormData)) {
-      console.log(`📦 [PAYLOAD SENT]:`, typeof config.data === 'string' ? config.data : JSON.stringify(config.data, null, 2));
-    } else if (config.data instanceof FormData) {
-      console.log(`📦 [FORM DATA SENT] (multipart payload)`);
+    if (__DEV__ && ENV.ENABLE_LOGGING) {
+      console.log(`🚀 [API SEND] ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
     }
-    console.log(`========================================\n`);
     logger.log(`→ ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
     return config;
   },
@@ -112,17 +107,15 @@ function drainQueue(token: string) {
 
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(`\n========================================`);
-    console.log(`✅ [API RESPONSE ${response.status}] ${response.config.url ?? ''}`);
+    if (__DEV__ && ENV.ENABLE_LOGGING) {
+      console.log(`✅ [API RESPONSE ${response.status}] ${response.config.url ?? ''}`);
+    }
     if (response.data) {
-      console.log(`📥 [DATA RECEIVED]:`, typeof response.data === 'string' ? response.data : JSON.stringify(response.data, null, 2));
-      
       // Auto-hydrate onboarding status if it exists in the response payload
       if (response.data.onboardingStatus) {
         _onOnboardingStatusReceived?.(response.data.onboardingStatus);
       }
     }
-    console.log(`========================================\n`);
     logger.log(`← ${response.status} ${response.config.url ?? ''}`);
     return response;
   },
