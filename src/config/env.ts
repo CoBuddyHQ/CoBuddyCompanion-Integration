@@ -26,11 +26,14 @@ const resolveUrl = (rawUrl: string): string => {
   return rawUrl;
 };
 
+const LOCAL_DOCKER_API_URL = 'http://10.0.2.2:4001/api/v1';
+const LOCAL_DOCKER_SOCKET_URL = 'http://10.0.2.2:4001';
+
 const LIVE_AZURE_API_URL = 'https://cobuddy-companion-api-avinash-huhdawdkgjhedsgy.indiasouthcentral-01.azurewebsites.net/api/v1';
 const LIVE_AZURE_SOCKET_URL = 'https://cobuddy-companion-api-avinash-huhdawdkgjhedsgy.indiasouthcentral-01.azurewebsites.net';
 
-const rawApiUrl = configuredApiUrl || LIVE_AZURE_API_URL;
-const rawSocketUrl = configuredSocketUrl || LIVE_AZURE_SOCKET_URL;
+const rawApiUrl = configuredApiUrl || LOCAL_DOCKER_API_URL;
+const rawSocketUrl = configuredSocketUrl || LOCAL_DOCKER_SOCKET_URL;
 
 export const ENV = {
   // 1. API & Backend Services (Auto-resolved for Android / iOS)
