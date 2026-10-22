@@ -78,37 +78,6 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
   const appStateRef = useRef<AppStateStatus>(AppState.currentState);
   const pendingPickerMode = useRef<'camera' | 'library' | 'gallery' | null>(null);
 
-  useEffect(() => {
-    const sub = AppState.addEventListener('change', async (nextState) => {
-      // App came back to foreground after being in background (Settings)
-      if (appStateRef.current === 'background' && nextState === 'active') {
-        const mode = pendingPickerMode.current;
-        if (mode) {
-          pendingPickerMode.current = null;
-          const alreadyGranted = await checkPermission(mode);
-          if (alreadyGranted) {
-            openPicker(mode);
-          }
-        }
-      }
-      appStateRef.current = nextState;
-    });
-    return () => sub.remove();
-  }, []);
-
-  // ─── Check current permission status (no dialog) ─────────────────────────
-  const checkPermission = async (mode: 'camera' | 'library' | 'gallery'): Promise<boolean> => {
-    if (Platform.OS !== 'android') return true;
-    try {
-      const perm = getPermissionForMode(mode);
-      const result = await PermissionsAndroid.check(perm);
-      return result;
-    } catch {
-      return false;
-    }
-  };
-
-  // ─── Pick the right Android permission for mode + OS version ─────────────
   const getPermissionForMode = (mode: 'camera' | 'library' | 'gallery') => {
     if (mode === 'camera') return PermissionsAndroid.PERMISSIONS.CAMERA;
     // Android 13+ (API 33+): READ_MEDIA_IMAGES
@@ -118,8 +87,17 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
       : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
   };
 
+  const checkPermission = useCallback(async (mode: 'camera' | 'library' | 'gallery'): Promise<boolean> => {
+    if (Platform.OS !== 'android') return true;
+    try {
+      return await PermissionsAndroid.check(getPermissionForMode(mode));
+    } catch {
+      return false;
+    }
+  }, []);
+
   // ─── Show "Open Settings" alert ──────────────────────────────────────────
-  const showSettingsAlert = (mode: 'camera' | 'library' | 'gallery') => {
+  const showSettingsAlert = useCallback((mode: 'camera' | 'library' | 'gallery') => {
     const permName = mode === 'camera' ? 'Camera' : 'Photos/Storage';
     pendingPickerMode.current = mode; // Will recheck when app returns
     Alert.alert(
@@ -133,10 +111,10 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
         },
       ]
     );
-  };
+  }, []);
 
   // ─── Request permission → returns grant result ───────────────────────────
-  const requestPermission = async (mode: 'camera' | 'library' | 'gallery'): Promise<'granted' | 'denied' | 'never_ask_again'> => {
+  const requestPermission = useCallback(async (mode: 'camera' | 'library' | 'gallery'): Promise<'granted' | 'denied' | 'never_ask_again'> => {
     if (Platform.OS !== 'android') return 'granted';
     try {
       const perm = getPermissionForMode(mode);
@@ -156,7 +134,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
     } catch {
       return 'denied';
     }
-  };
+  }, []);
 
   // ─── Actually open camera or gallery ─────────────────────────────────────
   const openPicker = useCallback(async (mode: 'camera' | 'library' | 'gallery') => {
@@ -180,13 +158,27 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
         setPhotoUri(asset.uri ?? null);
       }
     } catch (err: any) {
-      console.warn('[ImagePicker]', err?.message);
       // Don't show alert on user cancellation
       if (!err?.message?.includes('cancel')) {
         Alert.alert(t('alerts.error'), 'Could not open. Please try again.');
       }
     }
   }, [t]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', async (nextState) => {
+      if (appStateRef.current === 'background' && nextState === 'active') {
+        const mode = pendingPickerMode.current;
+        if (mode) {
+          pendingPickerMode.current = null;
+          const alreadyGranted = await checkPermission(mode);
+          if (alreadyGranted) openPicker(mode);
+        }
+      }
+      appStateRef.current = nextState;
+    });
+    return () => sub.remove();
+  }, [checkPermission, openPicker]);
 
   // ─── Main entry point: check → request → open ────────────────────────────
   const handlePickPhoto = useCallback(async (mode: 'camera' | 'library' | 'gallery') => {
@@ -209,7 +201,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
       // Denied this time — offer Settings anyway
       showSettingsAlert(mode);
     }
-  }, [openPicker]);
+  }, [checkPermission, openPicker, requestPermission, showSettingsAlert]);
 
   const showPicker = handlePickPhoto;
 
@@ -256,7 +248,7 @@ export function ProfilePhotoUploadScreen({ navigation }: Props): React.JSX.Eleme
   }, [
     photoUri, setProfilePhotoComplete, setProfileChecklistMode,
     profileCorrectionContext, completeProfileCorrection,
-    missingRequirementFixContext, completeMissingRequirementFix, clearMissingRequirementFix, navigation, t
+    missingRequirementFixContext, completeMissingRequirementFix, navigation, t
   ]);
 
   const handleSaveFinishLater = useCallback(() => {

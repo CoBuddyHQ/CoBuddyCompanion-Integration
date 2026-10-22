@@ -124,8 +124,8 @@ class SocketService {
       queryClient.invalidateQueries(['sessions']);
     });
 
-    this.appSocket.on('connect_error', (err: Error) => {
-      console.warn('[Socket] App connection error:', err.message);
+    this.appSocket.on('connect_error', (_err: Error) => {
+      console.warn('[Socket] App connection failed.');
     });
   }
 
@@ -178,8 +178,8 @@ class SocketService {
       this.sessionStatus = 'disconnected';
     });
 
-    this.sessionSocket.on('connect_error', (err: Error) => {
-      console.warn('[Socket] Session error:', err.message);
+    this.sessionSocket.on('connect_error', (_err: Error) => {
+      console.warn('[Socket] Session connection failed.');
       this.sessionStatus = 'error';
     });
 
@@ -263,9 +263,9 @@ class SocketService {
       console.log('[Socket] Support disconnected:', reason);
     });
 
-    this.supportSocket.on('connect_error', (err: Error) => {
+    this.supportSocket.on('connect_error', (_err: Error) => {
       this.supportStatus = 'error';
-      console.warn('[Socket] Support error:', err.message);
+      console.warn('[Socket] Support connection failed.');
     });
 
     this.supportSocket.on('receive_support_message', (msg: ChatMessage) => {

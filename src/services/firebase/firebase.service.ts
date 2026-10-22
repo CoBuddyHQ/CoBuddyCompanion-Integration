@@ -82,8 +82,8 @@ class FirebaseService {
       await this.registerFcmToken();
       this.setupForegroundHandler();
       this.setupBackgroundHandler();
-    } catch (err) {
-      console.warn('[Firebase] Service initialization skipped in dev:', err);
+    } catch {
+      console.warn('[Firebase] Service initialization skipped.');
     }
   }
 
@@ -103,8 +103,8 @@ class FirebaseService {
         authStatus === 1 || authStatus === 2; // Fallback numeric values
       console.log('[FCM] Permission status:', authStatus, '| Enabled:', enabled);
       return enabled;
-    } catch (err) {
-      console.warn('[FCM] Permission request failed:', err);
+    } catch {
+      console.warn('[FCM] Permission request failed.');
       return false;
     }
   }
@@ -123,11 +123,11 @@ class FirebaseService {
         this.fcmToken = token;
         const platform = Platform.OS === 'ios' ? 'ios' : 'android';
         await NotificationsService.registerPushToken(token, platform);
-        console.log('[FCM] Token registered:', token.slice(0, 20) + '...');
+        console.log('[FCM] Device token registered.');
       }
       return token;
-    } catch (err) {
-      console.warn('[FCM] Token registration failed:', err);
+    } catch {
+      console.warn('[FCM] Device token registration failed.');
       return null;
     }
   }
@@ -147,7 +147,7 @@ class FirebaseService {
           body: remoteMessage.notification?.body,
           data: remoteMessage.data,
         };
-        console.log('[FCM] Foreground message received:', notif.title);
+        console.log('[FCM] Foreground notification received.');
         this.onNotificationCallback?.(notif);
       });
     });
@@ -162,22 +162,22 @@ class FirebaseService {
       if (!messaging) return;
 
       // Background message handler (must be registered at top level)
-      messaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-        console.log('[FCM] Background message:', remoteMessage.notification?.title);
+      messaging().setBackgroundMessageHandler(async (_remoteMessage: any) => {
+        console.log('[FCM] Background notification received.');
       });
 
       // Notification opened from quit state
       messaging()
         .getInitialNotification()
-        .then((remoteMessage: any) => {
-          if (remoteMessage) {
-            console.log('[FCM] App opened from quit notification:', remoteMessage.notification?.title);
+        .then((_remoteMessage: any) => {
+          if (_remoteMessage) {
+            console.log('[FCM] App opened from a notification.');
           }
         });
 
       // Notification opened while app was in background
-      messaging().onNotificationOpenedApp((remoteMessage: any) => {
-        console.log('[FCM] App opened from background notification:', remoteMessage.notification?.title);
+      messaging().onNotificationOpenedApp((_remoteMessage: any) => {
+        console.log('[FCM] App opened from a background notification.');
       });
     });
   }
@@ -216,10 +216,10 @@ class FirebaseService {
 
     try {
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-      console.log('[Firebase Auth] OTP sent to:', phoneNumber);
+      console.log('[Firebase Auth] OTP request sent to the provider.');
       return confirmation;
-    } catch (err) {
-      console.warn('[Firebase Auth] sendPhoneOtp failed:', err);
+    } catch {
+      console.warn('[Firebase Auth] OTP request failed.');
       return null;
     }
   }
@@ -234,8 +234,8 @@ class FirebaseService {
       const idToken = await userCredential.user.getIdToken();
       console.log('[Firebase Auth] OTP verified successfully');
       return { idToken, uid: userCredential.user.uid };
-    } catch (err) {
-      console.warn('[Firebase Auth] verifyPhoneOtp failed:', err);
+    } catch {
+      console.warn('[Firebase Auth] OTP verification failed.');
       return null;
     }
   }

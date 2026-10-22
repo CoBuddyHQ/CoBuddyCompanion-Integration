@@ -18,31 +18,82 @@ import {
   REQUEST_TIMEOUT_MS as configuredTimeout,
 } from '@env';
 
-const resolveUrl = (rawUrl: string): string => {
-  if (Platform.OS === 'android') {
-    if (rawUrl.includes('localhost')) return rawUrl.replace('localhost', '10.0.2.2');
-    if (rawUrl.includes('127.0.0.1')) return rawUrl.replace('127.0.0.1', '10.0.2.2');
-  }
-  return rawUrl;
-};
-
 const LOCAL_DOCKER_API_URL = 'http://10.0.2.2:4001/api/v1';
 const LOCAL_DOCKER_SOCKET_URL = 'http://10.0.2.2:4001';
 
-const LIVE_AZURE_API_URL = 'https://cobuddy-companion-api-avinash-huhdawdkgjhedsgy.indiasouthcentral-01.azurewebsites.net/api/v1';
-const LIVE_AZURE_SOCKET_URL = 'https://cobuddy-companion-api-avinash-huhdawdkgjhedsgy.indiasouthcentral-01.azurewebsites.net';
+export type CompanionAppEnvironment = 'development' | 'test' | 'staging' | 'production';
 
-const rawApiUrl = configuredApiUrl || LOCAL_DOCKER_API_URL;
-const rawSocketUrl = configuredSocketUrl || LOCAL_DOCKER_SOCKET_URL;
+export const resolveCompanionEndpoints = (
+  appEnvironment: string | undefined,
+  apiBaseUrl: string | undefined,
+  socketUrl: string | undefined,
+  platform: string,
+) => {
+  const environment = (appEnvironment || 'development').trim().toLowerCase();
+  if (!['development', 'test', 'staging', 'production'].includes(environment)) {
+    throw new Error('[ConfigurationError] APP_ENV must be development, test, staging, or production.');
+  }
+  const isDeployedEnvironment = environment === 'staging' || environment === 'production';
+  const rawApiUrl = apiBaseUrl?.trim() || (isDeployedEnvironment ? '' : LOCAL_DOCKER_API_URL);
+  const rawSocketUrl = socketUrl?.trim() || (isDeployedEnvironment ? '' : LOCAL_DOCKER_SOCKET_URL);
+
+  const validateUrl = (name: string, value: string) => {
+    let parsed: URL;
+    try {
+      parsed = new URL(value);
+    } catch {
+      throw new Error(`[ConfigurationError] ${name} must be a valid absolute URL.`);
+    }
+    if (!['http:', 'https:'].includes(parsed.protocol) || !parsed.hostname || parsed.username || parsed.password) {
+      throw new Error(`[ConfigurationError] ${name} must be an HTTP(S) URL without embedded credentials.`);
+    }
+    if (isDeployedEnvironment && parsed.protocol !== 'https:') {
+      throw new Error(`[ConfigurationError] ${name} must use HTTPS in staging and production.`);
+    }
+    return value.replace(/\/+$/, '');
+  };
+
+  if (!rawApiUrl) {
+    throw new Error('[ConfigurationError] API_BASE_URL is required in staging and production.');
+  }
+  if (!rawSocketUrl) {
+    throw new Error('[ConfigurationError] SOCKET_URL is required in staging and production.');
+  }
+
+  const resolvePlatformUrl = (value: string) => {
+    if (platform === 'android') {
+      if (value.includes('localhost')) return value.replace('localhost', '10.0.2.2');
+      if (value.includes('127.0.0.1')) return value.replace('127.0.0.1', '10.0.2.2');
+    }
+    return value;
+  };
+
+  return {
+    apiBaseUrl: resolvePlatformUrl(validateUrl('API_BASE_URL', rawApiUrl)),
+    socketUrl: resolvePlatformUrl(validateUrl('SOCKET_URL', rawSocketUrl)),
+    appEnvironment: environment as CompanionAppEnvironment,
+  };
+};
+
+const endpoints = resolveCompanionEndpoints(
+  configuredAppEnv,
+  configuredApiUrl,
+  configuredSocketUrl,
+  Platform.OS,
+);
+const requestTimeoutMs = Number.parseInt(configuredTimeout || '15000', 10);
+if (!Number.isFinite(requestTimeoutMs) || requestTimeoutMs <= 0) {
+  throw new Error('[ConfigurationError] REQUEST_TIMEOUT_MS must be a positive number.');
+}
 
 export const ENV = {
   // 1. API & Backend Services (Auto-resolved for Android / iOS)
-  API_BASE_URL: resolveUrl(rawApiUrl),
-  SOCKET_URL: resolveUrl(rawSocketUrl),
+  API_BASE_URL: endpoints.apiBaseUrl,
+  SOCKET_URL: endpoints.socketUrl,
   
   // 2. App Mode
-  APP_ENV: configuredAppEnv || 'development',
-  IS_DEV: (configuredAppEnv || 'development') === 'development',
+  APP_ENV: endpoints.appEnvironment,
+  IS_DEV: endpoints.appEnvironment === 'development',
 
   // 3. Integrations
   GOOGLE_MAPS_API_KEY: configuredMapsKey || '',
@@ -55,5 +106,5 @@ export const ENV = {
   // 5. Config Defaults
   ENABLE_LOGGING: configuredLogging === 'true',
   DEFAULT_LANGUAGE: configuredLanguage || 'en',
-  REQUEST_TIMEOUT_MS: parseInt(configuredTimeout || '15000', 10),
+  REQUEST_TIMEOUT_MS: requestTimeoutMs,
 } as const;

@@ -16,12 +16,13 @@ import i18next from 'i18next';
  * Content: NotificationPermContent from authOnboardingContent.ts
  */
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  Alert,
   TouchableOpacity } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -37,6 +38,7 @@ import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
+import { requestNotificationAccess } from '../../services/devicePermissions';
 
 import { useTranslation } from "react-i18next";
 
@@ -51,12 +53,32 @@ const BENEFITS = [
 
 const NotificationPermissionScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const handleAllow = () => {
-    // In production: call Permissions.requestNotification()
-    navigation.navigate(Routes.LOCATION_PERMISSION);
+  const [requesting, setRequesting] = useState(false);
+  const requestPending = useRef(false);
+  const handleAllow = async () => {
+    if (requestPending.current) return;
+    requestPending.current = true;
+    setRequesting(true);
+    try {
+      const result = await requestNotificationAccess();
+      if (result === 'granted' || result === 'not-required') {
+        navigation.navigate(Routes.LOCATION_PERMISSION);
+      } else {
+        const message = result === 'blocked'
+          ? t('auth.notifications_blocked', 'Notifications are blocked. You can change this in device settings or select Skip for Now.')
+          : result === 'denied'
+            ? t('auth.notifications_denied', 'Notification permission was not granted. You can try again or select Skip for Now.')
+            : t('auth.notifications_unavailable', 'Notification permission cannot be requested in this app on this device. You can select Skip for Now to continue.');
+        Alert.alert(t('auth.notifications_not_enabled', 'Notifications not enabled'), message);
+      }
+    } finally {
+      requestPending.current = false;
+      setRequesting(false);
+    }
   };
 
   const handleSkip = () => {
+    if (requestPending.current) return;
     navigation.navigate(Routes.LOCATION_PERMISSION);
   };
 
@@ -113,9 +135,10 @@ const NotificationPermissionScreen: React.FC<Props> = ({ navigation }) => {
           <ActionButton
             label={t("content.auth_onboarding.NotificationPermContent.CTA_PRIMARY")}
             onPress={handleAllow}
+            loading={requesting}
             accessibilityLabel={t("accessibility.allow_notifications")} />
           
-          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip} disabled={requesting}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.NotificationPermContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>

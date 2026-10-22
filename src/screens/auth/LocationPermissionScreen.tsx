@@ -17,12 +17,13 @@ import { useTranslation } from "react-i18next"; /**
 * Use LocationPermContent from authOnboardingContent.ts exclusively.
 */
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  Alert,
   TouchableOpacity } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -38,6 +39,7 @@ import { colors } from '../../theme/colors';
 import { textStyles } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
+import { requestLocationAccess } from '../../services/devicePermissions';
 
 
 type Props = StackScreenProps<AuthStackParamList, typeof Routes.LOCATION_PERMISSION>;
@@ -49,12 +51,38 @@ const BULLETS = [
 
 
 const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t } = useTranslation();
-  const handleAllow = () => {
-    // In production: call Permissions.requestLocation()
-    navigation.navigate(Routes.CREATE_PIN);
+  const [requesting, setRequesting] = useState(false);
+  const requestPending = useRef(false);
+  const handleAllow = async () => {
+    if (requestPending.current) return;
+    requestPending.current = true;
+    setRequesting(true);
+    try {
+      const result = await requestLocationAccess();
+      if (result === 'granted') {
+        navigation.navigate(Routes.CREATE_PIN);
+      } else if (result === 'limited') {
+        Alert.alert(
+          t('auth.approximate_location_title', 'Approximate location enabled'),
+          t('auth.approximate_location_body', 'Precise location may be required for venue check-in.'),
+          [{ text: t('common.continue', 'Continue'), onPress: () => navigation.navigate(Routes.CREATE_PIN) }],
+        );
+      } else {
+        const message = result === 'blocked'
+          ? t('auth.location_blocked', 'Location access is blocked. You can change this in device settings or select Not Now.')
+          : result === 'denied'
+            ? t('auth.location_denied', 'Location permission was not granted. You can try again or select Not Now.')
+            : t('auth.location_unavailable', 'Location permission cannot be requested in this app on this device. You can select Not Now to continue.');
+        Alert.alert(t('auth.location_not_enabled', 'Location not enabled'), message);
+      }
+    } finally {
+      requestPending.current = false;
+      setRequesting(false);
+    }
   };
 
   const handleSkip = () => {
+    if (requestPending.current) return;
     navigation.navigate(Routes.CREATE_PIN);
   };
 
@@ -118,10 +146,11 @@ const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t
           <ActionButton
             label={t("content.auth_onboarding.LocationPermContent.CTA_PRIMARY")}
             onPress={handleAllow}
+            loading={requesting}
             style={styles.primaryBtn}
             accessibilityLabel={t("accessibility.allow_location_access")} />
           
-          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip}>
+          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip} disabled={requesting}>
             <Text style={styles.skipText}>{t("content.auth_onboarding.LocationPermContent.CTA_SKIP")}</Text>
           </TouchableOpacity>
         </View>
