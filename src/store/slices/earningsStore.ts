@@ -10,6 +10,7 @@ import { EarningsService } from '../../services/api/services/earnings.service';
 interface EarningsState {
   availableBalance: number;
   pendingClearance: number;
+  todayEarnings: number;
   lifetimeEarnings: number;
   totalSessions: number;
   activeHours: number;
@@ -26,6 +27,7 @@ interface EarningsState {
   // ── Local Actions ──────────────────────────────────────────────────────────
   setAvailableBalance: (v: number) => void;
   setPendingClearance: (v: number) => void;
+  setTodayEarnings: (v: number) => void;
   addTransaction: (tx: Transaction) => void;
   setLoading: (v: boolean) => void;
   setError: (err: string | null) => void;
@@ -34,6 +36,7 @@ interface EarningsState {
 export const useEarningsStore = create<EarningsState>((set, get) => ({
   availableBalance: 0,
   pendingClearance: 0,
+  todayEarnings: 0,
   lifetimeEarnings: 0,
   totalSessions: 0,
   activeHours: 0,
@@ -51,7 +54,9 @@ export const useEarningsStore = create<EarningsState>((set, get) => ({
       set({
         availableBalance: summary.availableBalance ?? 0,
         pendingClearance: summary.pendingBalance ?? 0,
+        todayEarnings: summary.todayEarnings ?? ((summary.availableBalance ?? 0) + (summary.pendingBalance ?? 0)),
         lifetimeEarnings: summary.totalEarnedAllTime ?? 0,
+        totalSessions: (summary as any).totalSessions ?? summary.totalSessionsThisMonth ?? 0,
       });
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to fetch earnings summary' });
@@ -81,6 +86,7 @@ export const useEarningsStore = create<EarningsState>((set, get) => ({
   // ── Local Actions ──────────────────────────────────────────────────────────
   setAvailableBalance: (v) => set({ availableBalance: v }),
   setPendingClearance: (v) => set({ pendingClearance: v }),
+  setTodayEarnings: (v) => set({ todayEarnings: v }),
   
   addTransaction: (tx) =>
     set((state) => ({ recentTransactions: [tx, ...state.recentTransactions] })),

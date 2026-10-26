@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
+import { Routes } from '../../navigation/routes';
 import { useNotificationStore } from '../../store/slices/notificationStore';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
@@ -84,10 +85,40 @@ export function NotificationCenterScreen(): React.JSX.Element {
     fetchNotifications();
   }, [fetchNotifications]);
 
-  const renderItem = ({ item }: {item: AppNotification;}) =>
-  <NotifCard
-    item={item}
-    onPress={() => markAsRead(item.notificationId)} />;
+    const handlePressNotification = (item: AppNotification) => {
+    markAsRead(item.notificationId);
+
+    const targetRoute = item.actionRoute || (item as any).actionUrl || (item.data as any)?.route;
+    const targetParams = item.actionParams || (item.data as any)?.params;
+    const reqId = (item.data as any)?.requestId || (item as any).requestId;
+    const sessId = (item.data as any)?.sessionId || (item as any).sessionId;
+    const isSessionNotification = item.category === 'session' || (item.title && item.title.includes('Accepted')) || (item.title && item.title.includes('Session')) || (item.title && item.title.includes('Checked In'));
+
+    if (targetRoute && typeof targetRoute === 'string' && !targetRoute.startsWith('/')) {
+      navigation.navigate(targetRoute, targetParams || (sessId ? { sessionId: sessId } : reqId ? { requestId: reqId } : undefined));
+    } else if (isSessionNotification && sessId) {
+      navigation.navigate(Routes.SESSION_DETAIL, { sessionId: sessId });
+    } else if (isSessionNotification) {
+      navigation.navigate(Routes.UPCOMING_SESSIONS);
+    } else if (reqId && item.category === 'request') {
+      navigation.navigate(Routes.NEW_BOOKING_REQUEST_DETAIL, { requestId: reqId });
+    } else if (sessId) {
+      navigation.navigate(Routes.SESSION_DETAIL, { sessionId: sessId });
+    } else if (item.category === 'booking' || item.category === 'request') {
+      navigation.navigate(Routes.BOOKING_REQUESTS_INBOX);
+    } else if (item.category === 'session') {
+      navigation.navigate(Routes.UPCOMING_SESSIONS);
+    } else if (item.category === 'payout' || item.category === 'wallet') {
+      navigation.navigate(Routes.EARNINGS_DASHBOARD);
+    }
+  };
+
+  const renderItem = ({ item }: {item: AppNotification;}) => (
+    <NotifCard
+      item={item}
+      onPress={() => handlePressNotification(item)}
+    />
+  );
 
 
 

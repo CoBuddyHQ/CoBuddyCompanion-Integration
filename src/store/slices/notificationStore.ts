@@ -43,8 +43,10 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
   fetchNotifications: async () => {
     set({ isLoading: true, error: null });
     try {
-      const notifications = await NotificationsService.getAll();
-      set({ notifications, unreadCount: countUnread(notifications) });
+      const res: any = await NotificationsService.getAll();
+      const notifications = Array.isArray(res) ? res : (Array.isArray(res?.notifications) ? res.notifications : []);
+      const unreadCount = typeof res?.unreadCount === 'number' ? res.unreadCount : countUnread(notifications);
+      set({ notifications, unreadCount });
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to load notifications' });
     } finally {

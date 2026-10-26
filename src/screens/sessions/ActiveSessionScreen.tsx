@@ -65,17 +65,42 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
   const endSession = useSessionStore((s) => s.endSession);
 
   const session = useSessionStore((s) =>
-  s.activeSession?.sessionId === sessionId ? s.activeSession :
-  s.upcomingSessions.find((ses) => ses.sessionId === sessionId) ?? null
+    (s.activeSession?.sessionId === sessionId || (s.activeSession as any)?.id === sessionId) ? s.activeSession :
+    s.upcomingSessions.find((ses: any) => ses.sessionId === sessionId || ses.id === sessionId) ?? null
   );
+
+  // ── Fetch fresh session on mount to ensure checkInTime is accurate ───────
+  useEffect(() => {
+    useSessionStore.getState().fetchActiveSession();
+  }, [sessionId]);
+
+  // ── Auto-sync if session ends/completes externally ────────────────────────
+  useEffect(() => {
+    if (!sessionId) return;
+    const pollId = setInterval(async () => {
+      try {
+        const detail = await SessionsService.getDetail(sessionId);
+        if (detail && (detail.status === 'completed' || detail.status === 'cancelled')) {
+          navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+        }
+      } catch {}
+    }, 1200);
+    return () => clearInterval(pollId);
+  }, [sessionId, navigation]);
 
   // ── Running timer ──────────────────────────────────────────────────────────
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
     const calc = () => {
-      if (!session?.checkInTime) {return 0;}
-      return Math.floor((Date.now() - new Date(session.checkInTime).getTime()) / 1000);
+      const startTimeStr = session?.checkInTime || session?.createdAt;
+      if (startTimeStr) {
+        const parsed = new Date(startTimeStr).getTime();
+        if (!isNaN(parsed)) {
+          return Math.max(0, Math.floor((Date.now() - parsed) / 1000));
+        }
+      }
+      return 0;
     };
 
     setElapsed(calc()); // initial calculation
@@ -84,7 +109,7 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
       setElapsed(calc());
     }, 1000);
     return () => clearInterval(id);
-  }, [session?.checkInTime]);
+  }, [session?.checkInTime, session?.createdAt]);
 
   // ── LIVE badge breathing animation ─────────────────────────────────────────
   const liveOpacity = useRef(new Animated.Value(1)).current;
@@ -177,12 +202,18 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
           <Animated.View style={[styles.timerGlow, { transform: [{ scale: glowScale }] }]} />
 
           <View style={styles.timerCard}>
-            {/* Elapsed time — massive monospace */}
-            <Text style={[styles.timerText, isOverdue && { color: colors.softWarning }]}>{fmtTimer(elapsed)}</Text>
+            <Text style={styles.timerHeaderLabel}>
+              {!isOverdue ? (totalSecs > 0 ? (t('sessions.time_remaining') || 'TIME REMAINING') : (t('sessions.elapsed_time') || 'ELAPSED TIME')) : (t('sessions.overdue') || 'OVERDUE')}
+            </Text>
 
-            {/* Remaining label */}
+            {/* Countdown clock in sync with customer */}
+            <Text style={[styles.timerText, isOverdue && { color: colors.softWarning }]}>
+              {fmtTimer(totalSecs > 0 ? (!isOverdue ? remaining : overdueSecs) : elapsed)}
+            </Text>
+
+            {/* Remaining & elapsed details */}
             {!isOverdue ? (
-              <Text style={styles.timerSub}>{remLabel}</Text>
+              <Text style={styles.timerSub}>{remLabel} · {fmtTimer(elapsed)} elapsed</Text>
             ) : (
               <Text style={styles.timerOverdue}>
                 {t('sessions.session_time_reached')} (+{fmtTimer(overdueSecs)})
@@ -364,7 +395,7 @@ const styles = StyleSheet.create({
 
   // ── ScrollView ──────────────────────────────────────────────────────────────
   scrollView: { flex: 1 },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: 100, gap: 12 },
+  scrollContent: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: 140, gap: 12 },
 
   // ── Header ──────────────────────────────────────────────────────────────────
   header: {
@@ -421,6 +452,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: '#6DD6A5', shadowOpacity: 0.10,
     shadowRadius: 24, shadowOffset: { width: 0, height: 0 }, elevation: 6
+  },
+  timerHeaderLabel: {
+    fontFamily: fontFamily.interBold,
+    fontSize: 11,
+    letterSpacing: 2,
+    color: 'rgba(255,255,255,0.45)',
+    marginBottom: 4,
   },
   timerText: {
     fontFamily: 'Courier New',

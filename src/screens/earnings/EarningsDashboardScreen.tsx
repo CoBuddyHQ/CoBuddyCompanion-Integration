@@ -3,14 +3,14 @@
  * Root tab screen for the Earnings stack.
  * Shows available balance, lifetime stats, and recent transactions.
  */
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar } from
+  StyleSheet, StatusBar, RefreshControl } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useEarningsStore } from '../../store/slices/earningsStore';
@@ -103,10 +103,30 @@ export function EarningsDashboardScreen(): React.JSX.Element {
   const fetchSummary = useEarningsStore((s) => s.fetchSummary);
   const fetchTransactions = useEarningsStore((s) => s.fetchTransactions);
 
-  React.useEffect(() => {
-    fetchSummary();
-    fetchTransactions(1, 10);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refreshEarnings = useCallback(async () => {
+    try {
+      await Promise.allSettled([
+        fetchSummary(),
+        fetchTransactions(1, 10),
+      ]);
+    } catch {
+      // Non-blocking
+    }
   }, [fetchSummary, fetchTransactions]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshEarnings();
+    }, [refreshEarnings])
+  );
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshEarnings();
+    setRefreshing(false);
+  }, [refreshEarnings]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
@@ -123,7 +143,8 @@ export function EarningsDashboardScreen(): React.JSX.Element {
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.gold} />}>
 
         {/* ══════════════════════════════════════════
                TOP BALANCE CARD

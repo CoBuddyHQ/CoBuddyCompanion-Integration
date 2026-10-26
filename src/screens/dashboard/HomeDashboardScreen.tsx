@@ -4,7 +4,7 @@ import i18next from "i18next";
  * First screen companions see after login. All 6 sections per design spec.
  */
 import { AdminConfig } from '../../config/adminValues';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  StatusBar } from
+  StatusBar,
+  RefreshControl } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { useProfileStore } from '../../store/slices/profileStore';
 import { useSessionStore } from '../../store/slices/sessionStore';
@@ -157,15 +158,37 @@ export function HomeDashboardScreen(): React.JSX.Element {
   const fetchAvailability = useAvailabilityStore((s) => s.fetchAvailability);
   const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
 
-  useEffect(() => {
-    fetchProfile();
-    fetchUpcomingSessions();
-    fetchRequests();
-    fetchSummary();
-    fetchTransactions(1, 10);
-    fetchAvailability();
-    fetchNotifications();
-  }, []);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refreshAll = useCallback(async () => {
+    try {
+      await Promise.allSettled([
+        fetchProfile(),
+        fetchUpcomingSessions(),
+        fetchRequests(),
+        fetchSummary(),
+        fetchTransactions(1, 10),
+        fetchAvailability(),
+        fetchNotifications(),
+      ]);
+    } catch {
+      // Non-blocking
+    }
+  }, [fetchProfile, fetchUpcomingSessions, fetchRequests, fetchSummary, fetchTransactions, fetchAvailability, fetchNotifications]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshAll();
+      const interval = setInterval(refreshAll, 8000);
+      return () => clearInterval(interval);
+    }, [refreshAll])
+  );
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshAll();
+    setRefreshing(false);
+  }, [refreshAll]);
 
   const [showRequest, setShowRequest] = useState(true);
 
@@ -177,11 +200,11 @@ export function HomeDashboardScreen(): React.JSX.Element {
   const pendingCount = pendingRequests?.length ?? 0;
   const availableSlots = useAvailabilityStore((s) => s.slots.length);
   const todaySessionCount = upcomingSessions?.length ?? 0;
-  const todayEarnings = availableBalance;
+  const todayEarnings = useEarningsStore((s) => s.todayEarnings);
   // Week earnings: sum credits from recentTransactions
-  const weekEarnings = recentTransactions.
-  filter((t) => t.amount > 0 || t.status === 'pending_review').
-  reduce((sum, t) => sum + t.amount, 0);
+  const weekEarnings = recentTransactions
+    .filter((t) => Number(t.amount) > 0 || t.status === 'pending_review')
+    .reduce((sum, t) => sum + Number(t.amount), 0);
   const pendingEarnings = pendingClearance;
 
   const firstRequest = pendingRequests?.[0] ?? null;
@@ -221,7 +244,8 @@ export function HomeDashboardScreen(): React.JSX.Element {
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.gold} />}>
 
         {/* ══════════════════════════════════════════
                 SECTION 1 — PROFILE STATUS HERO

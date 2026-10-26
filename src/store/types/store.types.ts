@@ -215,8 +215,10 @@ export interface PayoutRecord {
 export interface EarningsSummary {
   availableBalance: number;      // INR — ready to payout
   pendingBalance: number;        // INR — under review
+  todayEarnings?: number;        // INR — earned today
   totalEarnedAllTime: number;    // INR
   totalEarnedThisMonth: number;  // INR
+  totalSessions?: number;        // Lifetime total completed sessions
   totalSessionsThisMonth: number;
   nextPayoutCycleDate: string;   // e.g. "2026-06-21"
   safetyHoldAmount: number;      // INR — on hold due to incident/review

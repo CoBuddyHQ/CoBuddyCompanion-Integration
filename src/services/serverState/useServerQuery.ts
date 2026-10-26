@@ -45,8 +45,7 @@ export function useServerQuery<T>(
     setError(null);
     try {
       // Force fetch by marking updatedAt 0
-      queryClient.invalidateQueries(key);
-      const res = await queryClient.fetchQuery(key, fetcherRef.current, optionsRef.current);
+      const res = await queryClient.refetchQuery(key, fetcherRef.current, optionsRef.current);
       setData(res);
       setIsLoading(false);
       return res;
@@ -66,6 +65,12 @@ export function useServerQuery<T>(
     }
 
     let isMounted = true;
+    const unsubscribeInvalidation = queryClient.subscribeInvalidation(key, () => {
+      setIsFetching(true);
+      void queryClient.refetchQuery(key, fetcherRef.current, optionsRef.current)
+        .catch(err => { if (isMounted) setError(err instanceof Error ? err : new Error(String(err))); })
+        .finally(() => { if (isMounted) { setIsFetching(false); setIsLoading(false); } });
+    });
 
     // 1. Subscribe to cache changes (e.g. from mutations or other components)
     const unsubscribe = queryClient.subscribe(key, (newData) => {
@@ -111,6 +116,7 @@ export function useServerQuery<T>(
     return () => {
       isMounted = false;
       unsubscribe();
+      unsubscribeInvalidation();
     };
   }, [enabled, JSON.stringify(key)]);
 
