@@ -31,14 +31,50 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
   const startSession = useSessionStore((s) => s.startSession);
 
   const [code, setCode] = useState<string[]>(Array(CODE_LEN).fill(''));
+  const [loading, setLoading] = useState(false);
   const inputs = useRef<(TextInput | null)[]>([]);
 
+  const handleConfirm = async (overrideCode?: string) => {
+    const codeToVerify = overrideCode || fullCode;
+    if (codeToVerify.length !== CODE_LEN || loading) {return;}
+    setLoading(true);
+    try {
+      await startSession(sessionId, codeToVerify);
+      navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+    } catch (e: any) {
+      Alert.alert(t("alerts.error"), e?.message || 'Invalid verification code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDigit = (val: string, idx: number) => {
-    const digit = val.replace(/\D/g, '').slice(-1);
+    const cleanChars = val.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    if (cleanChars.length > 1) {
+      const next = [...code];
+      for (let i = 0; i < CODE_LEN; i++) {
+        next[i] = cleanChars[i] || '';
+      }
+      setCode(next);
+      inputs.current[Math.min(cleanChars.length, CODE_LEN - 1)]?.focus();
+      const pasted = next.join('');
+      if (pasted.length === CODE_LEN) {
+        handleConfirm(pasted);
+      }
+      return;
+    }
+    const digit = cleanChars.slice(-1);
     const next = [...code];
     next[idx] = digit;
     setCode(next);
-    if (digit && idx < CODE_LEN - 1) {inputs.current[idx + 1]?.focus();}
+    if (digit && idx < CODE_LEN - 1) {
+      inputs.current[idx + 1]?.focus();
+    } else if (digit && idx === CODE_LEN - 1) {
+      const full = next.join('');
+      if (full.length === CODE_LEN) {
+        handleConfirm(full);
+      }
+    }
   };
 
   const handleBackspace = (idx: number) => {
@@ -52,21 +88,6 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
 
   const fullCode = code.join('');
   const isValid = fullCode.length === CODE_LEN;
-
-  const [loading, setLoading] = useState(false);
-
-  const handleConfirm = async () => {
-    if (!isValid || loading) {return;}
-    setLoading(true);
-    try {
-      await startSession(sessionId, fullCode);
-      navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
-    } catch (e: any) {
-      Alert.alert(t("alerts.error"), e?.message || 'Invalid verification code');
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
 

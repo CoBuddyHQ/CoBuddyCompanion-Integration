@@ -13,6 +13,9 @@
 import { apiPost } from '../client';
 import { Endpoints } from '../endpoints';
 
+export const BIOMETRIC_UNAVAILABLE_MESSAGE =
+  'Biometric sign-in is unavailable in this app. Continue with your PIN.';
+
 // ─── Request DTOs (match backend auth.dto.ts exactly) ─────────────────────────
 
 export interface SendOtpDto {
@@ -123,9 +126,9 @@ export const AuthService = {
     apiPost(Endpoints.AUTH.VERIFY_PIN, dto),
 
   /**
-   * POST /auth/companion/biometric/enroll
-   * Screen: BiometricSetupScreen (CPN-009)
+   * Enrollment needs a native device-bound key and biometric verification.
+   * Keep this interface unavailable until that integration is implemented.
    */
-  enrollBiometric: (dto: BiometricEnrollDto): Promise<{ message: string }> =>
-    apiPost<{ message: string }>(Endpoints.AUTH.BIOMETRIC_ENROLL, dto),
+  enrollBiometric: (_dto: BiometricEnrollDto): Promise<{ message: string }> =>
+    Promise.reject(new Error(BIOMETRIC_UNAVAILABLE_MESSAGE)),
 };

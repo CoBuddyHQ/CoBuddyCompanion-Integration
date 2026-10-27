@@ -34,6 +34,7 @@ class QueryClient {
   private cache = new Map<string, QueryCacheItem>();
   private inFlight = new Map<string, Promise<any>>();
   private listeners = new Map<string, Set<(data: any) => void>>();
+  private invalidationListeners = new Map<string, Set<() => void>>();
   private isPersistedLoaded = false;
 
   private serializeKey(key: QueryKey): string {
@@ -179,6 +180,30 @@ class QueryClient {
         item.updatedAt = 0; // Mark as stale
       }
     }
+    for (const [sKey, callbacks] of this.invalidationListeners) {
+      if (sKey.startsWith(prefixStr)) callbacks.forEach(callback => callback());
+    }
+  }
+
+  subscribeInvalidation(key: QueryKey, callback: () => void): () => void {
+    const sKey = this.serializeKey(key);
+    const callbacks = this.invalidationListeners.get(sKey) ?? new Set<() => void>();
+    callbacks.add(callback);
+    this.invalidationListeners.set(sKey, callbacks);
+    return () => {
+      callbacks.delete(callback);
+      if (!callbacks.size) this.invalidationListeners.delete(sKey);
+    };
+  }
+
+  async refetchQuery<T>(key: QueryKey, fetcher: () => Promise<T>, options?: QueryOptions<T>): Promise<T> {
+    const sKey = this.serializeKey(key);
+    // An event can arrive during an older request. Wait, then read authoritative state again.
+    const pending = this.inFlight.get(sKey);
+    if (pending) await pending.catch(() => undefined);
+    const cached = this.cache.get(sKey);
+    if (cached) cached.updatedAt = 0;
+    return this.fetchQuery(key, fetcher, options);
   }
 
   /**

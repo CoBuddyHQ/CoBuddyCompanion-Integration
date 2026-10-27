@@ -73,10 +73,8 @@ const EligibilityConfirmationScreen: React.FC<Props> = ({ navigation }) => {
       }
       setCurrentStage('eligibility');
       navigateToNextApplicationStep(navigation, Routes.ELIGIBILITY_CONFIRMATION);
-    } catch (e: any) {
-      console.warn('[EligibilityConfirmation] Save error:', e);
-      setCurrentStage('eligibility');
-      navigateToNextApplicationStep(navigation, Routes.ELIGIBILITY_CONFIRMATION);
+    } catch {
+      Alert.alert('Unable to save', 'Eligibility confirmation was not saved. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

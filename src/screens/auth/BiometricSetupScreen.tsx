@@ -1,40 +1,21 @@
-import i18next from 'i18next';
 /**
- * CPN-009 — BiometricSetupScreen
- * Visual parity: Stitch biometric_setup_screen/code.html
- *
- * Stitch layout:
- *  - Top nav: back + label (left-aligned)
- *  - Ambient glow blob (absolute top center)
- *  - 128×128 circle: fingerprint icon 60px gold, gold border/30 + glow effect,
- *    pulsing ring animation (absolute inset, pulse 3s ease-in-out infinite)
- *  - H1 (Playfair 28px) + body text
- *  - Badge pill: lock icon + "Fast, private, and secure"
- *  - GlassCard: "WHY ENABLE BIOMETRIC ACCESS?" (gold uppercase) + 3 feature rows
- *    with 40×40 elevated icon circles (surface-container-highest bg)
- *  - Privacy card: verified_user filled + "Your biometric data stays on your device"
- *  - "Enable Biometric Access" gold button (rounded-xl) + "Use PIN Only" ghost
- *  - Footer note text
- *
- * Content: BiometricContent from authOnboardingContent.ts
+ * CPN-009 — Native biometric enrollment is unavailable in this build.
+ * Keep PIN onboarding available without registering synthetic credentials.
  */
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
-  Animated,
-  Platform
+  Animated
 } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenTopBar from '../../components/layout/ScreenTopBar';
-import GlassCard from '../../components/cards/GlassCard';
 import ActionButton from '../../components/actions/ActionButton';
 import { AuthStackParamList } from '../../types/navigation.types';
 import { Routes } from '../../navigation/routes';
@@ -48,43 +29,21 @@ import { useTranslation } from "react-i18next";
 
 type Props = StackScreenProps<AuthStackParamList, typeof Routes.BIOMETRIC_SETUP>;
 
-const FEATURES = [
-{ icon: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_1_ICON"), text: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_1") },
-{ icon: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_2_ICON"), text: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_2") },
-{ icon: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_3_ICON"), text: i18next.t("content.auth_onboarding.BiometricContent.BENEFIT_3") }];
-
-
 const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
   const { t } = useTranslation();
   const pulseAnim = useRef(new Animated.Value(0.85)).current;
-  const { setAuthStatus, setBiometricEnabled, enrollBiometric } = useAuthStore();
-  const [loading, setLoading] = useState(false);
+  const { setAuthStatus } = useAuthStore();
 
   useEffect(() => {
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.sequence([
       Animated.timing(pulseAnim, { toValue: 1.12, duration: 1500, useNativeDriver: true }),
       Animated.timing(pulseAnim, { toValue: 0.85, duration: 1500, useNativeDriver: true })]
       )
-    ).start();
+    );
+    animation.start();
+    return () => animation.stop();
   }, [pulseAnim]);
-
-  const handleEnable = async () => {
-    setLoading(true);
-    try {
-      const deviceId = `device-${Platform.OS}-${Date.now().toString(36)}`;
-      const publicKey = `pk_${Math.random().toString(36).substring(2)}`;
-      
-      await enrollBiometric(deviceId, publicKey);
-      
-      // Transition to OnboardingStack (CPN-010 CompanionWelcome)
-      setAuthStatus('onboarding');
-    } catch (e: any) {
-      console.warn('Failed to enroll biometric', e);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSkip = () => {
     // Skip biometrics — still go to onboarding, not application
@@ -122,55 +81,19 @@ const BiometricSetupScreen: React.FC<Props> = ({ navigation: _navigation }) => {
         </View>
 
         {/* Heading */}
-        <Text style={styles.headline}>{t("content.auth_onboarding.BiometricContent.HEADLINE")}</Text>
-        <Text style={styles.subheadline}>{t("content.auth_onboarding.BiometricContent.SUBHEADLINE")}</Text>
-
-        {/* Badge pill */}
-        <View style={styles.badgePill}>
-          <Icon name="lock" size={14} color={colors.textMuted} />
-          <Text style={styles.badgePillText}>{t("content.auth_onboarding.BiometricContent.FAST_PRIVATE")}</Text>
-        </View>
-
-        {/* Features glass card */}
-        <GlassCard style={styles.featureCard} borderStrength="normal">
-          <Text style={styles.cardSectionLabel}>{t("content.auth_onboarding.BiometricContent.WHY_ENABLE")}</Text>
-          <View style={styles.featureList}>
-            {FEATURES.map((f, idx) =>
-            <View key={idx} style={styles.featureRow}>
-                <View style={styles.featureIconCircle}>
-                  <Icon name={f.icon} size={22} color={colors.textSecondary} />
-                </View>
-                <Text style={styles.featureText}>{f.text}</Text>
-              </View>
-            )}
-          </View>
-        </GlassCard>
-
-        {/* Privacy card */}
-        <View style={styles.privacyCard}>
-          <Icon name="verified-user" size={22} color={colors.gold} />
-          <View style={styles.privacyContent}>
-            <Text style={styles.privacyTitle}>{t("content.auth_onboarding.BiometricContent.STAYS_ON_DEVICE")}</Text>
-            <Text style={styles.privacyBody}>
-               {t('auth.cobuddy_does_not_store_your_fingerprint_or_face_data_your_device_handles_biometric_verification_securely')} </Text>
-          </View>
-        </View>
+        <Text style={styles.headline}>{t('auth.biometric_unavailable_title', 'Biometric sign-in unavailable')}</Text>
+        <Text style={styles.subheadline}>
+          {t('auth.biometric_unavailable_body', 'Biometric sign-in is not available in this app yet. You can continue with your PIN.')}
+        </Text>
 
         {/* CTA */}
         <View style={styles.ctaArea}>
           <ActionButton
-            label={t("content.auth_onboarding.BiometricContent.CTA_PRIMARY")}
-            onPress={handleEnable}
+            label={t("content.auth_onboarding.BiometricContent.CTA_SKIP", 'Use PIN Only')}
+            onPress={handleSkip}
             style={styles.primaryBtn}
-            disabled={loading}
-            accessibilityLabel={t("accessibility.enable_biometric_access")} />
-          
-          <TouchableOpacity accessibilityRole="button" style={styles.skipBtn} onPress={handleSkip} disabled={loading}>
-            <Text style={styles.skipText}>{t("content.auth_onboarding.BiometricContent.CTA_SKIP")}</Text>
-          </TouchableOpacity>
+            accessibilityLabel={t('auth.use_pin_only', 'Use PIN Only')} />
         </View>
-
-        <Text style={styles.footerNote}>{t("content.auth_onboarding.BiometricContent.SKIP_NOTE")}</Text>
       </ScrollView>
     </SafeAreaView>);
 

@@ -17,6 +17,10 @@ import { useAuthStore } from '../../../store/slices/authStore';
 import { useNotificationStore } from '../../../store/slices/notificationStore';
 import { queryClient } from '../../serverState';
 import { ENV } from '../../../config/env';
+import { useSessionStore } from '../../../store/slices/sessionStore';
+import { useRequestStore } from '../../../store/slices/requestStore';
+import { useEarningsStore } from '../../../store/slices/earningsStore';
+import { Routes } from '../../../navigation/routes';
 import type { AppNotification } from '../../../store/types/store.types';
 
 const SOCKET_URL = ENV.SOCKET_URL;
@@ -84,6 +88,7 @@ class SocketService {
 
     this.appSocket.on('connect', () => {
       console.log('[Socket] App connected');
+      this.refreshSessionState();
     });
 
     this.appSocket.on('disconnect', (reason) => {
@@ -95,6 +100,7 @@ class SocketService {
       const reqId = data?.requestId || data?.id || `req_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
       console.log('[Socket] New booking request received:', reqId);
       queryClient.invalidateQueries(['requests']);
+      useRequestStore.getState().fetchRequests().catch(() => {});
       const notification: AppNotification = {
         id: `req-${reqId}`,
         notificationId: `req-${reqId}`,
@@ -103,7 +109,10 @@ class SocketService {
         body: `New request from ${data?.customerInitials ?? 'a customer'}`,
         isRead: false,
         createdAt: new Date().toISOString(),
+        actionRoute: Routes.NEW_BOOKING_REQUEST_DETAIL,
+        actionParams: { requestId: reqId },
         actionUrl: `/requests/${reqId}`,
+        data: { requestId: reqId, route: Routes.NEW_BOOKING_REQUEST_DETAIL, params: { requestId: reqId } },
       } as any;
       useNotificationStore.getState().addNotification(notification);
     });
@@ -111,27 +120,50 @@ class SocketService {
     // Real-time notification push
     this.appSocket.on('notification', (data: AppNotification) => {
       useNotificationStore.getState().addNotification(data);
-      if (data.category === 'request' || data.category === 'session') {
+      if (data.category === 'request' || data.category === 'booking') {
         queryClient.invalidateQueries(['requests']);
+        useRequestStore.getState().fetchRequests().catch(() => {});
+      } else if (data.category === 'session') {
         queryClient.invalidateQueries(['sessions']);
-      } else if (data.category === 'payout') {
+        useSessionStore.getState().fetchUpcomingSessions().catch(() => {});
+      } else if (data.category === 'payout' || data.category === 'wallet') {
         queryClient.invalidateQueries(['earnings']);
+        useEarningsStore.getState().fetchSummary().catch(() => {});
       }
     });
 
     this.appSocket.on('booking_updated', () => {
       queryClient.invalidateQueries(['requests']);
       queryClient.invalidateQueries(['sessions']);
+      useRequestStore.getState().fetchRequests().catch(() => {});
+      useSessionStore.getState().fetchUpcomingSessions().catch(() => {});
+      this.refreshSessionState();
     });
 
-    this.appSocket.on('connect_error', (err: Error) => {
-      console.warn('[Socket] App connection error:', err.message);
+    this.appSocket.on('session_updated', () => {
+      queryClient.invalidateQueries(['sessions']);
+      useSessionStore.getState().fetchUpcomingSessions().catch(() => {});
+      this.refreshSessionState();
+    });
+
+    this.appSocket.on('connect_error', (_err: Error) => {
+      console.warn('[Socket] App connection failed.');
     });
   }
 
   disconnectApp(): void {
     this.appSocket?.disconnect();
     this.appSocket = null;
+  }
+
+  private refreshSessionState(): void {
+    queryClient.invalidateQueries(['requests']);
+    queryClient.invalidateQueries(['sessions']);
+    queryClient.invalidateQueries(['earnings']);
+    const state = useSessionStore.getState();
+    void Promise.allSettled([
+      state.fetchActiveSession(), state.fetchUpcomingSessions(), state.fetchSessionHistory(),
+    ]);
   }
 
   // ─── Session Socket (Chat, Location, Typing) ─────────────────────────────────
@@ -178,8 +210,8 @@ class SocketService {
       this.sessionStatus = 'disconnected';
     });
 
-    this.sessionSocket.on('connect_error', (err: Error) => {
-      console.warn('[Socket] Session error:', err.message);
+    this.sessionSocket.on('connect_error', (_err: Error) => {
+      console.warn('[Socket] Session connection failed.');
       this.sessionStatus = 'error';
     });
 
@@ -263,9 +295,9 @@ class SocketService {
       console.log('[Socket] Support disconnected:', reason);
     });
 
-    this.supportSocket.on('connect_error', (err: Error) => {
+    this.supportSocket.on('connect_error', (_err: Error) => {
       this.supportStatus = 'error';
-      console.warn('[Socket] Support error:', err.message);
+      console.warn('[Socket] Support connection failed.');
     });
 
     this.supportSocket.on('receive_support_message', (msg: ChatMessage) => {

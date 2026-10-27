@@ -155,8 +155,12 @@ export const SupportService = {
 // NOTIFICATIONS SERVICE
 // ═══════════════════════════════════════════════════════════════
 export const NotificationsService = {
-  getAll: (): Promise<AppNotification[]> =>
-    apiGet<AppNotification[]>(Endpoints.NOTIFICATIONS.LIST),
+  getAll: async (): Promise<AppNotification[]> => {
+    const res: any = await apiGet<any>(Endpoints.NOTIFICATIONS.LIST);
+    if (Array.isArray(res)) return res;
+    if (Array.isArray(res?.notifications)) return res.notifications;
+    return [];
+  },
 
   getUnreadCount: (): Promise<{ count: number }> =>
     apiGet<{ count: number }>(Endpoints.NOTIFICATIONS.UNREAD_COUNT),

@@ -54,7 +54,7 @@ export function InSessionCallScreen(): React.JSX.Element {
     makeLoop(ring3, 600).start();
     
     if (sessionId) {
-      getCallToken(sessionId).catch(e => console.error('Failed to get call token', e));
+      getCallToken(sessionId).catch(() => console.error('Failed to obtain a call session token.'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -173,11 +173,29 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   startSession: async (sessionId, passCode) => {
     set({ isLoadingActive: true, error: null });
     try {
-      await SessionsService.verifyCustomer(sessionId, { passCode });
+      const res = await SessionsService.verifyCustomer(sessionId, { passCode });
+      const nowIso = new Date().toISOString();
+      const updatedData = (res as any)?.session || res || {};
+      const checkInTime = updatedData.checkInTime || nowIso;
       
-      // Update local state directly so UI responds instantly
-      get().updateSessionStatus(sessionId, 'active');
-      set({ liveElapsedSeconds: 0 });
+      set(state => {
+        const base = state.activeSession?.sessionId === sessionId ? state.activeSession :
+          state.upcomingSessions.find(s => s.sessionId === sessionId) || ({} as any);
+        const active: Session = {
+          ...base,
+          ...updatedData,
+          sessionId,
+          status: 'active',
+          checkInTime,
+        };
+        return {
+          activeSession: active,
+          upcomingSessions: state.upcomingSessions.filter(s => s.sessionId !== sessionId),
+          liveElapsedSeconds: 0,
+        };
+      });
+      // Background sync
+      get().fetchActiveSession();
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to start session' });
       throw e;

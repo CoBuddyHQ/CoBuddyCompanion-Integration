@@ -14,6 +14,6 @@ const isDev = __DEV__;
 export const logger = {
   log: (...args: unknown[]) => isDev && console.log('[CoBuddyCompanion]', ...args),
   warn: (...args: unknown[]) => isDev && console.warn('[CoBuddyCompanion:WARN]', ...args),
-  error: (...args: unknown[]) => console.error('[CoBuddyCompanion:ERROR]', ...args),
+  error: (...args: unknown[]) => isDev && console.error('[CoBuddyCompanion:ERROR]', ...args),
   info: (...args: unknown[]) => isDev && console.info('[CoBuddyCompanion:INFO]', ...args),
 };
