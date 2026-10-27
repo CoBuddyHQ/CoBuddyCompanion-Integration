@@ -165,7 +165,7 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
       <View style={s.bar}>
         <TouchableOpacity accessibilityRole="button"
           style={[s.btn, !isValid && s.btnDisabled]}
-          onPress={handleConfirm}
+          onPress={() => { void handleConfirm(); }}
           disabled={!isValid}
           activeOpacity={0.85}
           accessibilityLabel={t("accessibility.confirm_and_start_session")}>

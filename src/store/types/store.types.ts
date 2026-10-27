@@ -248,6 +248,7 @@ export interface SafetyTimerState {
 
 export type NotificationCategory =
   | 'request'
+  | 'booking'
   | 'session'
   | 'safety'
   | 'payout'
@@ -262,6 +263,7 @@ export type NotificationCategory =
 export type NotificationPriority = 'critical' | 'high' | 'normal' | 'low';
 
 export interface AppNotification {
+  data?: { actionRoute?: string; actionParams?: Record<string, string>; sessionId?: string; requestId?: string };
   notificationId: string;
   category: NotificationCategory;
   priority: NotificationPriority;

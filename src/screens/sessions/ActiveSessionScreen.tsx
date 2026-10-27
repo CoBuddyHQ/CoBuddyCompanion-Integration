@@ -21,7 +21,7 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
 import { useTranslation } from "react-i18next";
-import { SafetyService } from '../../services/api/services/index';
+import { SafetyService, SessionsService } from '../../services/api/services/index';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.ACTIVE_SESSION>;
 
