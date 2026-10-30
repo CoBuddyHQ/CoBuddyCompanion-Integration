@@ -112,7 +112,7 @@ export const EligibilityContent = {
 
   CTA_PRIMARY: 'I Confirm — Continue',
   CTA_DISABLED_TIP: 'Please confirm all requirements to continue.',
-  BADGE_LABEL: 'Phase 1 of 4  ·  Profile Setup'
+  BADGE_LABEL: 'Phase 1 of 4  ·  Eligibility Check'
 } as const;
 
 // ─── CPN-023: Basic Details ───────────────────────────────────────────────────
@@ -140,7 +140,7 @@ export const BasicDetailsContent = {
   GENDER_OPTIONS: ['Male', 'Female', 'Non-binary', 'Prefer not to say'],
   PRIVACY_NOTE: 'Your legal name and date of birth are encrypted and used only for verification. They are never visible to customers.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup',
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 1 of 10  ·  Basic Details',
   // Below added during audit cleanup:
   SECTION_IDENTITY_TITLE: 'Identity Details',
   SECTION_IDENTITY_SUB: 'Used for verification only. Not visible to customers.',
@@ -179,7 +179,7 @@ export const BioIntroContent = {
 
   BLOCKED_NOTICE: 'Your bio contains content that does not meet CoBuddy professional standards. Please keep your bio focused on public social activities.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 2 of 10  ·  Bio Introduction'
 } as const;
 
 // ─── CPN-025: Background Declaration ─────────────────────────────────────────
@@ -223,7 +223,7 @@ export const BackgroundDeclarationContent = {
 
   LEGAL_NOTE: 'This declaration is part of your verified companion agreement with CoBuddy.',
   CTA_PRIMARY: 'Confirm Declaration & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 3 of 10  ·  Professional Declaration'
 } as const;
 
 // ─── CPN-026: Experience Categories ──────────────────────────────────────────
@@ -241,7 +241,7 @@ export const ExperienceCategoriesContent = {
   SELECTION_COUNT_LABEL: '{count} selected',
   APPROVED_NOTE: 'All categories take place at approved public venues only.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 4 of 10  ·  Experience Categories'
 } as const;
 
 // ─── CPN-027: Interests & Personality ────────────────────────────────────────
@@ -280,7 +280,7 @@ export const InterestsPersonalityContent = {
   SELECTION_COUNT_LABEL: '{count} / {max} selected',
   SAFETY_NOTE: 'Tags must reflect professional interests only. Romantic, appearance-based, or suggestive tags are not permitted.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 5 of 10  ·  Interests & Personality'
 } as const;
 
 // ─── CPN-028: Work Preference ─────────────────────────────────────────────────
@@ -311,7 +311,7 @@ export const WorkPreferenceContent = {
 
   VENUE_NOTE: 'All sessions take place at approved public venues only. Work preferences help with scheduling — not service type.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 7 of 10  ·  Work Preferences'
 } as const;
 
 // ─── CPN-029: City & Service Area ─────────────────────────────────────────────
@@ -392,7 +392,7 @@ export const CityServiceAreaContent = {
   TRAVEL_LABEL: 'Willing to travel within city?',
   TRAVEL_OPTIONS: ['Yes — within the city', 'Only my selected areas'],
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 8 of 10  ·  City & Service Area'
 } as const;
 
 // ─── CPN-030: Communication & Activity Preferences ────────────────────────────
@@ -419,7 +419,7 @@ export const CommActivityPreferencesContent = {
   ACCESSIBILITY_PLACEHOLDER: 'E.g. prefer step-free venues, need quiet spaces (optional)',
   PRIVACY_NOTE: 'These preferences help with matching only. They do not change CoBuddy\'s safety or venue requirements.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 9 of 10  ·  Communication & Activity'
 } as const;
 
 // ─── CPN-031: Public Venue Preference ─────────────────────────────────────────
@@ -450,7 +450,7 @@ export const PublicVenuePreferenceContent = {
   MIN_HINT: 'Select at least 1 venue type to continue.',
   APPROVED_NOTE: 'All venues are verified and approved by CoBuddy. Customers can only book sessions at venues on the approved list.',
   CTA_PRIMARY: 'Save & Continue',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 10 of 10  ·  Public Venues'
 } as const;
 
 // ─── CPN-032: Boundaries & Safety ─────────────────────────────────────────────
@@ -478,10 +478,10 @@ export const BoundariesSafetyContent = {
 
   ACCEPTANCE_LABEL: 'I have read and accept these boundaries and safety rules as a condition of my CoBuddy Companion application.',
   LEGAL_NOTE: 'This acknowledgement is recorded as part of your verified companion agreement.',
-  SAFETY_BADGE: 'Phase 1 of 4  ·  Profile Setup',
+  SAFETY_BADGE: 'Phase 1 of 4  ·  Boundaries & Safety',
   CTA_PRIMARY: 'Accept & Continue',
   CTA_DISABLED_TIP: 'Please read and accept the boundaries and safety rules to continue.',
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup'
+  SECTION_BADGE: 'Phase 1 of 4  ·  Boundaries & Safety'
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -492,7 +492,7 @@ export const BoundariesSafetyContent = {
 // Banned: 'Platinum rate', 'Vantage pricing', 'premium tier', 'concierge rate'
 
 export const CompanionPricingContent = {
-  SECTION_BADGE: 'Phase 3 of 4  ·  Financial Setup',
+  SECTION_BADGE: 'Phase 3 of 4  ·  Step 1 of 4  ·  Companion Pricing',
   HEADLINE: 'Set Your Session Rate',
   SUBHEADLINE: 'Choose a fair hourly rate for verified public companion sessions. Rates are reviewed by CoBuddy before your profile goes live.',
   RATE_LABEL: 'Hourly Rate (\u20B9 INR)',
@@ -543,7 +543,7 @@ export const NATIVE_SCRIPTS: Record<string, string> = {
 };
 
 export const LanguagesSelectionContent = {
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup',
+  SECTION_BADGE: 'Phase 1 of 4  ·  Step 6 of 10  ·  Languages',
   HEADLINE: 'Select Your Spoken Languages',
   SUBHEADLINE: 'Choose the languages you\'re comfortable using during customer conversations and verified public experiences.',
   LANGUAGES_TITLE: 'Languages You Speak',
@@ -569,7 +569,7 @@ export const LanguagesSelectionContent = {
 // ─── CPN-035: Profile Photo Upload ────────────────────────────────────────────
 
 export const ProfilePhotoUploadContent = {
-  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Setup',
+  SECTION_BADGE: 'Phase 1 of 4  ·  Profile Photo Upload',
   HEADLINE: 'Upload Your Profile Photo',
   SUBHEADLINE: 'Add a clear, professional photo that helps customers recognise and trust your companion profile.',
   PHOTO_STANDARDS_TITLE: 'Photo Standards',
@@ -590,7 +590,7 @@ export const ProfilePhotoUploadContent = {
 // ─── CPN-036: Government ID Type Selection ────────────────────────────────────
 
 export const GovernmentIDTypeContent = {
-  SECTION_BADGE: 'Phase 2 of 4  ·  Identity & Documents',
+  SECTION_BADGE: 'Phase 2 of 4  ·  Step 1 of 5  ·  Government ID Type',
   HEADLINE: 'Choose Your Government ID',
   SUBHEADLINE: 'Select the identity document you want to use for companion verification.',
   PROMPT_NOTE: 'Make sure your selected ID is clear, valid, and matches your basic profile details.',
@@ -611,7 +611,7 @@ export const GovernmentIDTypeContent = {
 // ─── CPN-037: Government ID Upload ────────────────────────────────────────────
 
 export const GovernmentIDUploadContent = {
-  SECTION_BADGE: 'Phase 2 of 4  ·  Identity & Documents',
+  SECTION_BADGE: 'Phase 2 of 4  ·  Step 2 of 5  ·  ID Document Upload',
   HEADLINE: 'Upload Your Government ID',
   SUBHEADLINE: 'Upload a clear image of your selected ID so CoBuddy can verify your identity safely.',
   FRONT_LABEL: 'Front side',
@@ -634,7 +634,7 @@ export const GovernmentIDUploadContent = {
 // ─── CPN-038: Selfie Capture ──────────────────────────────────────────────────
 
 export const SelfieCaptureContent = {
-  SECTION_BADGE: 'Phase 2 of 4  ·  Identity & Documents',
+  SECTION_BADGE: 'Phase 2 of 4  ·  Step 3 of 5  ·  Selfie Capture',
   HEADLINE: 'Capture Your Selfie',
   SUBHEADLINE: 'Take a clear selfie so CoBuddy can verify that your face matches your submitted identity details.',
   SELFIE_GUIDELINES_TITLE: 'Selfie Guidelines',
@@ -656,7 +656,7 @@ export const SelfieCaptureContent = {
 // ─── CPN-039: Liveness Detection ──────────────────────────────────────────────
 
 export const LivenessDetectionContent = {
-  SECTION_BADGE: 'Phase 2 of 4  ·  Identity & Documents',
+  SECTION_BADGE: 'Phase 2 of 4  ·  Step 4 of 5  ·  Liveness Check',
   HEADLINE: 'Complete Live Face Check',
   SUBHEADLINE: 'Follow the on-screen instruction so CoBuddy can confirm your selfie is live and secure.',
   INSTRUCTIONS_TITLE: 'Live Check Instructions',
@@ -677,7 +677,7 @@ export const LivenessDetectionContent = {
 // Banned: 'address shared', 'customers will see', 'public address'
 
 export const AddressVerificationContent = {
-  SECTION_BADGE: 'Phase 2 of 4  ·  Identity & Documents',
+  SECTION_BADGE: 'Phase 2 of 4  ·  Step 5 of 5  ·  Address Verification',
   HEADLINE: 'Verify Your Address',
   SUBHEADLINE: 'Add your current residential address so CoBuddy can complete trust, safety, and compliance checks.',
   PRIVACY_BADGE: 'Your address is never shared with customers',
@@ -748,7 +748,7 @@ export const PANTaxDetailsContent = {
 // ─── CPN-042: Add Bank Account ─────────────────────────────────────────────────
 
 export const AddBankAccountContent = {
-  SECTION_BADGE: 'Phase 3 of 4  ·  Financial Setup',
+  SECTION_BADGE: 'Phase 3 of 4  ·  Step 2 of 4  ·  Add Bank Account',
   HEADLINE: 'Add Verified Bank Account',
   SUBHEADLINE: 'Add your bank account for receiving CoBuddy companion earnings securely.',
   ACCOUNT_TITLE: 'Bank Account Details',
@@ -784,7 +784,7 @@ export const AddBankAccountContent = {
 // ─── CPN-043: Bank Account Verification ───────────────────────────────────────
 
 export const BankAccountVerificationContent = {
-  SECTION_BADGE: 'Phase 3 of 4  ·  Financial Setup',
+  SECTION_BADGE: 'Phase 3 of 4  ·  Step 3 of 4  ·  Bank Verification',
   HEADLINE: 'Bank Verification In Progress',
   SUBHEADLINE: 'CoBuddy is verifying your payout bank account before enabling secure earnings transfers.',
   STEPS: [
@@ -804,7 +804,7 @@ export const BankAccountVerificationContent = {
 // Banned: 'customer pays via UPI', 'backup payment', 'UPI payment from customer'
 
 export const UPIDetailsContent = {
-  SECTION_BADGE: 'Phase 3 of 4  ·  Financial Setup',
+  SECTION_BADGE: 'Phase 3 of 4  ·  Step 4 of 4  ·  UPI Details',
   HEADLINE: 'UPI for Payout Disbursement',
   SUBHEADLINE: 'Add a UPI ID where CoBuddy can send your verified companion earnings securely after payout approval.',
   OPTIONAL_NOTE: 'UPI is optional if you have already added a verified bank account.',

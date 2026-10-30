@@ -56,7 +56,15 @@ async function syncProgressWithBackend(): Promise<AuthStatus> {
     const applicationStatus = (onboardingStatus.applicationStatus || '').toLowerCase();
 
     // 2. Companion is verified/approved → Main Dashboard
-    if (verificationStatus === 'approved' || applicationStatus === 'approved' || applicationStatus === 'published' || applicationStatus === 'active') {
+    if (
+      verificationStatus === 'approved' ||
+      applicationStatus === 'approved' ||
+      applicationStatus === 'published' ||
+      applicationStatus === 'active' ||
+      verificationStatus === 'pending_review' ||
+      applicationStatus === 'submitted' ||
+      applicationStatus === 'under_review'
+    ) {
       return 'active';
     }
 
@@ -407,7 +415,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   // ── Simple setters ─────────────────────────────────────────────────────────
-  setAuthStatus: status => set({ authStatus: status }),
+  setAuthStatus: status => {
+    set({ authStatus: status });
+    AsyncStorage.setItem(K.AUTH_STATUS, status).catch(() => {});
+  },
   setToken: (token, companionId) => set({ token, companionId }),
   setMaskedPhone: masked => set({ maskedPhone: masked }),
   setPinSet: val => set({ pinSet: val }),

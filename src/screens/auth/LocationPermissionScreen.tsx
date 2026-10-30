@@ -23,7 +23,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Alert,
+  Modal,
   TouchableOpacity } from
 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -52,7 +52,13 @@ const BULLETS = [
 
 const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t } = useTranslation();
   const [requesting, setRequesting] = useState(false);
+  const [feedbackModal, setFeedbackModal] = useState<{
+    title: string;
+    message: string;
+    isApproximate?: boolean;
+  } | null>(null);
   const requestPending = useRef(false);
+
   const handleAllow = async () => {
     if (requestPending.current) return;
     requestPending.current = true;
@@ -62,18 +68,22 @@ const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t
       if (result === 'granted') {
         navigation.navigate(Routes.CREATE_PIN);
       } else if (result === 'limited') {
-        Alert.alert(
-          t('auth.approximate_location_title', 'Approximate location enabled'),
-          t('auth.approximate_location_body', 'Precise location may be required for venue check-in.'),
-          [{ text: t('common.continue', 'Continue'), onPress: () => navigation.navigate(Routes.CREATE_PIN) }],
-        );
+        setFeedbackModal({
+          title: t('auth.approximate_location_title', 'Approximate Location Enabled'),
+          message: t('auth.approximate_location_body', 'Precise location may be required for venue check-in during companion sessions.'),
+          isApproximate: true,
+        });
       } else {
         const message = result === 'blocked'
-          ? t('auth.location_blocked', 'Location access is blocked. You can change this in device settings or select Not Now.')
+          ? t('auth.location_blocked', 'Location access is blocked in device settings. You can change this in Settings or tap Not Now.')
           : result === 'denied'
-            ? t('auth.location_denied', 'Location permission was not granted. You can try again or select Not Now.')
-            : t('auth.location_unavailable', 'Location permission cannot be requested in this app on this device. You can select Not Now to continue.');
-        Alert.alert(t('auth.location_not_enabled', 'Location not enabled'), message);
+            ? t('auth.location_denied', 'Location permission was not granted. You can try again or tap Not Now to continue.')
+            : t('auth.location_unavailable', 'Location services are unavailable on this device. You can tap Not Now to continue.');
+        setFeedbackModal({
+          title: t('auth.location_not_enabled', 'Location Access Needed'),
+          message,
+          isApproximate: false,
+        });
       }
     } finally {
       requestPending.current = false;
@@ -157,7 +167,69 @@ const LocationPermissionScreen: React.FC<Props> = ({ navigation }) => {const { t
 
         <Text style={styles.footerNote}>{t("content.auth_onboarding.LocationPermContent.SKIP_NOTE")}</Text>
       </ScrollView>
-    </SafeAreaView>);
+
+      {/* Dark luxury feedback dialog */}
+      <Modal
+        visible={!!feedbackModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setFeedbackModal(null)}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <View style={styles.modalIconWrap}>
+              <Icon
+                name={feedbackModal?.isApproximate ? 'check-circle' : 'location-off'}
+                size={36}
+                color={feedbackModal?.isApproximate ? '#4CAF50' : colors.gold}
+              />
+            </View>
+            <Text style={styles.modalTitle}>{feedbackModal?.title}</Text>
+            <Text style={styles.modalMessage}>{feedbackModal?.message}</Text>
+
+            <View style={styles.modalActions}>
+              {feedbackModal?.isApproximate ? (
+                <TouchableOpacity
+                  style={styles.modalPrimaryBtn}
+                  onPress={() => {
+                    setFeedbackModal(null);
+                    navigation.navigate(Routes.CREATE_PIN);
+                  }}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.modalPrimaryBtnText}>{t('common.continue', 'Continue')}</Text>
+                </TouchableOpacity>
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={styles.modalPrimaryBtn}
+                    onPress={() => {
+                      setFeedbackModal(null);
+                      handleAllow();
+                    }}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.modalPrimaryBtnText}>{t('common.retry', 'Try Again')}</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.modalGhostBtn}
+                    onPress={() => {
+                      setFeedbackModal(null);
+                      handleSkip();
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.modalGhostBtnText}>{t('content.auth_onboarding.LocationPermContent.CTA_SKIP', 'Not Now')}</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
 
 };
 
@@ -281,7 +353,72 @@ const styles = StyleSheet.create({
     ...textStyles.labelXs,
     color: 'rgba(126, 136, 150, 0.60)',
     textAlign: 'center'
-  }
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#161B22',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(214, 168, 79, 0.35)',
+    padding: spacing.xl,
+    alignItems: 'center',
+  },
+  modalIconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(214, 168, 79, 0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  modalTitle: {
+    ...textStyles.h2,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: spacing.xs,
+  },
+  modalMessage: {
+    ...textStyles.bodySm,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: spacing.lg,
+  },
+  modalActions: {
+    width: '100%',
+    gap: spacing.sm,
+  },
+  modalPrimaryBtn: {
+    width: '100%',
+    backgroundColor: colors.gold,
+    borderRadius: radius.full,
+    paddingVertical: spacing.sm + 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalPrimaryBtnText: {
+    ...textStyles.labelMd,
+    color: '#0D1117',
+    fontWeight: '700',
+  },
+  modalGhostBtn: {
+    width: '100%',
+    paddingVertical: spacing.sm,
+    alignItems: 'center',
+  },
+  modalGhostBtnText: {
+    ...textStyles.labelSm,
+    color: colors.textMuted,
+  },
 });
 
 export default LocationPermissionScreen;

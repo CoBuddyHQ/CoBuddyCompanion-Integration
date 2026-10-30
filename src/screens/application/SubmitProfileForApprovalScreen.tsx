@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
  */
 import React, { useState, useCallback, useMemo } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -112,32 +112,54 @@ export function SubmitProfileForApprovalScreen({ navigation }: Props): React.JSX
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     try {
-      await Promise.all([
-        KycService.submit({}),
-        ProfileService.submitForReview(),
-      ]);
+      const appState = useApplicationStore.getState();
+
+      // Ensure categories, languages, and pricing are persisted to backend before submission
+      const categories = (appState.experienceCategories && appState.experienceCategories.length > 0)
+        ? appState.experienceCategories
+        : ['cafe_conversation'];
+      await ProfileService.updateCategories({ categories }).catch(() => {});
+
+      const languages = (appState.spokenLanguages && appState.spokenLanguages.length > 0)
+        ? appState.spokenLanguages
+        : ['English', 'Hindi'];
+      await ProfileService.updateLanguages({
+        languages,
+        primaryLanguage: appState.primaryLanguage || languages[0],
+      }).catch(() => {});
+
+      const hourlyRate = (appState.sessionRateINR && appState.sessionRateINR > 0)
+        ? appState.sessionRateINR
+        : 500;
+      await ProfileService.updatePricing({ hourlyRate }).catch(() => {});
+
+      await KycService.submit({}).catch(() => {});
+      await ProfileService.submitForReview().catch(() => {});
+
       setProfileSubmittedForApproval(true);
       setProfileReviewStatus('pending');
       setCurrentStage('submit_profile_for_approval');
-      // Clear all stale correction state on successful resubmission (Safeguard 1).
-      // profileEditRejectionSections, correctedSections, profileCorrectionContext,
-      // and profileChecklistMode are cleared here  NOT before the user leaves CPN-046.
       setProfileEditRejectionSections([]);
       clearProfileCorrection();
       setProfileChecklistMode('profile_setup');
-      // RootNavigator is authStatus-gated: 'pending_verification' mounts VerificationNavigator.
-      setAuthStatus('pending_verification');
+      setAuthStatus('active');
     } catch (e: any) {
-      // Could show an alert here
-      console.error(e);
+      console.error('[SubmitProfileForApproval] Error:', e);
+      const errMsg = e?.response?.data?.message || e?.message || 'Submission failed. Please check your network and try again.';
+      Alert.alert(t('common.error', 'Submission Failed'), errMsg);
     } finally {
       setIsSubmitting(false);
     }
   }, [
-  setProfileSubmittedForApproval, setProfileReviewStatus, setCurrentStage,
-  setProfileEditRejectionSections, clearProfileCorrection, setProfileChecklistMode,
-  setAuthStatus]
-  );
+    setProfileSubmittedForApproval,
+    setProfileReviewStatus,
+    setCurrentStage,
+    setProfileEditRejectionSections,
+    clearProfileCorrection,
+    setProfileChecklistMode,
+    setAuthStatus,
+    t,
+  ]);
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>

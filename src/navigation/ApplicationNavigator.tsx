@@ -5,7 +5,10 @@
  *   Phase 4B (CPN-033 to CPN-044) — COMPLETE
  *   Phase 4C (CPN-045+)           — PlaceholderScreen
  */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {View, ActivityIndicator, BackHandler, Alert} from 'react-native';
+import {colors} from '../theme/colors';
+import {FlowTracker} from '../services/flowTracker';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ApplicationStackParamList} from '../types/navigation.types';
 import {Routes} from './routes';
@@ -85,14 +88,67 @@ const VALID_APPLICATION_ROUTES = new Set<string>([
 const Stack = createStackNavigator<ApplicationStackParamList>();
 
 const ApplicationNavigator: React.FC = () => {
-  // Read the intended entry route for this mount.
-  // Default is Routes.JOURNEY_INTRO for fresh application starts.
-  // VerificationNavigator screens set this BEFORE calling setAuthStatus('applying')
-  // to control which screen is shown when this navigator mounts.
+  const [resolvedRoute, setResolvedRoute] = useState<string | null>(null);
   const applicationEntryRoute = useApplicationStore((s) => s.applicationEntryRoute);
-  const safeInitialRoute = (applicationEntryRoute && VALID_APPLICATION_ROUTES.has(applicationEntryRoute))
-    ? (applicationEntryRoute as keyof ApplicationStackParamList)
-    : (Routes.JOURNEY_INTRO as keyof ApplicationStackParamList);
+
+  useEffect(() => {
+    let isMounted = true;
+    const resolveProgress = async () => {
+      try {
+        const result = await FlowTracker.reconcileApplicationProgress();
+        if (isMounted) {
+          const target = result.screenName && VALID_APPLICATION_ROUTES.has(result.screenName)
+            ? result.screenName
+            : applicationEntryRoute && VALID_APPLICATION_ROUTES.has(applicationEntryRoute)
+              ? applicationEntryRoute
+              : Routes.JOURNEY_INTRO;
+          setResolvedRoute(target);
+        }
+      } catch {
+        if (isMounted) {
+          setResolvedRoute(
+            applicationEntryRoute && VALID_APPLICATION_ROUTES.has(applicationEntryRoute)
+              ? applicationEntryRoute
+              : Routes.JOURNEY_INTRO
+          );
+        }
+      }
+    };
+    resolveProgress();
+    return () => { isMounted = false; };
+  }, []);
+
+  useEffect(() => {
+    const handleHardwareBack = () => {
+      Alert.alert(
+        'Save Application Progress?',
+        'Your completed steps are securely saved. You can safely return and continue anytime.',
+        [
+          { text: 'Keep Editing', style: 'cancel' },
+          {
+            text: 'Save & Exit',
+            onPress: () => {
+              useApplicationStore.getState().setApplicationEntryRoute(Routes.APPLICATION_SAVED_DRAFT as any);
+            },
+          },
+        ]
+      );
+      return true;
+    };
+
+    const backSub = BackHandler.addEventListener('hardwareBackPress', handleHardwareBack);
+    return () => backSub.remove();
+  }, []);
+
+  if (!resolvedRoute) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.rootBg, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={colors.gold} />
+      </View>
+    );
+  }
+
+  const safeInitialRoute = resolvedRoute as keyof ApplicationStackParamList;
 
   return (
     <Stack.Navigator

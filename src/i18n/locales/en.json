@@ -1417,7 +1417,7 @@
     "message_to_customer": "Message to Customer",
     "optional_message_to_customer": "Optional message to customer…",
     "send_suggestion": "Send Suggestion",
-    "languages_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "languages_section_badge": "Phase 1 of 4  ·  Step 6 of 10  ·  Languages",
     "languages_headline": "Select Your Spoken Languages",
     "languages_subheadline": "Choose the languages you're comfortable using during customer conversations and verified public experiences.",
     "languages_title": "Languages You Speak",
@@ -1433,7 +1433,7 @@
     "languages_cta_primary": "Save Languages & Continue",
     "languages_required_alert_title": "Language Required",
     "languages_required_alert_body": "Please select at least one language.",
-    "interests_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "interests_section_badge": "Phase 1 of 4  ·  Step 5 of 10  ·  Interests & Personality",
     "interests_headline": "Interests & Personality",
     "interests_subheadline": "Add tags that describe your personality and interests. These help customers find companions who match their activity preferences.",
     "interests_comm_title": "Communication Style",
@@ -1461,7 +1461,7 @@
     "interests_tag_history_heritage": "History & Heritage",
     "interests_tag_photography": "Photography",
     "interests_tag_music_concerts": "Music & Concerts",
-    "city_service_section_badge": "Phase 1 of 4  ·  Profile Setup",
+    "city_service_section_badge": "Phase 1 of 4  ·  Step 8 of 10  ·  City & Service Area",
     "city_service_headline": "City & Service Area",
     "city_service_subheadline": "Share which city and broad areas you are available to meet customers. Your exact residential location is never shown to customers.",
     "city_service_city_label": "Your City",
@@ -1476,7 +1476,7 @@
     "city_service_travel_opt_no": "Prefer my local areas only",
     "city_service_cta_primary": "Save & Continue",
     "city_service_disabled_tip_area": "Select at least 1 broad service area.",
-    "bank_verification_section_badge": "Phase 3 of 4  ·  Financial Setup",
+    "bank_verification_section_badge": "Phase 3 of 4  ·  Step 3 of 4  ·  Bank Verification",
     "bank_verification_headline": "Bank Verification In Progress",
     "bank_verification_subheadline": "CoBuddy is verifying your payout bank account before enabling secure earnings transfers.",
     "bank_verification_step_submitted": "Bank details submitted",
@@ -1525,7 +1525,13 @@
     "almost_secured": "Almost secured",
     "after_confirmation_you_can_enable_biometric_access_for_faster_and_safer_login": "After confirmation, you can enable biometric access for faster and safer login.",
     "protected_companion_account": "Protected companion account",
-    "your_pin_helps_protect_bookings_earnings_session_details_safety_tools_and_profile_access": "Your PIN helps protect bookings, earnings, session details, safety tools, and profile access."
+    "your_pin_helps_protect_bookings_earnings_session_details_safety_tools_and_profile_access": "Your PIN helps protect bookings, earnings, session details, safety tools, and profile access.",
+    "location_not_enabled": "Location Access Needed",
+    "location_denied": "Location permission was not granted. You can try again or tap Not Now to continue.",
+    "location_blocked": "Location access is blocked in device settings. You can enable it in Settings or tap Not Now.",
+    "location_unavailable": "Location services are unavailable on this device. You can tap Not Now to continue.",
+    "approximate_location_title": "Approximate Location Enabled",
+    "approximate_location_body": "Precise location may be required for venue check-in during active companion sessions."
   },
   "content": {
     "application_kyc": {
@@ -1586,7 +1592,7 @@
         "SECTION_BODY": "All five confirmations are required to proceed. If you do not meet any requirement, you will not be able to complete the application at this time.",
         "CTA_PRIMARY": "I Confirm — Continue",
         "CTA_DISABLED_TIP": "Please confirm all requirements to continue.",
-        "BADGE_LABEL": "Phase 1 of 4  ·  Profile Setup",
+        "BADGE_LABEL": "Phase 1 of 4  ·  Eligibility Check",
         "CONFIRMATIONS": [
           {
             "id": "age",
@@ -1646,7 +1652,7 @@
         ],
         "PRIVACY_NOTE": "Your legal name and date of birth are encrypted and used only for verification. They are never visible to customers.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 1 of 10  ·  Basic Details",
         "SECTION_IDENTITY_TITLE": "Identity Details",
         "SECTION_IDENTITY_SUB": "Used for verification only. Not visible to customers.",
         "SECTION_CONTACT_TITLE": "Contact & Date of Birth",
@@ -1671,7 +1677,7 @@
         "GUIDELINES_TITLE": "Writing Guidelines",
         "BLOCKED_NOTICE": "Your bio contains content that does not meet CoBuddy professional standards. Please keep your bio focused on public social activities.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 2 of 10  ·  Bio Introduction",
         "CHAR_MIN": 50,
         "CHAR_MAX": 500,
         "GUIDELINES": [
@@ -1708,7 +1714,7 @@
         "SECTION_BODY": "This declaration ensures CoBuddy maintains a safe, professional platform for both companions and customers. All statements must be true and confirmed.",
         "LEGAL_NOTE": "This declaration is part of your verified companion agreement with CoBuddy.",
         "CTA_PRIMARY": "Confirm Declaration & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 3 of 10  ·  Professional Declaration",
         "DECLARATIONS": [
           {
             "id": "accurate_info",
@@ -1751,7 +1757,7 @@
         "SELECTION_COUNT_LABEL": "{count} selected",
         "APPROVED_NOTE": "All categories take place at approved public venues only.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 4 of 10  ·  Experience Categories",
         "CATEGORIES": [
           {
             "id": "cafe",
@@ -1815,7 +1821,7 @@
         "SELECTION_COUNT_LABEL": "{count} / {max} selected",
         "SAFETY_NOTE": "Tags must reflect professional interests only. Romantic, appearance-based, or suggestive tags are not permitted.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 5 of 10  ·  Interests & Personality",
         "COMM_TAGS": [
           {
             "id": "great_listener",
@@ -1920,7 +1926,7 @@
         "FREQ_TITLE": "Weekly Session Frequency",
         "VENUE_NOTE": "All sessions take place at approved public venues only. Work preferences help with scheduling — not service type.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 7 of 10  ·  Work Preferences",
         "DURATION_OPTIONS": [
           {
             "id": "1h",
@@ -2132,7 +2138,7 @@
           "Only my selected areas"
         ],
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 8 of 10  ·  City & Service Area",
         "CITY_OPTIONS": null,
         "BROAD_AREA_MIN": 1,
         "BROAD_AREA_MAX": 8
@@ -2147,7 +2153,7 @@
         "ACCESSIBILITY_PLACEHOLDER": "E.g. prefer step-free venues, need quiet spaces (optional)",
         "PRIVACY_NOTE": "These preferences help with matching only. They do not change CoBuddy's safety or venue requirements.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup"
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 9 of 10  ·  Communication & Activity"
       },
       "PublicVenuePreferenceContent": {
         "HEADLINE": "Public Venue Preferences",
@@ -2157,7 +2163,7 @@
         "MIN_HINT": "Select at least 1 venue type to continue.",
         "APPROVED_NOTE": "All venues are verified and approved by CoBuddy. Customers can only book sessions at venues on the approved list.",
         "CTA_PRIMARY": "Save & Continue",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 10 of 10  ·  Public Venues",
         "VENUES": [
           {
             "id": "cafe",
@@ -2243,10 +2249,10 @@
         "COMPANION_RIGHTS_SUBTITLE": "CoBuddy guarantees these protections for every verified companion.",
         "ACCEPTANCE_LABEL": "I have read and accept these boundaries and safety rules as a condition of my CoBuddy Companion application.",
         "LEGAL_NOTE": "This acknowledgement is recorded as part of your verified companion agreement.",
-        "SAFETY_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SAFETY_BADGE": "Phase 1 of 4  ·  Boundaries & Safety",
         "CTA_PRIMARY": "Accept & Continue",
         "CTA_DISABLED_TIP": "Please read and accept the boundaries and safety rules to continue.",
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Boundaries & Safety",
         "PLATFORM_RULES": [
           {
             "icon": "store",
@@ -2298,7 +2304,7 @@
         ]
       },
       "CompanionPricingContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  ·  Step 1 of 4  ·  Companion Pricing",
         "HEADLINE": "Set Your Session Rate",
         "SUBHEADLINE": "Choose a fair hourly rate for verified public companion sessions. Rates are reviewed by CoBuddy before your profile goes live.",
         "RATE_LABEL": "Hourly Rate (₹ INR)",
@@ -2353,7 +2359,7 @@
         "Urdu": "ا"
       },
       "LanguagesSelectionContent": {
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Step 6 of 10  ·  Languages",
         "HEADLINE": "Select Your Spoken Languages",
         "SUBHEADLINE": "Choose the languages you're comfortable using during customer conversations and verified public experiences.",
         "LANGUAGES_TITLE": "Languages You Speak",
@@ -2369,7 +2375,7 @@
         "COMFORT_OPTIONS": null
       },
       "ProfilePhotoUploadContent": {
-        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Photo Upload",
         "HEADLINE": "Upload Your Profile Photo",
         "SUBHEADLINE": "Add a clear, professional photo that helps customers recognise and trust your companion profile.",
         "PHOTO_STANDARDS_TITLE": "Photo Standards",
@@ -2399,7 +2405,7 @@
         ]
       },
       "GovernmentIDTypeContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  Step 1 of 5  ·  Government ID Type",
         "HEADLINE": "Choose Your Government ID",
         "SUBHEADLINE": "Select the identity document you want to use for companion verification.",
         "PROMPT_NOTE": "Make sure your selected ID is clear, valid, and matches your basic profile details.",
@@ -2412,7 +2418,7 @@
         "ID_OPTIONS": null
       },
       "GovernmentIDUploadContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  Step 2 of 5  ·  ID Document Upload",
         "HEADLINE": "Upload Your Government ID",
         "SUBHEADLINE": "Upload a clear image of your selected ID so CoBuddy can verify your identity safely.",
         "FRONT_LABEL": "Front side",
@@ -2427,7 +2433,7 @@
         "UPLOAD_GUIDELINES": null
       },
       "SelfieCaptureContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  Step 3 of 5  ·  Selfie Capture",
         "HEADLINE": "Capture Your Selfie",
         "SUBHEADLINE": "Take a clear selfie so CoBuddy can verify that your face matches your submitted identity details.",
         "SELFIE_GUIDELINES_TITLE": "Selfie Guidelines",
@@ -2458,7 +2464,7 @@
         ]
       },
       "LivenessDetectionContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  Step 4 of 5  ·  Liveness Check",
         "HEADLINE": "Complete Live Face Check",
         "SUBHEADLINE": "Follow the on-screen instruction so CoBuddy can confirm your selfie is live and secure.",
         "INSTRUCTIONS_TITLE": "Live Check Instructions",
@@ -2484,7 +2490,7 @@
         ]
       },
       "AddressVerificationContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  Step 5 of 5  ·  Address Verification",
         "HEADLINE": "Verify Your Address",
         "SUBHEADLINE": "Add your current residential address so CoBuddy can complete trust, safety, and compliance checks.",
         "PRIVACY_BADGE": "Your address is never shared with customers",
@@ -2510,12 +2516,18 @@
         "CTA_PRIMARY": "Save Address Details",
         "CTA_SAVE_LATER": "Save & Continue Later",
         "TYPE_OPTIONS": [
-          { "value": "current_residence", "label": "Current Residence" },
-          { "value": "permanent_residence", "label": "Permanent Residence" }
+          {
+            "value": "current_residence",
+            "label": "Current Residence"
+          },
+          {
+            "value": "permanent_residence",
+            "label": "Permanent Residence"
+          }
         ]
       },
       "PANTaxDetailsContent": {
-        "SECTION_BADGE": "Phase 2 of 4  ·  Identity & Documents",
+        "SECTION_BADGE": "Phase 2 of 4  ·  PAN & Tax Details",
         "HEADLINE": "Add PAN & Tax Details",
         "SUBHEADLINE": "Provide your PAN information so CoBuddy can support earnings, payout records, and compliance requirements.",
         "REQUIRED_FOR": "Required for payouts",
@@ -2538,7 +2550,7 @@
         "CTA_SAVE_LATER": "Save & Continue Later"
       },
       "AddBankAccountContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  ·  Step 2 of 4  ·  Add Bank Account",
         "HEADLINE": "Add Verified Bank Account",
         "SUBHEADLINE": "Add your bank account for receiving CoBuddy companion earnings securely.",
         "ACCOUNT_TITLE": "Bank Account Details",
@@ -2565,13 +2577,22 @@
         "CTA_CANCEL": "Cancel",
         "PRIVACY_NOTE": "Bank details are encrypted and used only for payout disbursement.",
         "TYPE_OPTIONS": [
-          { "value": "savings", "label": "Savings" },
-          { "value": "current", "label": "Current" },
-          { "value": "salary", "label": "Salary" }
+          {
+            "value": "savings",
+            "label": "Savings"
+          },
+          {
+            "value": "current",
+            "label": "Current"
+          },
+          {
+            "value": "salary",
+            "label": "Salary"
+          }
         ]
       },
       "BankAccountVerificationContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  ·  Step 3 of 4  ·  Bank Verification",
         "HEADLINE": "Bank Verification In Progress",
         "SUBHEADLINE": "CoBuddy is verifying your payout bank account before enabling secure earnings transfers.",
         "SLA_NOTE": "Usually completed within a few minutes to 24 hours.",
@@ -2582,7 +2603,7 @@
         "STEPS": null
       },
       "UPIDetailsContent": {
-        "SECTION_BADGE": "Phase 3 of 4  ·  Financial Setup",
+        "SECTION_BADGE": "Phase 3 of 4  ·  Step 4 of 4  ·  UPI Payout Details",
         "HEADLINE": "UPI for Payout Disbursement",
         "SUBHEADLINE": "Add a UPI ID where CoBuddy can send your verified companion earnings securely after payout approval.",
         "OPTIONAL_NOTE": "UPI is optional if you have already added a verified bank account.",
@@ -2626,8 +2647,8 @@
       "ProfileSetupIntroContent": {
         "HEADLINE": "Build Your Companion Profile",
         "SUBHEADLINE": "Complete the following steps to create your companion profile.",
-        "SETUP_BADGE": "Phase 1 of 4 · Profile Setup",
-        "SECTION_BADGE": "Phase 1 of 4 · Profile Setup",
+        "SETUP_BADGE": "Phase 1 of 4  ·  Profile Setup",
+        "SECTION_BADGE": "Phase 1 of 4  ·  Profile Setup",
         "SETUP_JOURNEY_TITLE": "Your Profile Journey",
         "SETUP_JOURNEY_NOTE": "Complete each step to build a complete and professional companion profile.",
         "REVIEW_NOTE": "You can save your progress at any time and continue later.",
@@ -2662,14 +2683,14 @@
       "ProfileCompletionChecklistContent": {
         "HEADLINE": "Application Checklist",
         "SUBHEADLINE": "All items must be complete before you can submit.",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  ·  Step 2 of 2  ·  Review Checklist",
         "CTA_PRIMARY": "Submit for Review",
         "CTA_SECONDARY": "Continue Editing"
       },
       "ApplicationSavedDraftContent": {
         "HEADLINE": "Progress Saved",
         "SUBHEADLINE": "Your application has been saved. You can return and continue any time.",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "CoBuddy Companion  ·  Saved Application Draft",
         "SAVE_BADGE": "Draft Saved",
         "PROGRESS_TITLE": "Completed Steps",
         "NEXT_STEP_TITLE": "Next Step",
@@ -2686,7 +2707,7 @@
         "HEADLINE": "Your Application",
         "SUBHEADLINE": "Track your progress across all application phases.",
         "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  ·  Application Progress",
         "PROGRESS_TITLE": "Application Progress",
         "NEXT_STEP_NOTE": "Complete all required sections before you can submit your profile for review.",
         "COMPLETED_TITLE": "Completed Sections",
@@ -2723,7 +2744,7 @@
         "HEADLINE": "What Happens Next",
         "SUBHEADLINE": "Your application will be reviewed by the CoBuddy team within 3–5 business days.",
         "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  ·  Step 1 of 2  ·  Application Review",
         "REVIEW_TITLE": "Review Checklist",
         "PRIVACY_NOTE": "All submitted data is encrypted. Documents are used only for verification and never shared with clients.",
         "CTA_BEGIN": "Submit for Review",
@@ -2760,7 +2781,7 @@
         "HEADLINE": "Submit Your Application",
         "SUBHEADLINE": "By submitting, you confirm that all information provided is accurate and complete.",
         "STEP_LABEL": "Phase 4 of 4  ·  Review & Submit",
-        "SECTION_BADGE": "Phase 4 of 4  ·  Review & Submit",
+        "SECTION_BADGE": "Phase 4 of 4  ·  Step 2 of 2  ·  Submit for Approval",
         "SUMMARY_TITLE": "Application Summary",
         "CHECKLIST_TITLE": "Pre-submission Checklist",
         "CHECKLIST_ITEMS": [
