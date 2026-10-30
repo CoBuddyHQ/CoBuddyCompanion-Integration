@@ -170,7 +170,14 @@ export function CustomerRatingFeedbackScreen(): React.JSX.Element {
 
         {/* Skip link */}
         <TouchableOpacity accessibilityRole="button" style={s.skipLink}
-        onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}
+        onPress={() => {
+          const parent = navigation.getParent();
+          if (parent) {
+            parent.navigate('DashboardTab');
+          } else {
+            navigation.navigate('MainApp', { screen: 'DashboardTab' });
+          }
+        }}
         activeOpacity={0.6}>
           <Text style={s.skipText}> {t('sessions.skip_for_now')} </Text>
         </TouchableOpacity>

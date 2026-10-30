@@ -405,4 +405,23 @@ export type RootStackParamList = {
   [Routes.FORCE_UPDATE]: undefined;
   // Session incoming call
   [Routes.INCOMING_CALL]: {customerName?: string};
+  // Live Session Lifecycle screens (globally accessible so SessionDetail & deep links can reach them)
+  [Routes.PRE_ARRIVAL]: {sessionId: string};
+  [Routes.NAVIGATION_TO_VENUE]: {sessionId: string};
+  [Routes.ARRIVAL_CHECK_IN]: {sessionId: string};
+  [Routes.CUSTOMER_ARRIVAL_VERIFICATION]: {sessionId: string};
+  [Routes.ACTIVE_SESSION]: {sessionId: string};
+  [Routes.IN_SESSION_CHAT]: {sessionId: string; customerName?: string};
+  [Routes.IN_SESSION_CALL]: {sessionId: string; customerName?: string};
+  [Routes.LIVE_LOCATION_SHARING]: {sessionId: string};
+  [Routes.EXTEND_SESSION_REQUEST]: {sessionId: string};
+  [Routes.EXTEND_SESSION_CONFIRMATION]: {sessionId: string; extendedMinutes: number};
+  [Routes.EARLY_END_SESSION]: {sessionId: string};
+  [Routes.CANCEL_SESSION_REQUEST]: {sessionId: string};
+  [Routes.CANCELLATION_REASON]: {sessionId: string; reason: string};
+  [Routes.CANCELLATION_REVIEW_PENDING]: {sessionId: string};
+  [Routes.CUSTOMER_NO_SHOW]: {sessionId: string};
+  [Routes.POST_SESSION_NOTES]: {sessionId: string};
+  [Routes.SESSION_COMPLETE]: {sessionId: string};
+  [Routes.CUSTOMER_RATING_FEEDBACK]: {sessionId: string};
 };

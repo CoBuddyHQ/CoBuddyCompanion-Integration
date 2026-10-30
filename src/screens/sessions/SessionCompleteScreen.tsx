@@ -166,7 +166,14 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
 
           <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
-            onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}
+            onPress={() => {
+              const parent = navigation.getParent();
+              if (parent) {
+                parent.navigate('DashboardTab');
+              } else {
+                navigation.navigate('MainApp', { screen: 'DashboardTab' });
+              }
+            }}
             activeOpacity={0.75}
             accessibilityLabel={t("accessibility.back_to_dashboard")}>
             <Text style={styles.btnSecondaryText}> {t('sessions.back_to_dashboard')} </Text>

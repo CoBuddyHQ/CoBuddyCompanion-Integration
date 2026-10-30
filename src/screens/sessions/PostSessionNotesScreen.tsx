@@ -48,7 +48,12 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   setTags((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
 
   const goToDashboard = () => {
-    navigation.navigate('MainApp', { screen: 'DashboardTab' });
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.navigate('DashboardTab');
+    } else {
+      navigation.navigate('MainApp', { screen: 'DashboardTab' });
+    }
   };
 
   const handleSave = async () => {

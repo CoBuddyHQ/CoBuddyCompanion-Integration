@@ -102,7 +102,7 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={s.root} edges={['top']}>
+    <SafeAreaView style={s.root} edges={['top', 'bottom']}>
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
       <AppHeader title={t('sessions.verify_customer')} showBack
       onBackPress={() => navigation.canGoBack() ? navigation.goBack() : undefined} />
@@ -220,7 +220,7 @@ const s = StyleSheet.create({
   noShowLink: { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' },
   noShowText: { fontFamily: fontFamily.interSemiBold, fontSize: 14, color: colors.softWarning },
 
-  bar: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md, paddingBottom: spacing.xl,
+  bar: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md,
     backgroundColor: colors.rootBg, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.07)' },
   btn: { height: 52, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
     borderRadius: radius.md, backgroundColor: colors.gold },

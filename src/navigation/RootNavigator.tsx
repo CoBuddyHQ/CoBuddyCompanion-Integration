@@ -59,6 +59,24 @@ import {NetworkErrorScreen}              from '../screens/system/NetworkErrorScr
 import {MaintenanceModeScreen}           from '../screens/system/MaintenanceModeScreen';
 import {ForceUpdateScreen}               from '../screens/system/ForceUpdateScreen';
 import {IncomingCallScreen}              from '../screens/sessions/IncomingCallScreen';
+import {NavigationToVenueScreen}         from '../screens/sessions/NavigationToVenueScreen';
+import {PreArrivalScreen}                from '../screens/sessions/PreArrivalScreen';
+import {ArrivalCheckInScreen}            from '../screens/sessions/ArrivalCheckInScreen';
+import {CustomerArrivalVerificationScreen} from '../screens/sessions/CustomerArrivalVerificationScreen';
+import {ActiveSessionScreen}             from '../screens/sessions/ActiveSessionScreen';
+import {InSessionChatScreen}             from '../screens/sessions/InSessionChatScreen';
+import {InSessionCallScreen}             from '../screens/sessions/InSessionCallScreen';
+import {LiveLocationSharingScreen}       from '../screens/sessions/LiveLocationSharingScreen';
+import {ExtendSessionRequestScreen}      from '../screens/sessions/ExtendSessionRequestScreen';
+import {ExtendSessionConfirmationScreen} from '../screens/sessions/ExtendSessionConfirmationScreen';
+import {EarlyEndSessionScreen}           from '../screens/sessions/EarlyEndSessionScreen';
+import {CancelSessionRequestScreen}      from '../screens/sessions/CancelSessionRequestScreen';
+import {CancellationReasonScreen}        from '../screens/sessions/CancellationReasonScreen';
+import {CancellationReviewPendingScreen} from '../screens/sessions/CancellationReviewPendingScreen';
+import {CustomerNoShowScreen}            from '../screens/sessions/CustomerNoShowScreen';
+import {PostSessionNotesScreen}          from '../screens/sessions/PostSessionNotesScreen';
+import {SessionCompleteScreen}           from '../screens/sessions/SessionCompleteScreen';
+import {CustomerRatingFeedbackScreen}    from '../screens/sessions/CustomerRatingFeedbackScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -309,6 +327,97 @@ const RootNavigator: React.FC = () => {
         name={Routes.BOOKING_DECLINED_SUCCESS}
         component={BookingDeclinedSuccessScreen as any}
         options={{headerShown: false}}
+      />
+      {/* ── Live Session Lifecycle Screens (globally accessible) ── */}
+      <Stack.Screen
+        name={Routes.NAVIGATION_TO_VENUE}
+        component={NavigationToVenueScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.PRE_ARRIVAL}
+        component={PreArrivalScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.ARRIVAL_CHECK_IN}
+        component={ArrivalCheckInScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.CUSTOMER_ARRIVAL_VERIFICATION}
+        component={CustomerArrivalVerificationScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.ACTIVE_SESSION}
+        component={ActiveSessionScreen as any}
+        options={{headerShown: false, gestureEnabled: false, headerLeft: () => null}}
+      />
+      <Stack.Screen
+        name={Routes.IN_SESSION_CHAT}
+        component={InSessionChatScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.IN_SESSION_CALL}
+        component={InSessionCallScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.LIVE_LOCATION_SHARING}
+        component={LiveLocationSharingScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.EXTEND_SESSION_REQUEST}
+        component={ExtendSessionRequestScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.EXTEND_SESSION_CONFIRMATION}
+        component={ExtendSessionConfirmationScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.EARLY_END_SESSION}
+        component={EarlyEndSessionScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.CANCEL_SESSION_REQUEST}
+        component={CancelSessionRequestScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.CANCELLATION_REASON}
+        component={CancellationReasonScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.CANCELLATION_REVIEW_PENDING}
+        component={CancellationReviewPendingScreen as any}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name={Routes.CUSTOMER_NO_SHOW}
+        component={CustomerNoShowScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.POST_SESSION_NOTES}
+        component={PostSessionNotesScreen as any}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={Routes.SESSION_COMPLETE}
+        component={SessionCompleteScreen as any}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name={Routes.CUSTOMER_RATING_FEEDBACK}
+        component={CustomerRatingFeedbackScreen as any}
+        options={{headerShown: false, gestureEnabled: false}}
       />
     </Stack.Navigator>
   );

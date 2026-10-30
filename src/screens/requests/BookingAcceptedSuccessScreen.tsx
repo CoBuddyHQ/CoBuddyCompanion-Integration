@@ -64,6 +64,24 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
   const dateLabel = request ? formatShortDateTime(request.proposedStart) : '';
   const earning = request ? `₹${request.estimatedEarning.toLocaleString('en-IN')}` : '';
 
+  const handleGoToUpcoming = () => {
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.navigate('SessionsTab', { screen: Routes.UPCOMING_SESSIONS });
+    } else {
+      navigation.navigate('MainApp', { screen: 'SessionsTab', params: { screen: Routes.UPCOMING_SESSIONS } });
+    }
+  };
+
+  const handleGoToDashboard = () => {
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.navigate('DashboardTab');
+    } else {
+      navigation.navigate('MainApp', { screen: 'DashboardTab' });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
       <StatusBar barStyle="light-content" backgroundColor={colors.rootBg} />
@@ -81,8 +99,8 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
         </Animated.View>
 
         <Text style={styles.heroTitle}>{t("application.booking_confirmed")}</Text>
-        <Text style={styles.heroSubtitle}>{t("application.your_session_with")}
-          {customerInitials}{t("application.is_set_for")}{'\n'}
+        <Text style={styles.heroSubtitle}>
+          {t("application.your_session_with")} {customerInitials} {t("application.is_set_for")}{'\n'}
           <Text style={styles.heroDateHighlight}>{dateLabel}</Text>
         </Text>
 
@@ -90,7 +108,7 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
         {earning ?
         <View style={styles.earningPill}>
             <Icon name="account-balance-wallet" size={15} color={colors.gold} />
-            <Text style={styles.earningPillText}>{earning}{t("application.will_be_credited_after_the_session")}</Text>
+            <Text style={styles.earningPillText}>{earning} {t("application.will_be_credited_after_the_session")}</Text>
           </View> :
         null}
 
@@ -112,7 +130,7 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
         <View style={styles.actions}>
           <TouchableOpacity accessibilityRole="button"
             style={styles.btnPrimary}
-            onPress={() => navigation.navigate('SessionsTab', { screen: Routes.UPCOMING_SESSIONS })}
+            onPress={handleGoToUpcoming}
             activeOpacity={0.85}
             accessibilityLabel={t("accessibility.go_to_upcoming_sessions")}>
             <Icon name="event-available" size={18} color={colors.rootBg} style={{ marginRight: 8 }} />
@@ -121,15 +139,15 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
 
           <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
-            onPress={() => navigation.navigate('MainApp', { screen: 'DashboardTab' })}
+            onPress={handleGoToDashboard}
             activeOpacity={0.75}
             accessibilityLabel={t("accessibility.back_to_dashboard")}>
             <Text style={styles.btnSecondaryText}>{t("application.back_to_dashboard")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>);
-
+    </SafeAreaView>
+  );
 }
 
 export default BookingAcceptedSuccessScreen;
