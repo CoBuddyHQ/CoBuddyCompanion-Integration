@@ -1,4 +1,5 @@
 import React from 'react';
+import { Animated } from 'react-native';
 import ReactTestRenderer, { act } from 'react-test-renderer';
 import BiometricSetupScreen from '../screens/auth/BiometricSetupScreen';
 import ActionButton from '../components/actions/ActionButton';
@@ -21,7 +22,18 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('unavailable biometric enrollment', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(Animated, 'loop').mockReturnValue({
+      start: jest.fn(),
+      stop: jest.fn(),
+      reset: jest.fn(),
+    } as any);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('rejects enrollment without calling the backend', async () => {
     await expect(AuthService.enrollBiometric({
