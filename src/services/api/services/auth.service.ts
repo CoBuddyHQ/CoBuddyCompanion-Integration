@@ -6,7 +6,7 @@
  *  verifyOtp → { accessToken, refreshToken, expiresIn, isNewCompanion,
  *                companionId, phone, profileStatus, verificationStatus,
  *                accountStatus, hasPIN }
- *  sendOtp   → { message, expiresInMinutes, devOtp? }
+ *  sendOtp   → { message, expiresInMinutes }
  *  refreshToken → { accessToken, refreshToken, expiresIn }
  */
 
@@ -56,7 +56,6 @@ export interface LogoutDto {
 export interface SendOtpResponse {
   message: string;
   expiresInMinutes: number;
-  devOtp?: string;     // Only present in dev/staging
 }
 
 export interface VerifyOtpResponse {
@@ -84,7 +83,8 @@ export const AuthService = {
   /**
    * POST /auth/companion/otp/send
    * Screen: PhoneLoginScreen (CPN-002)
-   * In dev mode backend returns devOtp (always "123456")
+   * The backend never returns an OTP value. Delivery requires the configured SMS provider;
+   * QA identities must be allowlisted by the backend.
    */
   sendOtp: (dto: SendOtpDto): Promise<SendOtpResponse> =>
     apiPost<SendOtpResponse>(Endpoints.AUTH.SEND_OTP, dto),

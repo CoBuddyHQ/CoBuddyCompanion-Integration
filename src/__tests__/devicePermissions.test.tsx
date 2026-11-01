@@ -117,7 +117,7 @@ describe.each([
         route={{} as never}
       />);
     });
-  });
+  }, 30000);
 
   afterEach(async () => {
     await act(async () => renderer?.unmount());
@@ -126,7 +126,12 @@ describe.each([
   it('keeps the screen open and explains denial', async () => {
     await act(async () => renderer.root.findByType(ActionButton).props.onPress());
     expect(navigate).not.toHaveBeenCalled();
-    expect(Alert.alert).toHaveBeenCalledWith(expect.any(String), expect.stringContaining('not granted'));
+    if (_label === 'location') {
+      expect(JSON.stringify(renderer.toJSON())).toContain('Location permission was not granted');
+      expect(Alert.alert).not.toHaveBeenCalled();
+    } else {
+      expect(Alert.alert).toHaveBeenCalledWith(expect.any(String), expect.stringContaining('not granted'));
+    }
   }, 30000);
 
   it('continues after a confirmed native grant', async () => {

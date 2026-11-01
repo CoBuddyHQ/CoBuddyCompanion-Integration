@@ -79,8 +79,16 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    if (config.data instanceof FormData || (config.headers && config.headers['Content-Type'] === 'multipart/form-data')) {
-      delete config.headers['Content-Type'];
+    if (
+      config.data instanceof FormData ||
+      (config.headers && (config.headers['Content-Type'] === 'multipart/form-data' || (config.headers as any)['content-type'] === 'multipart/form-data'))
+    ) {
+      if (typeof config.headers.delete === 'function') {
+        config.headers.delete('Content-Type');
+        config.headers.delete('content-type');
+      }
+      delete (config.headers as any)['Content-Type'];
+      delete (config.headers as any)['content-type'];
     }
     if (__DEV__ && ENV.ENABLE_LOGGING) {
       console.log(`🚀 [API SEND] ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
@@ -240,10 +248,10 @@ export async function apiPut<T>(
 export async function apiUpload<T>(
   path: string,
   formData: FormData,
+  timeoutMs = 60_000,
 ): Promise<T> {
   const response = await apiClient.post<{ success?: boolean; data?: T }>(path, formData, {
-    headers: {'Content-Type': 'multipart/form-data'},
-    timeout: 30_000,  // Uploads get a longer timeout
+    timeout: timeoutMs,
   });
   return response.data?.success && response.data?.data !== undefined ? response.data.data : (response.data as unknown as T);
 }

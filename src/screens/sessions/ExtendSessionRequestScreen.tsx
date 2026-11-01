@@ -1,6 +1,7 @@
 import i18next from "i18next"; /**
 * ExtendSessionRequestScreen (CPN-111)
-* Companion requests a session extension with duration selection and price preview.
+ * Companion extension requests remain visible but are rejected by the backend
+ * until customer approval and verified payment are connected.
 */
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Alert } from 'react-native';
@@ -16,7 +17,7 @@ import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
 import { useTranslation } from "react-i18next";
 
-const OPTIONS = [{ label: "content.sessions.ExtendSessionRequestScreen.options.0.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.0.minutes", price: "content.sessions.ExtendSessionRequestScreen.options.0.price" }, { label: "content.sessions.ExtendSessionRequestScreen.options.1.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.1.minutes", price: "content.sessions.ExtendSessionRequestScreen.options.1.price" }, { label: "content.sessions.ExtendSessionRequestScreen.options.2.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.2.minutes", price: "content.sessions.ExtendSessionRequestScreen.options.2.price" }] as any[];
+const OPTIONS = [{ label: "content.sessions.ExtendSessionRequestScreen.options.0.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.0.minutes" }, { label: "content.sessions.ExtendSessionRequestScreen.options.1.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.1.minutes" }, { label: "content.sessions.ExtendSessionRequestScreen.options.2.label", minutes: "content.sessions.ExtendSessionRequestScreen.options.2.minutes" }] as any[];
 
 
 
@@ -45,7 +46,6 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
 
   const opt = OPTIONS[selected];
   const optMinutes = Number(t(opt.minutes));
-  const optPrice = Number(t(opt.price));
 
   const requestExtension = useSessionStore((s) => s.requestExtension);
   const [loading, setLoading] = useState(false);
@@ -92,37 +92,18 @@ export function ExtendSessionRequestScreen(): React.JSX.Element {
               <Text style={[s.optPillLabel, idx === selected && s.optPillLabelActive]}>
                 {t(opt2.label)}
               </Text>
-              <Text style={[s.optPillPrice, idx === selected && s.optPillPriceActive]}>{t("content.sessions.ExtendSessionRequestScreen.text")}
-                {Number(t(opt2.price)).toLocaleString('en-IN')}
+              <Text style={[s.optPillPrice, idx === selected && s.optPillPriceActive]}>
+                +{Number(t(opt2.minutes))} {t('sessions.minutes', 'min')}
               </Text>
             </TouchableOpacity>
           )}
-        </View>
-
-        {/* Price preview */}
-        <View style={s.priceCard}>
-          <View style={s.priceRow}>
-            <Text style={s.priceLabel}> {t('sessions.extension_duration')} </Text>
-            <Text style={s.priceValue}>{t(opt.label)}</Text>
-          </View>
-          <View style={s.priceDivider} />
-          <View style={s.priceRow}>
-            <Text style={s.priceLabelBold}> {t('sessions.additional_cost')} </Text>
-            <Text style={s.priceValueGold}>{optPrice.toLocaleString('en-IN')}</Text>
-          </View>
-          <View style={s.priceRow}>
-            <Text style={s.priceLabel}> {t('sessions.new_end_time')} </Text>
-            <Text style={s.priceValue}>
-                {fmtTime(session?.scheduledEnd, optMinutes)}
-            </Text>
-          </View>
         </View>
 
         {/* Info strip */}
         <View style={s.infoStrip}>
           <Icon name="info" size={14} color={colors.gold} style={{ flexShrink: 0, marginTop: 1 }} />
           <Text style={s.infoText}>
-             {t('sessions.extension_requires_customer_confirmation_they_will_be_notified_immediately')} </Text>
+             {t('sessions.extension_unavailable_until_payment', 'Extension requests are unavailable until customer approval and verified payment are connected. No session time or earnings will change.')} </Text>
         </View>
 
         <View style={{ height: 100 }} />

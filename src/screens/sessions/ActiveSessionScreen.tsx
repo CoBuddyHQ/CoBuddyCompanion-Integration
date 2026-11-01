@@ -22,6 +22,7 @@ import { Routes } from '../../navigation/routes';
 import type { SessionsStackParamList } from '../../types/navigation.types';
 import { useTranslation } from "react-i18next";
 import { SafetyService, SessionsService } from '../../services/api/services/index';
+import { SessionTerminalTransitionGuard } from '../../utils/sessionTerminalTransition';
 
 type Props = StackScreenProps<SessionsStackParamList, typeof Routes.ACTIVE_SESSION>;
 
@@ -63,6 +64,8 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
   const { t } = useTranslation();
   const sessionId: string = route.params?.sessionId ?? '';
   const endSession = useSessionStore((s) => s.endSession);
+  const terminalTransitionGuard = useRef(new SessionTerminalTransitionGuard()).current;
+  const statusCheckInFlightRef = useRef(false);
 
   const session = useSessionStore((s) =>
     (s.activeSession?.sessionId === sessionId || (s.activeSession as any)?.id === sessionId) ? s.activeSession :
@@ -77,16 +80,25 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
   // ── Auto-sync if session ends/completes externally ────────────────────────
   useEffect(() => {
     if (!sessionId) return;
-    const pollId = setInterval(async () => {
+    terminalTransitionGuard.reset(sessionId);
+    const checkStatus = async () => {
+      if (statusCheckInFlightRef.current) return;
+      statusCheckInFlightRef.current = true;
       try {
         const detail = await SessionsService.getDetail(sessionId);
-        if (detail && (detail.status === 'completed' || detail.status === 'cancelled')) {
+        if (terminalTransitionGuard.claim(sessionId, detail?.status)) {
           navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
         }
-      } catch {}
-    }, 1200);
+      } catch {
+        // Preserve the current screen and retry on the next scheduled check.
+      } finally {
+        statusCheckInFlightRef.current = false;
+      }
+    };
+    void checkStatus();
+    const pollId = setInterval(() => { void checkStatus(); }, 2000);
     return () => clearInterval(pollId);
-  }, [sessionId, navigation]);
+  }, [sessionId, navigation, terminalTransitionGuard]);
 
   // ── Running timer ──────────────────────────────────────────────────────────
   const [elapsed, setElapsed] = useState(0);
@@ -152,7 +164,9 @@ export function ActiveSessionScreen({ route, navigation }: Props): React.JSX.Ele
   const handleCompleteSession = async () => {
     try {
       await endSession(sessionId);
-      navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+      if (terminalTransitionGuard.claim(sessionId, 'completed')) {
+        navigation.replace(Routes.SESSION_COMPLETE, { sessionId });
+      }
     } catch (e: any) {
       Alert.alert(t('alerts.error', 'Error'), e?.message || 'Failed to complete session');
     }

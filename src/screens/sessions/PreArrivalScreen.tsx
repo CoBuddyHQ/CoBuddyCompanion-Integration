@@ -39,6 +39,16 @@ export function PreArrivalScreen(): React.JSX.Element {
   const checkInSession = useSessionStore((s) => s.checkInSession);
   const [loading, setLoading] = React.useState(false);
 
+  // Auto-navigate if session already checked in or active
+  React.useEffect(() => {
+    if (!session) return;
+    if (session.status === 'active') {
+      navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+    } else if (session.status === 'checked_in') {
+      navigation.replace(Routes.ARRIVAL_CHECK_IN, { sessionId });
+    }
+  }, [session?.status, sessionId, navigation]);
+
 
   // ── Not found fallback ────────────────────────────────────────────────────
   if (!session) {
@@ -70,8 +80,8 @@ export function PreArrivalScreen(): React.JSX.Element {
         <View style={s.waitingCard}>
           <View style={s.waitingGlow} />
           <Icon name="person-pin-circle" size={28} color={colors.softWarning} />
-          <Text style={s.waitingTitle}> {t('sessions.your_customer_is_waiting')} </Text>
-          <Text style={s.waitingSub}> {t('sessions.they_arrived_5_minutes_ago')} </Text>
+          <Text style={s.waitingTitle}>{session.checkInTime ? t('sessions.your_customer_is_waiting', 'Your customer is waiting!') : t('sessions.heading_to_venue', 'Head to the Venue')}</Text>
+          <Text style={s.waitingSub}>{session.checkInTime ? t('sessions.customer_waiting_at_venue', 'Customer has arrived at the meetup spot. Confirm arrival when you reach.') : t('sessions.complete_checklist_before_arrival', 'Complete the checklist and confirm arrival when you reach the venue.')}</Text>
 
           {/* Customer info — live from store */}
           <View style={s.customerRow}>
@@ -111,7 +121,12 @@ export function PreArrivalScreen(): React.JSX.Element {
             await checkInSession(sessionId!);
             navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId });
           } catch (e: any) {
-            Alert.alert(t('alerts.error'), e?.message || 'Check-in failed');
+            const msg = String(e?.message || '');
+            if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('checked') || msg.toLowerCase().includes('active')) {
+              navigation.navigate(Routes.ARRIVAL_CHECK_IN, { sessionId });
+            } else {
+              Alert.alert(t('alerts.error', 'Error'), msg || 'Check-in failed');
+            }
           } finally {
             setLoading(false);
           }

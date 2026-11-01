@@ -42,6 +42,10 @@ export function CustomerArrivalVerificationScreen(): React.JSX.Element {
       await startSession(sessionId, codeToVerify);
       navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
     } catch (e: any) {
+      if (e?.message?.toLowerCase().includes('active')) {
+        navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+        return;
+      }
       Alert.alert(t("alerts.error"), e?.message || 'Invalid verification code');
     } finally {
       setLoading(false);

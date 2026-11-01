@@ -1,12 +1,8 @@
 /**
- * CoBuddy Companion — Firebase Service
- * Handles:
- *  1. Firebase Phone Authentication (OTP) — for production
- *  2. Firebase Cloud Messaging (FCM) — Push Notifications
- *  3. Token registration with backend
- *
- * Development mode: Falls back to backend Redis OTP (123456)
- * Production mode:  Uses Firebase Phone Auth
+ * CoBuddy Companion Firebase helpers.
+ * The current sign-in flow uses AuthService and the Companion Backend; these
+ * Firebase phone-auth helpers are not wired into AuthStore's OTP flow.
+ * Push messaging helpers are independent from sign-in.
  */
 
 import { Platform } from 'react-native';
@@ -206,9 +202,9 @@ class FirebaseService {
   // ─── Firebase Phone Auth ────────────────────────────────────────────────────
 
   /**
-   * Send OTP via Firebase Phone Auth.
-   * Used in PRODUCTION mode when FIREBASE_AUTH_ENABLED=true.
-   * In development, backend handles OTP with Redis bypass (123456).
+   * Request an OTP through Firebase Phone Auth when this helper is used.
+   * The current sign-in screen does not call this method; AuthService sends
+   * sign-in requests to the Companion Backend.
    */
   async sendPhoneOtp(phoneNumber: string): Promise<any | null> {
     const auth = await getAuth();

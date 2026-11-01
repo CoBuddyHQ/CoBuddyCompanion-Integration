@@ -34,6 +34,8 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
 
   const [pin, setPin] = useState<string[]>(Array(PIN_LENGTH).fill(''));
   const [pinError, setPinError] = useState('');
+  const [starting, setStarting] = useState(false);
+  const startSession = useSessionStore((s) => s.startSession);
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const pinValue = pin.join('');
@@ -56,9 +58,23 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
     }
   };
 
-  const handleStart = () => {
-    if (!canStart) {return;}
-    navigation.navigate(Routes.CUSTOMER_ARRIVAL_VERIFICATION, { sessionId });
+  const handleStart = async () => {
+    if (!canStart || starting) {return;}
+    setStarting(true);
+    setPinError('');
+    try {
+      await startSession(sessionId, pinValue);
+      navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+    } catch (e: any) {
+      if (e?.message?.toLowerCase().includes('active')) {
+        navigation.replace(Routes.ACTIVE_SESSION, { sessionId });
+        return;
+      }
+      const msg = e?.message || t('sessions.invalid_pin', 'Invalid 4-digit PIN. Please verify with customer.');
+      setPinError(msg);
+    } finally {
+      setStarting(false);
+    }
   };
 
   const venueName = session?.venue.name ?? 'the venue';
@@ -144,8 +160,8 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
           accessibilityLabel={t("accessibility.start_session")}>
           <Icon name="play-arrow" size={20} color={canStart ? colors.rootBg : colors.textMuted}
           style={{ marginRight: 8 }} />
-          <Text style={[styles.btnStartText, !canStart && styles.btnStartTextDisabled]}>
-             {t('sessions.verify_start_session')} </Text>
+          <Text style={[styles.btnStartText, (!canStart || starting) && styles.btnStartTextDisabled]}>
+             {starting ? t('alerts.processing', 'Verifying...') : t('sessions.verify_start_session')} </Text>
         </TouchableOpacity>
         <Text style={styles.footerNote}>
            {t('sessions.by_starting_you_confirm_the_customer_is_present_and_you_are_ready_to_begin')} </Text>

@@ -1,4 +1,4 @@
-import { apiClient } from '../client';
+import { apiClient, apiUpload } from '../client';
 import { Endpoints } from '../endpoints';
 
 function extractUri(file: any): string {
@@ -32,8 +32,7 @@ export const UploadsService = {
       name: file?.name || 'profile_photo.jpg',
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.PROFILE_PHOTO, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.PROFILE_PHOTO, formData);
   },
 
   uploadGalleryPhoto: async (file: any) => {
@@ -49,8 +48,7 @@ export const UploadsService = {
       name: file?.name || `gallery_photo_${Date.now()}.jpg`,
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.GALLERY_PHOTO, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.GALLERY_PHOTO, formData);
   },
 
   deleteGalleryPhoto: async (photoId: string) => {
@@ -72,8 +70,7 @@ export const UploadsService = {
       name: file?.name || `kyc_identity_${Date.now()}.jpg`,
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.KYC_IDENTITY, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.KYC_IDENTITY, formData, 60_000);
   },
 
   uploadKycSelfie: async (file: any) => {
@@ -89,8 +86,7 @@ export const UploadsService = {
       name: file?.name || `kyc_selfie_${Date.now()}.mp4`,
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.KYC_SELFIE, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.KYC_SELFIE, formData, 60_000);
   },
 
   uploadKycAddress: async (file: any) => {
@@ -106,8 +102,7 @@ export const UploadsService = {
       name: file?.name || `kyc_address_${Date.now()}.jpg`,
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.KYC_ADDRESS, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.KYC_ADDRESS, formData, 60_000);
   },
 
   uploadEvidence: async (file: any) => {
@@ -123,7 +118,6 @@ export const UploadsService = {
       name: file?.name || `evidence_${Date.now()}.jpg`,
     } as any);
 
-    const response = await apiClient.post(Endpoints.UPLOADS.EVIDENCE, formData);
-    return response.data;
+    return apiUpload<any>(Endpoints.UPLOADS.EVIDENCE, formData, 60_000);
   },
 };

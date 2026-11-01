@@ -33,11 +33,8 @@ const DEV_QA_PREFILL: boolean = __DEV__ && false;
  *  Returns empty string when DEV_QA_PREFILL is false → no pre-fill. */
 export const QA_PHONE: string = DEV_QA_PREFILL ? '9876543210' : '';
 
-/** OTP digits pre-filled on OTPVerificationScreen.
- *  Returns empty array when DEV_QA_PREFILL is false → no pre-fill. */
-export const QA_OTP_DIGITS: string[] = DEV_QA_PREFILL
-  ? ['1', '2', '3', '4', '5', '6']
-  : [];
+/** OTP values are never embedded or pre-filled by the mobile app. */
+export const QA_OTP_DIGITS: string[] = [];
 
 /** Phone numbers authorized for development / QA testing. */
 export const AUTHORIZED_TEST_PHONES: string[] = [

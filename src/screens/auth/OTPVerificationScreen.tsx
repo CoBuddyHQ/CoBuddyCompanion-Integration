@@ -42,6 +42,7 @@ import { radius } from '../../theme/radius';
 import { validateOTP } from '../../utils/validators';
 
 import { QA_OTP_DIGITS } from '../../config/devQaPrefill';
+import { getOtpVerificationErrorMessage } from '../../utils/otpVerificationError';
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from '../../store/slices/authStore';
 
@@ -119,15 +120,11 @@ const OTPVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
         navigation.navigate(Routes.CREATE_PIN as any);
       }
     } catch (e: any) {
-      const rawMsg = e?.message || '';
+      const rawMsg = typeof e?.message === 'string' ? e.message : '';
       if (rawMsg.includes('NAVIGATE') || rawMsg.includes('not handled')) {
         return;
       }
-      if (rawMsg.includes('Expired') || rawMsg.includes('expired')) {
-        setError('Verification code has expired. Please request a new code.');
-      } else {
-        setError('Invalid verification code. Please check and try again.');
-      }
+      setError(getOtpVerificationErrorMessage(e));
     } finally {
       setLoading(false);
     }
