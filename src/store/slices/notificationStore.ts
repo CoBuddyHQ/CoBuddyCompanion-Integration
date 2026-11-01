@@ -17,7 +17,7 @@ interface NotificationState {
   error: string | null;
 
   // ── API Actions ────────────────────────────────────────────────────────────
-  fetchNotifications: () => Promise<void>;
+  fetchNotifications: (force?: boolean) => Promise<void>;
   markAsRead: (notificationId: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
 
@@ -27,6 +27,8 @@ interface NotificationState {
   setActiveTab: (tab: NotificationCategory | 'all') => void;
   clearAll: () => void;
 }
+
+let lastFetchedAt = 0;
 
 function countUnread(notifications: AppNotification[]): number {
   return notifications.filter((n) => !n.isRead).length;
@@ -40,12 +42,20 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
   error: null,
 
   // ── API Actions ────────────────────────────────────────────────────────────
-  fetchNotifications: async () => {
-    set({ isLoading: true, error: null });
+  fetchNotifications: async (force = false) => {
+    const existing = get().notifications;
+    const now = Date.now();
+    if (!force && existing.length > 0 && now - lastFetchedAt < 30000) {
+      return;
+    }
+    if (existing.length === 0) {
+      set({ isLoading: true, error: null });
+    }
     try {
       const res: any = await NotificationsService.getAll();
       const notifications = Array.isArray(res) ? res : (Array.isArray(res?.notifications) ? res.notifications : []);
       const unreadCount = typeof res?.unreadCount === 'number' ? res.unreadCount : countUnread(notifications);
+      lastFetchedAt = Date.now();
       set({ notifications, unreadCount });
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to load notifications' });

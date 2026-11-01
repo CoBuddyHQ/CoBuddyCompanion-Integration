@@ -80,6 +80,7 @@ export function NotificationCenterScreen(): React.JSX.Element {
   const markAsRead = useNotificationStore((s) => s.markAsRead);
   const markAllAsRead = useNotificationStore((s) => s.markAllAsRead);
   const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
+  const isLoading = useNotificationStore((s) => s.isLoading);
 
   useEffect(() => {
     fetchNotifications();
@@ -138,6 +139,8 @@ export function NotificationCenterScreen(): React.JSX.Element {
         renderItem={renderItem}
         contentContainerStyle={s.list}
         showsVerticalScrollIndicator={false}
+        refreshing={isLoading}
+        onRefresh={() => fetchNotifications(true)}
         ListHeaderComponent={unreadCount > 0 ?
         <View style={s.banner}>
               <Icon name="notifications-active" size={14} color={colors.gold} />
