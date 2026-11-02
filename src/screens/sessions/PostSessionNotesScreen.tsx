@@ -48,6 +48,13 @@ export function PostSessionNotesScreen(): React.JSX.Element {
   setTags((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
 
   const goToDashboard = () => {
+    try {
+      useSessionStore.getState().clearActiveSession();
+      useSessionStore.getState().fetchUpcomingSessions();
+      if (navigation.canGoBack()) {
+        navigation.popToTop();
+      }
+    } catch (_) {}
     const parent = navigation.getParent();
     if (parent) {
       parent.navigate('DashboardTab');

@@ -2,10 +2,10 @@
  * CPN-119 — Session Complete Screen
  * Full-screen celebration state after a session ends.
  */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  StatusBar, Animated, ScrollView } from
+  StatusBar, Animated, ScrollView, BackHandler } from
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -41,6 +41,32 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
   const bonusEarning = session?.bonusEarning ?? 0;
   const total = session?.estimatedTotal ?? 0;
   const confirmedEarn = session?.confirmedEarning ?? null;
+
+  const handleBackToDashboard = useCallback(() => {
+    try {
+      useSessionStore.getState().clearActiveSession();
+      useSessionStore.getState().fetchUpcomingSessions();
+      if (navigation.canGoBack()) {
+        navigation.popToTop();
+      }
+    } catch (_) {}
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.navigate('DashboardTab');
+    } else {
+      navigation.navigate('MainApp', { screen: 'DashboardTab' });
+    }
+  }, [navigation]);
+
+  useEffect(() => {
+    useSessionStore.getState().clearActiveSession();
+    const onBackPress = () => {
+      handleBackToDashboard();
+      return true;
+    };
+    const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => sub.remove();
+  }, [handleBackToDashboard]);
 
   // Entrance animation
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
@@ -166,14 +192,7 @@ export function SessionCompleteScreen({ route }: Props): React.JSX.Element {
 
           <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecondary}
-            onPress={() => {
-              const parent = navigation.getParent();
-              if (parent) {
-                parent.navigate('DashboardTab');
-              } else {
-                navigation.navigate('MainApp', { screen: 'DashboardTab' });
-              }
-            }}
+            onPress={handleBackToDashboard}
             activeOpacity={0.75}
             accessibilityLabel={t("accessibility.back_to_dashboard")}>
             <Text style={styles.btnSecondaryText}> {t('sessions.back_to_dashboard')} </Text>
