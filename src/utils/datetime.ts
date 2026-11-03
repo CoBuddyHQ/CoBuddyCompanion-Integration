@@ -68,3 +68,14 @@ export function formatCountdown(targetDate: Date | string): string {
   const diffMin = Math.floor(diffMs / 60000);
   return i18next.t('datetime.remaining', { duration: formatDuration(diffMin) });
 }
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export function formatDisplayDate(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(d.getTime())) return '';
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = MONTH_NAMES[d.getMonth()];
+  const year = d.getFullYear();
+  return `${day} ${month} ${year}`;
+}

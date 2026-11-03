@@ -4,7 +4,7 @@
  * Long press 3 seconds to confirm and send SOS.
  */
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Animated, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -61,8 +61,20 @@ export function SOSScreen(): React.JSX.Element {
       if (c <= 0) {
         clearInterval(holdInterval.current!);
         setHolding(false);
-        triggerSOS();
-        navigation.navigate(Routes.SOS_CONFIRMATION);
+        triggerSOS()
+          .then(() => {
+            navigation.navigate(Routes.SOS_CONFIRMATION);
+          })
+          .catch((err) => {
+            Alert.alert(
+              t('safety.sos_failed', 'SOS Dispatch Failed'),
+              err?.message || t('safety.sos_failed_desc', 'Could not record SOS. Please call 112 emergency directly.'),
+              [
+                { text: t('common.call_112', 'Call 112'), onPress: () => Linking.openURL('tel:112') },
+                { text: t('common.ok', 'OK') },
+              ],
+            );
+          });
       }
     }, 1000);
   };

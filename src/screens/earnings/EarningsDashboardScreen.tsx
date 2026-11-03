@@ -20,6 +20,7 @@ import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 import { radius } from '../../theme/radius';
 import { Routes } from '../../navigation/routes';
+import { formatDisplayDate } from '../../utils/datetime';
 import { useTranslation } from "react-i18next";
 
 // ─── Transaction Row ──────────────────────────────────────────────────────────
@@ -61,7 +62,7 @@ const TransactionRow: React.FC<{tx: Transaction;onPress: () => void;}> = ({ tx, 
       </View>
       <View style={styles.txMid}>
         <Text style={styles.txTitle} numberOfLines={1}>{tx.description}</Text>
-        <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</Text>
+        <Text style={styles.txDate}>{formatDisplayDate(tx.createdAt)}</Text>
       </View>
       <Text style={[
       styles.txAmount,
