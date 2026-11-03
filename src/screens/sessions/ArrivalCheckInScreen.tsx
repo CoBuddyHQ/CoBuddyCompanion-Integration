@@ -29,8 +29,15 @@ export function ArrivalCheckInScreen({ route, navigation }: Props): React.JSX.El
   const { t } = useTranslation();
   const sessionId = route.params?.sessionId ?? '';
   const session = useSessionStore((s) =>
-  s.upcomingSessions.find((ses) => ses.sessionId === sessionId) ?? null
+  [...s.upcomingSessions, ...(s.activeSession ? [s.activeSession] : [])].find((ses) => ses.sessionId === sessionId) ?? null
   );
+
+  const fetchUpcomingSessions = useSessionStore((s) => s.fetchUpcomingSessions);
+  React.useEffect(() => {
+    if (!session && sessionId) {
+      fetchUpcomingSessions();
+    }
+  }, [session, sessionId, fetchUpcomingSessions]);
 
   const [pin, setPin] = useState<string[]>(Array(PIN_LENGTH).fill(''));
   const [pinError, setPinError] = useState('');

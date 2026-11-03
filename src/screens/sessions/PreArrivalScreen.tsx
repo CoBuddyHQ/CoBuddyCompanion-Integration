@@ -36,6 +36,13 @@ export function PreArrivalScreen(): React.JSX.Element {
   find((ses) => ses.sessionId === sessionId) ?? null
   );
 
+  const fetchUpcomingSessions = useSessionStore((s) => s.fetchUpcomingSessions);
+  React.useEffect(() => {
+    if (!session && sessionId) {
+      fetchUpcomingSessions();
+    }
+  }, [session, sessionId, fetchUpcomingSessions]);
+
   const checkInSession = useSessionStore((s) => s.checkInSession);
   const [loading, setLoading] = React.useState(false);
 
