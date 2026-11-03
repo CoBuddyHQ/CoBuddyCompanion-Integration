@@ -22,6 +22,7 @@ import {PayoutPendingScreen} from '../../screens/earnings/PayoutPendingScreen';
 import {PayoutFailedScreen} from '../../screens/earnings/PayoutFailedScreen';
 import {RefundPenaltyExplanationScreen} from '../../screens/earnings/RefundPenaltyExplanationScreen';
 import {TaxInvoiceDetailsScreen} from '../../screens/earnings/TaxInvoiceDetailsScreen';
+import {BankDetailsScreen} from '../../screens/settings/BankDetailsScreen';
 import {PolicyCenterScreen} from '../../screens/settings/PolicyCenterScreen';
 import {CreateSupportTicketScreen} from '../../screens/support/CreateSupportTicketScreen';
 
@@ -44,7 +45,7 @@ const EarningsStack: React.FC = () => (
     <Stack.Screen name={Routes.TRANSACTION_DETAIL} component={TransactionDetailScreen} options={{headerShown: false}} />
     <Stack.Screen name={Routes.TAX_INVOICE_DETAILS} component={TaxInvoiceDetailsScreen} options={{headerShown: false}} />
     <Stack.Screen name={Routes.SUPPORT_CENTER} component={SupportCenterScreen} options={{headerShown: false}} />
-    <Stack.Screen name={Routes.BANK_DETAILS} component={PlaceholderScreen} />
+    <Stack.Screen name={Routes.BANK_DETAILS} component={BankDetailsScreen} options={{headerShown: false}} />
     <Stack.Screen name={Routes.POLICY_CENTER} component={PolicyCenterScreen} options={{headerShown: false}} />
     <Stack.Screen name={Routes.CREATE_SUPPORT_TICKET} component={CreateSupportTicketScreen} options={{headerShown: false}} />
   </Stack.Navigator>
