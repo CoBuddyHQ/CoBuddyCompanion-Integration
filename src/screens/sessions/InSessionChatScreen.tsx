@@ -28,14 +28,15 @@ interface Message extends ChatMessage {}
 
 
 const Bubble: React.FC<{msg: Message;}> = ({ msg }) => {
-  const isMe = msg.sender === 'companion';
+  const isMe = msg.sender === 'companion' || msg.senderType === 'companion';
+  const displayTime = msg.time || (msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Now');
   return (
     <View style={[s.bubbleWrap, isMe && s.bubbleWrapRight]}>
       {!isMe && <View style={s.customerDot} />}
       <View style={[s.bubble, isMe ? s.bubbleMe : s.bubbleThem]}>
         <Text style={[s.bubbleText, isMe && s.bubbleTextMe]}>{msg.text}</Text>
         <View style={s.bubbleMeta}>
-          <Text style={[s.bubbleTime, isMe && s.bubbleTimeMe]}>{msg.time}</Text>
+          <Text style={[s.bubbleTime, isMe && s.bubbleTimeMe]}>{displayTime}</Text>
           {isMe &&
           <Icon
             name={msg.status === 'read' ? 'done-all' : 'done'}
@@ -68,6 +69,7 @@ export function InSessionChatScreen(): React.JSX.Element {
 
   // Connect socket and fetch real message history on mount
   useEffect(() => {
+    let interval: any = null;
     if (sessionId) {
       useSessionStore.getState().fetchChatMessages(sessionId);
       socketService.connectSession(sessionId, {
@@ -75,8 +77,14 @@ export function InSessionChatScreen(): React.JSX.Element {
           useSessionStore.getState().addChatMessage(msg);
         },
       });
+
+      // Periodic background polling fallback to ensure synchronization
+      interval = setInterval(() => {
+        useSessionStore.getState().fetchChatMessages(sessionId);
+      }, 3000);
     }
     return () => {
+      if (interval) clearInterval(interval);
       socketService.disconnectSession();
     };
   }, [sessionId]);
@@ -90,11 +98,9 @@ export function InSessionChatScreen(): React.JSX.Element {
     const text = input.trim();
     if (!text) {return;}
     
-    // Emit via socket service
+    // Emit via socket service and persist via API
     socketService.sendSessionMessage(sessionId, text);
-    // Optimistic UI update handled by store or waiting for broadcast (here we rely on the store if we want optimistic, but currently sending just emits).
-    // Let's add it optimistically:
-    useSessionStore.getState().addChatMessage({ text, senderType: 'companion', status: 'sent' });
+    useSessionStore.getState().sendChatMessage(sessionId, text).catch(() => {});
     
     setInput('');
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 80);

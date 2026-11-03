@@ -158,7 +158,7 @@ export function SessionDetailScreen({ route, navigation }: Props): React.JSX.Ele
               <TouchableOpacity accessibilityRole="button"
                 style={[styles.iconBtn, !canContact && styles.iconBtnMuted]}
                 disabled={!canContact}
-                onPress={() => (navigation as any).navigate(Routes.IN_SESSION_CHAT, { sessionId })}
+                onPress={() => (navigation as any).navigate(Routes.IN_SESSION_CHAT, { sessionId, customerName: customer.displayInitials || 'Customer' })}
                 accessibilityLabel={i18next.t("accessibility.chat")}>
                 <Icon name="chat" size={18} color={canContact ? colors.gold : colors.textMuted} />
               </TouchableOpacity>
