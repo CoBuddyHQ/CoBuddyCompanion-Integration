@@ -66,9 +66,10 @@ export function InSessionChatScreen(): React.JSX.Element {
   const [input, setInput] = useState('');
   const listRef = useRef<FlatList>(null);
 
-  // Connect socket on mount
+  // Connect socket and fetch real message history on mount
   useEffect(() => {
     if (sessionId) {
+      useSessionStore.getState().fetchChatMessages(sessionId);
       socketService.connectSession(sessionId, {
         onMessage: (msg) => {
           useSessionStore.getState().addChatMessage(msg);
@@ -115,13 +116,12 @@ export function InSessionChatScreen(): React.JSX.Element {
         {/* Avatar */}
         <View style={s.headerAvatar}>
           <Text style={s.headerAvatarText}>{initials}</Text>
-          <View style={s.onlineDot} />
         </View>
 
         {/* Name + status */}
         <View style={s.headerInfo}>
           <Text style={s.headerName} numberOfLines={1}>{customerName}</Text>
-          <Text style={s.headerStatus}> {i18next.t('sessions.online')} </Text>
+          <Text style={s.headerStatus}> {i18next.t('sessions.active_booking_chat', 'Active Booking Chat')} </Text>
         </View>
 
         {/* Call shortcut */}

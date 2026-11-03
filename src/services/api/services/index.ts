@@ -30,6 +30,7 @@ export interface SosTriggerDto {
 export interface SafetyTimerStartDto {
   durationMinutes: number;
   sessionId?: string;
+  priority?: string;
 }
 
 export interface AddTrustedContactDto {
@@ -104,6 +105,7 @@ export interface CreateTicketDto {
   subject: string;
   description: string;
   sessionId?: string;
+  priority?: string;
 }
 
 export interface FileDisputeDto {
