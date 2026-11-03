@@ -126,8 +126,8 @@ export const useSupportStore = create<SupportState>((set, get) => ({
   createTicket: async (category, subject, desc, priority) => {
     set({ isLoading: true, error: null });
     try {
-      const res: any = await SupportService.createTicket({ category, subject, description: desc });
-      const id = res.id || genId('TKT');
+      const res: any = await SupportService.createTicket({ category, subject, description: desc, priority });
+      const id = res?.ticketId || res?.id || genId('TKT');
       set((state) => ({
         tickets: [{
           id,
@@ -137,7 +137,7 @@ export const useSupportStore = create<SupportState>((set, get) => ({
           priority,
           status: 'Open',
           date: 'Created just now',
-          messages: []
+          messages: desc ? [{ id: String(Date.now()), from: 'me', text: desc, time: nowTime() }] : []
         }, ...state.tickets]
       }));
       return id;

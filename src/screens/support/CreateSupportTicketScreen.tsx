@@ -36,14 +36,21 @@ export function CreateSupportTicketScreen(): React.JSX.Element {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('Normal');
   const createTicket = useSupportStore((s) => s.createTicket);
-  const [submitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const canSubmit = category.length > 0 && subject.trim().length > 0 && description.trim().length > 0;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!canSubmit || submitting) {return;}
-    const newId = createTicket(category, subject.trim(), description.trim(), priority);
-    navigation.navigate(Routes.SUPPORT_TICKET_DETAIL, { ticketId: newId, isNew: true });
+    try {
+      setSubmitting(true);
+      const newId = await createTicket(category, subject.trim(), description.trim(), priority);
+      navigation.navigate(Routes.SUPPORT_TICKET_DETAIL, { ticketId: newId, isNew: true });
+    } catch {
+      // handled in store
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
