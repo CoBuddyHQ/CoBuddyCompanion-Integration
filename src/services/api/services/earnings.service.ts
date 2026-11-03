@@ -40,6 +40,9 @@ export const EarningsService = {
   requestPayout: (dto: PayoutRequestDto) =>
     apiPost(Endpoints.EARNINGS.PAYOUT_REQUEST, dto),
 
+  clearEligible: () =>
+    apiPost('/companion/earnings/clear-eligible', {}),
+
   getWeeklyEarnings: () =>
     apiGet(Endpoints.EARNINGS.WEEKLY),
 

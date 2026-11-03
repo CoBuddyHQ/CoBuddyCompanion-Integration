@@ -61,7 +61,7 @@ const TransactionRow: React.FC<{tx: Transaction;onPress: () => void;}> = ({ tx, 
       </View>
       <View style={styles.txMid}>
         <Text style={styles.txTitle} numberOfLines={1}>{tx.description}</Text>
-        <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString()}</Text>
+        <Text style={styles.txDate}>{new Date(tx.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</Text>
       </View>
       <Text style={[
       styles.txAmount,

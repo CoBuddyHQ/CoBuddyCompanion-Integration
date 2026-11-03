@@ -44,7 +44,7 @@ export function PendingEarningsScreen(): React.JSX.Element {
       <Icon name="schedule" size={20} color={colors.softWarning} style={{ flexShrink: 0 }} />
       <View style={{ flex: 1, marginLeft: spacing.sm }}>
         <Text style={s.rowSession}>{item.description}</Text>
-        <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+        <Text style={s.rowDate}>{new Date(item.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</Text>
       </View>
       <View style={{ alignItems: 'flex-end', gap: 4 }}>
         <Text style={s.rowAmount}>{t("content.earnings.PendingEarningsScreen.text")}{Math.abs(item.amount).toLocaleString('en-IN')}</Text>
