@@ -79,16 +79,28 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    if (
+    const isFormData =
       config.data instanceof FormData ||
-      (config.headers && (config.headers['Content-Type'] === 'multipart/form-data' || (config.headers as any)['content-type'] === 'multipart/form-data'))
-    ) {
-      if (typeof config.headers.delete === 'function') {
-        config.headers.delete('Content-Type');
-        config.headers.delete('content-type');
+      (config.data && typeof config.data === 'object' && (
+        Array.isArray((config.data as any)._parts) ||
+        (config.data as any).constructor?.name === 'FormData'
+      )) ||
+      (config.headers && (
+        config.headers['Content-Type'] === 'multipart/form-data' ||
+        (config.headers as any)['content-type'] === 'multipart/form-data' ||
+        String(config.headers['Content-Type'] || '').startsWith('multipart/form-data')
+      ));
+
+    if (isFormData) {
+      if (config.headers) {
+        if (typeof (config.headers as any).delete === 'function') {
+          (config.headers as any).delete('Content-Type');
+          (config.headers as any).delete('content-type');
+        }
+        delete (config.headers as any)['Content-Type'];
+        delete (config.headers as any)['content-type'];
       }
-      delete (config.headers as any)['Content-Type'];
-      delete (config.headers as any)['content-type'];
+      config.transformRequest = [(data) => data];
     }
     if (__DEV__ && ENV.ENABLE_LOGGING) {
       console.log(`🚀 [API SEND] ${config.method?.toUpperCase() ?? 'REQ'} ${config.url ?? ''}`);
@@ -252,6 +264,10 @@ export async function apiUpload<T>(
 ): Promise<T> {
   const response = await apiClient.post<{ success?: boolean; data?: T }>(path, formData, {
     timeout: timeoutMs,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    transformRequest: [(data) => data],
   });
   return response.data?.success && response.data?.data !== undefined ? response.data.data : (response.data as unknown as T);
 }
