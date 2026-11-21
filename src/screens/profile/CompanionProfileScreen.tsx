@@ -46,7 +46,7 @@ export function CompanionProfileScreen(): React.JSX.Element {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchProfile();
+      fetchProfile(true);
       useReviewsStore.getState().fetchReviews();
     }, [fetchProfile])
   );

@@ -26,6 +26,7 @@ import { useEarningsStore } from '../../store/slices/earningsStore';
 import { useAvailabilityStore } from '../../store/slices/availabilityStore';
 import { useNotificationStore } from '../../store/slices/notificationStore';
 import { useSafetyStore } from '../../store/slices/safetyStore';
+import { socketService } from '../../services/api/services/socket.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { Routes } from '../../navigation/routes';
@@ -178,6 +179,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
 
   useFocusEffect(
     useCallback(() => {
+      socketService.connectApp();
       refreshAll();
       const interval = setInterval(refreshAll, 5000);
       return () => clearInterval(interval);

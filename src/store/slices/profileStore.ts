@@ -15,7 +15,7 @@ interface ProfileState {
   error: string | null;
 
   // ── API Actions ────────────────────────────────────────────────────────────
-  fetchProfile: () => Promise<void>;
+  fetchProfile: (forceRefresh?: boolean) => Promise<void>;
   toggleAvailability: (isAvailable: boolean) => Promise<void>;
   uploadGalleryPhoto: (photo: string | { uri: string; type?: string; name?: string }) => Promise<void>;
   deleteGalleryPhoto: (photoId: string) => Promise<void>;
@@ -42,10 +42,10 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
   // ── API Actions ────────────────────────────────────────────────────────────
   
-  fetchProfile: async () => {
+  fetchProfile: async (forceRefresh = false) => {
     set({ isLoading: true, error: null });
     try {
-      const profile = await ProfileService.getProfile();
+      const profile = await ProfileService.getProfile(forceRefresh);
       set({ profile });
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to load profile' });
@@ -101,7 +101,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       if (state.profile) {
         set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
-      await get().fetchProfile();
+      await get().fetchProfile(true);
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to upload photo' });
       throw e;
@@ -130,7 +130,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       if (state.profile) {
         set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
-      await get().fetchProfile();
+      await get().fetchProfile(true);
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to delete photo' });
       throw e;

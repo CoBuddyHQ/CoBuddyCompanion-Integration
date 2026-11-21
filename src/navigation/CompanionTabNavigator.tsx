@@ -5,10 +5,10 @@ import i18next from "i18next";
  * Uses custom BottomTabBar with CoBuddy gold active state.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CompanionTabParamList } from '../types/navigation.types';
-
+import { socketService } from '../services/api/services/socket.service';
 
 import DashboardStack from './stacks/DashboardStack';
 import RequestsStack from './stacks/RequestsStack';
@@ -21,7 +21,15 @@ const Tab = createBottomTabNavigator<CompanionTabParamList>();
 
 const renderTabBar = (props: any) => <BottomTabBar {...props} />;
 
-const CompanionTabNavigator: React.FC = () =>
+const CompanionTabNavigator: React.FC = () => {
+  useEffect(() => {
+    socketService.connectApp();
+    return () => {
+      socketService.disconnectApp();
+    };
+  }, []);
+
+  return (
 <Tab.Navigator
   tabBar={renderTabBar}
   screenOptions={{
@@ -53,7 +61,9 @@ const CompanionTabNavigator: React.FC = () =>
     component={ProfileStack}
     options={{ tabBarLabel: i18next.t("content.navigation.CompanionTabNavigator.profile") }} />
   
-  </Tab.Navigator>;
+  </Tab.Navigator>
+  );
+};
 
 
 export default CompanionTabNavigator;

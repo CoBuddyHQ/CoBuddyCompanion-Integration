@@ -102,7 +102,7 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
 
   useFocusEffect(
     React.useCallback(() => {
-      useProfileStore.getState().fetchProfile();
+      useProfileStore.getState().fetchProfile(true);
     }, [])
   );
 

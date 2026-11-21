@@ -39,7 +39,9 @@ export interface UpdatePricingDto {
 }
 
 export interface UpdatePhotosDto {
-  photoUrls: string[];
+  photoUrls?: string[];
+  galleryPhotos?: string[];
+  photoUrl?: string;
 }
 
 export interface SetupBulkDto {
@@ -53,12 +55,16 @@ export interface SetupBulkDto {
 
 export const ProfileService = {
   /** GET /companion/profile */
-  getProfile: (): Promise<CompanionProfile> =>
-    queryClient.fetchQuery(
+  getProfile: (forceRefresh = false): Promise<CompanionProfile> => {
+    if (forceRefresh) {
+      queryClient.invalidateQueries(['companion', 'profile']);
+    }
+    return queryClient.fetchQuery(
       ['companion', 'profile'],
       () => apiGet<CompanionProfile>(Endpoints.PROFILE.GET),
-      { staleTime: 120_000, cacheTime: 1_800_000, persist: true }
-    ),
+      { staleTime: forceRefresh ? 0 : 30_000, cacheTime: 1_800_000, persist: true }
+    );
+  },
 
   /** PUT /companion/profile/basic */
   updateBasic: async (dto: UpdateBasicDto) => {
