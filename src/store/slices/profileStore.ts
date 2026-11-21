@@ -76,9 +76,15 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       const photoUrl =
         result?.photoUrl ||
         result?.url ||
+        result?.data?.photoUrl ||
+        result?.data?.url ||
         (Array.isArray(result?.galleryPhotos)
           ? result.galleryPhotos[result.galleryPhotos.length - 1]
-          : undefined);
+          : undefined) ||
+        (Array.isArray(result?.data?.galleryPhotos)
+          ? result.data.galleryPhotos[result.data.galleryPhotos.length - 1]
+          : undefined) ||
+        (typeof result === 'string' ? result : undefined);
       if (!photoUrl) {
         throw new Error('Upload succeeded but server did not return a photo URL');
       }
