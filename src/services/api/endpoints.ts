@@ -289,6 +289,7 @@ export const Endpoints = {
   // MASTER_DATA & CONFIG — @Controller('companion/master-data') / ('companion/config')
   // ═══════════════════════════════════════════════════════════════════
   MASTER_DATA: {
+    BUNDLE:       '/master-data',                       // GET
     LANGUAGES:    '/companion/master-data/languages',   // GET
     CITIES:       '/companion/master-data/cities',      // GET
     CATEGORIES:   '/companion/master-data/categories',  // GET

@@ -34,10 +34,19 @@ import { useApplicationStore } from '../../store/slices/applicationStore';
 import { ExperienceCategoriesContent } from '../../content/applicationKycContent';
 import { AdminConfig } from '../../config/adminValues';
 import { ProfileService } from '../../services/api/services/profile.service';
+import { MasterDataService } from '../../services/api/services/masterData.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.EXPERIENCE_CATEGORIES>;
 
 const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const { t } = useTranslation();
+  const [categories, setCategories] = React.useState(ExperienceCategoriesContent.CATEGORIES);
+
+  React.useEffect(() => {
+    MasterDataService.fetchMasterData().then(() => {
+      setCategories([...ExperienceCategoriesContent.CATEGORIES]);
+    });
+  }, []);
+
   const {
     experienceCategories, toggleExperienceCategory, setCurrentStage,
     profileCorrectionContext, completeProfileCorrection,
@@ -105,7 +114,7 @@ const ExperienceCategoriesScreen: React.FC<Props> = ({ navigation }) => {const {
           <Text style={styles.cardBody}>{t("content.application_kyc.ExperienceCategoriesContent.SECTION_BODY")}</Text>
 
           <View style={styles.grid}>
-            {ExperienceCategoriesContent.CATEGORIES.map((cat, index) => {
+            {categories.map((cat, index) => {
               const selected = experienceCategories.includes(cat.id);
               return (
                 <TouchableOpacity accessibilityRole="button"

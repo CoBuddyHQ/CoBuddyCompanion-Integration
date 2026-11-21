@@ -376,6 +376,29 @@ export const CITY_BROAD_AREAS: Record<string, string[]> = {
 
 };
 
+export function updateDynamicKycContent(bundle: any) {
+  if (!bundle) return;
+  if (Array.isArray(bundle.cities) && Array.isArray(bundle.areas)) {
+    const grouped: Record<string, string[]> = {};
+    for (const city of bundle.cities) {
+      const cityName = typeof city.name === 'object' ? city.name.en || city.name : city.name;
+      if (!cityName) continue;
+      const cityAreas = bundle.areas
+        .filter((a: any) => a.cityId === city.id)
+        .map((a: any) => typeof a.name === 'object' ? a.name.en || a.name : a.name);
+      grouped[cityName] = cityAreas.length > 0 ? cityAreas : (CITY_BROAD_AREAS[cityName] || []);
+    }
+    Object.assign(CITY_BROAD_AREAS, grouped);
+  }
+  if (Array.isArray(bundle.interests) && bundle.interests.length > 0) {
+    (ExperienceCategoriesContent as any).CATEGORIES = bundle.interests.map((i: any) => ({
+      id: i.id,
+      label: typeof i.name === 'object' ? i.name.en || i.name : i.name || i.label,
+      icon: i.icon || 'category',
+    }));
+  }
+}
+
 export const CityServiceAreaContent = {
   HEADLINE: 'City & Service Area',
   SUBHEADLINE: 'Share which city and broad areas you are available to meet customers. Your exact residential location is never shown to customers.',

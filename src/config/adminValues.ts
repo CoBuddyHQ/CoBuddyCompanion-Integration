@@ -136,3 +136,66 @@ export const AdminConfig = {
     'INT-13': { label: 'Gaming', icon: 'sports-esports' },
   } as Record<string, { label: string; icon: string }>,
 };
+
+export function updateAdminConfig(bundle: any) {
+  if (!bundle) return;
+  if (Array.isArray(bundle.sessionDurations) && bundle.sessionDurations.length > 0) {
+    AdminConfig.sessionDurations = bundle.sessionDurations.map((d: any) => typeof d === 'number' ? d : d.minutes || 60);
+  }
+  if (Array.isArray(bundle.cancellationReasons) && bundle.cancellationReasons.length > 0) {
+    AdminConfig.sessionReasons = bundle.cancellationReasons.map((r: any) => ({
+      code: r.code,
+      label: r.label || r.reason || r.code,
+      appliesTo: r.appliesTo ? [r.appliesTo] : ['ANY'],
+    }));
+  }
+  if (Array.isArray(bundle.ticketCategories) && bundle.ticketCategories.length > 0) {
+    AdminConfig.ticketCategories = bundle.ticketCategories.map((tc: any) => ({
+      code: tc.code,
+      label: tc.label || tc.name || tc.code,
+      icon: tc.icon || 'help-outline',
+    }));
+  }
+  if (Array.isArray(bundle.incidentTypes) && bundle.incidentTypes.length > 0) {
+    AdminConfig.incidentTypes = bundle.incidentTypes.map((it: any) => ({
+      code: it.code,
+      label: it.label || it.name || it.code,
+    }));
+  }
+  if (Array.isArray(bundle.kycDocumentTypes) && bundle.kycDocumentTypes.length > 0) {
+    AdminConfig.kycDocumentTypes = bundle.kycDocumentTypes.map((kd: any) => ({
+      code: kd.code,
+      label: kd.label || kd.name || kd.code,
+      icon: kd.icon || 'badge',
+      recommended: kd.code === 'AADHAAR',
+    }));
+  }
+  if (Array.isArray(bundle.communicationStyles) && bundle.communicationStyles.length > 0) {
+    AdminConfig.communicationStyles = bundle.communicationStyles.map((cs: any) => ({
+      code: cs.code,
+      label: cs.label || cs.name || cs.code,
+      icon: cs.icon || 'chat',
+    }));
+  }
+  if (Array.isArray(bundle.activityPaces) && bundle.activityPaces.length > 0) {
+    AdminConfig.activityPaces = bundle.activityPaces.map((ap: any) => ({
+      code: ap.code,
+      label: ap.label || ap.name || ap.code,
+      icon: ap.icon || 'directions-walk',
+    }));
+  }
+  if (Array.isArray(bundle.interests) && bundle.interests.length > 0) {
+    const details: Record<string, { label: string; icon: string }> = {};
+    const multipliers: Record<string, number> = {};
+    bundle.interests.forEach((item: any, idx: number) => {
+      const id = item.id || `INT-${idx + 1}`;
+      details[id] = {
+        label: typeof item.name === 'object' ? item.name.en || item.name : item.name || item.label,
+        icon: item.icon || 'category',
+      };
+      multipliers[id] = item.multiplier || 1.0;
+    });
+    AdminConfig.categoryDetails = details;
+    AdminConfig.categoryPriceMultipliers = multipliers;
+  }
+}

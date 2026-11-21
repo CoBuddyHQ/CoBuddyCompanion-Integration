@@ -42,6 +42,8 @@ import { radius } from '../../theme/radius';
 
 import { useApplicationStore } from '../../store/slices/applicationStore';
 import { ProfileService } from '../../services/api/services/profile.service';
+import { CITY_BROAD_AREAS } from '../../content/applicationKycContent';
+import { MasterDataService } from '../../services/api/services/masterData.service';
 
 type Props = StackScreenProps<ApplicationStackParamList, typeof Routes.CITY_SERVICE_AREA>;
 
@@ -51,152 +53,17 @@ const BROAD_AREA_MAX = 8;
 const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
 
-  const CITY_BROAD_AREAS: Record<string, string[]> = {
-    "Mumbai": [
-      "Andheri",
-      "Bandra",
-      "Borivali",
-      "Colaba",
-      "Dadar",
-      "Goregaon",
-      "Juhu",
-      "Kandivali",
-      "Kurla",
-      "Malad",
-      "Mulund",
-      "Navi Mumbai",
-      "Powai",
-      "Thane",
-      "Worli"
-    ],
-    "Delhi": [
-      "Connaught Place",
-      "Dwarka",
-      "East Delhi",
-      "Hauz Khas",
-      "Janakpuri",
-      "Lajpat Nagar",
-      "Noida Border",
-      "Rohini",
-      "Saket",
-      "South Delhi",
-      "Vasant Kunj",
-      "West Delhi"
-    ],
-    "Bengaluru": [
-      "Indiranagar",
-      "Jayanagar",
-      "JP Nagar",
-      "Koramangala",
-      "Marathahalli",
-      "MG Road",
-      "Rajajinagar",
-      "Whitefield",
-      "Electronic City",
-      "Hebbal",
-      "HSR Layout",
-      "Yelahanka"
-    ],
-    "Hyderabad": [
-      "Banjara Hills",
-      "Gachibowli",
-      "Hitech City",
-      "Jubilee Hills",
-      "Kukatpally",
-      "Madhapur",
-      "Mehdipatnam",
-      "Secunderabad",
-      "Uppal"
-    ],
-    "Chennai": [
-      "Adyar",
-      "Anna Nagar",
-      "Chromepet",
-      "Guindy",
-      "Nungambakkam",
-      "Porur",
-      "T Nagar",
-      "Velachery"
-    ],
-    "Kolkata": [
-      "Ballygunge",
-      "Behala",
-      "Dum Dum",
-      "Howrah",
-      "Lake Town",
-      "New Town",
-      "Park Street",
-      "Salt Lake"
-    ],
-    "Pune": [
-      "Aundh",
-      "Baner",
-      "Hadapsar",
-      "Hinjewadi",
-      "Kalyani Nagar",
-      "Kothrud",
-      "Magarpatta",
-      "Viman Nagar"
-    ],
-    "Ahmedabad": [
-      "Bodakdev",
-      "CG Road",
-      "Maninagar",
-      "Navrangpura",
-      "Prahladnagar",
-      "Satellite",
-      "Vastrapur"
-    ],
-    "Jaipur": [
-      "C-Scheme",
-      "Mansarovar",
-      "Malviya Nagar",
-      "Vaishali Nagar",
-      "Tonk Road"
-    ],
-    "Lucknow": [
-      "Aliganj",
-      "Gomti Nagar",
-      "Hazratganj",
-      "Indira Nagar"
-    ],
-    "Chandigarh": [
-      "Sector 17",
-      "Sector 22",
-      "Sector 35",
-      "Mohali",
-      "Panchkula"
-    ],
-    "Kochi": [
-      "Aluva",
-      "Edapally",
-      "Ernakulam",
-      "Fort Kochi",
-      "Kakkanad",
-      "Vyttila"
-    ],
-    "Surat": [
-      "Adajan",
-      "Althan",
-      "Katargam",
-      "Piplod",
-      "Udhna"
-    ],
-    "Indore": [
-      "Palasia",
-      "Rajwada",
-      "Vijay Nagar",
-      "Scheme 54"
-    ],
-    "Nagpur": [
-      "Civil Lines",
-      "Dharampeth",
-      "Ramdaspeth",
-      "Sitabuldi",
-      "Trimurti Nagar"
-    ]
-  };
-  const CITY_OPTIONS = Object.keys(CITY_BROAD_AREAS);
+  const [broadAreasMap, setBroadAreasMap] = useState<Record<string, string[]>>(CITY_BROAD_AREAS);
+
+  React.useEffect(() => {
+    MasterDataService.fetchMasterData().then(bundle => {
+      if (bundle) {
+        setBroadAreasMap({ ...CITY_BROAD_AREAS });
+      }
+    });
+  }, []);
+
+  const CITY_OPTIONS = Object.keys(broadAreasMap);
 
   const {
     city, broadAreas, willingToTravel, setCity, toggleBroadArea, setWillingToTravel, setCurrentStage,
@@ -207,8 +74,8 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
 
   // Derived: areas for selected city
   const availableAreas: string[] = useMemo(
-    () => city ? CITY_BROAD_AREAS[city] ?? [] : [],
-    [city, CITY_BROAD_AREAS]
+    () => city ? broadAreasMap[city] ?? [] : [],
+    [city, broadAreasMap]
   );
 
   const areaCount = broadAreas.length;
@@ -226,7 +93,7 @@ const CityServiceAreaScreen: React.FC<Props> = ({ navigation }) => {
     // Change city → clear incompatible broad areas
     setCity(selected);
     // Clear all broadAreas that are not in the new city's list
-    const newAreas = CITY_BROAD_AREAS[selected] ?? [];
+    const newAreas = broadAreasMap[selected] ?? [];
     const toRemove = broadAreas.filter((a) => !newAreas.includes(a));
     toRemove.forEach((a) => toggleBroadArea(a)); // toggles will remove them
     setShowCityPicker(false);
