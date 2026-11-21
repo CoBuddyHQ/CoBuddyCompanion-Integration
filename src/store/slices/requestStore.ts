@@ -38,7 +38,7 @@ interface RequestState {
 
   // ── API Actions ────────────────────────────────────────────────────────────
   /** Fetch requests from backend — replaces mock data */
-  fetchRequests: () => Promise<void>;
+  fetchRequests: (ignoreFilters?: boolean) => Promise<void>;
   /** Accept a booking request */
   acceptRequest: (requestId: string) => Promise<void>;
   /** Decline a booking request with reason */
@@ -80,10 +80,10 @@ export const useRequestStore = create<RequestState>((set, get) => ({
   error: null,
 
   // ── fetchRequests ────────────────────────────────────────────────────────
-  fetchRequests: async () => {
+  fetchRequests: async (ignoreFilters = false) => {
     set({ isLoading: true, error: null });
     try {
-      const filter = get().activeFilter;
+      const filter = ignoreFilters ? DEFAULT_FILTER : get().activeFilter;
       const res = await RequestsService.listRequests({
         status: filter.status,
         categories: filter.categories.length > 0 ? filter.categories.join(',') : undefined,

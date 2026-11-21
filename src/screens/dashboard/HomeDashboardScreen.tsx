@@ -165,7 +165,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
       await Promise.allSettled([
         fetchProfile(),
         fetchUpcomingSessions(),
-        fetchRequests(),
+        fetchRequests(true),
         fetchSummary(),
         fetchTransactions(1, 10),
         fetchAvailability(),
@@ -179,7 +179,7 @@ export function HomeDashboardScreen(): React.JSX.Element {
   useFocusEffect(
     useCallback(() => {
       refreshAll();
-      const interval = setInterval(refreshAll, 8000);
+      const interval = setInterval(refreshAll, 5000);
       return () => clearInterval(interval);
     }, [refreshAll])
   );

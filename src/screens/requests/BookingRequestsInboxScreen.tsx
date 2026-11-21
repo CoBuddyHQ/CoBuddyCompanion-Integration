@@ -193,6 +193,10 @@ export function BookingRequestsInboxScreen(): React.JSX.Element {
   useFocusEffect(
     React.useCallback(() => {
       useRequestStore.getState().fetchRequests();
+      const interval = setInterval(() => {
+        useRequestStore.getState().fetchRequests();
+      }, 3500);
+      return () => clearInterval(interval);
     }, [])
   );
 

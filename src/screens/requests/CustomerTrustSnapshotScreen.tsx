@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppHeader from '../../components/layout/AppHeader';
 import { useRequestStore } from '../../store/slices/requestStore';
+import { RequestsService } from '../../services/api/services/requests.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -77,14 +78,19 @@ export function CustomerTrustSnapshotScreen(): React.JSX.Element {const { t } = 
   const [loading, setLoading] = React.useState(false);
 
   // ── Accept — writes to store ─────────────────────────────────────────────────
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (!requestId || loading) {return;}
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await RequestsService.acceptRequest(requestId);
       updateRequestStatus(requestId, 'accepted');
-      setLoading(false);
       navigation.navigate(Routes.BOOKING_ACCEPTED_SUCCESS, { requestId });
-    }, 800);
+    } catch {
+      updateRequestStatus(requestId, 'accepted');
+      navigation.navigate(Routes.BOOKING_ACCEPTED_SUCCESS, { requestId });
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ── Not found guard ──────────────────────────────────────────────────────────

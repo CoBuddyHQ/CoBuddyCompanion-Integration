@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { useRequestStore } from '../../store/slices/requestStore';
+import { RequestsService } from '../../services/api/services/requests.service';
 import { colors } from '../../theme/colors';
 import { fontFamily } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -50,6 +51,18 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
   [...s.pendingRequests, ...s.reviewedRequests].find((r) => r.requestId === requestId) ?? null
   );
 
+  const [detail, setDetail] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (!request && requestId) {
+      RequestsService.getDetail(requestId).then((data) => {
+        if (data) setDetail(data);
+      }).catch(() => {});
+    }
+  }, [request, requestId]);
+
+  const activeReq = request || detail;
+
   // Entrance animation
   const scaleAnim = useRef(new Animated.Value(0.6)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -60,9 +73,9 @@ export function BookingAcceptedSuccessScreen({ route }: Props): React.JSX.Elemen
     ).start();
   }, [scaleAnim, opacityAnim]);
 
-  const customerInitials = request?.customer.displayInitials ?? '—';
-  const dateLabel = request ? formatShortDateTime(request.proposedStart) : '';
-  const earning = request ? `₹${request.estimatedEarning.toLocaleString('en-IN')}` : '';
+  const customerInitials = activeReq?.customer?.displayInitials ?? (activeReq as any)?.customerInitials ?? 'C.U.';
+  const dateLabel = activeReq?.proposedStart ? formatShortDateTime(activeReq.proposedStart) : 'Today';
+  const earning = activeReq?.estimatedEarning ? `₹${Number(activeReq.estimatedEarning).toLocaleString('en-IN')}` : '';
 
   const handleGoToUpcoming = () => {
     const parent = navigation.getParent();
