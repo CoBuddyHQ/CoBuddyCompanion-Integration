@@ -73,7 +73,12 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       const { UploadsService } = require('../../services/api/services/uploads.service');
       const { ProfileService } = require('../../services/api/services/profile.service');
       const result = await UploadsService.uploadGalleryPhoto(photo);
-      const photoUrl = result.photoUrl || result.url;
+      const photoUrl =
+        result?.photoUrl ||
+        result?.url ||
+        (Array.isArray(result?.galleryPhotos)
+          ? result.galleryPhotos[result.galleryPhotos.length - 1]
+          : undefined);
       if (!photoUrl) {
         throw new Error('Upload succeeded but server did not return a photo URL');
       }
