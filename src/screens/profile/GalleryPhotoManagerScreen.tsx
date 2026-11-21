@@ -10,7 +10,7 @@ import {
 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import AppHeader from '../../components/layout/AppHeader';
 import { useProfileStore } from '../../store/slices/profileStore';
@@ -99,6 +99,12 @@ export function GalleryPhotoManagerScreen(): React.JSX.Element {
   const navigation = useNavigation<any>();
   const profile = useProfileStore((s) => s.profile);
   const updateProfile = useProfileStore((s) => s.updateProfile);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      useProfileStore.getState().fetchProfile();
+    }, [])
+  );
 
   // Seed local gallery state from store (or mock fallback)
   const photos = profile?.galleryPhotos || [];

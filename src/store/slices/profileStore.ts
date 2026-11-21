@@ -101,6 +101,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       if (state.profile) {
         set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
+      await get().fetchProfile();
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to upload photo' });
       throw e;
@@ -129,6 +130,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       if (state.profile) {
         set({ profile: { ...state.profile, galleryPhotos: updatedGallery } });
       }
+      await get().fetchProfile();
     } catch (e: unknown) {
       set({ error: e instanceof Error ? e.message : 'Failed to delete photo' });
       throw e;
